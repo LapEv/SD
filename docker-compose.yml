@@ -9,9 +9,9 @@ services:
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_DB: ${POSTGRES_DB}
-      PGDATA: /var/lib/postgresql/data/pgdata
+      PGDATA: /var/lib/sdpostgresql/data/pgdata
     volumes:
-      - ./tmp/pgdata:/var/lib/postgresql/data
+      - ./tmp/pgdata:/var/lib/sdpostgresql/data
     healthcheck:
       test: ['CMD-SHELL', 'pg_isready -d $${POSTGRES_DB} -U $${POSTGRES_USER}']
       interval: 10s
@@ -52,7 +52,7 @@ services:
     depends_on:
       - postgres
     volumes:
-      - ./packages/server/Files:/${FILE_PATH}
+      - ./packages/server/SDFiles:/${FILE_PATH}
     networks:
       - back_sd
 
@@ -67,7 +67,7 @@ services:
     ports:
       - '5060:5060'
     volumes:
-      - ./tmp/pgadmin:/tmp/pgadmin
+      - ./tmp/sdpgadmin:/tmp/sdpgadmin
     depends_on:
       postgres:
         condition: service_healthy
@@ -91,9 +91,9 @@ services:
       - back_sd
 
 volumes:
-  pgadmin:
-  postgresql:
-  Files:
+  sdpgadmin:
+  sdpostgresql:
+  SDFiles:
 
 networks:
   back:
