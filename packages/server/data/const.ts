@@ -1,5 +1,5 @@
 export const mailConst = {
-  ourMail: 'help@sb-i.ru',
+  ourMail: 'e_lap@mail.ru',
   mailMessages: {
     footer:
       'Данное сообщение отправлено автоматически, не надо на него отвечать.',
