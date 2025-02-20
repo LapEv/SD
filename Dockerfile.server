@@ -23,7 +23,6 @@ COPY --from=builder /app/packages/server/dist /app/server
 COPY --from=builder /app/packages/client/dist /app/client/dist
 COPY --from=builder /app/packages/client/dist-ssr /app/client/dist-ssr
 COPY --from=builder /app/packages/server/package.json /app/package.json
-COPY --from=builder /app/nginx.conf /etc/nginx/nginx.conf
 COPY --from=builder /app/etc /etc
 RUN apt-get update -y && apt-get install -y openssl
 RUN yarn install --production=true
