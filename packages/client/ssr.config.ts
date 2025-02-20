@@ -14,7 +14,7 @@ export default defineConfig(({ mode }) => {
       __BASE_URL__: JSON.stringify(
         mode === 'development'
           ? 'localhost'
-          : process.env.SERVER_HOST ?? 'http://www.sd_test.sb-i.ru',
+          : process.env.SERVER_HOST ?? 'http://www.sdtest.sb-i.ru',
       ),
     },
     build: {
