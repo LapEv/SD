@@ -1,0 +1,1 @@
+export { SwitchMUI } from './Switch'
