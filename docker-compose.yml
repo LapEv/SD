@@ -18,7 +18,7 @@ services:
       timeout: 5s
       retries: 5
     networks:
-      - back
+      - back_sd
 
   server:
     container_name: sd-server
@@ -54,7 +54,7 @@ services:
     volumes:
       - ./packages/server/Files:/${FILE_PATH}
     networks:
-      - back
+      - back_sd
 
   pgadmin:
     container_name: sd-pgadmin
@@ -72,7 +72,7 @@ services:
       postgres:
         condition: service_healthy
     networks:
-      - back
+      - back_sd
 
   nginx:
     container_name: sd-nginx
@@ -88,7 +88,7 @@ services:
       - server
       - pgadmin
     networks:
-      - back
+      - back_sd
 
 volumes:
   pgadmin:
