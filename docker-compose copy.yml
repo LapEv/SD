@@ -1,0 +1,93 @@
+version: '3.9'
+
+services:
+  postgres:
+    container_name: sd-db
+    image: postgres:14
+    restart: always
+    ports:
+      - '7432:${POSTGRES_PORT_SD}'
+    environment:
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD_SD}
+      POSTGRES_USER: ${POSTGRES_USER_SD}
+      POSTGRES_DB: ${POSTGRES_DB_SD}
+      PGDATA: /var/lib/postgresql/data/pgdata
+    volumes:
+      - ./tmp/pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test:
+        [
+          'CMD-SHELL',
+          'pg_isready -d $${POSTGRES_DB_SD} -U $${POSTGRES_USER_SD}',
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  server:
+    container_name: sd-server
+    image: sd-server
+    build:
+      context: .
+      dockerfile: Dockerfile.server
+      args:
+        SERVER_PORT_SD: ${SERVER_PORT_SD}
+    restart: always
+    ports:
+      - '${SERVER_PORT_SD}:${SERVER_PORT_SD}'
+    environment:
+      CLIENT_PORT_SD: ${CLIENT_PORT_SD}
+      SERVER_PORT_SD: ${SERVER_PORT_SD}
+      SERVER_HOST_SD: ${SERVER_HOST_SD}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD_SD}
+      POSTGRES_USER: ${POSTGRES_USER_SD}
+      POSTGRES_DB: ${POSTGRES_DB_SD}
+      POSTGRES_PORT: ${POSTGRES_PORT_SD}
+      POSTGRES_HOST: ${POSTGRES_HOST_SD}
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL_SD}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD_SD}
+      PGADMIN_LISTEN_PORT: ${PGADMIN_LISTEN_PORT_SD}
+      SECRET_KEY_SD: ${SECRET_KEY_SD}
+      FILE_PATH_SD: ${FILE_PATH_SD}
+      EMAIL_HOST_SD: ${EMAIL_HOST_SD}
+      EMAIL_PORT_SD: ${EMAIL_PORT_SD}
+      EMAIL_USER_SD: ${EMAIL_USER_SD}
+      EMAIL_PASSWORD_SD: ${EMAIL_PASSWORD_SD}
+    depends_on:
+      - postgres
+    volumes:
+      - ./packages/server/Files:/${FILE_PATH_SD}
+
+  pgadmin:
+    container_name: sd-pgadmin
+    image: dpage/pgadmin4:latest
+    restart: always
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL_SD}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD_SD}
+      PGADMIN_LISTEN_PORT: ${PGADMIN_LISTEN_PORT_SD}
+    ports:
+      - '5060:5050'
+    volumes:
+      - ./tmp/pgadmin:/var/lib/pgadmin
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  nginx:
+    container_name: sd-nginx
+    image: nginx:latest
+    restart: always
+    ports:
+      - '80:80'
+      - '443:443'
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+      - /etc/letsencrypt:/etc/letsencrypt
+    depends_on:
+      - server
+
+volumes:
+  pgadmin:
+  postgresql:
+  Files:

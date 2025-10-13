@@ -1,0 +1,32 @@
+{
+  "compilerOptions": {
+    "target": "ESNext",
+    "useDefineForClassFields": true,
+    "lib": ["DOM", "DOM.Iterable", "ESNext", "webworker"],
+    "allowJs": false,
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "module": "ESNext",
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "noEmit": true,
+    "jsx": "react-jsx",
+    // "rootDir": "./",
+    "baseUrl": "./src/",
+    "paths": {
+      "storeAuth/*": ["store/slices/auth/*"],
+      "storeRoles/*": ["store/slices/roles/*"],
+      "themes/*": ["themes/*"],
+      "/*": ["./node_modules/*", "../../node_modules/*"],
+      "react": ["./node_modules/@types/react"]
+    }
+  },
+  "include": ["src"],
+  // "exclude": ["node_modules", "src/**/*.spec.ts"],
+  // "files": ["src/custom.d.ts"],
+  "references": [{ "path": "./tsconfig.node.json" }]
+}
