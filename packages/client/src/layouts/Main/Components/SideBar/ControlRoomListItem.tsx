@@ -30,7 +30,7 @@ export const ControlRoomListItem = memo(
       }))
       const newList = [...emptyRoomlistFilter, ...list]
       setCustomList(newList)
-    }, [])
+    }, [incStatuses])
 
     return (
       <Box sx={{ display: 'block', ml: 2 }}>

@@ -1073,6 +1073,11 @@ export const TableIncidents = memo(() => {
   }
 
   useEffect(() => {
+    const filterList = JSON.parse(localStorage.getItem('filterList') as string)
+    if (!filterList) {
+      const newlist = Array.from({ length: INCColumn.length }, () => [])
+      localStorage.setItem('filterList', JSON.stringify(newlist))
+    }
     const { nameSort, direction, limit, page, filterOptions } = FilterOptions()
     getINCs({ limit, nameSort, direction, page, filterOptions })
   }, [])
