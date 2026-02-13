@@ -8,5 +8,4 @@ tmp
 lerna-debug.log
 packages/server/Files
 etc/
-.gitignore
 
