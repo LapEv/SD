@@ -42,19 +42,19 @@ import { isDev } from './data/app'
 dotenv.config({ path: '../../.env' })
 
 const {
-  POSTGRES_USER_SD,
-  POSTGRES_PASSWORD_SD,
-  POSTGRES_DB_SD,
-  POSTGRES_PORT_SD,
-  POSTGRES_HOST_SD,
+  POSTGRES_USER,
+  POSTGRES_PASSWORD,
+  POSTGRES_DB,
+  POSTGRES_PORT,
+  POSTGRES_HOST,
 } = process.env
 
 const sequelizeOptions: SequelizeOptions = {
-  host: isDev ? 'localhost' : POSTGRES_HOST_SD, //db - для докера; localhost - для npm run dev:ssr
-  port: Number(POSTGRES_PORT_SD),
-  username: POSTGRES_USER_SD,
-  password: POSTGRES_PASSWORD_SD,
-  database: POSTGRES_DB_SD,
+  host: isDev ? 'localhost' : POSTGRES_HOST, //db - для докера; localhost - для npm run dev:ssr
+  port: Number(POSTGRES_PORT),
+  username: POSTGRES_USER,
+  password: POSTGRES_PASSWORD,
+  database: POSTGRES_DB,
   dialect: 'postgres',
   minifyAliases: true,
 }
