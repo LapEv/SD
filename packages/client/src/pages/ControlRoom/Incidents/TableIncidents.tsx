@@ -917,6 +917,7 @@ export const TableIncidents = memo(() => {
     switch (action) {
       case 'search':
         setSearch(tableState.searchText)
+        break
       case 'onFilterDialogOpen':
         setFilterDialogOpen(true)
         break
