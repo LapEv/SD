@@ -18,6 +18,7 @@ import {
   AdditionalMenu,
   GetIndicatorData,
   CustomCell,
+  useSearchedINCs,
 } from './'
 import { useIncidents } from 'hooks/incidents/useINC'
 import { setFilter } from './Utils/FilterOptions'
@@ -35,6 +36,8 @@ export const TableIncidents = memo(() => {
     { incidents, countIncidents, filterListData, incStatuses, outputFilter },
     { getINCs, changeComment, setStateOutputFilter },
   ] = useIncidents()
+  const [search, setSearch] = useState<string | null>('')
+  const searchedINCs = useSearchedINCs(incidents, search)
 
   const [heightINCData, setHeightINCData] = useState<number>(0)
   const [filterDialogOpen, setFilterDialogOpen] = useState<boolean>(false)
@@ -912,6 +915,8 @@ export const TableIncidents = memo(() => {
     }
 
     switch (action) {
+      case 'search':
+        setSearch(tableState.searchText)
       case 'onFilterDialogOpen':
         setFilterDialogOpen(true)
         break
@@ -1127,7 +1132,7 @@ export const TableIncidents = memo(() => {
       </Modal>
       <DataTable
         title={'Инциденты'}
-        data={incidents}
+        data={searchedINCs}
         columns={tableColumn}
         options={options}
       />
