@@ -39,6 +39,7 @@ import {
   IIncindent,
   IIncindentStatuses,
   INewINCFromMail,
+  ITimeSLA,
 } from '/models/incidents'
 import { Op, WhereOptions } from 'sequelize'
 import { IContracts, IContractsSLA } from '/models/contracts'
@@ -51,6 +52,7 @@ import { IClassifierEquipment, IClassifierModels } from '/models/classifier'
 import { getOrderINC } from '../utils/getOrder'
 import { getNewINC } from '../utils/getNewINC'
 import { checkTemplateFromSD } from '../Mailer/checkTemplate'
+import { changeTimeData } from '../data/moc'
 
 export class incidentService {
   get Includes() {
@@ -1408,5 +1410,42 @@ export class incidentService {
         res.status(200).json(logs)
       })
       .catch(err => res.status(500).json({ error: ['db error', err] }))
+  }
+  getTimeSLAs = async (_req: Request, res: Response) => {
+    try {
+      const incs = (await IncidentRepos.findAll({
+        where: { active: true },
+      })) as IIncindent[]
+      const timeSLA = incs.map(item => {
+        return { id: item.id, timeSLA: item.timeSLA }
+      })
+      res.status(200).json(timeSLA)
+    } catch (err) {
+      res.status(500).json({ error: ['db error', err as Error] })
+    }
+  }
+
+  changeTimeSLAs = async (_req: Request, res: Response) => {
+    try {
+      const { data } = _req.body as ITimeSLA
+      data.map(async ({ id, timeSLA }) => {
+        await IncidentRepos.update(id, { timeSLA })
+      })
+      const incs = await IncidentRepos.findAll({
+        where: { active: true },
+      })
+      res.status(200).json(incs)
+    } catch (err) {
+      res.status(500).json({ error: ['db error', err as Error] })
+    }
+  }
+
+  changetime = async (_req: Request, res: Response) => {
+    try {
+      const incs = changeTimeData()
+      res.status(200).json(incs)
+    } catch (err) {
+      res.status(500).json({ error: ['db error', err as Error] })
+    }
   }
 }

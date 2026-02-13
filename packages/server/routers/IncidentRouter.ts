@@ -207,5 +207,23 @@ export const incidentRouter = (apiRouter: Router) => {
     service.getAllINCLogs,
   )
 
+  router.get(
+    '/getTimeSLAs',
+    roleMiddleware(['ADMIN', 'SUPERADMIN']),
+    service.getTimeSLAs,
+  )
+
+  router.post(
+    '/changeTimeSLAs',
+    roleMiddleware(['ADMIN', 'SUPERADMIN']),
+    service.changeTimeSLAs,
+  )
+
+  router.get(
+    '/changetime',
+    roleMiddleware(['ADMIN', 'SUPERADMIN']),
+    service.changetime,
+  )
+
   apiRouter.use('/incidents', router)
 }

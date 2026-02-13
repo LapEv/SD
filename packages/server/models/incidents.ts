@@ -11,6 +11,13 @@ import {
 import { IUser } from './users'
 import { ISLA } from './sla'
 
+export interface ITimeSLA {
+  data: {
+    id: string
+    timeSLA: string
+  }[]
+}
+
 export interface IIncindent {
   id: string
   numberINC: number
