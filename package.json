@@ -2,7 +2,7 @@
   "name": "sd",
   "version": "1.0.0",
   "repository": "https://github.com/LapEv/SD.git",
-  "private": false,
+  "private": true,
   "scripts": {
     "bootstrap": "yarn && node init.js && lerna clean && yarn && lerna bootstrap",
     "build": "lerna run build",
