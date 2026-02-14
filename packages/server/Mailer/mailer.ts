@@ -5,19 +5,18 @@ import { htmlRegistration, htmlChangeStatus } from '.'
 const nodemailer = require('nodemailer')
 
 export const mailerRegInc = async (data: MailDataRegInc) => {
-  const { EMAIL_USER_SD, EMAIL_PASSWORD_SD, EMAIL_HOST_SD, EMAIL_PORT_SD } =
-    process.env
+  const { EMAIL_USER, EMAIL_PASSWORD, EMAIL_HOST, EMAIL_PORT } = process.env
   const transporter = nodemailer.createTransport({
-    host: EMAIL_HOST_SD,
-    port: EMAIL_PORT_SD,
+    host: EMAIL_HOST,
+    port: EMAIL_PORT,
     secure: true,
     auth: {
-      user: EMAIL_USER_SD,
-      pass: EMAIL_PASSWORD_SD,
+      user: EMAIL_USER,
+      pass: EMAIL_PASSWORD,
     },
   })
   const info = await transporter.sendMail({
-    from: `"Уведомление службы поддержки СБИ" <${EMAIL_USER_SD}>`,
+    from: `"Уведомление службы поддержки СБИ" <${EMAIL_USER}>`,
     to: `${mailConst.ourMail}, ${data.mailTo}`,
     subject: `${mailConst.mailMessages.Incidents.titleRegistration} ${data.incident}`,
     text: '',
@@ -27,19 +26,18 @@ export const mailerRegInc = async (data: MailDataRegInc) => {
 }
 
 export const mailerChangeStatus = async (data: MailDataChangeStatus) => {
-  const { EMAIL_USER_SD, EMAIL_PASSWORD_SD, EMAIL_HOST_SD, EMAIL_PORT_SD } =
-    process.env
+  const { EMAIL_USER, EMAIL_PASSWORD, EMAIL_HOST, EMAIL_PORT } = process.env
   const transporter = nodemailer.createTransport({
-    host: EMAIL_HOST_SD,
-    port: EMAIL_PORT_SD,
+    host: EMAIL_HOST,
+    port: EMAIL_PORT,
     secure: true,
     auth: {
-      user: EMAIL_USER_SD,
-      pass: EMAIL_PASSWORD_SD,
+      user: EMAIL_USER,
+      pass: EMAIL_PASSWORD,
     },
   })
   const info = await transporter.sendMail({
-    from: `"Уведомление службы поддержки СБИ" <${EMAIL_USER_SD}>`,
+    from: `"Уведомление службы поддержки СБИ" <${EMAIL_USER}>`,
     to: `${mailConst.ourMail}, ${data.mailTo}`,
     subject: `${mailConst.mailMessages.Incidents.titleChangeStatus} ${data.incident}`,
     text: '',

@@ -10,11 +10,11 @@ export default defineConfig(({ mode }) => {
     },
     envPrefix: 'SD_',
     define: {
-      __SERVER_PORT__: process.env.SERVER_PORT_SD || 3002,
+      __SERVER_PORT__: process.env.SERVER_PORT || 3002,
       __BASE_URL__: JSON.stringify(
         mode === 'development'
           ? 'localhost'
-          : process.env.SERVER_HOST_SD ?? 'http://www.sdtest.sb-i.ru',
+          : process.env.SERVER_HOST ?? 'http://www.sdtest.sb-i.ru',
       ),
     },
     build: {

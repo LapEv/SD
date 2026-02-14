@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from 'express'
 import jwt, { Secret, JwtPayload } from 'jsonwebtoken'
 import { Roles, roleGroupRepos } from '../db'
 import { IRolesGroup, IRoles } from '/models/roles'
-const { SECRET_KEY_SD } = process.env
+const { SECRET_KEY } = process.env
 
 const include = [
   {
@@ -22,7 +22,7 @@ module.exports = function (roles: []) {
       if (!token) {
         return res.status(403).json({ message: 'The user is not logged in' })
       }
-      const verifycode = jwt.verify(token, SECRET_KEY_SD as Secret)
+      const verifycode = jwt.verify(token, SECRET_KEY as Secret)
       const { rolesGroup } = verifycode as JwtPayload
       let hasRole = false
 

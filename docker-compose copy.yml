@@ -6,20 +6,16 @@ services:
     image: postgres:14
     restart: always
     ports:
-      - '7432:${POSTGRES_PORT_SD}'
+      - '7432:${POSTGRES_PORT}'
     environment:
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD_SD}
-      POSTGRES_USER: ${POSTGRES_USER_SD}
-      POSTGRES_DB: ${POSTGRES_DB_SD}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_DB: ${POSTGRES_DB}
       PGDATA: /var/lib/postgresql/data/pgdata
     volumes:
       - ./tmp/pgdata:/var/lib/postgresql/data
     healthcheck:
-      test:
-        [
-          'CMD-SHELL',
-          'pg_isready -d $${POSTGRES_DB_SD} -U $${POSTGRES_USER_SD}',
-        ]
+      test: ['CMD-SHELL', 'pg_isready -d $${POSTGRES_DB} -U $${POSTGRES_USER}']
       interval: 10s
       timeout: 5s
       retries: 5
@@ -31,41 +27,41 @@ services:
       context: .
       dockerfile: Dockerfile.server
       args:
-        SERVER_PORT_SD: ${SERVER_PORT_SD}
+        SERVER_PORT: ${SERVER_PORT}
     restart: always
     ports:
-      - '${SERVER_PORT_SD}:${SERVER_PORT_SD}'
+      - '${SERVER_PORT}:${SERVER_PORT}'
     environment:
-      CLIENT_PORT_SD: ${CLIENT_PORT_SD}
-      SERVER_PORT_SD: ${SERVER_PORT_SD}
-      SERVER_HOST_SD: ${SERVER_HOST_SD}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD_SD}
-      POSTGRES_USER: ${POSTGRES_USER_SD}
-      POSTGRES_DB: ${POSTGRES_DB_SD}
-      POSTGRES_PORT: ${POSTGRES_PORT_SD}
-      POSTGRES_HOST: ${POSTGRES_HOST_SD}
-      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL_SD}
-      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD_SD}
-      PGADMIN_LISTEN_PORT: ${PGADMIN_LISTEN_PORT_SD}
-      SECRET_KEY_SD: ${SECRET_KEY_SD}
-      FILE_PATH_SD: ${FILE_PATH_SD}
-      EMAIL_HOST_SD: ${EMAIL_HOST_SD}
-      EMAIL_PORT_SD: ${EMAIL_PORT_SD}
-      EMAIL_USER_SD: ${EMAIL_USER_SD}
-      EMAIL_PASSWORD_SD: ${EMAIL_PASSWORD_SD}
+      CLIENT_PORT: ${CLIENT_PORT}
+      SERVER_PORT: ${SERVER_PORT}
+      SERVER_HOST: ${SERVER_HOST}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_PORT: ${POSTGRES_PORT}
+      POSTGRES_HOST: ${POSTGRES_HOST}
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD}
+      PGADMIN_LISTEN_PORT: ${PGADMIN_LISTEN_PORT}
+      SECRET_KEY: ${SECRET_KEY}
+      FILE_PATH: ${FILE_PATH}
+      EMAIL_HOST: ${EMAIL_HOST}
+      EMAIL_PORT: ${EMAIL_PORT}
+      EMAIL_USER: ${EMAIL_USER}
+      EMAIL_PASSWORD: ${EMAIL_PASSWORD}
     depends_on:
       - postgres
     volumes:
-      - ./packages/server/Files:/${FILE_PATH_SD}
+      - ./packages/server/Files:/${FILE_PATH}
 
   pgadmin:
     container_name: sd-pgadmin
     image: dpage/pgadmin4:latest
     restart: always
     environment:
-      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL_SD}
-      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD_SD}
-      PGADMIN_LISTEN_PORT: ${PGADMIN_LISTEN_PORT_SD}
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD}
+      PGADMIN_LISTEN_PORT: ${PGADMIN_LISTEN_PORT}
     ports:
       - '5060:5050'
     volumes:

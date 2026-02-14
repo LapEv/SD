@@ -1,7 +1,7 @@
 import type { Request, Response, NextFunction } from 'express'
 import jwt, { Secret } from 'jsonwebtoken'
 import { auth } from '../data/auth'
-const { SECRET_KEY_SD } = process.env
+const { SECRET_KEY } = process.env
 
 interface jwtAnswer {
   id?: string
@@ -21,7 +21,7 @@ export const authMiddleware = async (
     if (!token) {
       return res.status(401).json({ message: auth.notification.notLogged })
     }
-    const verify = jwt.verify(token, SECRET_KEY_SD as Secret)
+    const verify = jwt.verify(token, SECRET_KEY as Secret)
     const { id, rolesGroup, username } = verify as jwtAnswer
     req.body = { ...req.body, id, rolesGroup, username }
     next()

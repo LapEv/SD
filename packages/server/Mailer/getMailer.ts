@@ -5,12 +5,12 @@ const { simpleParser } = require('mailparser')
 import { ParsedMail } from 'mailparser'
 import { checkTemplateFromMail } from './checkTemplate'
 
-const { EMAIL_USER_SD, EMAIL_PASSWORD_SD, EMAIL_HOST_SD } = process.env
+const { EMAIL_USER, EMAIL_PASSWORD, EMAIL_HOST } = process.env
 
 const imapConfig = {
-  user: EMAIL_USER_SD,
-  password: EMAIL_PASSWORD_SD,
-  host: EMAIL_HOST_SD,
+  user: EMAIL_USER,
+  password: EMAIL_PASSWORD,
+  host: EMAIL_HOST,
   port: 993,
   tls: true,
 }

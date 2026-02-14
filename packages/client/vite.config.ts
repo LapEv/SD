@@ -8,14 +8,14 @@ export default defineConfig(({ mode }) => {
   console.log('mode = ', mode)
   return {
     server: {
-      port: Number(process.env.CLIENT_PORT_SD) || 3002,
+      port: Number(process.env.CLIENT_PORT) || 3002,
     },
     define: {
-      __SERVER_PORT__: process.env.SERVER_PORT_SD || 3002,
+      __SERVER_PORT__: process.env.SERVER_PORT || 3002,
       __BASE_URL__: JSON.stringify(
         mode === 'development'
           ? 'localhost'
-          : process.env.SERVER_HOST_SD ?? 'http://www.sdtest.sb-i.ru',
+          : process.env.SERVER_HOST ?? 'http://www.sdtest.sb-i.ru',
       ),
     },
     plugins: [react()],

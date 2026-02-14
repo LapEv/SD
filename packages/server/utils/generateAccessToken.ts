@@ -6,7 +6,7 @@ export const generateAccessToken = (
   username: string,
 ): string => {
   const payload = { id, rolesGroup, username }
-  return jwt.sign(payload, process.env.SECRET_KEY_SD as string, {
+  return jwt.sign(payload, process.env.SECRET_KEY as string, {
     expiresIn: '24h',
   })
 }

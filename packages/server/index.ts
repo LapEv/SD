@@ -29,29 +29,29 @@ async function init() {
   app.use(express.json({ limit: '50mb' }))
   const corsOptions = {
     origin: [
-      `http://127.0.0.1:${process.env.CLIENT_PORT_SD}`,
-      `http://127.0.0.1:${process.env.CLIENT_PORT_SD}`,
-      `http://localhost:${process.env.CLIENT_PORT_SD}`,
-      `http://127.0.0.1:${process.env.SERVER_PORT_SD}`,
-      `http://172.18.0.0:${process.env.CLIENT_PORT_SD}`,
-      `http://172.18.0.0:${process.env.SERVER_PORT_SD}`,
-      `http://${process.env.SERVER_HOST_SD}:${process.env.CLIENT_PORT_SD}`,
-      `http://${process.env.SERVER_HOST_SD}:${process.env.SERVER_PORT_SD}`,
-      `https://${process.env.SERVER_HOST_SD}:${process.env.CLIENT_PORT_SD}`,
-      `https://${process.env.SERVER_HOST_SD}:${process.env.SERVER_PORT_SD}`,
-      // `http://sd.sb-i.ru:${process.env.CLIENT_PORT_SD}`,
-      // `http://sd.sb-i.ru:${process.env.SERVER_PORT_SD}`,
-      // `http://www.sd.sb-i.ru:${process.env.CLIENT_PORT_SD}`,
-      // `http://www.sd.sb-i.ru:${process.env.SERVER_PORT_SD}`,
-      // `https://sd.sb-i.ru:${process.env.CLIENT_PORT_SD}`,
-      // `https://sd.sb-i.ru:${process.env.SERVER_PORT_SD}`,
+      `http://127.0.0.1:${process.env.CLIENT_PORT}`,
+      `http://127.0.0.1:${process.env.CLIENT_PORT}`,
+      `http://localhost:${process.env.CLIENT_PORT}`,
+      `http://127.0.0.1:${process.env.SERVER_PORT}`,
+      `http://172.18.0.0:${process.env.CLIENT_PORT}`,
+      `http://172.18.0.0:${process.env.SERVER_PORT}`,
+      `http://${process.env.SERVER_HOST}:${process.env.CLIENT_PORT}`,
+      `http://${process.env.SERVER_HOST}:${process.env.SERVER_PORT}`,
+      `https://${process.env.SERVER_HOST}:${process.env.CLIENT_PORT}`,
+      `https://${process.env.SERVER_HOST}:${process.env.SERVER_PORT}`,
+      // `http://sd.sb-i.ru:${process.env.CLIENT_PORT}`,
+      // `http://sd.sb-i.ru:${process.env.SERVER_PORT}`,
+      // `http://www.sd.sb-i.ru:${process.env.CLIENT_PORT}`,
+      // `http://www.sd.sb-i.ru:${process.env.SERVER_PORT}`,
+      // `https://sd.sb-i.ru:${process.env.CLIENT_PORT}`,
+      // `https://sd.sb-i.ru:${process.env.SERVER_PORT}`,
     ],
     credentials: true,
     optionSuccessStatus: 200,
   }
   app.use(cors(corsOptions))
   app.use(express.json())
-  const port = Number(process.env.SERVER_PORT_SD) || 3002
+  const port = Number(process.env.SERVER_PORT) || 3002
 
   app.use('/api', apiRouter)
 
