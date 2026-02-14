@@ -85,8 +85,6 @@ export const NewClassifierModel = memo(
         setNoTypical(false)
       }, [typicalMalfunctions])
 
-      console.log('equipments new model = ', equipments)
-
       return (
         <Box
           ref={ref}

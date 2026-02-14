@@ -22,7 +22,6 @@ import { DateTimeField } from 'components/DatePicker'
 import dayjs, { Dayjs } from 'dayjs'
 import { getSLATime } from 'utils/getSLATime'
 import { useAuth } from 'hooks/auth/useAuth'
-import { convertDateToStringDDMMYYYYHHMMSS } from 'utils/convertDate'
 import { FilterOptions } from '../Utils/FilterOptions'
 import { ITheme } from 'themes/themeConfig'
 
@@ -106,7 +105,6 @@ export const NewIncident = memo(
           page,
           filterOptions,
         }
-        console.log('newINCobject = ', newINCobject)
         newINC(newINCobject)
         handleModal(false)
       }

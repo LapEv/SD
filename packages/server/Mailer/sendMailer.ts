@@ -71,6 +71,5 @@ export const sendMail = async ({
     subject,
     text,
   })
-  console.log('info = ', info)
   return info
 }

@@ -32,8 +32,6 @@ export const ClassifierPage = memo(() => {
     getClassifierEquipments()
   }, [])
 
-  console.log('equipments = ', equipments)
-
   return (
     <Container component="main" maxWidth="md" sx={mainHeaderForPages}>
       <Modal

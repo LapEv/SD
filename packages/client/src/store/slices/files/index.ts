@@ -32,8 +32,6 @@ export const filesSlice = createSlice({
     builder.addCase(uploadFiles.fulfilled, (state, { payload }) => {
       state.isLoadingFiles = false
       state.error = ''
-      console.log('state.files = ', state.files)
-      console.log('payload = ', payload)
       state.uploadedFiles = payload?.data as Files[]
     })
     builder.addCase(uploadFiles.pending, state => {

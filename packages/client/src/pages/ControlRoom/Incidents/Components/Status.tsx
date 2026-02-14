@@ -124,8 +124,6 @@ export const Status = memo(
       spaceParts,
       data,
     }: DataCloseINC) => {
-      console.log('commentCloseCheck = ', commentCloseCheck)
-      console.log('typeCompletedWork = ', typeCompletedWork)
       if (!state) {
         setModal({ status: false, data: emptyValue })
         return

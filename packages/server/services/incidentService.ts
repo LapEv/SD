@@ -1025,28 +1025,17 @@ export class incidentService {
   getINCs = async (_req: Request, res: Response) => {
     try {
       const counts = await IncidentRepos.count({})
-      console.log('counts = ', counts)
       const filterListData = await this.getFilterListFunc()
       if (counts === 0) {
         res.status(200).json({ incs: [], count: counts, filterListData })
         return
       }
-      console.log('filterListData = ', filterListData)
       const { limit, nameSort, direction, page, filterOptions } = _req.query
-      console.log('limit = ', limit)
-      console.log('nameSort = ', nameSort)
-      console.log('direction = ', direction)
-      console.log('page = ', page)
-      console.log('filterOptions = ', filterOptions)
 
       const offsetPL = Number(page) * Number(limit)
-      console.log('offsetPL = ', offsetPL)
       const offset = offsetPL ?? 1
-      console.log('offset = ', offset)
       const filterData = await this.getFilterOptions(filterOptions as [])
-      console.log('filterData = ', filterData)
       const order = getOrderINC(nameSort as string, direction as string)
-      console.log('order = ', order)
 
       const incs = await IncidentRepos.findAll({
         where: { [Op.and]: filterData },
@@ -1057,13 +1046,11 @@ export class incidentService {
         limit: Number(limit),
         offset,
       })
-      console.log('incs = ', incs)
 
       // this.ResetIncludesAddress
       const count = await IncidentRepos.count({
         where: { [Op.and]: filterData },
       })
-      console.log('count = ', count)
       res.status(200).json({ incs, count, filterListData })
     } catch (err) {
       res.status(500).json({ error: ['db error', err as Error] })

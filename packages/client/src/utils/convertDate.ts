@@ -33,7 +33,6 @@ export const convertDateToStringYYYYMMDD = (date: string) => {
 }
 
 export const convertDateToStringDDMMYYYYHHMMSS = (dateTime: string) => {
-  console.log('dateTime = ', dateTime)
   if (!dateTime) return
   const dateTimeArr = dateTime.split(/-|T/)
   const dateArr = dateTimeArr[0].split('/')
