@@ -90,19 +90,16 @@ const CustomFormControl = styled(FormControl)(({ theme }) => ({
 }))
 
 const CustomMenuItem = styled(MenuItem)(({ theme }) => ({
-  color:
-    theme.palette.mode === ThemeMode.light
-      ? (theme as ITheme).colorTheme.colorLight
-      : (theme as ITheme).colorTheme.colorDark,
+  color: theme.palette.mode === ThemeMode.light ? '#000000' : '#FFFFFF',
 
   '&.Mui-selected': {
-    fontWeight: 'normal',
+    fontWeight: 'bold',
     backgroundColor:
       theme.palette.mode === ThemeMode.dark
         ? 'rgba(222, 240, 235, 0.08)'
         : 'rgba(0, 0, 0, 0.08)',
     color:
-      theme.palette.mode === ThemeMode.light
+      theme.palette.mode === ThemeMode.dark
         ? (theme as ITheme).colorTheme.colorLight
         : (theme as ITheme).colorTheme.colorDark,
   },
@@ -119,7 +116,14 @@ const CustomMenuItem = styled(MenuItem)(({ theme }) => ({
         : 'rgba(0, 0, 0, 0.08)',
   },
   '&.MuiButtonBase-root': {
+    color:
+      theme.palette.mode === ThemeMode.dark
+        ? (theme as ITheme).colorTheme.colorLight
+        : (theme as ITheme).colorTheme.colorDark,
     fontWeight: 'normal',
+    '&.Mui-selected': {
+      fontWeight: 'bold',
+    },
     '&:hover': {
       fontWeight: 'bold',
     },
@@ -127,21 +131,35 @@ const CustomMenuItem = styled(MenuItem)(({ theme }) => ({
 }))
 
 export const SelectMUI = memo(
-  ({ label, data, onChange, value, props }: ISelect) => {
+  ({
+    label,
+    data,
+    onChange,
+    value,
+    disabled,
+    props,
+    classNameSelect,
+    classNameFormContorl,
+    containerProps,
+  }: ISelect) => {
     return (
       <CustomFormControl
         sx={{
           m: 1,
           minWidth: 120,
           width: '50%',
-        }}>
+          ...containerProps,
+        }}
+        className={classNameFormContorl}>
         <InputLabel id="select-label-id">{label}</InputLabel>
         <CustomSelect
           sx={{ ...props }}
+          className={classNameSelect}
           labelId="select-label"
           id="select-label-id"
           value={value || ''}
           label={label}
+          disabled={disabled}
           onChange={(event: SelectChangeEvent<unknown>) =>
             onChange(event.target.value as string)
           }>

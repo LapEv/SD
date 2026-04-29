@@ -9,6 +9,7 @@ import { clientsReducer } from './clients'
 import { contractsReducer } from './contracts'
 import { objectsReducer } from './objects'
 import { incidentsReducer } from './incidents'
+import { tableINCReducer } from './tableINC'
 import { filesReducer } from './files'
 import { appReducer } from './app'
 
@@ -24,6 +25,7 @@ export const rootReducer = {
   contracts: contractsReducer,
   objects: objectsReducer,
   incidents: incidentsReducer,
+  tableINC: tableINCReducer,
   files: filesReducer,
   app: appReducer,
 }

@@ -3,10 +3,13 @@ import { createTheme, CssBaseline, ThemeProvider } from '@mui/material'
 import { ThemeConfig } from './themeConfig'
 import App from '../App'
 import { useAuth } from 'hooks/auth/useAuth'
+import { useTableINC } from 'hooks/tableINC/useTableINC'
+import { GlobalStyle } from './GlobalStyle'
 
 export default function ToggleColorMode() {
   const [mode, setMode] = useState<'light' | 'dark'>('light')
   const [fontSize, setFontSize] = useState<string>('large')
+  const [settings] = useTableINC()
 
   const [{ user, colorTheme }] = useAuth()
 
@@ -23,13 +26,14 @@ export default function ToggleColorMode() {
   // }, [user.appOptions?.colorTheme])
 
   const theme = useMemo(
-    () => createTheme(ThemeConfig({ mode, fontSize, colorTheme })),
-    [mode, fontSize, colorTheme],
+    () => createTheme(ThemeConfig({ mode, fontSize, colorTheme, settings })),
+    [mode, fontSize, colorTheme, settings],
   )
 
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
+      <GlobalStyle />
       <App />
     </ThemeProvider>
   )

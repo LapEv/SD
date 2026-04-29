@@ -1,15 +1,17 @@
-import React, { SyntheticEvent, memo } from 'react'
+import React, { ChangeEvent, SyntheticEvent, memo } from 'react'
 import { ChooseModalProps } from './interfaces'
 import { useState, useEffect } from 'react'
-import { Box, Typography, useTheme } from '@mui/material'
+import { Typography } from '@mui/material'
 import { Item } from 'components/CheckBoxGroup'
-import { ButtonsModalSection } from 'components/Buttons'
+import {
+  ButtonsModalSection,
+  ClearSearchModalSection,
+} from 'components/Buttons'
 import { TextField } from 'components/TextFields'
 import { useFilteredData } from 'hooks/useFilteredData'
-import { modalStyle, boxDataModal } from 'static/styles'
-import { SearchIconElement } from 'components/Icons'
 import { useClassifier } from 'hooks/classifier/useClassifier'
 import { TypicalMalfunctions } from 'store/slices/classifier/interfaces'
+import { BoxModal, MuiDiv } from 'components/MUI'
 
 export const DeleteTypicalMalfunction = memo(
   React.forwardRef<unknown, ChooseModalProps>(
@@ -28,7 +30,6 @@ export const DeleteTypicalMalfunction = memo(
         filterText,
         ['typicalMalfunction', 'equipment'],
       )
-      const theme = useTheme()
 
       const changeData = (event: SyntheticEvent<EventTarget>) => {
         event.preventDefault()
@@ -48,7 +49,7 @@ export const DeleteTypicalMalfunction = memo(
           return
         }
         setSelectedTypicalMalfunctions([...selectedTypicalMalfunctions, id])
-        if ([...selectedTypicalMalfunctions, id] && errSelectedItems)
+        if ([...selectedTypicalMalfunctions, id].length && errSelectedItems)
           setErrSelectedItems(false)
       }
 
@@ -72,25 +73,34 @@ export const DeleteTypicalMalfunction = memo(
       }
 
       return (
-        <Box
+        <BoxModal
           ref={ref}
           tabIndex={-1}
-          sx={{ ...modalStyle, paddingLeft: 5 }}
+          className={'modalMainContainer'}
           component="form"
           onSubmit={changeData}>
-          <Typography variant={'h6'}>{title}</Typography>
+          <Typography variant={'h1'}>{title}</Typography>
           <TextField
             variant="outlined"
-            sx={{ width: '90%', mt: 2, height: 40 }}
+            className="modalTextContainer"
             label="Введите фильтр"
             margin="normal"
             value={filterText || ''}
-            onChange={e => setText(e.target.value ?? '')}
-            InputProps={{
-              endAdornment: <SearchIconElement />,
+            onChange={(e: ChangeEvent<HTMLInputElement>) =>
+              setText(e.target.value ?? '')
+            }
+            slotProps={{
+              input: {
+                endAdornment: (
+                  <ClearSearchModalSection
+                    length={filterText.length}
+                    handleClick={() => setFilterText('')}
+                  />
+                ),
+              },
             }}
           />
-          <Box sx={boxDataModal}>
+          <MuiDiv className={'boxDataModal'}>
             {filteredTypicalMalfunctions.map(
               ({ typicalMalfunction, id, id_equipment }) => (
                 <Item
@@ -103,15 +113,15 @@ export const DeleteTypicalMalfunction = memo(
                 />
               ),
             )}
-          </Box>
-          <Box sx={{ color: theme.palette.error.main, height: 20 }}>
+          </MuiDiv>
+          <MuiDiv className={'modalError'}>
             {errSelectedItems && 'Не выбрана ни одна типовая неисправность!'}
-          </Box>
+          </MuiDiv>
           <ButtonsModalSection
             closeModal={() => handleModal(false)}
             btnName="Удалить"
           />
-        </Box>
+        </BoxModal>
       )
     },
   ),

@@ -1,16 +1,17 @@
-import React, { SyntheticEvent, memo } from 'react'
+import React, { ChangeEvent, SyntheticEvent, memo } from 'react'
 import { ChooseModalProps } from './interfaces'
 import { useState, useEffect } from 'react'
-import { Box, Typography, useTheme } from '@mui/material'
+import { Typography } from '@mui/material'
 import { Item } from 'components/CheckBoxGroup'
-import { ButtonsModalSection } from 'components/Buttons'
+import {
+  ButtonsModalSection,
+  ClearSearchModalSection,
+} from 'components/Buttons'
 import { useStructure } from 'hooks/structure/useStructure'
 import { Department } from 'store/slices/structure/interfaces'
 import { TextField } from 'components/TextFields'
 import { useFilteredData } from 'hooks/useFilteredData'
-import { modalStyle, boxDataModal } from 'static/styles'
-import { SearchIconElement } from 'components/Icons'
-import { ITheme } from 'themes/themeConfig'
+import { BoxModal, MuiDiv } from 'components/MUI'
 
 export const DeleteDepartment = memo(
   React.forwardRef<unknown, ChooseModalProps>(
@@ -28,7 +29,6 @@ export const DeleteDepartment = memo(
         filterText,
         ['departmentName', 'department', 'division'],
       )
-      const theme = useTheme() as ITheme
 
       const changeData = (event: SyntheticEvent<EventTarget>) => {
         event.preventDefault()
@@ -48,7 +48,7 @@ export const DeleteDepartment = memo(
           return
         }
         setSelectedDepartments([...selectedDepartments, id])
-        if ([...selectedDepartments, id] && errSelectedItems)
+        if ([...selectedDepartments, id].length && errSelectedItems)
           setErrSelectedItems(false)
       }
 
@@ -64,25 +64,34 @@ export const DeleteDepartment = memo(
       }, [departaments])
 
       return (
-        <Box
+        <BoxModal
           ref={ref}
           tabIndex={-1}
-          sx={{ ...modalStyle, paddingLeft: 5 }}
+          className={'modalMainContainer'}
           component="form"
           onSubmit={changeData}>
-          <Typography variant={'h6'}>{title}</Typography>
+          <Typography variant={'h1'}>{title}</Typography>
           <TextField
             variant="outlined"
-            sx={{ width: '90%', mt: 2, height: 40 }}
+            className="modalTextContainer"
             label="Введите фильтр"
             margin="normal"
             value={filterText || ''}
-            onChange={({ target }) => setFilterText(target.value ?? '')}
-            InputProps={{
-              endAdornment: <SearchIconElement />,
+            onChange={(e: ChangeEvent<HTMLInputElement>) =>
+              setFilterText(e.target.value ?? '')
+            }
+            slotProps={{
+              input: {
+                endAdornment: (
+                  <ClearSearchModalSection
+                    length={filterText.length}
+                    handleClick={() => setFilterText('')}
+                  />
+                ),
+              },
             }}
           />
-          <Box sx={boxDataModal}>
+          <MuiDiv className={'boxDataModal'}>
             {filteredDepartments.map(
               ({ departmentName, id, division, department }) => (
                 <Item
@@ -92,19 +101,21 @@ export const DeleteDepartment = memo(
                   id={`${id}`}
                   groupChecked={false}
                   onChooseItems={onChooseItems}
-                  key={id as string}
+                  key={`${departmentName}_${id}`}
+                  className={'listItemsChangeRolesGr'}
+                  classItemText={'listItemsTextContainer'}
                 />
               ),
             )}
-          </Box>
-          <Box sx={{ color: theme.palette.error.main, height: 20 }}>
+          </MuiDiv>
+          <MuiDiv className={'modalError'}>
             {errSelectedItems && 'Не выбран ни один отдел!'}
-          </Box>
+          </MuiDiv>
           <ButtonsModalSection
             closeModal={() => handleModal(false)}
             btnName="Удалить"
           />
-        </Box>
+        </BoxModal>
       )
     },
   ),

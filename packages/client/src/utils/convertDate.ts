@@ -45,6 +45,7 @@ export const convertDateToStringFromDB = (dateTime: string) => {
   const dateTimeArr = dateTime.split(/ /)
   const dateArr = dateTimeArr[0].split('-')
   const timeArr = dateTimeArr[1].split(':')
+
   return `${dateArr[2]}.${dateArr[1]}.${dateArr[0]} ${timeArr[0]}:${
     timeArr[1]
   }:${timeArr[2].split('.')[0]}`
@@ -58,4 +59,11 @@ export const convertDateToStringFromDBT = (dateTime: string) => {
   return `${dateArr[2]}.${dateArr[1]}.${dateArr[0]} ${timeArr[0]}:${
     timeArr[1]
   }:${timeArr[2].split('.')[0]}`
+}
+
+export const convertTimeStampToString = (dateTime: string) => {
+  if (!dateTime) return
+  const dateTimeArr = dateTime.split(/-|T/)
+  const timeArr = dateTimeArr[3].split(/[:.]/)
+  return `${dateTimeArr[2]}.${dateTimeArr[1]}.${dateTimeArr[0]} ${timeArr[0]}:${timeArr[1]}:${timeArr[2]}`
 }

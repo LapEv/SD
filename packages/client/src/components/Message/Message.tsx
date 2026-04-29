@@ -1,14 +1,7 @@
 import { useState, useEffect, memo } from 'react'
-import {
-  Snackbar,
-  Alert,
-  AlertTitle,
-  AlertColor,
-  useTheme,
-} from '@mui/material'
+import { Snackbar, Alert, AlertTitle, AlertColor } from '@mui/material'
 import Slide, { SlideProps } from '@mui/material/Slide'
 import { useMessage } from 'hooks/message/useMessage'
-import { ITheme, ThemeMode } from 'themes/themeConfig'
 
 const TransitionLeft = memo((props: SlideProps) => {
   return <Slide {...props} direction="up" />
@@ -16,7 +9,6 @@ const TransitionLeft = memo((props: SlideProps) => {
 
 export const Message = memo(() => {
   const [show, setShow] = useState(false)
-  const theme = useTheme()
 
   const [{ text, type }, { resetMessage }] = useMessage()
 
@@ -41,16 +33,7 @@ export const Message = memo(() => {
       )}>
       <Alert
         severity={(type as AlertColor) ?? 'success'}
-        sx={{
-          borderWidth: 2,
-          borderStyle: 'solid',
-          borderColor:
-            theme.palette.mode === ThemeMode.light
-              ? (theme as ITheme).colorTheme.colorDark
-              : (theme as ITheme).colorTheme.colorLight,
-          borderRadius: 2,
-          boxShadow: 20,
-        }}>
+        className="paperMessageAlert">
         <AlertTitle>
           {type === 'error'
             ? 'Ошибка'

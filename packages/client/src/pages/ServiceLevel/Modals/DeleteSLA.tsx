@@ -1,16 +1,17 @@
-import React, { memo } from 'react'
+import React, { ChangeEvent, memo } from 'react'
 import { ChooseModalProps } from './interfaces'
 import { useState, useEffect, SyntheticEvent } from 'react'
-import { Box, Typography, useTheme } from '@mui/material'
-import { modalStyle, boxDataModal } from 'static/styles'
+import { Typography } from '@mui/material'
 import { Item } from 'components/CheckBoxGroup'
-import { ButtonsModalSection } from 'components/Buttons'
+import {
+  ButtonsModalSection,
+  ClearSearchModalSection,
+} from 'components/Buttons'
 import { useFilteredData } from 'hooks/useFilteredData'
-import { SearchIconElement } from 'components/Icons'
 import { TextField } from 'components/TextFields'
 import { useSLA } from 'hooks/sla/useSLA'
 import { SLA } from 'store/slices/sla/interfaces'
-import { ITheme } from 'themes/themeConfig'
+import { BoxModal, MuiDiv } from 'components/MUI'
 
 export const DeleteSLA = memo(
   React.forwardRef<unknown, ChooseModalProps>(
@@ -24,7 +25,6 @@ export const DeleteSLA = memo(
         'sla',
         'types',
       ])
-      const theme = useTheme() as ITheme
 
       const changeData = (event: SyntheticEvent<EventTarget>) => {
         event.preventDefault()
@@ -42,7 +42,8 @@ export const DeleteSLA = memo(
           return
         }
         setSelectedSLA([...selectedSLA, id])
-        if ([...selectedSLA, id] && errSelectedItems) setErrSelectedItems(false)
+        if ([...selectedSLA, id].length && errSelectedItems)
+          setErrSelectedItems(false)
       }
 
       useEffect(() => {
@@ -61,25 +62,34 @@ export const DeleteSLA = memo(
       }
 
       return (
-        <Box
+        <BoxModal
           ref={ref}
           tabIndex={-1}
-          sx={{ ...modalStyle, paddingLeft: 5 }}
+          className={'modalMainContainer'}
           component="form"
           onSubmit={changeData}>
-          <Typography variant={'h6'}>{title}</Typography>
+          <Typography variant={'h1'}>{title}</Typography>
           <TextField
             variant="outlined"
-            sx={{ width: '90%', mt: 2 }}
+            className="modalTextContainer"
             label="Введите фильтр"
             margin="normal"
             value={filterText || ''}
-            onChange={e => setText(e.target.value ?? '')}
-            InputProps={{
-              endAdornment: <SearchIconElement />,
+            onChange={(e: ChangeEvent<HTMLInputElement>) =>
+              setText(e.target.value ?? '')
+            }
+            slotProps={{
+              input: {
+                endAdornment: (
+                  <ClearSearchModalSection
+                    length={filterText.length}
+                    handleClick={() => setFilterText('')}
+                  />
+                ),
+              },
             }}
           />
-          <Box sx={boxDataModal}>
+          <MuiDiv className={'boxDataModal'}>
             {filteredSLA.map(({ sla, id, TypesOfWork }) => (
               <Item
                 name={sla}
@@ -90,15 +100,15 @@ export const DeleteSLA = memo(
                 key={id as string}
               />
             ))}
-          </Box>
-          <Box sx={{ color: theme.palette.error.main, height: 20 }}>
+          </MuiDiv>
+          <MuiDiv className={'modalError'}>
             {errSelectedItems && 'Не выбран ни один SLA!'}
-          </Box>
+          </MuiDiv>
           <ButtonsModalSection
             closeModal={() => handleModal(false)}
             btnName="Удалить"
           />
-        </Box>
+        </BoxModal>
       )
     },
   ),

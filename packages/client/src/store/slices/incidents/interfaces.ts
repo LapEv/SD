@@ -9,10 +9,12 @@ import {
   TypicalMalfunctionForINC,
 } from '../classifier/interfaces'
 import { Files } from '../files/interfaces'
-import { Options } from 'components/DropDown/interface'
+import { methodsReuqest } from 'pages/ControlRoom/Incidents/interfaces'
 
 export interface INC {
   id: string
+  edit: string
+  indicator: string
   numberINC: number
   incident: string
   clientINC: string
@@ -43,8 +45,8 @@ export interface INC {
   description: string
   comment: string
   report: string
-  spaceParts: string | string[]
-  act: string
+  spaceParts: string[]
+  act: string[]
   active: boolean
   typeCompletedWork: string
   IncindentStatus?: INCStatuses
@@ -71,6 +73,20 @@ export interface INC {
   rating: string
   parentalIncident: string
   relatedIncident: string
+  methodsReuqest: methodsReuqest
+  id_incContract?: string
+  id_incClient?: string
+  id_incEquipment?: string
+  id_incModel?: string
+  id_incTypicalMalfunction?: string
+  id_incExecutor?: string
+  id_incResponsible?: string
+  id_incClosingCheck?: string
+  id_incClosing?: string
+  id_typeCompletedWork?: string
+  id_typeOfWork?: string
+  id_incSLA?: string
+  logs?: IncidentLogsForINC[]
 }
 
 export interface AddINC {
@@ -90,12 +106,13 @@ export interface AddINC {
   comment: string
   applicant: string
   applicantContacts: string
-  methodsReuqest: string
+  methodsReuqest: methodsReuqest
   nameSort?: string
   direction?: string
   limit?: number
   page?: number
   filterOptions?: []
+  timeInterval?: number
 }
 
 export interface INCStatuses {
@@ -112,6 +129,7 @@ export interface AddINCStatuses {
 }
 
 export interface IncidentLogsForINC {
+  id: string
   time: string
   log: string
   User: {
@@ -164,23 +182,6 @@ export interface AnswerGetINC {
     overdue: string[]
     sla: string[]
   }
-}
-
-export interface AnswerGetFilter {
-  status: string[]
-  client: string[]
-  legalName: string[]
-  contract: string[]
-  object: string[]
-  address: string[]
-  region: string[]
-  userAccepted: string[]
-  equipment: string[]
-  model: string[]
-  executor: string[]
-  responsible: string[]
-  overdue: string[]
-  sla: string[]
 }
 
 export interface AnswerGetINCs {
@@ -249,168 +250,16 @@ export interface AnswerTypesCompletedWork {
   type: string
 }
 
-export interface FilterListData {
-  status: string[]
-  legalName: string[]
-  client: string[]
-  contract: string[]
-  object: string[]
-  address: string[]
-  region: string[]
-  userAccepted: string[]
-  equipment: string[]
-  model: string[]
-  executor: string[]
-  responsible: string[]
-  overdue: string[]
-  sla: string[]
-}
-
 export type INCState = {
-  countIncidents: number
   incidents: INC[]
+  filtered: INC[]
+  filteredLength: number
   incStatuses: INCStatuses[]
   typesOfWork: TypesOfWork[]
   typesCompletedWork: TypesCompletedWork[]
-  filterListData: FilterListData
-  activeINC: string
   isLoadingINC: boolean
-  outputFilter: OutputFilter
   error?: string
-}
-
-export interface GetINCsByParams {
-  limit: number
-  nameSort: string
-  direction: string
-  page: number
-  filterOptions?: (
-    | {
-        [x: string]: string
-      }[]
-    | undefined
-  )[]
-}
-
-export interface ChangeINC {
-  id?: string
-  numberINC?: number
-  clientID?: string
-  contractID?: string
-  objectID?: string
-  SLAID?: string
-  typeOfWorkID?: string
-  incident: string
-  clientINC: string
-  timeRegistration?: string
-  timeInWork?: string
-  timeSLA: string
-  timeCloseCheck?: string
-  timeClose?: string
-  executor?: string
-  responsible?: string
-  description: string
-  comment: string
-  report?: string
-  spaceParts?: string
-
-  responsibleID?: string
-  equipmentId?: string
-  modelId?: string
-  typicalMalfunctionID?: string
-  applicant?: string
-  applicantContacts?: string
-  nameSort?: string
-  direction?: string
-  limit?: number
-  page?: number
-  filterOptions?: []
-}
-
-// export interface ChangeINCData {
-//   clientINC: string
-//   responsibleID: string
-//   equipmentId: string
-//   modelId: string
-//   typicalMalfunctionID: string
-//   description: string
-//   comment: string
-//   applicant: string
-//   applicantContacts: string
-//   nameSort?: string
-//   direction?: string
-//   limit?: number
-//   page?: number
-//   filterOptions?: []
-// }
-
-export interface ChangeExecutor {
-  id: string
-  id_incExecutor: string
-  incident: string
-  executor: string
-  userID: string
-  nameSort?: string
-  direction?: string
-  limit?: number
-  page?: number
-  filterOptions?: (
-    | {
-        [x: string]: string
-      }[]
-    | undefined
-  )[]
-}
-
-export interface ChangeResponsible {
-  id: string
-  id_incResponsible: string
-  incident: string
-  responsible: string
-  userID: string
-  nameSort?: string
-  direction?: string
-  limit?: number
-  page?: number
-  filterOptions?: (
-    | {
-        [x: string]: string
-      }[]
-    | undefined
-  )[]
-}
-
-export interface ChangeStatus {
-  id: string
-  id_incStatus: string
-  incident: string
-  status: string
-  userID: string
-  timeSLA: string
-  typeCompletedWork?: Options
-  commentCloseCheck?: string
-  act?: string[]
-  spaceParts?: string[]
-  nameSort?: string
-  direction?: string
-  limit?: number
-  page?: number
-  filterOptions?: (
-    | {
-        [x: string]: string
-      }[]
-    | undefined
-  )[]
-}
-
-export interface ChangeClosingCheck {
-  id: string
-  id_incClosingCheck: string
-}
-
-export interface ChangeClosing {
-  id: string
-  id_incClosing: string
+  oldINC?: INC
 }
 
 export interface ChangeINCStatuses {
@@ -428,75 +277,117 @@ export interface ChangeTypesCompletedWork {
   id?: string
 }
 
-export interface ChangeComment {
-  id: string
-  comment: string
-}
+export interface GetINCsByParams {}
 
-export interface IServiceList {
-  name: string
-  label: string
-}
+export type Order = 'asc' | 'desc'
 
-export interface IncidentDataINC {
-  id: string
-  numberINC: number
+export interface ChangeExecutor {
+  id: string | null
+  id_incExecutor: string
   incident: string
-  clientINC: string
-  status: string
-  client: string
-  contract: string
-  sla: string
-  typeOfWork: string
-  object: string
-  address: string
-  coordinates: string
-  region: string
-  userAccepted: string
-  equipment: string
-  model: string
-  typicalMalfunction: string
-  timeRegistration: string
-  timeInWork: string
-  timeSLA: string
-  timeCloseCheck: string
-  timeClose: string
-  executor: string
+  executor: string | null
+  userID: string
+  userShortName: string
+}
+
+export interface ChangeResponsible {
+  id: string
+  id_incResponsible: string
+  incident: string
   responsible: string
+  userID: string
+  notImportant?: boolean
+  userShortName: string
+}
+
+export interface ChangeStatus {
+  id: string
+  id_incStatus: string
+  _incident?: string
+  status: string
+  // userID: string
+  timeSLA?: string
+  id_incUser?: string
+  userAccepted?: string
+  id_incResponsible?: string
+  responsible?: string
+  timeRegistration?: string
+  timeInWork?: string
+  log?: IINCLogs
+  typeCompletedWork?: string
+  id_typeCompletedWork?: string
+  commentCloseCheck?: string
+  timeCloseCheck?: string
+  id_incClosingCheck?: string
+  userClosingCheck?: string
+  act?: string[]
+  spaceParts?: string[]
+  files?: FileList[]
+}
+
+export interface ChangeINC {
+  editINC: INCEdit
+  endDate: Date
+  logs: ChangeLogsEditINC[]
+}
+
+export interface IINCLogs {
+  User: {
+    id: string
+    shortName: string
+  }
+  log: {
+    id_incLog: string
+    time: string
+    log: string
+    id_incLogUser: string
+  }
+}
+
+export interface ChangeLogsEditINC {
+  id_incLog: string
+  time: Date
+  log: string
+  id_incLogUser: string
+}
+
+export interface INCEdit {
+  id: string
+  act: string[]
   applicant: string
   applicantContacts: string
-  userClosingCheck: string
-  userClosing: string
+  clientINC: string
+  commentClose: string
+  commentCloseCheck: string
+  contract: string
+  id_incContract: string
   description: string
-  comment: string
-  report: string
-  spaceParts: string
-  act: string
-  active: boolean
+  equipment: string
+  id_incEquipment: string
+  executor: string
+  id_incExecutor: string
+  files?: string
+  model: string
+  id_incModel: string
+  responsible: string
+  id_incResponsible: string
+  sla: string
+  id_incSLA: string
+  typicalMalfunction: string
+  id_incTypicalMalfunction: string
   typeCompletedWork: string
-  IncindentStatus?: INCStatuses
-  TypesOfWork?: TypesOfWork
-  TypesCompletedWork?: TypesCompletedWork
-  SLA?: SLAforINC
-  Client?: Clients
-  Contract?: ContractsForINC
-  Object?: ObjectsForINC
-  User?: UserForINC
-  UserExecutor?: UserForINC
-  UserResponsible?: UserForINC
-  UserClosing?: UserForINC
-  UserClosingCheck?: UserForINC
-  ClassifierEquipment?: ClassifierEquipmentForINC
-  ClassifierModel?: ClassifierModelForINC
-  TypicalMalfunction?: TypicalMalfunctionForINC
-  IncidentLogs?: IncidentLogsForINC[]
-  Files?: Files[]
-  legalName: string
-  overdue: string
-}
-
-export interface OutputFilter {
-  isOutputFilter: boolean
-  filterID: string
-  filterText: string
+  id_typeCompletedWork: string
+  typeOfWork: string
+  id_typeOfWork: string
+  relatedIncident: string
+  parentalIncident: string
+  spaceParts: string[]
+  timeClose: Date | null
+  timeCloseCheck: Date | null
+  timeInWork: Date | null
+  timeSLA: Date | null
+  userClosing: string
+  id_incClosing: string | undefined
+  userClosingCheck: string
+  id_incClosingCheck: string | undefined
 }

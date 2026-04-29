@@ -1,14 +1,7 @@
 import React, { memo, useEffect, useState, SyntheticEvent } from 'react'
-import {
-  Box,
-  ListItemText,
-  ListItemButton,
-  Modal,
-  useTheme,
-} from '@mui/material'
+import { ListItemText, ListItemButton, Modal } from '@mui/material'
 import Collapse from '@mui/material/Collapse'
 import { RotateButton, EditButton, IconPopoverButton } from 'components/Buttons'
-import { classifier, classifierComponent } from 'static/styles'
 import { ModalChangeName } from 'components/ModaQuestions'
 import { useClients } from 'hooks/clients/useClients'
 import { Clients } from 'store/slices/clients/interfaces'
@@ -18,8 +11,7 @@ import { useAuth } from 'hooks/auth/useAuth'
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline'
 import { AddContract } from './Modals'
 import { ModalTitles } from './data'
-import { popoverIcon } from 'static/styles'
-import { ITheme } from 'themes/themeConfig'
+import { MuiDiv } from 'components/MUI'
 
 export const ClientsList = memo(({ client, legalName, id }: Clients) => {
   const [{ activeClient }, { setActiveClient, changeClient }] = useClients()
@@ -27,7 +19,6 @@ export const ClientsList = memo(({ client, legalName, id }: Clients) => {
   const [{ admin }] = useAuth()
   const modalRef = React.createRef()
   const [open, setOpen] = useState(false)
-  const theme = useTheme() as ITheme
 
   const [modal, setModal] = useState<boolean>(false)
   const [modalImage, setModalImage] = useState<string>('')
@@ -70,7 +61,7 @@ export const ClientsList = memo(({ client, legalName, id }: Clients) => {
   }
 
   return (
-    <Box sx={classifier}>
+    <MuiDiv className={'containerCollapse'}>
       <Modal
         open={modal}
         onClose={() => setModal(false)}
@@ -93,17 +84,14 @@ export const ClientsList = memo(({ client, legalName, id }: Clients) => {
       </Modal>
       <ListItemButton
         divider={open}
-        sx={{
-          ...classifierComponent,
-          height: theme.fontSize === 'small' ? 40 : 50,
-        }}
+        className={'itemButtonCollapse1 height'}
         onClick={handleClick}>
         <ListItemText primary={client} secondary={legalName} />
         {admin && <EditButton handleClick={editClient} />}
         <RotateButton open={open} handleClick={handleClick} />
       </ListItemButton>
       <Collapse
-        sx={{ width: '100%', height: 'auto' }}
+        className={'width_100_height_auto'}
         in={open}
         timeout="auto"
         unmountOnExit>
@@ -133,7 +121,6 @@ export const ClientsList = memo(({ client, legalName, id }: Clients) => {
               IncindentStatuses={IncindentStatuses}
               id_client={id as string}
               key={id}
-              height={theme.fontSize === 'small' ? 40 : 50}
             />
           ),
         )}
@@ -143,15 +130,10 @@ export const ClientsList = memo(({ client, legalName, id }: Clients) => {
             onClick={AddNewContract}
             icon={<AddCircleOutlineIcon />}
             propsPopover={{ ml: -1 }}
-            sx={{
-              ...popoverIcon,
-              mt: 1,
-              width: theme.fontSize === 'small' ? 30 : 40,
-              height: theme.fontSize === 'small' ? 30 : 40,
-            }}
+            className={'addIconButton'}
           />
         )}
       </Collapse>
-    </Box>
+    </MuiDiv>
   )
 })

@@ -1,7 +1,7 @@
 import Avatar, { AvatarProps } from '@mui/material/Avatar'
 import { AddUserIcon } from './AddUserIcon'
 import { ITheme, ThemeMode } from 'themes/themeConfig'
-import { useTheme } from '@mui/styles'
+import { useTheme } from '@mui/material'
 
 export function AvatarBox(props: AvatarProps) {
   const theme = useTheme() as ITheme

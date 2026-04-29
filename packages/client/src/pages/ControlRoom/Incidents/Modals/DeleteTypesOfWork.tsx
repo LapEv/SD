@@ -1,15 +1,17 @@
 import React, { memo } from 'react'
-import { ChooseModalProps } from './interfaces'
 import { useState, useEffect, SyntheticEvent } from 'react'
-import { Box, Typography, useTheme } from '@mui/material'
-import { modalStyle, boxDataModal } from 'static/styles'
+import { Typography } from '@mui/material'
 import { Item } from 'components/CheckBoxGroup'
-import { ButtonsModalSection } from 'components/Buttons'
+import {
+  ButtonsModalSection,
+  ClearSearchModalSection,
+} from 'components/Buttons'
 import { useFilteredData } from 'hooks/useFilteredData'
-import { SearchIconElement } from 'components/Icons'
 import { TextField } from 'components/TextFields'
 import { useIncidents } from 'hooks/incidents/useINC'
 import { TypesOfWork } from 'store/slices/incidents/interfaces'
+import { ChooseModalProps } from '../interfaces'
+import { BoxModal, MuiDiv } from 'components/MUI'
 
 export const DeleteTypesOfWork = memo(
   React.forwardRef<unknown, ChooseModalProps>(
@@ -26,7 +28,6 @@ export const DeleteTypesOfWork = memo(
         filterText,
         ['typeOfWork'],
       )
-      const theme = useTheme()
 
       const changeData = (event: SyntheticEvent<EventTarget>) => {
         event.preventDefault()
@@ -46,7 +47,7 @@ export const DeleteTypesOfWork = memo(
           return
         }
         setSelectedTypesOfWork([...selectedTypesOfWork, id])
-        if ([...selectedTypesOfWork, id] && errSelectedItems)
+        if ([...selectedTypesOfWork, id].length && errSelectedItems)
           setErrSelectedItems(false)
       }
 
@@ -54,48 +55,51 @@ export const DeleteTypesOfWork = memo(
         getTypesOfWork()
       }, [])
 
-      const setText = (text: string) => {
-        setFilterText(text)
-      }
-
       return (
-        <Box
+        <BoxModal
           ref={ref}
           tabIndex={-1}
-          sx={{ ...modalStyle, paddingLeft: 5 }}
+          className={'modalMainContainer'}
           component="form"
           onSubmit={changeData}>
-          <Typography variant={'h6'}>{title}</Typography>
+          <Typography variant={'h1'}>{title}</Typography>
           <TextField
             variant="outlined"
-            sx={{ width: '90%', mt: 2, height: 40 }}
+            className="modalTextContainer"
             label="Введите фильтр"
             margin="normal"
             value={filterText || ''}
-            onChange={e => setText(e.target.value ?? '')}
-            InputProps={{
-              endAdornment: <SearchIconElement />,
+            onChange={e => setFilterText(e.target.value ?? '')}
+            slotProps={{
+              input: {
+                endAdornment: (
+                  <ClearSearchModalSection
+                    length={filterText.length}
+                    handleClick={() => setFilterText('')}
+                  />
+                ),
+              },
             }}
           />
-          <Box sx={boxDataModal}>
+          <MuiDiv className={'boxDataModal h35Vh'}>
             {filteredTypesOfWork.map(({ typeOfWork, id }) => (
               <Item
                 name={typeOfWork}
                 id={`${id}`}
                 groupChecked={false}
                 onChooseItems={onChooseItems}
-                key={id as string}
+                key={`${typeOfWork}_${id}`}
               />
             ))}
-          </Box>
-          <Box sx={{ color: theme.palette.error.main, height: 20 }}>
-            {errSelectedItems && 'Не выбрано ни одного типа работ!'}
-          </Box>
+          </MuiDiv>
+          <MuiDiv className={'modalError'}>
+            {errSelectedItems && 'Не выбран ни один адрес!'}
+          </MuiDiv>
           <ButtonsModalSection
             closeModal={() => handleModal(false)}
             btnName="Удалить"
           />
-        </Box>
+        </BoxModal>
       )
     },
   ),

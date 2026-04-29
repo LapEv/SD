@@ -1,10 +1,10 @@
 import { useState, useEffect, memo } from 'react'
-import { Box, useTheme } from '@mui/material'
 import { Autocomplete } from 'components/Autocomplete'
 import { DataDropDown, Options } from './interface'
-import { emptyValue } from '.'
+import { emptyOptionsDD } from '.'
 import { TextFieldDD } from 'components/TextFields'
-import { ITheme, ThemeMode } from 'themes/themeConfig'
+import { FilterOptions } from './FilterOptions'
+import { ListDropDown } from './components/ListDropDown'
 
 export const DropDown = memo(
   ({
@@ -17,8 +17,8 @@ export const DropDown = memo(
     errorLabel,
     error,
     tabIndex,
+    className,
   }: DataDropDown) => {
-    const theme = useTheme() as ITheme
     const [errors, setErrors] = useState<boolean>(error as boolean)
 
     useEffect(() => {
@@ -30,43 +30,11 @@ export const DropDown = memo(
         forcePopupIcon={true}
         clearOnEscape
         autoSelect={false}
-        sx={{
-          width: '90%',
-          ...props,
-          height: theme.fontSize === 'small' ? 30 : 40,
-        }}
+        className={`dropdown ${className}`}
+        sx={props}
         options={data}
         noOptionsText={'Нет данных'}
-        filterOptions={(option, { inputValue }): unknown[] => {
-          if (inputValue === '') return option
-          const value = inputValue.toLowerCase().trim()
-          const displayOptions = option.filter((item): unknown => {
-            if ((item as Options).label.toLowerCase().trim().includes(value)) {
-              return item
-            }
-            if (
-              (item as Options)?.description &&
-              (item as Options)?.description?.length &&
-              (item as Options)?.description
-                ?.toLowerCase()
-                .trim()
-                .includes(value)
-            ) {
-              return item
-            }
-            if (
-              (item as Options)?.descriptionID &&
-              (item as Options)?.descriptionID?.length &&
-              (item as Options)?.descriptionID
-                ?.toLowerCase()
-                .trim()
-                .includes(value)
-            ) {
-              return item
-            }
-          })
-          return displayOptions ?? []
-        }}
+        filterOptions={FilterOptions}
         isOptionEqualToValue={(option, value): boolean => {
           return (
             (option as Options).label === value ||
@@ -79,69 +47,21 @@ export const DropDown = memo(
         onChange={(_, textValue) =>
           textValue
             ? (onChange?.(textValue as Options), setErrors(false))
-            : (onChange?.(emptyValue as Options), setErrors(true))
+            : (onChange?.(emptyOptionsDD as Options), setErrors(true))
         }
         value={value ?? ''}
-        renderOption={(props, option) => {
-          if (!value) {
-            props['aria-selected'] = 'false'
-          }
-          return (
-            <li {...props}>
-              <Box
-                component="span"
-                sx={{
-                  width: 14,
-                  height: 14,
-                  flexShrink: 0,
-                  borderRadius: '3px',
-                  mr: 1,
-                  mt: '2px',
-                }}
-              />
-              <Box sx={{ flexGrow: 1 }}>
-                {(option as Options).label}
-                {(option as Options).description && (
-                  <div>
-                    <span>{(option as Options).description}</span>
-                  </div>
-                )}
-                {(option as Options).descriptionID && (
-                  <div>
-                    <span>{(option as Options).descriptionID}</span>
-                  </div>
-                )}
-              </Box>
-            </li>
-          )
-        }}
-        ListboxProps={{
-          sx: {
-            borderWidth: 1,
-            fontWeight: 'normal',
-            minHeight: 40,
-            maxHeight: 225,
-            backgroundColor:
-              theme.palette.mode === ThemeMode.light
-                ? (theme as ITheme).colorTheme.colorDark
-                : (theme as ITheme).colorTheme.colorLight,
-            '& li': {
-              color:
-                theme.palette.mode === ThemeMode.light
-                  ? (theme as ITheme).colorTheme.colorLight
-                  : (theme as ITheme).colorTheme.colorDark,
-              borderColor:
-                theme.palette.mode === ThemeMode.light
-                  ? (theme as ITheme).colorTheme.colorLight
-                  : (theme as ITheme).colorTheme.colorDark,
-            },
-            '& :hover': {
-              color:
-                theme.palette.mode === ThemeMode.light
-                  ? (theme as ITheme).colorTheme.colorLight
-                  : (theme as ITheme).colorTheme.colorDark,
-              fontWeight: 'bold',
-            },
+        renderOption={(props, option) => (
+          <ListDropDown
+            value={value}
+            props={props}
+            key={`${props.id}_`}
+            option={option as Options}
+            classNameLi={'dropdown_li_dark'}
+          />
+        )}
+        slotProps={{
+          paper: {
+            className: 'dropdownDark',
           },
         }}
         size={'small'}
@@ -152,16 +72,18 @@ export const DropDown = memo(
               onBlur?.(event.target.value)
             )}
             {...params}
-            sx={{ height: theme.fontSize === 'small' ? 30 : 40 }}
+            key={`${label}_${params.id}`}
             required
             variant="outlined"
             label={label}
             error={errors}
             id={params.id}
             helperText={errors ? errorLabel : ''}
-            InputProps={{
-              ...params.InputProps,
-              tabIndex,
+            slotProps={{
+              input: {
+                ...params.InputProps,
+                tabIndex,
+              },
             }}
           />
         )}

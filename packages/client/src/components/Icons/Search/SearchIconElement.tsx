@@ -1,20 +1,12 @@
 import SearchIcon from '@mui/icons-material/Search'
-import { InputAdornment, useTheme } from '@mui/material'
+import { IconButton } from '@mui/material'
+import { ISearchIconElement } from 'components/Buttons/interfaces'
 import { memo } from 'react'
-import { ITheme, ThemeMode } from 'themes/themeConfig'
 
-export const SearchIconElement = memo(() => {
-  const theme = useTheme() as ITheme
-
+export const SearchIconElement = memo(({ className }: ISearchIconElement) => {
   return (
-    <InputAdornment position="start">
-      <SearchIcon
-        htmlColor={
-          theme.palette.mode === ThemeMode.light
-            ? (theme as ITheme).colorTheme.colorLight
-            : (theme as ITheme).colorTheme.colorDark
-        }
-      />
-    </InputAdornment>
+    <IconButton className={`searchIconButton `}>
+      <SearchIcon className={`colorForIconDark ${className}`} />
+    </IconButton>
   )
 })

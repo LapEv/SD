@@ -1,39 +1,22 @@
-import { memo, useEffect, useState } from 'react'
+import { memo, useState } from 'react'
 import { Link } from 'react-router-dom'
 import {
   Box,
   ListItemButton,
   ListItemIcon,
   ListItemText,
-  Collapse,
+  useTheme,
 } from '@mui/material'
-import { Routes } from 'utils/routes'
-import { emptyRoomlistFilter } from 'layouts/Main/drawerBarData'
-import { RotateButton } from 'components/Buttons'
-import { NanListItemProps, ListItemStateProps } from 'layouts/Main/interfaces'
-import { ControlRoomCustomFilterList } from 'layouts/Main/Components/SideBar/ControlRoomCustomFilterList'
-import { useIncidents } from 'hooks/incidents/useINC'
+import { NanListItemProps } from 'layouts/Main/interfaces'
+import { ITheme } from 'themes/themeConfig'
 
 export const ControlRoomListItem = memo(
   ({ icon, text, to, isExpanded }: NanListItemProps) => {
     const [openControl, setOpenControl] = useState<boolean>(false)
-    const [{ incStatuses }] = useIncidents()
-    const [customList, setCustomList] =
-      useState<ListItemStateProps[]>(emptyRoomlistFilter)
-
-    useEffect(() => {
-      const list = incStatuses.map(item => ({
-        text: ` - Статус: ${item.statusINC}`,
-        icon: <></>,
-        to: Routes.Incidents,
-        id: item.statusINC,
-      }))
-      const newList = [...emptyRoomlistFilter, ...list]
-      setCustomList(newList)
-    }, [incStatuses])
+    const theme = useTheme() as ITheme
 
     return (
-      <Box sx={{ display: 'block', ml: 2 }}>
+      <Box sx={{ display: 'block', ml: isExpanded ? 2 : 1 }}>
         <ListItemButton
           sx={{
             minHeight: 24,
@@ -51,32 +34,10 @@ export const ControlRoomListItem = memo(
             {icon}
           </ListItemIcon>
           <ListItemText
-            primary={text}
-            sx={{ display: isExpanded ? 'block' : 'none' }}
-          />
-          <RotateButton
-            open={openControl}
-            handleClick={() => setOpenControl(!openControl)}
+            primary={isExpanded ? text : ''}
+            sx={{ minHeight: theme.fontSize === 'small' ? 18 : 25 }}
           />
         </ListItemButton>
-        <Collapse
-          sx={{
-            width: '100%',
-            display: 'flex',
-            flexDirection: 'column',
-            ml: -1,
-          }}
-          in={openControl}
-          timeout="auto"
-          unmountOnExit>
-          {customList.map(value => (
-            <ControlRoomCustomFilterList
-              key={value.text}
-              {...value}
-              isExpanded={openControl}
-            />
-          ))}
-        </Collapse>
       </Box>
     )
   },

@@ -8,6 +8,7 @@ import {
   ListItemText,
   Collapse,
   useTheme,
+  Divider,
 } from '@mui/material'
 import { controlRoomMenuData } from 'layouts/Main/drawerBarData'
 import { RotateButton } from 'components/Buttons'
@@ -33,20 +34,19 @@ export const NanListItem = memo(
               <ListItemIcon
                 sx={{
                   minWidth: 0,
-                  mr: isExpanded ? 3 : -2,
-                  ml: isExpanded ? 0 : 2,
+                  mr: isExpanded ? 3 : 'auto',
                   justifyContent: 'center',
                 }}>
                 {icon}
               </ListItemIcon>
-              <ListItemText
-                primary={text}
-                sx={{ display: isExpanded ? 'block' : 'none' }}
-              />
-              <RotateButton
-                open={openControl}
-                handleClick={() => setOpenControl(!openControl)}
-              />
+              <ListItemText primary={isExpanded ? text : ''} />
+              {isExpanded && (
+                <RotateButton
+                  sx={{ padding: '0! important' }}
+                  open={openControl}
+                  handleClick={() => setOpenControl(!openControl)}
+                />
+              )}
             </ListItemButton>
             <Collapse
               sx={{
@@ -62,10 +62,11 @@ export const NanListItem = memo(
                 <ControlRoomListItem
                   key={value.text}
                   {...value}
-                  isExpanded={openControl}
+                  isExpanded={isExpanded}
                 />
               ))}
             </Collapse>
+            {openControl && <Divider />}
           </Box>
         ) : (
           <ListItem disablePadding sx={{ display: 'block', mt: 0.5 }}>
@@ -83,10 +84,7 @@ export const NanListItem = memo(
                 }}>
                 {icon}
               </ListItemIcon>
-              <ListItemText
-                primary={text}
-                sx={{ display: isExpanded ? 'block' : 'none' }}
-              />
+              <ListItemText primary={isExpanded ? text : ''} />
             </ListItemButton>
           </ListItem>
         )}

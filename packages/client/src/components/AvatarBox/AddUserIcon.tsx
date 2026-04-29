@@ -1,5 +1,5 @@
 import { SvgIcon, SvgIconProps } from '@mui/material'
-import { useTheme } from '@mui/styles'
+import { useTheme } from '@mui/material'
 import { memo } from 'react'
 import { ITheme, ThemeMode } from 'themes/themeConfig'
 

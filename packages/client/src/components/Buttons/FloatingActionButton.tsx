@@ -1,9 +1,8 @@
 import { useState, MouseEvent, memo } from 'react'
 import MuiFab from '@mui/material/Fab'
-import Popover from '@mui/material/Popover'
+import { Popover, useTheme } from '@mui/material'
 import { FabProps } from './interfaces'
 import { PopoverTypography } from 'components/Popover/PopoverTypography'
-import { useTheme } from '@mui/styles'
 import { ITheme } from 'themes/themeConfig'
 
 export const Fab = memo(({ order = 0, title, active, ...props }: FabProps) => {

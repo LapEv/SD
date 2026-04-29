@@ -2,6 +2,7 @@ import { TextField as MuiTextField, styled } from '@mui/material'
 import { ITheme, ThemeMode } from 'themes/themeConfig'
 
 export const TextFieldDD = styled(MuiTextField)(({ theme }) => ({
+  height: (theme as ITheme).fontSize === 'small' ? 30 : 40,
   '.MuiInputLabel-root': {
     top: 0,
     marginTop: 0,

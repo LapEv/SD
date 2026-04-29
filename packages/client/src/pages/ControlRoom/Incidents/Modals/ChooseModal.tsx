@@ -1,22 +1,19 @@
 import React, { memo } from 'react'
-import {
-  ChangeIncident,
-  ChangeIncidentStatuses,
-  ChangeStateStatuses,
-  ChangeTypeCompletedWork,
-  ChangeTypeOfWork,
-  DeleteIncidentStatus,
-  DeleteTypesCompletedWork,
-  DeleteTypesOfWork,
-  NewIncident,
-  NewIncidentStatus,
-  NewRequest,
-  NewTypeCompletedWork,
-  NewTypesOfWork,
-} from '.'
 import { ModalTitles } from '../data'
-import { ChooseModalProps } from './interfaces'
-import { PrintINC } from './PrintINC'
+import { ChooseModalProps } from '../interfaces'
+import { NewIncident } from './NewIncident'
+import { NewIncidentStatus } from './NewIncidentStatus'
+import { NewTypesOfWork } from './NewTypesOfWork'
+import { NewTypeCompletedWork } from './NewTypeCompletedWork'
+import { NewRequest } from './NewRequest'
+import { DeleteIncidentStatus } from './DeleteIncidentStatus'
+import { DeleteTypesOfWork } from './DeleteTypesOfWork'
+import { DeleteTypesCompletedWork } from './DeleteTypesCompletedWork'
+import { ChangeIncidentStatuses } from './ChangeIncidentStatuses'
+import { ChangeTypeOfWork } from './ChangeTypeOfWork'
+import { ChangeTypeCompletedWork } from './ChangeTypeCompletedWork'
+import { ChangeStateStatuses } from './ChangeStateStatuses'
+import { ChangeIncident } from './ChangeIncident'
 
 export const ChooseModal = memo(
   React.forwardRef<unknown, ChooseModalProps>(
@@ -103,13 +100,6 @@ export const ChooseModal = memo(
               ref={ref}
               handleModal={handleModal}
               title={ModalTitles.changeTypesCompletedWork}
-            />
-          )}
-          {modalImage === 'printINC' && (
-            <PrintINC
-              ref={ref}
-              handleModal={handleModal}
-              title={ModalTitles.printINC}
             />
           )}
           {modalImage === 'changeStateStatuses' && (

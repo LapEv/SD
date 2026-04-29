@@ -1,13 +1,13 @@
 import React, { useEffect, useState, memo, SyntheticEvent } from 'react'
-import { Box, ListItemText, ListItemButton, Modal } from '@mui/material'
+import { ListItemText, ListItemButton, Modal } from '@mui/material'
 import Collapse from '@mui/material/Collapse'
 import { EditButton, RotateButton } from 'components/Buttons'
-import { classifierChildComponent, flexColumn_FS_SA } from 'static/styles'
 import { ModalChangeName } from 'components/ModaQuestions'
 import { ContractsPage } from 'store/slices/contracts/interfaces'
 import { useContracts } from 'hooks/contracts/useContracts'
 import { ContractPage } from './'
 import { useAuth } from 'hooks/auth/useAuth'
+import { MuiDiv } from 'components/MUI'
 
 export const ContractsList = memo(
   ({
@@ -22,7 +22,6 @@ export const ContractsList = memo(
     Objects,
     IncindentStatuses,
     id_client,
-    height,
   }: ContractsPage) => {
     const [{ admin }] = useAuth()
     const [{ activeContract }, { setActiveContract }] = useContracts()
@@ -59,7 +58,7 @@ export const ContractsList = memo(
     }, [activeContract])
 
     return (
-      <Box sx={flexColumn_FS_SA}>
+      <MuiDiv className={'flexColumn'}>
         <Modal
           open={modal}
           onClose={() => setModal(false)}
@@ -74,14 +73,14 @@ export const ContractsList = memo(
         </Modal>
         <ListItemButton
           divider={open}
-          sx={{ ...classifierChildComponent, height }}
+          className={'itemButtonCollapse'}
           onClick={handleClick}>
           <ListItemText primary={contract} sx={{ ml: 2 }} />
           {admin && <EditButton handleClick={editContract} />}
           <RotateButton open={open} />
         </ListItemButton>
         <Collapse
-          sx={{ width: '100%', p: 2, pl: 5, pr: 5, height: 'auto' }}
+          className={'collapseList collapseList_p'}
           in={open}
           timeout="auto"
           unmountOnExit>
@@ -99,7 +98,7 @@ export const ContractsList = memo(
             id_client={id_client}
           />
         </Collapse>
-      </Box>
+      </MuiDiv>
     )
   },
 )

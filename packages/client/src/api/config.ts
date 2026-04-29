@@ -115,6 +115,7 @@ export const ApiEndPoints = {
     getINC: 'incidents/getINC',
     getFilter: 'incidents/getFilter',
     getINCs: 'incidents/getINCs',
+    getINCsByDate: 'incidents/getINCsByDate',
     newINC: 'incidents/newINC',
     changeINC: 'incidents/changeINC',
     changeExecutor: 'incidents/changeExecutor',
@@ -147,7 +148,7 @@ export const ApiEndPoints = {
   },
 }
 
-const url = __BASE_URL__.includes('https')
+export const url = __BASE_URL__.includes('https')
   ? `${__BASE_URL__}/api/`
   : `http://${__BASE_URL__}:${__SERVER_PORT__}/api/`
 

@@ -1,5 +1,4 @@
 import { RolesGroup } from 'storeRoles/interfaces'
-import { FilterListData } from '../incidents/interfaces'
 import { Files } from '../files/interfaces'
 
 export interface User {
@@ -40,7 +39,6 @@ export interface IColorTheme {
 
 export interface ICheckUser {
   user: User
-  filterData: FilterListData
   token: string
 }
 

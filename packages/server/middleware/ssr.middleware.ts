@@ -1,10 +1,10 @@
+import { EmotionCache } from './../../../node_modules/@emotion/utils/src/types'
 import type { NextFunction, Request, Response } from 'express'
 import type { ViteDevServer } from 'vite'
 import * as fs from 'fs'
 import * as path from 'path'
 import { distPath, isDev, srcPath, ssrClientPath } from '../data/app'
 import createEmotionServer from '@emotion/server/create-instance'
-import type { EmotionCache } from '@emotion/css'
 import createCache from '@emotion/cache'
 
 async function ssrMiddleware(req: Request, res: Response, next: NextFunction) {

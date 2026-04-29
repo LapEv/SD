@@ -1,13 +1,12 @@
 import React, { memo, useEffect, useState } from 'react'
-import { Box, Container, Typography, List, Modal } from '@mui/material'
+import { Container, Typography, List, Modal } from '@mui/material'
 import { useStructure } from 'hooks/structure/useStructure'
 import { DropDownMenu } from 'components/DropDownButtonMenu'
 import { ChooseModal } from './Modals'
 import { Divisions } from './'
 import { useAuth } from 'hooks/auth/useAuth'
-import { headerForPages, mainHeaderForPages } from 'static/styles'
 import { menuData } from './menuData'
-import { page } from 'static/styles/pages/main'
+import { MuiDiv } from 'components/MUI'
 
 export const UsersPage = memo(() => {
   const modalRef = React.createRef()
@@ -32,7 +31,7 @@ export const UsersPage = memo(() => {
   }, [])
 
   return (
-    <Container component="main" maxWidth="md" sx={mainHeaderForPages}>
+    <Container component="main" maxWidth="md" className={'mainHeaderForPages'}>
       <Modal
         open={modal}
         onClose={() => setModal(false)}
@@ -44,7 +43,7 @@ export const UsersPage = memo(() => {
           handleModal={handleModal}
         />
       </Modal>
-      <Box component="div" sx={headerForPages}>
+      <MuiDiv className={'headerForPages'}>
         <Typography variant="h6">Пользователи</Typography>
         {admin && (
           <DropDownMenu
@@ -54,8 +53,8 @@ export const UsersPage = memo(() => {
             onClick={checkClickMenu}
           />
         )}
-      </Box>
-      <List sx={{ ...page, maxWidth: 1200 }}>
+      </MuiDiv>
+      <List className={'pageListContainer'}>
         {divisions.map(({ divisionName, id, Departments }) => (
           <Divisions
             divisionName={divisionName}

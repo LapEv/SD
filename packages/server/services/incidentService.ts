@@ -33,8 +33,8 @@ import {
 } from './../db'
 import type { Request, Response } from 'express'
 import { AppConst } from '../data/const'
-import { convertINCStringToDateTime } from '../utils/convertDate'
-// import { mailerChangeStatus, mailerRegInc } from '../Mailer'
+import { convertDateToString } from '../utils/convertDate'
+import { mailerChangeStatus, mailerRegInc } from '../Mailer'
 import {
   IIncindent,
   IIncindentStatuses,
@@ -52,7 +52,6 @@ import { IClassifierEquipment, IClassifierModels } from '/models/classifier'
 import { getOrderINC } from '../utils/getOrder'
 import { getNewINC } from '../utils/getNewINC'
 import { checkTemplateFromSD } from '../Mailer/checkTemplate'
-import { changeTimeData } from '../data/moc'
 
 export class incidentService {
   get Includes() {
@@ -423,7 +422,6 @@ export class incidentService {
       ),
     )
   }
-
   getFilterOptions = async (data: []): Promise<WhereOptions> => {
     if (!data) {
       return [{ active: 'true' }]
@@ -436,6 +434,63 @@ export class incidentService {
     return _dataFilter.map(item => {
       return { [Op.or]: item as WhereOptions }
     })
+  }
+  /*  eslint-disable @typescript-eslint/no-explicit-any */
+  prepareStatusObj = (data: any) => {
+    /* eslint-enable @typescript-eslint/no-explicit-any */
+    const currentDate = new Date(
+      new Date().getTime() + AppConst.timeGMT * 60 * 60 * 1000,
+    )
+    if (data.status === 'Зарегистрирован') {
+      return {
+        _data: {
+          ...data,
+          timeRegistration: currentDate,
+        },
+        currentDate,
+      }
+    }
+    if (data.status === 'В работе') {
+      const sla =
+        new Date(data.timeSLA).getTime() + AppConst.timeGMT * 60 * 60 * 1000
+      const now = currentDate.getTime()
+      const overdue = now > sla ? true : false
+      return {
+        _data: {
+          ...data,
+          timeInWork: currentDate,
+          overdue,
+        },
+        currentDate,
+      }
+    }
+    if (data.status === 'Ожидание ЗИП/оборудования') {
+      const sla =
+        new Date(data.timeSLA).getTime() + AppConst.timeGMT * 60 * 60 * 1000
+      const now = currentDate.getTime()
+      const overdue = now > sla ? true : false
+      return {
+        _data: {
+          ...data,
+          overdue,
+        },
+        currentDate,
+      }
+    }
+    if (data.status === 'Решён') {
+      const sla =
+        new Date(data.timeSLA).getTime() + AppConst.timeGMT * 60 * 60 * 1000
+      const now = currentDate.getTime()
+      const overdue = now > sla ? true : false
+      return {
+        _data: {
+          ...data,
+          overdue,
+        },
+        currentDate,
+      }
+    }
+    return { _data: {}, currentDate }
   }
 
   newIncidentStatuses = async (_req: Request, res: Response) => {
@@ -765,7 +820,7 @@ export class incidentService {
       timeSLA: timeRegistration,
       timeRegistration,
       description: comment,
-      methodsReuqest: 'mail',
+      methodsReuqest: 'email',
       active: true,
       id_incClient: clientID.id,
       id_incStatus: status.id,
@@ -824,6 +879,7 @@ export class incidentService {
       limit,
       page,
       filterOptions,
+      timeInterval,
     } = _req.body
     try {
       const numberINC = AppConst.numberINC
@@ -876,39 +932,66 @@ export class incidentService {
         id_incLogUser: responsibleID,
       })
 
-      // const inc = (await IncidentRepos.findOne({
-      //   where: { id: newINCdb.id },
-      //   include: this.includes,
-      // })) as IIncindent
+      const inc = (await IncidentRepos.findOne({
+        where: { id: newINCdb.id },
+        include: this.includes,
+      })) as IIncindent
 
-      // const isStatusses = inc?.Contract.IncindentStatuses.map(
-      //   (item: IIncindentStatuses) =>
-      //     item.statusINC === inc?.IncindentStatus.statusINC,
-      // ).filter((item: boolean) => item)
+      const isStatusses = inc?.Contract.IncindentStatuses.map(
+        (item: IIncindentStatuses) =>
+          item.statusINC === inc?.IncindentStatus.statusINC,
+      ).filter((item: boolean) => item)
 
-      // if (isStatusses && isStatusses.length) {
-      //   await mailerRegInc({
-      //     mailTo: inc?.Contract.notificationEmail ?? '',
-      //     incident,
-      //     status: inc?.IncindentStatus.statusINC ?? '',
-      //     clientINC,
-      //     timeRegistration: convertDateToString(timeRegistration) ?? '',
-      //     timeSLA,
-      //     client: inc?.Client?.client ?? '',
-      //     legalName: inc?.Client?.legalName ?? '',
-      //     object: inc?.Object?.object ?? '',
-      //     objectClientID: inc?.Object?.internalClientID ?? '',
-      //     objectClientName: inc?.Object?.internalClientName ?? '',
-      //     address: inc?.Object?.Address?.address as string,
-      //     equipment: inc?.ClassifierEquipment?.equipment as string,
-      //     model: inc?.ClassifierModel?.model as string,
-      //     malfunction: inc?.TypicalMalfunction?.typicalMalfunction as string,
-      //     description: description ?? '',
-      //     applicant: applicant ?? '',
-      //     applicantContacts: applicantContacts ?? '',
-      //     userAccepted: inc?.User?.shortName ?? '',
-      //   })
-      // }
+      if (isStatusses && isStatusses.length) {
+        await mailerRegInc({
+          mailTo: inc?.Contract.notificationEmail ?? '',
+          incident,
+          status: inc?.IncindentStatus.statusINC ?? '',
+          clientINC,
+          timeRegistration: convertDateToString(timeRegistration) ?? '',
+          timeSLA,
+          client: inc?.Client?.client ?? '',
+          legalName: inc?.Client?.legalName ?? '',
+          object: inc?.Object?.object ?? '',
+          objectClientID: inc?.Object?.internalClientID ?? '',
+          objectClientName: inc?.Object?.internalClientName ?? '',
+          address: inc?.Object?.Address?.address as string,
+          equipment: inc?.ClassifierEquipment?.equipment as string,
+          model: inc?.ClassifierModel?.model as string,
+          malfunction: inc?.TypicalMalfunction?.typicalMalfunction as string,
+          description: description ?? '',
+          applicant: applicant ?? '',
+          applicantContacts: applicantContacts ?? '',
+          userAccepted: inc?.User?.shortName ?? '',
+        })
+      }
+
+      if (timeInterval) {
+        const currentDate = new Date()
+        const endDate = currentDate.setDate(
+          currentDate.getDate() - timeInterval,
+        )
+        const _endDate = new Date(endDate)
+        const incs = await IncidentRepos.findAll({
+          where: { createdAt: { [Op.gt]: _endDate } },
+          include: this.Includes,
+        })
+        const count = await IncidentRepos.count({
+          where: { createdAt: { [Op.gt]: _endDate } },
+        })
+        res.status(200).json({ incs, count })
+        return
+      }
+
+      if (typeof timeInterval === 'number' && timeInterval === 0) {
+        const incs = await IncidentRepos.findAll({
+          where: { active: true },
+          include: this.includes,
+        })
+        const count = incs.length
+        res.status(200).json({ incs, count })
+        return
+      }
 
       const offset = Number(page * limit) ?? 1
       const order = getOrderINC(nameSort, direction)
@@ -1031,7 +1114,6 @@ export class incidentService {
         return
       }
       const { limit, nameSort, direction, page, filterOptions } = _req.query
-
       const offsetPL = Number(page) * Number(limit)
       const offset = offsetPL ?? 1
       const filterData = await this.getFilterOptions(filterOptions as [])
@@ -1046,12 +1128,23 @@ export class incidentService {
         limit: Number(limit),
         offset,
       })
-
-      // this.ResetIncludesAddress
+      this.ResetIncludesAddress
       const count = await IncidentRepos.count({
         where: { [Op.and]: filterData },
       })
       res.status(200).json({ incs, count, filterListData })
+    } catch (err) {
+      res.status(500).json({ error: ['db error', err as Error] })
+    }
+  }
+  getINCsByDate = async (_req: Request, res: Response) => {
+    try {
+      const { endDate } = _req.query
+      const incs = await IncidentRepos.findAll({
+        where: { createdAt: { [Op.gt]: endDate } },
+        include: this.Includes,
+      })
+      res.status(200).json({ incs, count: incs.length })
     } catch (err) {
       res.status(500).json({ error: ['db error', err as Error] })
     }
@@ -1099,52 +1192,45 @@ export class incidentService {
     }
   }
   changeINC = async (_req: Request, res: Response) => {
-    const { id, ...data } = _req.body
+    const { editINC, logs, endDate } = _req.body
+    const { id, ...data } = editINC
     try {
-      await IncidentRepos.update(id, { ...data })
-      const { page, limit, nameSort, direction, filterOptions } = data
-      const offset = Number(page * limit) ?? 1
-      const order = getOrderINC(nameSort, direction)
-      const filterData = await this.getFilterOptions(filterOptions as [])
-
+      const isUpdate = await IncidentRepos.update(id, { ...data })
+      if (isUpdate[0] <= 0) {
+        return res.status(403).json({
+          message:
+            'Ошибка с изменением инцидента! Попробуйте перезагрузить страницу и заново внести изменения. Или обратитесь к администратору.',
+        })
+      }
+      if (logs.length > 0) {
+        await IncidentLogsRepos.bulkCreate(logs)
+      }
       const incs = await IncidentRepos.findAll({
-        where: { [Op.and]: filterData },
-        order,
-        limit: Number(limit),
-        offset,
-        include: this.includes,
+        where: { createdAt: { [Op.gt]: endDate } },
+        include: this.Includes,
       })
-      const count = await IncidentRepos.count({
-        where: { [Op.and]: filterData },
-      })
-      const filterListData = await this.getFilterListFunc()
-      res.status(200).json({ incs, count, filterListData })
+
+      res.status(200).json({ incs })
     } catch (err) {
       res.status(500).json({ error: ['db error', err as Error] })
     }
   }
   changeExecutor = async (_req: Request, res: Response) => {
-    const {
-      id,
-      id_incExecutor,
-      incident,
-      executor,
-      userID,
-      nameSort,
-      direction,
-      limit,
-      page,
-      filterOptions,
-    } = _req.body
+    const { id, id_incExecutor, incident, executor, userID } = _req.body
     try {
-      await IncidentRepos.update(id, {
+      const isUpdate = await IncidentRepos.update(id, {
         id_incExecutor: id_incExecutor.length ? id_incExecutor : null,
         executor,
       })
+      if (isUpdate[0] <= 0) {
+        return res.status(403).json({
+          message:
+            'Ошибка с назначением исполнителя! Попробуйте назначить исполнителя заново или обратитесь к администратору.',
+        })
+      }
       const currentDate = new Date(
         new Date().getTime() + AppConst.timeGMT * 60 * 60 * 1000,
       )
-
       await IncidentLogsRepos.create({
         id_incLog: id,
         time: currentDate,
@@ -1152,41 +1238,24 @@ export class incidentService {
         id_incLogUser: userID,
       })
 
-      const offset = Number(page * limit) ?? 1
-      const order = getOrderINC(nameSort as string, direction as string)
-      const filterData = await this.getFilterOptions(filterOptions as [])
-
-      const incs = await IncidentRepos.findAll({
-        where: { [Op.and]: filterData },
-        order,
-        limit: Number(limit),
-        offset,
-        include: this.includes,
-      })
-      const filterListData = await this.getFilterListFunc()
-      res.status(200).json({ incs, filterListData })
+      res.status(200).json()
     } catch (err) {
       res.status(500).json({ error: ['db error', err as Error] })
     }
   }
   changeResponsible = async (_req: Request, res: Response) => {
-    const {
-      id,
-      id_incResponsible,
-      incident,
-      responsible,
-      userID,
-      nameSort,
-      direction,
-      limit,
-      page,
-      filterOptions,
-    } = _req.body
+    const { id, id_incResponsible, incident, responsible, userID } = _req.body
     try {
-      await IncidentRepos.update(id, {
+      const isUpdate = await IncidentRepos.update(id, {
         id_incResponsible: id_incResponsible.length ? id_incResponsible : null,
         responsible,
       })
+      if (isUpdate[0] <= 0) {
+        return res.status(403).json({
+          message:
+            'Ошибка с назначением ответственного! Попробуйте назначить ответственного заново или обратитесь к администратору.',
+        })
+      }
       const currentDate = new Date(
         new Date().getTime() + AppConst.timeGMT * 60 * 60 * 1000,
       )
@@ -1196,146 +1265,68 @@ export class incidentService {
         log: `${AppConst.ActionComment.changeResponsible.first}${incident}${AppConst.ActionComment.changeResponsible.second}${responsible}`,
         id_incLogUser: userID,
       })
-
-      const offset = Number(page * limit) ?? 1
-      const order = getOrderINC(nameSort as string, direction as string)
-      const filterData = await this.getFilterOptions(filterOptions as [])
-      const incs = await IncidentRepos.findAll({
-        where: { [Op.and]: filterData },
-        // include: { all: true },
-        order,
-        limit: Number(limit),
-        offset,
-        include: this.includes,
-      })
-      const filterListData = await this.getFilterListFunc()
-      res.status(200).json({ incs, filterListData })
+      res.status(200).json()
     } catch (err) {
       res.status(500).json({ error: ['db error', err as Error] })
     }
   }
   changeStatus = async (_req: Request, res: Response) => {
-    const {
-      id,
-      id_incStatus,
-      incident,
-      status,
-      userID,
-      timeSLA,
-      commentCloseCheck,
-      spaceParts,
-      commentClose,
-      typeCompletedWork,
-      nameSort,
-      direction,
-      limit,
-      page,
-      filterOptions,
-    } = _req.body
+    const { id, log, ...data } = _req.body
     try {
-      const incStatuses = (await IncidentStatusesRepos.findAll({
-        where: { active: true },
-        order: [['stateNumber', 'ASC']],
-      })) as IIncindentStatuses[]
+      const obj = this.prepareStatusObj(data)
+      const isUpdate = await IncidentRepos.update(id, obj._data)
+      if (isUpdate && isUpdate[0] <= 0) {
+        return res.status(403).json({
+          message:
+            'Ошибка с изменением статуса! Попробуйте изменить статус заново или обратитесь к администратору.',
+        })
+      }
+      await IncidentLogsRepos.create(log.log)
       const inc = (await IncidentRepos.findOne({
         where: { id },
         include: this.includes,
       })) as IIncindent
-      const newStatus = incStatuses.find(item => item.id === id_incStatus)
-        ?.statusINC as string
 
-      const currentDate = new Date(
-        new Date().getTime() + AppConst.timeGMT * 60 * 60 * 1000,
-      )
-      const timeInWork = newStatus === 'В работе' ? currentDate : inc.timeInWork
-      const id_incResponsible =
-        newStatus === 'В работе' ? userID : inc.id_incResponsible
-      const timeCloseCheck =
-        newStatus === 'Решён' ? currentDate : inc.timeCloseCheck
-      const id_incClosingCheck =
-        newStatus === 'Решён' ? userID : inc.id_incClosingCheck
-      const id_typeCompletedWork =
-        newStatus === 'Решён' ? typeCompletedWork.id : inc.id_typeCompletedWork
-      const sla =
-        new Date(convertINCStringToDateTime(timeSLA)).getTime() +
-        AppConst.timeGMT * 60 * 60 * 1000
-      const now = currentDate.getTime()
-      const overdue = now > sla ? true : false
-      const timeClose = newStatus === 'Закрыт' ? currentDate : inc.timeClose
-      const id_incClosing = newStatus === 'Закрыт' ? userID : inc.id_incClosing
-      await IncidentRepos.update(id, {
-        id_incStatus,
-        status,
-        timeInWork,
-        timeCloseCheck: timeCloseCheck ?? null,
-        timeClose,
-        id_incResponsible,
-        id_incClosingCheck,
-        id_incClosing,
-        id_typeCompletedWork,
-        overdue,
-        commentClose: commentClose ?? '',
-        commentCloseCheck: commentCloseCheck ?? '',
-        spaceParts: spaceParts ?? [],
-      })
-      await IncidentLogsRepos.create({
-        id_incLog: id,
-        time: currentDate,
-        log: `${AppConst.ActionComment.changeStatus.first}${incident}${AppConst.ActionComment.changeStatus.second}${status}`,
-        id_incLogUser: userID,
-      })
-      // const isStatusses = inc.Contract.IncindentStatuses.filter(
-      //   (item: IIncindentStatuses) => item.id === id_incStatus,
-      // ).filter((item: IIncindentStatuses) => item)
+      const isStatusses = inc.Contract.IncindentStatuses.filter(
+        (item: IIncindentStatuses) => item.id === data.id_incStatus,
+      ).filter((item: IIncindentStatuses) => item)
 
-      // if (isStatusses && isStatusses.length) {
-      //   await mailerChangeStatus({
-      //     mailTo: inc.Contract.notificationEmail ?? '',
-      //     incident,
-      //     status,
-      //     clientINC: inc.clientINC,
-      //     timeChangeStatus: convertDateToString(currentDate) ?? '',
-      //     timeSLA,
-      //     client: inc.Client.client ?? '',
-      //     legalName: inc.Client.legalName ?? '',
-      //     object: inc.Object.object ?? '',
-      //     objectClientID: inc.Object.internalClientID ?? '',
-      //     objectClientName: inc.Object.internalClientName ?? '',
-      //     address: inc.Object.Address.address as string,
-      //     equipment: inc.ClassifierEquipment.equipment as string,
-      //     model: inc.ClassifierModel.model as string,
-      //     malfunction: inc.TypicalMalfunction.typicalMalfunction as string,
-      //     description: inc.description ?? '',
-      //     commentCloseCheck: commentCloseCheck ?? inc.commentCloseCheck,
-      //     typeCompletedWork:
-      //       typeCompletedWork && typeCompletedWork.label
-      //         ? typeCompletedWork.label
-      //         : inc.typeCompletedWork,
-      //   })
-      // }
+      if (isStatusses && isStatusses.length) {
+        await mailerChangeStatus({
+          mailTo: inc.Contract.notificationEmail ?? '',
+          incident: inc.incident,
+          status: data.status,
+          clientINC: inc.clientINC,
+          timeChangeStatus: convertDateToString(obj.currentDate) ?? '',
+          timeSLA: inc.timeSLA,
+          client: inc.Client.client ?? '',
+          legalName: inc.Client.legalName ?? '',
+          object: inc.Object.object ?? '',
+          objectClientID: inc.Object.internalClientID ?? '',
+          objectClientName: inc.Object.internalClientName ?? '',
+          address: inc.Object.Address.address as string,
+          equipment: inc.ClassifierEquipment.equipment as string,
+          model: inc.ClassifierModel.model as string,
+          malfunction: inc.TypicalMalfunction.typicalMalfunction as string,
+          description: inc.description ?? '',
+          commentCloseCheck: data.commentCloseCheck ?? inc.commentCloseCheck,
+          typeCompletedWork:
+            data.typeCompletedWork && data.typeCompletedWork.label
+              ? data.typeCompletedWork.label
+              : inc.typeCompletedWork,
+        })
+      }
+
       // checkTemplate
       checkTemplateFromSD({
-        newStatus,
+        newStatus: data.status,
         client: inc.Client.client,
         contract: inc.Contract.contract,
         clientINC: inc.clientINC,
-        commentCloseCheck: `${typeCompletedWork ? typeCompletedWork.label : ''}. ${inc.commentCloseCheck}`,
+        commentCloseCheck: `${data.typeCompletedWork ? data.typeCompletedWork.label : ''}. ${inc.commentCloseCheck}`,
       })
 
-      const offset = Number(page * limit) ?? 1
-      const order = getOrderINC(nameSort as string, direction as string)
-      const filterData = await this.getFilterOptions(filterOptions as [])
-
-      const incs = await IncidentRepos.findAll({
-        where: { [Op.and]: filterData },
-        // include: { all: true },
-        order,
-        limit: Number(limit),
-        offset,
-        include: this.includes,
-      })
-      const filterListData = await this.getFilterListFunc()
-      res.status(200).json({ incs, filterListData })
+      res.status(200).json()
     } catch (err) {
       res.status(500).json({ error: ['db error', err as Error] })
     }
@@ -1382,22 +1373,6 @@ export class incidentService {
       res.status(500).json({ error: ['db error', err as Error] })
     }
   }
-
-  getAllINCLogs = (_req: Request, res: Response) => {
-    IncidentLogsRepos.findAll({ include: this.incLogs })
-      .then(item => res.status(200).json(item))
-      .catch(err => res.status(500).json({ error: ['db error', err.status] }))
-  }
-  getINCLogs = (_req: Request, res: Response) => {
-    IncidentLogsRepos.findAll({
-      where: { active: true },
-      include: this.incLogs,
-    })
-      .then(logs => {
-        res.status(200).json(logs)
-      })
-      .catch(err => res.status(500).json({ error: ['db error', err] }))
-  }
   getTimeSLAs = async (_req: Request, res: Response) => {
     try {
       const incs = (await IncidentRepos.findAll({
@@ -1411,7 +1386,6 @@ export class incidentService {
       res.status(500).json({ error: ['db error', err as Error] })
     }
   }
-
   changeTimeSLAs = async (_req: Request, res: Response) => {
     try {
       const { data } = _req.body as ITimeSLA
@@ -1427,12 +1401,19 @@ export class incidentService {
     }
   }
 
-  changetime = async (_req: Request, res: Response) => {
-    try {
-      const incs = changeTimeData()
-      res.status(200).json(incs)
-    } catch (err) {
-      res.status(500).json({ error: ['db error', err as Error] })
-    }
+  getAllINCLogs = (_req: Request, res: Response) => {
+    IncidentLogsRepos.findAll({ include: this.incLogs })
+      .then(item => res.status(200).json(item))
+      .catch(err => res.status(500).json({ error: ['db error', err.status] }))
+  }
+  getINCLogs = (_req: Request, res: Response) => {
+    IncidentLogsRepos.findAll({
+      where: { active: true },
+      include: this.incLogs,
+    })
+      .then(logs => {
+        res.status(200).json(logs)
+      })
+      .catch(err => res.status(500).json({ error: ['db error', err] }))
   }
 }

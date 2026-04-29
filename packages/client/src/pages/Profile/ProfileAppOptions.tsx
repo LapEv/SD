@@ -1,18 +1,12 @@
-import {
-  Box,
-  Collapse,
-  ListItemButton,
-  ListItemText,
-  Modal,
-} from '@mui/material'
+import { Collapse, ListItemButton, ListItemText, Modal } from '@mui/material'
 import { RotateButton } from 'components/Buttons'
 import { memo, useState } from 'react'
-import { listItemButton } from 'static/styles/listItemButton'
 import { SwitchMUI } from 'components/Switch'
 import { useAuth } from 'hooks/auth/useAuth'
 import { ThemeMode } from 'storeAuth/interfaces'
 import { Button } from 'components/Buttons'
-import { ProfileChangeTheme } from './ProfileChangeTheme'
+import { MuiDiv } from 'components/MUI'
+// import { ProfileChangeTheme } from './ProfileChangeTheme'
 
 export const ProfileAppOptions = memo(() => {
   const [modal, setModal] = useState<boolean>(false)
@@ -51,34 +45,25 @@ export const ProfileAppOptions = memo(() => {
   }
 
   return (
-    <Box
-      sx={{
-        display: 'flex',
-        flexDirection: 'column',
-        width: '100%',
-        height: 'auto',
-        mt: 2,
-      }}>
+    <MuiDiv className={'profileAppOptionsContainer'}>
       <Modal
         open={modal}
         onClose={() => setModal(false)}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description">
-        <>
-          <ProfileChangeTheme handleModal={setModal} />
-        </>
+        <>{/* <ProfileChangeTheme handleModal={setModal} /> */}</>
       </Modal>
-      <ListItemButton divider={open} sx={listItemButton} onClick={handleClick}>
+      <ListItemButton
+        divider={open}
+        className={'itemButtonCollapse'}
+        onClick={handleClick}>
         <>
-          <ListItemText
-            primary={'Настройки приложения'}
-            primaryTypographyProps={{ fontSize: '1rem!important' }}
-          />
+          <ListItemText primary={'Настройки приложения'} />
           <RotateButton open={open} handleClick={handleClick} size={'1.5rem'} />
         </>
       </ListItemButton>
       <Collapse
-        sx={{ width: '100%', display: 'flex', flexDirection: 'column', mt: 2 }}
+        className={'profileAppOptionsContainer'}
         in={open}
         timeout="auto"
         unmountOnExit>
@@ -94,12 +79,11 @@ export const ProfileAppOptions = memo(() => {
           checked={font}
           value={font}
         />
-        <Button
-          onClick={() => setModal(prev => !prev)}
-          sx={{ width: '30%', mt: 2 }}>
+        <Button onClick={() => setModal(prev => !prev)}>
           Сменить цвет темы
         </Button>
+        ColorPicker here
       </Collapse>
-    </Box>
+    </MuiDiv>
   )
 })

@@ -75,7 +75,7 @@ export const ProfileData = memo((user: User) => {
       return {
         name: item.groupName,
         id: item.id,
-        initChecked: item.id === id ?? false,
+        initChecked: item.id === id ? true : false,
       }
     })
     setDataGroup(data)
@@ -111,7 +111,7 @@ export const ProfileData = memo((user: User) => {
       return {
         name: groupName,
         id: id,
-        initChecked: userInfo.RolesGroup?.group === group ?? false,
+        initChecked: userInfo.RolesGroup?.group === group ? true : false,
       }
     })
     setDataGroup(data)

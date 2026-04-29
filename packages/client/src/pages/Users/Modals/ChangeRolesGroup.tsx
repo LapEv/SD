@@ -1,18 +1,19 @@
-import React, { SyntheticEvent, memo } from 'react'
+import React, { ChangeEvent, SyntheticEvent, memo } from 'react'
 import { ChooseModalProps } from './interfaces'
 import { useState, useEffect } from 'react'
-import { Box, Typography, useTheme } from '@mui/material'
+import { Typography } from '@mui/material'
 import { useRoles } from 'hooks/roles/useRoles'
-import { modalStyle, boxDataModal } from 'static/styles'
-import { ButtonsModalSection } from 'components/Buttons'
+import {
+  ButtonsModalSection,
+  ClearSearchModalSection,
+} from 'components/Buttons'
 import { DataList } from 'components/CheckBoxGroup/interface'
 import { Item } from 'components/CheckBoxGroup'
-import { DropDown, emptyValue } from 'components/DropDown'
+import { DropDown, emptyOptionsDD } from 'components/DropDown'
 import { Options } from 'components/DropDown/interface'
 import { useFilteredData } from 'hooks/useFilteredData'
 import { TextField } from 'components/TextFields'
-import { SearchIconElement } from 'components/Icons'
-import { ITheme } from 'themes/themeConfig'
+import { BoxModal, MuiDiv } from 'components/MUI'
 
 export const ChangeRolesGroup = memo(
   React.forwardRef<unknown, ChooseModalProps>(
@@ -22,11 +23,11 @@ export const ChangeRolesGroup = memo(
         { getRoles, getRolesGroup, changeRolesGroup },
       ] = useRoles()
       const [data, setData] = useState<DataList[]>([])
-      const [selectedGroup, setSelectedGroup] = useState<Options>(emptyValue)
+      const [selectedGroup, setSelectedGroup] =
+        useState<Options>(emptyOptionsDD)
       const [group, setGroup] = useState<Options[]>([])
       const [selectedRoles, setSelectedRoles] = useState<string[]>([])
       const [errSelectedItems, setErrSelectedItems] = useState<boolean>(false)
-      const theme = useTheme() as ITheme
       const [filterText, setFilterText] = useState<string>('')
       const filteredRoles = useFilteredData<DataList>(data, filterText, [
         'name',
@@ -49,7 +50,7 @@ export const ChangeRolesGroup = memo(
           return
         }
         setSelectedRoles([...selectedRoles, id])
-        if ([...selectedRoles, id] && errSelectedItems)
+        if ([...selectedRoles, id].length && errSelectedItems)
           setErrSelectedItems(false)
       }
 
@@ -96,16 +97,17 @@ export const ChangeRolesGroup = memo(
       }, [rolesGroup])
 
       return (
-        <Box
+        <BoxModal
           ref={ref}
           tabIndex={-1}
-          sx={{ ...modalStyle, paddingLeft: 5 }}
+          className={'modalMainContainer'}
           component="form"
           onSubmit={changeData}>
-          <Typography variant={'h6'}>{title}</Typography>
+          <Typography variant={'h1'}>{title}</Typography>
           <DropDown
             data={group}
-            props={{ mt: theme.fontSize === 'small' ? 6 : 4 }}
+            className={'dropdown_mt4'}
+            props={{ mt: 3, mb: 1 }}
             onChange={data => changeGroup(data)}
             value={selectedGroup.label}
             label="Выберите группу ролей"
@@ -114,19 +116,28 @@ export const ChangeRolesGroup = memo(
           {data && data.length ? (
             <TextField
               variant="outlined"
-              sx={{ width: '90%', mt: 3, height: 40 }}
+              className="modalTextContainer"
               label="Фильтр по ролям"
               margin="normal"
               value={filterText || ''}
-              onChange={({ target }) => setFilterText(target.value ?? '')}
-              InputProps={{
-                endAdornment: <SearchIconElement />,
+              onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                setFilterText(e.target.value ?? '')
+              }
+              slotProps={{
+                input: {
+                  endAdornment: (
+                    <ClearSearchModalSection
+                      length={filterText.length}
+                      handleClick={() => setFilterText('')}
+                    />
+                  ),
+                },
               }}
             />
           ) : (
             <></>
           )}
-          <Box sx={boxDataModal}>
+          <MuiDiv className={'boxDataModal'}>
             {filteredRoles.map(({ name, id, initChecked, nameId }) => (
               <Item
                 name={name}
@@ -134,19 +145,21 @@ export const ChangeRolesGroup = memo(
                 id={`${id}`}
                 groupChecked={null}
                 onChooseItems={onChooseItems}
-                key={id}
+                key={`${name}_${id}`}
                 initChecked={initChecked}
+                className={'listItemsChangeRolesGr'}
+                classItemText={'listItemsTextContainer'}
               />
             ))}
-          </Box>
-          <Box sx={{ color: theme.palette.error.main, height: 20 }}>
+          </MuiDiv>
+          <MuiDiv className={'modalError'}>
             {errSelectedItems && 'Не выбрана ни одна роль или группа ролей!'}
-          </Box>
+          </MuiDiv>
           <ButtonsModalSection
             closeModal={() => handleModal(false)}
             btnName={'Изменить'}
           />
-        </Box>
+        </BoxModal>
       )
     },
   ),

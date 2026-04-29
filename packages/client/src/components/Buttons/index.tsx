@@ -1,5 +1,5 @@
 import MuiButton, { type ButtonProps } from '@mui/material/Button'
-import { useTheme } from '@mui/styles'
+import { useTheme } from '@mui/material'
 import {
   ElementType,
   ForwardRefExoticComponent,
@@ -43,3 +43,6 @@ export { RotateButton } from './RotateButton'
 export { EditButton } from './EditButton'
 export { IconPopoverButton } from './IconPopoverButton'
 export { IconToolTipButton } from './IconToolTipButton'
+export { ClearButton } from './ClearButton'
+export { ClearSearchModalSection } from './ClearSearchModalSection'
+export { ButtonsFilterINCs } from './ButtonsFilterINCs'

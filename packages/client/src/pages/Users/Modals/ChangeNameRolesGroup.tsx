@@ -1,11 +1,10 @@
 import React, { memo } from 'react'
 import { AddValuesProps, ChooseModalProps } from './interfaces'
 import { useState, useEffect } from 'react'
-import { Box, Typography, useTheme } from '@mui/material'
+import { Typography } from '@mui/material'
 import { useRoles } from 'hooks/roles/useRoles'
-import { modalStyle } from 'static/styles'
 import { ButtonsModalSection } from 'components/Buttons'
-import { DropDown, emptyValue } from 'components/DropDown'
+import { DropDown, emptyOptionsDD } from 'components/DropDown'
 import { Options } from 'components/DropDown/interface'
 import { TextField } from 'components/TextFields'
 import {
@@ -15,7 +14,7 @@ import {
   useFormState,
 } from 'react-hook-form'
 import { MapNewRolesGroupInputFields } from '../data'
-import { ITheme } from 'themes/themeConfig'
+import { BoxModal } from 'components/MUI'
 
 export const ChangeNameRolesGroup = memo(
   React.forwardRef<unknown, ChooseModalProps>(
@@ -23,8 +22,8 @@ export const ChangeNameRolesGroup = memo(
       const [{ rolesGroup }, { getRolesGroupNotRoles, changeNameRolesGroup }] =
         useRoles()
       const [group, setGroup] = useState<Options[]>([])
-      const [selectedGroup, setSelectedGroup] = useState<Options>(emptyValue)
-      const theme = useTheme() as ITheme
+      const [selectedGroup, setSelectedGroup] =
+        useState<Options>(emptyOptionsDD)
 
       const { handleSubmit, control, reset } = useForm<AddValuesProps>({
         mode: 'onBlur',
@@ -78,16 +77,17 @@ export const ChangeNameRolesGroup = memo(
       }, [rolesGroup])
 
       return (
-        <Box
+        <BoxModal
           ref={ref}
           tabIndex={-1}
-          sx={{ ...modalStyle, paddingLeft: 5 }}
+          className={'modalMainContainer'}
           component="form"
           onSubmit={handleSubmit(changeData)}>
-          <Typography variant={'h3'}>{title}</Typography>
+          <Typography variant={'h1'}>{title}</Typography>
           <DropDown
             data={group}
-            props={{ mt: theme.fontSize === 'small' ? 6 : 4 }}
+            className={'dropdown_mt4'}
+            props={{ mt: 3, mb: 1 }}
             onChange={data => changeGroup(data)}
             value={selectedGroup.label}
             label="Выберите группу ролей"
@@ -96,7 +96,7 @@ export const ChangeNameRolesGroup = memo(
           {fields.map(({ id, label, validation, type, required }, index) => {
             return (
               <Controller
-                key={id}
+                key={`${label}_${id}`}
                 control={control}
                 name={`list.${index}.value`}
                 rules={validation}
@@ -108,18 +108,7 @@ export const ChangeNameRolesGroup = memo(
                     type={type}
                     variant="outlined"
                     required={required ?? true}
-                    sx={{
-                      width: '90%',
-                      height: theme.fontSize === 'small' ? 30 : 40,
-                      mt:
-                        index === 0
-                          ? theme.fontSize === 'small'
-                            ? 7
-                            : 4
-                          : theme.fontSize === 'small'
-                            ? 5
-                            : 3,
-                    }}
+                    className="textContainer_w90_mt3"
                     margin="normal"
                     value={field.value || ''}
                     error={!!(errors?.list ?? [])[index]?.value?.message}
@@ -133,7 +122,7 @@ export const ChangeNameRolesGroup = memo(
             closeModal={() => handleModal(false)}
             btnName={'Изменить'}
           />
-        </Box>
+        </BoxModal>
       )
     },
   ),

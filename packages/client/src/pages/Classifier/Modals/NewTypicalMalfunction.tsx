@@ -1,5 +1,5 @@
 import React, { useState, useEffect, memo } from 'react'
-import { Box, Typography, useTheme } from '@mui/material'
+import { Typography } from '@mui/material'
 import {
   useForm,
   useFieldArray,
@@ -9,25 +9,23 @@ import {
 import { TextField } from 'components/TextFields'
 import { ChooseModalProps, AddValuesProps } from './interfaces'
 import { MapTypMalfunctionInputFields } from '../data'
-import { modalStyle, boxDataModal } from 'static/styles'
 import { ButtonsModalSection } from 'components/Buttons'
-import { DropDown, emptyValue } from 'components/DropDown'
+import { DropDown, emptyOptionsDD } from 'components/DropDown'
 import { Options } from 'components/DropDown/interface'
 import { useClassifier } from 'hooks/classifier/useClassifier'
 import { Item } from 'components/CheckBoxGroup'
 import { ClassifierModels } from 'store/slices/classifier/interfaces'
-import { ITheme } from 'themes/themeConfig'
+import { BoxModal, MuiDiv } from 'components/MUI'
 
 export const NewTypicalMalfunction = memo(
   React.forwardRef<unknown, ChooseModalProps>(
     ({ handleModal, title }: ChooseModalProps, ref) => {
       const [{ equipments }, { newTypicalMalfunction, resetModels }] =
         useClassifier()
-      const [equipment, setEquipment] = useState<Options>(emptyValue)
+      const [equipment, setEquipment] = useState<Options>(emptyOptionsDD)
       const [selectedModels, setSelectedModels] = useState<string[]>([])
       const [errSelectedItems, setErrSelectedItems] = useState<boolean>(false)
       const [models, setModels] = useState<ClassifierModels[]>([])
-      const theme = useTheme() as ITheme
 
       const { handleSubmit, control } = useForm<AddValuesProps>({
         mode: 'onBlur',
@@ -63,7 +61,7 @@ export const NewTypicalMalfunction = memo(
           return
         }
         setSelectedModels([...selectedModels, id])
-        if ([...selectedModels, id] && errSelectedItems)
+        if ([...selectedModels, id].length && errSelectedItems)
           setErrSelectedItems(false)
       }
 
@@ -76,13 +74,13 @@ export const NewTypicalMalfunction = memo(
       }, [models])
 
       return (
-        <Box
+        <BoxModal
           ref={ref}
           tabIndex={-1}
-          sx={modalStyle}
+          className={'modalMainContainer'}
           component="form"
           onSubmit={handleSubmit(changeData)}>
-          <Typography variant={'h4'}>{title}</Typography>
+          <Typography variant={'h1'}>{title}</Typography>
           <DropDown
             data={equipments.map(item => {
               return {
@@ -99,7 +97,7 @@ export const NewTypicalMalfunction = memo(
           {fields.map(({ id, label, validation, type, required }, index) => {
             return (
               <Controller
-                key={id}
+                key={`${label}_${id}`}
                 control={control}
                 name={`list.${index}.value`}
                 rules={validation}
@@ -110,12 +108,7 @@ export const NewTypicalMalfunction = memo(
                     label={label}
                     type={type}
                     variant="outlined"
-                    sx={{
-                      width: '90%',
-                      height: theme.fontSize === 'small' ? 30 : 40,
-                      mt:
-                        index === 0 ? (theme.fontSize === 'small' ? 7 : 6) : 5,
-                    }}
+                    className="textContainer_w90"
                     margin="normal"
                     required={required ?? true}
                     value={field.value || ''}
@@ -126,14 +119,10 @@ export const NewTypicalMalfunction = memo(
               />
             )
           })}
-          <Typography variant={'h1'} sx={{ mt: 2, width: '90%' }}>
+          <Typography variant={'body1'} sx={{ mt: 2, width: '90%' }}>
             Выберите модели для этой типовой неисправности:
           </Typography>
-          <Box
-            sx={{
-              ...boxDataModal,
-              mt: 2,
-            }}>
+          <MuiDiv className={'boxDataModal'}>
             {models.map(({ model, id }) => (
               <Item
                 name={model}
@@ -144,13 +133,13 @@ export const NewTypicalMalfunction = memo(
                 key={id}
               />
             ))}
-          </Box>
+          </MuiDiv>
 
           <ButtonsModalSection
             closeModal={() => handleModal(false)}
             btnName="Сохранить"
           />
-        </Box>
+        </BoxModal>
       )
     },
   ),

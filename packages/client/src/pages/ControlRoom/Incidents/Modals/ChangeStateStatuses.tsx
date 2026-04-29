@@ -1,24 +1,20 @@
 import React, { memo, useState, useEffect, DragEvent } from 'react'
-import { Box, Typography, useTheme } from '@mui/material'
-import { modalStyle } from 'static/styles'
+import { Typography } from '@mui/material'
 import { ButtonsSectionNoSubmit } from 'components/Buttons'
 import { useIncidents } from 'hooks/incidents/useINC'
-import { ChooseModalProps } from './interfaces'
-import { ITheme, ThemeMode } from 'themes/themeConfig'
-import { boxMenuDnD } from 'static/styles/modals'
+import { ChooseModalProps } from '../interfaces'
 import { INCStatuses } from 'store/slices/incidents/interfaces'
+import { BoxModal, MuiDiv } from 'components/MUI'
 
 export const ChangeStateStatuses = memo(
   React.forwardRef<unknown, ChooseModalProps>(
     ({ handleModal, title }: ChooseModalProps, ref) => {
-      // const theme = useTheme()
       const [
         { incStatuses },
         { changeStateIncidentStatuses, getIncidentStatuses },
       ] = useIncidents()
       const [draggingItem, setDraggingItem] = useState<INCStatuses | null>(null)
       const [items, setItems] = useState<INCStatuses[]>()
-      const theme = useTheme()
 
       useEffect(() => {
         getIncidentStatuses()
@@ -68,59 +64,27 @@ export const ChangeStateStatuses = memo(
       }
 
       return (
-        <Box
-          ref={ref}
-          tabIndex={-1}
-          sx={{ ...modalStyle, paddingLeft: 5, pb: 10 }}>
-          <Typography variant={'h6'}>{title}</Typography>
-          <Box
-            sx={{
-              width: '100%',
-              pb: 8,
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-            }}>
+        <BoxModal ref={ref} tabIndex={-1} className={'modalMainContainer'}>
+          <Typography variant={'h1'}>{title}</Typography>
+          <MuiDiv className={'boxModalContainer'}>
             {items?.map(item => (
-              <Box
-                key={item.id}
-                sx={{
-                  ...boxMenuDnD,
-                  cursor:
-                    item.stateNumber > 0 &&
-                    item.stateNumber < incStatuses.length
-                      ? 'pointer'
-                      : 'default',
-                  backgroundColor:
-                    theme.palette.mode === ThemeMode.light
-                      ? (theme as ITheme).colorTheme.colorDark
-                      : (theme as ITheme).colorTheme.colorLight,
-                  color:
-                    theme.palette.mode === ThemeMode.light
-                      ? item.stateNumber > 0 &&
-                        item.stateNumber < incStatuses.length
-                        ? '#FFFFFF'
-                        : '#FFFFFF82'
-                      : item.stateNumber > 0 &&
-                          item.stateNumber < incStatuses.length
-                        ? '#000000'
-                        : '#00000082',
-                }}
-                className={`item ${item === draggingItem ? 'dragging' : ''}`}
+              <MuiDiv
+                key={`${item.statusINC}${item.id}`}
+                className={`item ${item === draggingItem ? 'dragging' : ''} incStatusesContainer ${item.stateNumber === 1 || item.stateNumber === incStatuses.length ? 'noDraggingINCStatuses' : ''}`}
                 draggable={
-                  item.stateNumber > 0 && item.stateNumber < incStatuses.length
-                    ? true
-                    : false
+                  item.stateNumber === 1 ||
+                  item.stateNumber === incStatuses.length
+                    ? false
+                    : true
                 }
                 onDragStart={e => handleDragStart(e, item)}
                 onDragEnd={handleDragEnd}
                 onDragOver={handleDragOver}
                 onDrop={() => handleDrop(item)}>
                 {item.statusINC}
-              </Box>
+              </MuiDiv>
             ))}
-          </Box>
+          </MuiDiv>
           <ButtonsSectionNoSubmit
             btnHandle={changeData}
             btnSecondHandle={() => handleModal(false)}
@@ -129,7 +93,7 @@ export const ChangeStateStatuses = memo(
             btnDisabled={false}
             btnSecondDisabled={false}
           />
-        </Box>
+        </BoxModal>
       )
     },
   ),

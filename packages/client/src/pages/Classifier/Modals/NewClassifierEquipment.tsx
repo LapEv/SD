@@ -1,5 +1,5 @@
 import React, { memo } from 'react'
-import { Box, Typography } from '@mui/material'
+import { Typography } from '@mui/material'
 import {
   useForm,
   useFieldArray,
@@ -9,9 +9,9 @@ import {
 import { TextField } from 'components/TextFields'
 import { ChooseModalProps, AddValuesProps } from './interfaces'
 import { MapClassifierInputFields } from '../data'
-import { modalStyle } from 'static/styles'
 import { ButtonsModalSection } from 'components/Buttons'
 import { useClassifier } from 'hooks/classifier/useClassifier'
+import { BoxModal } from 'components/MUI'
 
 export const NewClassifierEquipment = memo(
   React.forwardRef<unknown, ChooseModalProps>(
@@ -35,17 +35,17 @@ export const NewClassifierEquipment = memo(
       }
 
       return (
-        <Box
+        <BoxModal
           ref={ref}
           tabIndex={-1}
-          sx={modalStyle}
+          className={'modalMainContainer'}
           component="form"
           onSubmit={handleSubmit(changeData)}>
-          <Typography variant={'h6'}>{title}</Typography>
+          <Typography variant={'h1'}>{title}</Typography>
           {fields.map(({ id, label, validation, type, required }, index) => {
             return (
               <Controller
-                key={id}
+                key={`${label}_${id}`}
                 control={control}
                 name={`list.${index}.value`}
                 rules={validation}
@@ -56,7 +56,7 @@ export const NewClassifierEquipment = memo(
                     label={label}
                     type={type}
                     variant="outlined"
-                    sx={{ width: '90%', m: 2, mt: 4, height: 40 }}
+                    className="textContainer"
                     margin="normal"
                     required={required ?? true}
                     value={field.value || ''}
@@ -71,8 +71,8 @@ export const NewClassifierEquipment = memo(
             closeModal={() => handleModal(false)}
             btnName="Сохранить"
           />
-        </Box>
+        </BoxModal>
       )
-    }
-  )
+    },
+  ),
 )

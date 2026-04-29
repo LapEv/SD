@@ -1,9 +1,9 @@
 import React, { memo } from 'react'
 import { ChooseModalProps } from './interfaces'
 import { useNavigate } from 'react-router-dom'
-import { Box, Typography } from '@mui/material'
-import { modalStyle } from 'static/styles'
+import { Typography } from '@mui/material'
 import { ButtonsSection } from 'components/Buttons'
+import { BoxModal } from 'components/MUI'
 
 export const SwitchToClassifierPage = memo(
   React.forwardRef<unknown, ChooseModalProps>(
@@ -16,7 +16,7 @@ export const SwitchToClassifierPage = memo(
       }
 
       return (
-        <Box sx={{ ...modalStyle, paddingLeft: 5 }} ref={ref} tabIndex={-1}>
+        <BoxModal className={'modalMainContainer'} ref={ref} tabIndex={-1}>
           <Typography variant={'h1'} sx={{ textAlign: 'center', mt: 1, mb: 2 }}>
             {title}
           </Typography>
@@ -28,7 +28,7 @@ export const SwitchToClassifierPage = memo(
             btnSecondDisabled={false}
             onClick={changeData}
           />
-        </Box>
+        </BoxModal>
       )
     },
   ),

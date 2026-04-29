@@ -1,29 +1,26 @@
 import React, { useEffect, useState, memo, SyntheticEvent } from 'react'
-import { Box, ListItemText, ListItemButton, Modal } from '@mui/material'
+import { ListItemText, ListItemButton, Modal } from '@mui/material'
 import Collapse from '@mui/material/Collapse'
 import {
   ButtonsSectionNoSubmit,
   EditButton,
   RotateButton,
 } from 'components/Buttons'
-import { useTheme } from '@mui/material/styles'
 import {
   ClassifierModels,
   TypicalMalfunctions,
 } from 'store/slices/classifier/interfaces'
 import { useClassifier } from 'hooks/classifier/useClassifier'
-import { classifierChildComponent, flexColumn_FS_SA } from 'static/styles'
 import { Item } from 'components/CheckBoxGroup'
 import { DataList } from 'components/CheckBoxGroup/interface'
 import { ModalChangeName } from 'components/ModaQuestions'
 import { isEqualArrObjects } from 'utils/isEqualArrObjects'
-import { ITheme } from 'themes/themeConfig'
+import { MuiDiv } from 'components/MUI'
 
 export const Models = memo(
   ({ model, id, typicalModels, TypicalMalfunctions }: ClassifierModels) => {
     const [{ activeModel }, { setActiveModel, changeClassifierModel }] =
       useClassifier()
-    const theme = useTheme() as ITheme
     const modalRef = React.createRef()
     const [open, setOpen] = useState(false)
     const [data, setData] = useState<DataList[]>([])
@@ -148,7 +145,7 @@ export const Models = memo(
     }, [activeModel])
 
     return (
-      <Box sx={flexColumn_FS_SA}>
+      <MuiDiv className={'flexColumn'}>
         <Modal
           open={modal}
           onClose={() => setModal(false)}
@@ -164,20 +161,14 @@ export const Models = memo(
         </Modal>
         <ListItemButton
           divider={open}
-          sx={classifierChildComponent}
+          className={'itemButtonCollapse'}
           onClick={handleClick}>
           <ListItemText primary={model} sx={{ ml: 2 }} />
           <EditButton handleClick={editModel} />
           <RotateButton open={open} />
         </ListItemButton>
         <Collapse
-          sx={{
-            width: '100%',
-            p: 2,
-            pl: 5,
-            pr: 5,
-            height: theme.fontSize === 'small' ? 40 : 50,
-          }}
+          className={'collapseList collapseList_p'}
           in={open}
           timeout="auto"
           unmountOnExit>
@@ -191,10 +182,10 @@ export const Models = memo(
               key={id as string}
             />
           ))}
-          <Box sx={{ color: theme.palette.error.main, height: 20, ml: 5 }}>
+          <MuiDiv className={'modalErrorML5'}>
             {errSelectedItems &&
               'Модель не может быть без типовых неисправностей!'}
-          </Box>
+          </MuiDiv>
           <ButtonsSectionNoSubmit
             btnHandle={onChangeModels}
             btnSecondHandle={undoChanges}
@@ -204,7 +195,7 @@ export const Models = memo(
             btnSecondDisabled={disabled}
           />
         </Collapse>
-      </Box>
+      </MuiDiv>
     )
   },
 )

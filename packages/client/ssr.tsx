@@ -1,9 +1,8 @@
-import React from 'react'
 import { renderToString } from 'react-dom/server'
 import { Provider } from 'react-redux'
 import { store } from './src/store'
 import ThemeWrapper from './src/themes/ThemeWrapper'
-import { StaticRouter } from 'react-router-dom/server'
+import { StaticRouter } from 'react-router-dom'
 import { CacheProvider } from '@emotion/react'
 import type { EmotionCache } from '@emotion/css'
 

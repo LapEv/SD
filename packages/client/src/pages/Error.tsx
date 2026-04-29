@@ -1,6 +1,6 @@
 import { Container, Typography } from '@mui/material'
 import { memo } from 'react'
-import bgErrorPage from 'static/svg/bgErrorPage.svg'
+import bgErrorPage from 'components/SVGIcons/bgErrorPage.svg'
 
 interface Error {
   code?: string
@@ -29,5 +29,5 @@ export const ErrorPage = memo(
         <Typography>{error.message}</Typography>
       </Container>
     )
-  }
+  },
 )

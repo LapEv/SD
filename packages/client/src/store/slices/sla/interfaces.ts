@@ -97,7 +97,7 @@ export interface IServiceListDataPage {
 }
 
 export interface IServiceListData extends IServiceListDataPage {
-  height: number
+  height?: number
 }
 
 export interface SLAList {

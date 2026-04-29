@@ -1,4 +1,4 @@
-import { SyntheticEvent, type PropsWithChildren } from 'react'
+import { JSX, SyntheticEvent, type PropsWithChildren } from 'react'
 
 export type Handle = {
   closeModal: (state: boolean) => void
@@ -22,11 +22,36 @@ export type HandleNoSubmit = {
   btnSecondHandle: () => void
   btnDisabled?: boolean
   btnSecondDisabled?: boolean
+  containerProps?: Record<string, unknown>
+  props?: Record<string, unknown>
+  classContainer?: string
+}
+
+export type IButtonsFilterINCs = {
+  btnAddHandle: () => void
+  btnClearHandle: () => void
+  btnOkHandle: () => void
 }
 
 export interface IEditButton {
   handleClick?: (event: SyntheticEvent<EventTarget>) => void
   size?: string
+}
+
+export interface IClearButton {
+  handleClick?: (event: SyntheticEvent<EventTarget>) => void
+  size?: string
+  id?: number | string
+  className?: string
+  length?: number
+  classNameBox?: string
+}
+
+export interface ISearchIconElement {
+  handleClick?: (event: SyntheticEvent<EventTarget>) => void
+  size?: string
+  id?: number | string
+  className?: string
 }
 
 export type FabProps = PropsWithChildren<{
@@ -44,6 +69,7 @@ export interface IconButtonProps {
   sx?: Record<string, unknown>
   propsPopover?: Record<string, unknown>
   size?: 'small' | 'medium' | 'large'
+  className: string
 }
 
 export interface IconButtonTooltipProps {
@@ -58,4 +84,11 @@ export interface IRotateButton {
   open: boolean
   handleClick?: () => void
   size?: string
+  sx?: Record<string, unknown>
+}
+
+export interface IClearSearchModalSection {
+  length: number
+  handleClick: (data: SyntheticEvent<EventTarget, Event>) => void
+  className?: string
 }

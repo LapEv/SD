@@ -73,7 +73,6 @@ import {
 } from 'api/contracts'
 import { changeObject, deleteObjects, newObject } from 'api/objects'
 import {
-  changeINC,
   changeIncidentStatuses,
   deleteIncidentStatuses,
   newINC,
@@ -81,16 +80,14 @@ import {
   newTypeOfWork,
   deleteTypesOfWork,
   changeTypesOfWork,
-  changeExecutor,
-  changeResponsible,
-  changeUserClosingCheck,
-  changeUserClosing,
-  changeStatus,
   newTypeCompletedWork,
   deleteTypesCompletedWork,
   changeTypesCompletedWork,
-  changeComment,
   changeStateIncidentStatuses,
+  changeExecutorSVR,
+  changeResponsibleSVR,
+  changeStatusSVR,
+  changeINC,
 } from 'api/incidents'
 import { uploadFiles } from 'api/files'
 
@@ -180,7 +177,6 @@ export const messageSlise = createSlice({
       state.type = 'error'
       state.text = payload as string
     })
-
     builder.addCase(changeNameDepartment.fulfilled, (state, { payload }) => {
       state.isLoadingMessage = false
       state.text = payload?.message.text as string
@@ -324,7 +320,6 @@ export const messageSlise = createSlice({
       state.type = 'error'
       state.text = payload as string
     })
-
     builder.addCase(updateProfile.fulfilled, (state, { payload }) => {
       state.isLoadingMessage = false
       state.text = payload?.message.text as string
@@ -992,97 +987,6 @@ export const messageSlise = createSlice({
       state.type = 'error'
       state.text = payload as string
     })
-    builder.addCase(changeINC.fulfilled, (state, { payload }) => {
-      state.isLoadingMessage = false
-      state.text = payload?.message.text as string
-      state.type = payload?.message.type as string
-    })
-    builder.addCase(changeINC.pending, state => {
-      state.isLoadingMessage = true
-    })
-    builder.addCase(changeINC.rejected, (state, { payload }) => {
-      state.isLoadingMessage = false
-      state.type = 'error'
-      state.text = payload as string
-    })
-    builder.addCase(changeExecutor.fulfilled, (state, { payload }) => {
-      state.isLoadingMessage = false
-      state.text = payload?.message.text as string
-      state.type = payload?.message.type as string
-    })
-    builder.addCase(changeExecutor.pending, state => {
-      state.isLoadingMessage = true
-    })
-    builder.addCase(changeExecutor.rejected, (state, { payload }) => {
-      state.isLoadingMessage = false
-      state.type = 'error'
-      state.text = payload as string
-    })
-    builder.addCase(changeResponsible.fulfilled, (state, { payload }) => {
-      state.isLoadingMessage = false
-      state.text = payload?.message.text as string
-      state.type = payload?.message.type as string
-    })
-    builder.addCase(changeResponsible.pending, state => {
-      state.isLoadingMessage = true
-    })
-    builder.addCase(changeResponsible.rejected, (state, { payload }) => {
-      state.isLoadingMessage = false
-      state.type = 'error'
-      state.text = payload as string
-    })
-    builder.addCase(changeStatus.fulfilled, (state, { payload }) => {
-      state.isLoadingMessage = false
-      state.text = payload?.message.text as string
-      state.type = payload?.message.type as string
-    })
-    builder.addCase(changeStatus.pending, state => {
-      state.isLoadingMessage = true
-    })
-    builder.addCase(changeStatus.rejected, (state, { payload }) => {
-      state.isLoadingMessage = false
-      state.type = 'error'
-      state.text = payload as string
-    })
-    builder.addCase(changeUserClosingCheck.fulfilled, (state, { payload }) => {
-      state.isLoadingMessage = false
-      state.text = payload?.message.text as string
-      state.type = payload?.message.type as string
-    })
-    builder.addCase(changeUserClosingCheck.pending, state => {
-      state.isLoadingMessage = true
-    })
-    builder.addCase(changeUserClosingCheck.rejected, (state, { payload }) => {
-      state.isLoadingMessage = false
-      state.type = 'error'
-      state.text = payload as string
-    })
-    builder.addCase(changeUserClosing.fulfilled, (state, { payload }) => {
-      state.isLoadingMessage = false
-      state.text = payload?.message.text as string
-      state.type = payload?.message.type as string
-    })
-    builder.addCase(changeUserClosing.pending, state => {
-      state.isLoadingMessage = true
-    })
-    builder.addCase(changeUserClosing.rejected, (state, { payload }) => {
-      state.isLoadingMessage = false
-      state.type = 'error'
-      state.text = payload as string
-    })
-    builder.addCase(changeComment.fulfilled, (state, { payload }) => {
-      state.isLoadingMessage = false
-      state.text = payload?.message.text as string
-      state.type = payload?.message.type as string
-    })
-    builder.addCase(changeComment.pending, state => {
-      state.isLoadingMessage = true
-    })
-    builder.addCase(changeComment.rejected, (state, { payload }) => {
-      state.isLoadingMessage = false
-      state.type = 'error'
-      state.text = payload as string
-    })
     builder.addCase(newIncidentStatuses.fulfilled, (state, { payload }) => {
       state.isLoadingMessage = false
       state.text = payload?.message.text as string
@@ -1092,6 +996,65 @@ export const messageSlise = createSlice({
       state.isLoadingMessage = true
     })
     builder.addCase(newIncidentStatuses.rejected, (state, { payload }) => {
+      state.isLoadingMessage = false
+      state.type = 'error'
+      state.text = payload as string
+    })
+    builder.addCase(changeExecutorSVR.fulfilled, (state, { payload }) => {
+      state.text = payload?.message.text as string
+      state.type = payload?.message.type as string
+    })
+    builder.addCase(changeExecutorSVR.pending, state => {
+      state.isLoadingMessage = true
+    })
+    builder.addCase(changeExecutorSVR.rejected, (state, { payload }) => {
+      state.isLoadingMessage = false
+      state.type = 'error'
+      state.text = payload as string
+    })
+    builder.addCase(
+      changeResponsibleSVR.fulfilled,
+      (state, { meta, payload }) => {
+        if (!meta.arg.notImportant) {
+          state.text = payload?.message.text as string
+          state.type = payload?.message.type as string
+        }
+      },
+    )
+    builder.addCase(changeResponsibleSVR.pending, state => {
+      state.isLoadingMessage = true
+    })
+    builder.addCase(
+      changeResponsibleSVR.rejected,
+      (state, { meta, payload }) => {
+        if (!meta.arg.notImportant) {
+          state.isLoadingMessage = false
+          state.type = 'error'
+          state.text = payload as string
+        }
+      },
+    )
+    builder.addCase(changeStatusSVR.fulfilled, (state, { payload }) => {
+      state.text = payload?.message.text as string
+      state.type = payload?.message.type as string
+    })
+    builder.addCase(changeStatusSVR.pending, state => {
+      state.isLoadingMessage = true
+    })
+    builder.addCase(changeStatusSVR.rejected, (state, { payload }) => {
+      state.isLoadingMessage = false
+      state.type = 'error'
+      state.text = payload as string
+    })
+    builder.addCase(changeINC.fulfilled, (state, { payload }) => {
+      state.isLoadingMessage = false
+      state.text = payload?.message.text as string
+      state.type = payload?.message.type as string
+    })
+    builder.addCase(changeINC.pending, state => {
+      state.isLoadingMessage = true
+    })
+    builder.addCase(changeINC.rejected, (state, { payload }) => {
       state.isLoadingMessage = false
       state.type = 'error'
       state.text = payload as string

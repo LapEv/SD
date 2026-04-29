@@ -1,6 +1,6 @@
 import * as dotenv from 'dotenv'
 import cors from 'cors'
-import express from 'express'
+import express, { Express } from 'express'
 import { createServer } from 'vite'
 import { dbConnect } from './db'
 import { apiRouter } from './routers/index.router'
@@ -15,7 +15,7 @@ import { getLastINC } from './utils/getLastINC'
 async function init() {
   await dbConnect()
   dotenv.config({ path: '../../.env' })
-  const app = express()
+  const app: Express = express()
   app.use(
     fileUpload({
       createParentPath: true,

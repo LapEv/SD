@@ -1,6 +1,6 @@
 import { memo, useEffect } from 'react'
 import { Box, List, Typography, useTheme } from '@mui/material'
-import { Avatar } from 'layouts/Main/icons/Avatar'
+import { Avatar } from 'components/SVGIcons/Avatar'
 import { Routes } from 'utils/routes'
 import { useAuth } from 'hooks/auth/useAuth'
 import { LinkButton } from 'components/LinkButton'
@@ -36,12 +36,12 @@ export const SideBar = memo(({ open = false }: SideBarProps) => {
           alignItems: 'center',
           mt: 2,
         }}>
-        {!open ? <Typography variant="h6">SD</Typography> : <></>}
+        {!open ? <Typography variant="h6">SBI</Typography> : <></>}
 
         <Box
           sx={{
-            width: open ? 100 : 50,
-            height: open ? 100 : 50,
+            width: open ? 100 : 45,
+            height: open ? 100 : 45,
             background:
               theme.palette.mode === ThemeMode.light
                 ? (theme as ITheme).colorTheme.colorDark

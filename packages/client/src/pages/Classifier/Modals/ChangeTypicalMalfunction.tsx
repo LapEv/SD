@@ -1,10 +1,9 @@
 import React, { memo } from 'react'
 import { AddValuesProps, ChooseModalProps } from './interfaces'
 import { useState, useEffect } from 'react'
-import { Box, Typography, useTheme } from '@mui/material'
-import { modalStyle } from 'static/styles'
+import { Typography } from '@mui/material'
 import { ButtonsModalSection } from 'components/Buttons'
-import { DropDown, emptyValue } from 'components/DropDown'
+import { DropDown, emptyOptionsDD } from 'components/DropDown'
 import { Options } from 'components/DropDown/interface'
 import {
   useForm,
@@ -15,7 +14,7 @@ import {
 import { TextField } from 'components/TextFields'
 import { MapNewTypicalMalfunctionsInputFields } from '../data'
 import { useClassifier } from 'hooks/classifier/useClassifier'
-import { ITheme } from 'themes/themeConfig'
+import { BoxModal, MuiDiv } from 'components/MUI'
 
 export const ChangeTypicalMalfunction = memo(
   React.forwardRef<unknown, ChooseModalProps>(
@@ -28,9 +27,8 @@ export const ChangeTypicalMalfunction = memo(
         Options[]
       >([])
       const [selectedTypicalMalfunctions, setSelectedTypicalMalfunctions] =
-        useState<Options>(emptyValue)
+        useState<Options>(emptyOptionsDD)
       const [errSelectedItems, setErrSelectedItems] = useState<string>('')
-      const theme = useTheme() as ITheme
 
       const { handleSubmit, control } = useForm<AddValuesProps>({
         mode: 'onBlur',
@@ -47,7 +45,7 @@ export const ChangeTypicalMalfunction = memo(
       const changeData = ({ list }: AddValuesProps) => {
         if (!selectedTypicalMalfunctions) {
           setErrSelectedItems('Не выбрана ни одна типовая неисправность')
-          setSelectedTypicalMalfunctions(emptyValue)
+          setSelectedTypicalMalfunctions(emptyOptionsDD)
           return
         }
         changeTypicalMalfunction({
@@ -70,7 +68,7 @@ export const ChangeTypicalMalfunction = memo(
           item => item.typicalMalfunction === value,
         )
         if (isNew < 0) {
-          setSelectedTypicalMalfunctions(emptyValue)
+          setSelectedTypicalMalfunctions(emptyOptionsDD)
         }
       }
 
@@ -90,13 +88,13 @@ export const ChangeTypicalMalfunction = memo(
       }, [typicalMalfunctions])
 
       return (
-        <Box
+        <BoxModal
           ref={ref}
           tabIndex={-1}
-          sx={{ ...modalStyle, paddingLeft: 5 }}
+          className={'modalMainContainer'}
           component="form"
           onSubmit={handleSubmit(changeData)}>
-          <Typography variant={'h6'}>{title}</Typography>
+          <Typography variant={'h1'}>{title}</Typography>
           <DropDown
             data={listTypicalMalfunctions}
             props={{ mt: 4 }}
@@ -106,11 +104,11 @@ export const ChangeTypicalMalfunction = memo(
             errorLabel="Не выбран типовая неисправность!"
             onBlur={text => checkTypicalMalfunction(text)}
           />
-          <Box sx={{ mt: 2, width: '90%' }}>
+          <MuiDiv sx={{ width: '90%' }}>
             {fields.map(({ id, label, validation, type, required }, index) => {
               return (
                 <Controller
-                  key={id}
+                  key={`${label}_${id}`}
                   control={control}
                   name={`list.${index}.value`}
                   rules={validation}
@@ -122,16 +120,7 @@ export const ChangeTypicalMalfunction = memo(
                       type={type}
                       variant="outlined"
                       required={required ?? true}
-                      sx={{
-                        width: '100%',
-                        height: theme.fontSize === 'small' ? 30 : 40,
-                        mt:
-                          index === 0
-                            ? theme.fontSize === 'small'
-                              ? 7
-                              : 6
-                            : 5,
-                      }}
+                      className="textContainer"
                       margin="normal"
                       value={field.value || ''}
                       error={!!(errors?.list ?? [])[index]?.value?.message}
@@ -141,21 +130,13 @@ export const ChangeTypicalMalfunction = memo(
                 />
               )
             })}
-          </Box>
-          <Box
-            sx={{
-              mt: 2,
-              width: '100%',
-              pl: 3,
-            }}></Box>
-          <Box sx={{ color: theme.palette.error.main, height: 20 }}>
-            {errSelectedItems}
-          </Box>
+          </MuiDiv>
+          <MuiDiv className={'modalErrorMT2'}>{errSelectedItems}</MuiDiv>
           <ButtonsModalSection
             closeModal={() => handleModal(false)}
             btnName={'Изменить'}
           />
-        </Box>
+        </BoxModal>
       )
     },
   ),

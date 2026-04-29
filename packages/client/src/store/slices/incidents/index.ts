@@ -6,6 +6,9 @@ import {
   INCState,
   TypesCompletedWork,
   AnswerGetINC,
+  ChangeExecutor,
+  ChangeResponsible,
+  IncidentLogsForINC,
 } from './interfaces'
 import {
   getINC,
@@ -13,69 +16,40 @@ import {
   newINC,
   newIncidentStatuses,
   deleteIncidentStatuses,
-  changeINC,
   changeIncidentStatuses,
   getTypesOfWork,
   newTypeOfWork,
   deleteTypesOfWork,
   changeTypesOfWork,
-  changeExecutor,
-  changeResponsible,
-  changeUserClosingCheck,
-  changeUserClosing,
-  changeStatus,
   getTypesCompletedWork,
   newTypeCompletedWork,
   deleteTypesCompletedWork,
   changeTypesCompletedWork,
   getINCs,
-  getFilter,
-  changeComment,
+  getINCsByDate,
   changeStateIncidentStatuses,
+  changeExecutorSVR,
+  changeResponsibleSVR,
+  changeINC,
+  changeStatusSVR,
 } from 'api/incidents'
-import {
-  convertDateToStringFromDB,
-  convertDateToStringFromDBT,
-} from 'utils/convertDate'
-import { CheckUser, signin } from 'api/user'
-import { ICheckUser } from 'storeAuth/interfaces'
+import { emptyINC } from 'pages/ControlRoom/Incidents/data'
 
 const initialState: INCState = {
-  countIncidents: 0,
   incidents: [],
+  filtered: [],
+  filteredLength: 0,
   incStatuses: [],
   typesOfWork: [],
   typesCompletedWork: [],
-  filterListData: {
-    status: [],
-    client: [],
-    legalName: [],
-    contract: [],
-    object: [],
-    address: [],
-    region: [],
-    userAccepted: [],
-    equipment: [],
-    model: [],
-    executor: [],
-    responsible: [],
-    overdue: [],
-    sla: [],
-  },
-  activeINC: '',
   isLoadingINC: false,
-  outputFilter: {
-    isOutputFilter: false,
-    filterID: '',
-    filterText: '',
-  },
+  oldINC: emptyINC,
 }
 
 const createINCData = (data: INC[]) => {
   return data.map(item => {
     return {
       ...item,
-      // status: item.IncindentStatus?.statusINC as string,
       client: item.Client?.client as string,
       legalName: item.Client?.legalName as string,
       contract: item.Contract?.contract as string,
@@ -87,8 +61,6 @@ const createINCData = (data: INC[]) => {
       typeOfWork: item.TypesOfWork?.typeOfWork as string,
       typeCompletedWork: item.TypesCompletedWork?.typeCompletedWork as string,
       userAccepted: item.User?.shortName as string,
-      // executor: item.UserExecutor?.shortName as string,
-      // responsible: item.UserResponsible?.shortName as string,
       userClosingCheck: item.UserClosingCheck?.shortName as string,
       userClosing: item.UserClosing?.shortName as string,
       equipment: item.ClassifierEquipment?.equipment as string,
@@ -96,17 +68,7 @@ const createINCData = (data: INC[]) => {
       typicalMalfunction: item.TypicalMalfunction?.typicalMalfunction as string,
       logs: item.IncidentLogs,
       files: item.Files,
-      act: item.Files?.map(item => item.name).toString() as string,
-      timeRegistration: convertDateToStringFromDBT(
-        item.timeRegistration,
-      ) as string,
-      timeSLA: convertDateToStringFromDBT(item.timeSLA) as string,
-      timeInWork: convertDateToStringFromDBT(item.timeInWork) as string,
-      timeCloseCheck: convertDateToStringFromDBT(item.timeCloseCheck) as string,
-      timeClose: convertDateToStringFromDBT(item.timeClose) as string,
-      spaceParts: Array.isArray(item.spaceParts)
-        ? item.spaceParts.join(', ')
-        : item.spaceParts,
+      act: item.Files?.map(item => item.name) as string[],
     }
   })
 }
@@ -115,48 +77,114 @@ export const incidentsSlise = createSlice({
   name: 'incidents',
   initialState,
   reducers: {
-    setActiveINC(state, action) {
-      state.activeINC = action.payload
-    },
     setLoadingINC(state, action) {
       state.isLoadingINC = action.payload
     },
-    setStateOutputFilter(state, action) {
-      state.outputFilter = action.payload
+    setFilteredLength(state, action) {
+      state.filteredLength = action.payload
+    },
+    setFiltered(state, action) {
+      state.filtered = action.payload
+    },
+    changeExecutor(state, action) {
+      const { id, id_incExecutor, executor, userID, userShortName, incident } =
+        action.payload as ChangeExecutor
+      state.oldINC = state.incidents.find(item => item.id === id)
+      state.incidents = state.incidents.map(item =>
+        item.id !== id
+          ? item
+          : ({
+              ...item,
+              id_incExecutor,
+              executor,
+              UserExecutor: {
+                ...item.UserExecutor,
+                shortName: executor,
+                id: id_incExecutor,
+              },
+              logs: [
+                ...(item?.logs as IncidentLogsForINC[]),
+                {
+                  User: { id: userID, shortName: userShortName },
+                  id: `log_${id}_${item?.logs?.length}`,
+                  time: new Date(
+                    new Date().getTime() -
+                      new Date().getTimezoneOffset() * 60 * 1000,
+                  ).toISOString(),
+                  log: `Для инцидента под номером ${incident} изменён исполнитель ${executor}`,
+                },
+              ],
+            } as INC),
+      )
+    },
+    changeResponsible(state, action) {
+      const {
+        id,
+        id_incResponsible,
+        responsible,
+        userID,
+        userShortName,
+        incident,
+      } = action.payload as ChangeResponsible
+      state.oldINC = state.incidents.find(item => item.id === id)
+      state.incidents = state.incidents.map(item =>
+        item.id !== id
+          ? item
+          : ({
+              ...item,
+              id_incResponsible,
+              responsible,
+              UserResponsible: {
+                ...item.UserResponsible,
+                shortName: responsible,
+                id: id_incResponsible,
+              },
+              logs: [
+                ...(item?.logs as IncidentLogsForINC[]),
+                {
+                  User: { id: userID, shortName: userShortName },
+                  id: `log_${id}_${item?.logs?.length}`,
+                  time: new Date(
+                    new Date().getTime() -
+                      new Date().getTimezoneOffset() * 60 * 1000,
+                  ).toISOString(),
+                  log: `Для инцидента под номером ${incident} изменён ответственный ${responsible}`,
+                },
+              ],
+            } as INC),
+      )
+    },
+    changeStatus(state, { payload }) {
+      const { id, log, ...data } = payload
+      state.oldINC = state.incidents.find(item => item.id === id)
+      state.incidents = state.incidents.map(item =>
+        item.id !== id
+          ? item
+          : ({
+              ...item,
+              ...data,
+              logs: [
+                ...(item?.logs as IncidentLogsForINC[]),
+                {
+                  User: log.User,
+                  id: `log_${log.log.id_incLog}_${item?.logs?.length}`,
+                  time: log.log.time,
+                  log: log.log.log,
+                },
+              ],
+            } as INC),
+      )
     },
   },
   extraReducers: builder => {
-    builder.addCase(signin.fulfilled, (state, { payload }) => {
-      state.isLoadingINC = false
-      state.error = ''
-      const { filterData } = payload as ICheckUser
-      state.filterListData = filterData
-    })
-    builder.addCase(CheckUser.fulfilled, (state, { payload }) => {
-      state.isLoadingINC = false
-      state.error = ''
-      const { filterData } = payload as ICheckUser
-      state.filterListData = filterData
-    })
-    builder.addCase(getFilter.fulfilled, (state, { payload }) => {
-      state.isLoadingINC = false
-      state.error = ''
-      const { filterData } = payload as ICheckUser
-      state.filterListData = filterData
-    })
-    builder.addCase(getFilter.pending, state => {
-      state.isLoadingINC = true
-    })
-    builder.addCase(getFilter.rejected, (state, { payload }) => {
-      state.isLoadingINC = false
-      state.error = payload as string
-    })
     builder.addCase(getINC.fulfilled, (state, { payload }) => {
       state.isLoadingINC = false
       state.error = ''
-      const { incs, count } = payload as AnswerGetINC
-      state.incidents = createINCData(incs)
-      state.countIncidents = count
+      const { incs } = payload as AnswerGetINC
+      const _incs = createINCData(incs)
+      state.incidents = _incs
+      state.filtered = _incs
+      state.filteredLength = incs.length
     })
     builder.addCase(getINC.pending, state => {
       state.isLoadingINC = true
@@ -168,10 +196,11 @@ export const incidentsSlise = createSlice({
     builder.addCase(getINCs.fulfilled, (state, { payload }) => {
       state.isLoadingINC = false
       state.error = ''
-      const { incs, count, filterListData } = payload as AnswerGetINC
-      state.incidents = createINCData(incs)
-      state.countIncidents = count
-      state.filterListData = filterListData
+      const { incs } = payload as AnswerGetINC
+      const _incs = createINCData(incs)
+      state.incidents = _incs
+      state.filtered = _incs
+      state.filteredLength = incs.length
     })
     builder.addCase(getINCs.pending, state => {
       state.isLoadingINC = true
@@ -180,13 +209,27 @@ export const incidentsSlise = createSlice({
       state.isLoadingINC = false
       state.error = payload as string
     })
+    builder.addCase(getINCsByDate.fulfilled, (state, { payload }) => {
+      state.isLoadingINC = false
+      state.error = ''
+      const { incs } = payload as AnswerGetINC
+      const _incs = createINCData(incs)
+      state.incidents = _incs
+      state.filtered = _incs
+      state.filteredLength = incs.length
+    })
+    builder.addCase(getINCsByDate.pending, state => {
+      state.isLoadingINC = true
+    })
+    builder.addCase(getINCsByDate.rejected, (state, { payload }) => {
+      state.isLoadingINC = false
+      state.error = payload as string
+    })
     builder.addCase(newINC.fulfilled, (state, { payload }) => {
       state.isLoadingINC = false
       state.error = ''
-      const { incs, count, filterListData } = payload?.data as AnswerGetINC
+      const { incs } = payload?.data as AnswerGetINC
       state.incidents = createINCData(incs)
-      state.countIncidents = count
-      state.filterListData = filterListData
     })
     builder.addCase(newINC.pending, state => {
       state.isLoadingINC = true
@@ -198,10 +241,11 @@ export const incidentsSlise = createSlice({
     builder.addCase(changeINC.fulfilled, (state, { payload }) => {
       state.isLoadingINC = false
       state.error = ''
-      const { incs, count, filterListData } = payload?.data as AnswerGetINC
-      state.incidents = createINCData(incs)
-      state.countIncidents = count
-      state.filterListData = filterListData
+      const { incs } = payload?.data as AnswerGetINC
+      const _incs = createINCData(incs)
+      state.incidents = _incs
+      state.filtered = _incs
+      state.filteredLength = incs.length
     })
     builder.addCase(changeINC.pending, state => {
       state.isLoadingINC = true
@@ -210,90 +254,21 @@ export const incidentsSlise = createSlice({
       state.isLoadingINC = false
       state.error = payload as string
     })
-    builder.addCase(changeExecutor.fulfilled, (state, { payload }) => {
-      state.isLoadingINC = false
-      state.error = ''
-      const { incs, filterListData } = payload?.data as AnswerGetINC
-      state.filterListData = filterListData
-      state.incidents = createINCData(incs)
+
+    builder.addCase(changeExecutorSVR.rejected, (state, { meta }) => {
+      state.incidents = state.incidents.map(item =>
+        item.id === meta.arg.id ? (state.oldINC as INC) : item,
+      )
     })
-    builder.addCase(changeExecutor.pending, state => {
-      state.isLoadingINC = true
+    builder.addCase(changeResponsibleSVR.rejected, (state, { meta }) => {
+      state.incidents = state.incidents.map(item =>
+        item.id === meta.arg.id ? (state.oldINC as INC) : item,
+      )
     })
-    builder.addCase(changeExecutor.rejected, (state, { payload }) => {
-      state.isLoadingINC = false
-      state.error = payload as string
-    })
-    builder.addCase(changeResponsible.fulfilled, (state, { payload }) => {
-      state.isLoadingINC = false
-      state.error = ''
-      const { incs, filterListData } = payload?.data as AnswerGetINC
-      state.filterListData = filterListData
-      state.incidents = createINCData(incs)
-    })
-    builder.addCase(changeResponsible.pending, state => {
-      state.isLoadingINC = true
-    })
-    builder.addCase(changeResponsible.rejected, (state, { payload }) => {
-      state.isLoadingINC = false
-      state.error = payload as string
-    })
-    builder.addCase(changeStatus.fulfilled, (state, { payload }) => {
-      state.isLoadingINC = false
-      state.error = ''
-      const { incs, filterListData } = payload?.data as AnswerGetINC
-      state.filterListData = filterListData
-      state.incidents = createINCData(incs)
-    })
-    builder.addCase(changeStatus.pending, state => {
-      state.isLoadingINC = true
-    })
-    builder.addCase(changeStatus.rejected, (state, { payload }) => {
-      state.isLoadingINC = false
-      state.error = payload as string
-    })
-    builder.addCase(changeUserClosingCheck.fulfilled, (state, { payload }) => {
-      state.isLoadingINC = false
-      state.error = ''
-      state.incidents = createINCData(payload?.data)
-    })
-    builder.addCase(changeUserClosingCheck.pending, state => {
-      state.isLoadingINC = true
-    })
-    builder.addCase(changeUserClosingCheck.rejected, (state, { payload }) => {
-      state.isLoadingINC = false
-      state.error = payload as string
-    })
-    builder.addCase(changeUserClosing.fulfilled, (state, { payload }) => {
-      state.isLoadingINC = false
-      state.error = ''
-      state.incidents = createINCData(payload?.data)
-    })
-    builder.addCase(changeUserClosing.pending, state => {
-      state.isLoadingINC = true
-    })
-    builder.addCase(changeUserClosing.rejected, (state, { payload }) => {
-      state.isLoadingINC = false
-      state.error = payload as string
-    })
-    builder.addCase(changeComment.fulfilled, (state, { payload }) => {
-      state.isLoadingINC = false
-      state.error = ''
-      const incs = state.incidents
-      const newincs = incs.map((item: INC) => {
-        if (item.id === payload?.data.id) {
-          return { ...item, comment: payload?.data.comment }
-        }
-        return item
-      })
-      state.incidents = newincs
-    })
-    builder.addCase(changeComment.pending, state => {
-      state.isLoadingINC = true
-    })
-    builder.addCase(changeComment.rejected, (state, { payload }) => {
-      state.isLoadingINC = false
-      state.error = payload as string
+    builder.addCase(changeStatusSVR.rejected, (state, { meta }) => {
+      state.incidents = state.incidents.map(item =>
+        item.id === meta.arg.id ? (state.oldINC as INC) : item,
+      )
     })
     builder.addCase(getIncidentStatuses.fulfilled, (state, { payload }) => {
       state.isLoadingINC = false
@@ -463,9 +438,28 @@ export const incidentsSlise = createSlice({
       state.isLoadingINC = false
       state.error = payload as string
     })
+    // builder.addCase(changeStatus.fulfilled, (state, { payload }) => {
+    //   state.isLoadingINC = false
+    //   state.error = ''
+    //   const { incs, filterListData } = payload?.data as AnswerGetINC
+    //   state.incidents = createINCData(incs)
+    // })
+    // builder.addCase(changeStatus.pending, state => {
+    //   state.isLoadingINC = true
+    // })
+    // builder.addCase(changeStatus.rejected, (state, { payload }) => {
+    //   state.isLoadingINC = false
+    //   state.error = payload as string
+    // })
   },
 })
 
 export const incidentsReducer = incidentsSlise.reducer
-export const { setActiveINC, setLoadingINC, setStateOutputFilter } =
-  incidentsSlise.actions
+export const {
+  setLoadingINC,
+  setFilteredLength,
+  setFiltered,
+  changeExecutor,
+  changeResponsible,
+  changeStatus,
+} = incidentsSlise.actions

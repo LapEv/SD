@@ -2,9 +2,9 @@ import { Box, Typography } from '@mui/material'
 import { ButtonsSectionNoSubmit } from 'components/Buttons'
 import { IProfileChangeTheme } from './interfaces'
 import { useAuth } from 'hooks/auth/useAuth'
-import { modalStyle } from 'static/styles'
 import { memo } from 'react'
 import ColorPicker from 'mui-color-picker'
+import { BoxModal } from 'components/MUI'
 
 export const ProfileChangeTheme = memo(
   ({ handleModal }: IProfileChangeTheme) => {
@@ -38,7 +38,7 @@ export const ProfileChangeTheme = memo(
     const undoChanges = () => {}
 
     return (
-      <Box sx={{ ...modalStyle, height: 400 }}>
+      <BoxModal className={'modalMainContainer heigth400'}>
         <Box
           sx={{
             display: 'flex',
@@ -98,7 +98,7 @@ export const ProfileChangeTheme = memo(
           btnSecondName="Отменить"
           btnSecondDisabled={false}
         />
-      </Box>
+      </BoxModal>
     )
   },
 )

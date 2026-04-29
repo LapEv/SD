@@ -1,15 +1,7 @@
 import React, { memo, useEffect, useState } from 'react'
-import {
-  Box,
-  Collapse,
-  ListItemButton,
-  ListItemText,
-  Modal,
-  useTheme,
-} from '@mui/material'
+import { Collapse, ListItemButton, ListItemText, Modal } from '@mui/material'
 import { IconPopoverButton, RotateButton } from 'components/Buttons'
 import { CheckBoxGroups } from 'components/CheckBoxGroup'
-import { classifierChild2Component, popoverIcon } from 'static/styles'
 import { ICheckBoxGroupData } from 'components/CheckBoxGroup/interface'
 import { filterFirstElement } from './Modals/data'
 import { SelectMUI } from 'components/Select'
@@ -19,7 +11,7 @@ import { useClassifier } from 'hooks/classifier/useClassifier'
 import { useFilteredData } from 'hooks/useFilteredData'
 import { SwitchToClassifierPage } from './'
 import { IEquipmentList } from './interfaces'
-import { ITheme } from 'themes/themeConfig'
+import { MuiDiv } from 'components/MUI'
 
 export const ContractEquipmentList = memo(
   ({
@@ -45,7 +37,6 @@ export const ContractEquipmentList = memo(
       filterText,
       ['group'],
     )
-    const theme = useTheme() as ITheme
 
     const openEquipmentList = () => {
       setOpenEquipment(!openEquipment)
@@ -89,7 +80,7 @@ export const ContractEquipmentList = memo(
     }
 
     return (
-      <Box sx={{ width: '95%', mt: 1 }}>
+      <MuiDiv className={'flexColumn'}>
         <Modal
           open={modal}
           onClose={() => setModal(false)}
@@ -105,30 +96,19 @@ export const ContractEquipmentList = memo(
         </Modal>
         <ListItemButton
           divider={openEquipment}
-          sx={{
-            ...classifierChild2Component,
-            height: theme.fontSize === 'small' ? 30 : 40,
-          }}
+          className={'itemContainerLabel'}
           onClick={openEquipmentList}>
           <ListItemText primary={'Классификатор оборудования'} sx={{ ml: 2 }} />
           <RotateButton open={openEquipment} />
         </ListItemButton>
         <Collapse
-          sx={{ width: '100%', p: 2, pl: 5, pr: 5 }}
+          className={'collapseList collapseList_p'}
           in={openEquipment}
           timeout="auto"
           unmountOnExit>
-          <Box
-            sx={{
-              display: 'flex',
-              justifyContent: 'flex-start',
-              alignItems: 'center',
-              height: theme.fontSize === 'small' ? 30 : 40,
-              mt: 1,
-            }}>
+          <MuiDiv className={'boxList_flexSC'}>
             <SelectMUI
               data={filterList}
-              props={{ height: theme.fontSize === 'small' ? 30 : 40 }}
               onChange={changeFilter}
               value={selectedFilter || filterFirstElement}
               label="Выберите фильтр"
@@ -140,22 +120,11 @@ export const ContractEquipmentList = memo(
                 onClick={AddNewEquipment}
                 icon={<AddCircleOutlineIcon />}
                 propsPopover={{ ml: -1 }}
-                sx={{
-                  ...popoverIcon,
-                  width: theme.fontSize === 'small' ? 30 : 40,
-                  height: theme.fontSize === 'small' ? 30 : 40,
-                }}
+                className={'addIconButton'}
               />
             )}
-          </Box>
-          <Box
-            sx={{
-              maxHeight: '35vH',
-              overflowX: 'hidden',
-              overflowY: 'auto',
-              height: 'auto',
-              mt: 2,
-            }}>
+          </MuiDiv>
+          <MuiDiv className={'listViewColumn'}>
             <CheckBoxGroups
               data={filteredData}
               onChooseGroup={onChooseGroup}
@@ -165,9 +134,9 @@ export const ContractEquipmentList = memo(
               clearChanges={clearChanges}
               onClearChanges={onClearChanges}
             />
-          </Box>
+          </MuiDiv>
         </Collapse>
-      </Box>
+      </MuiDiv>
     )
   },
 )

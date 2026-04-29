@@ -11,13 +11,18 @@ import {
 import { IUser } from './users'
 import { ISLA } from './sla'
 
+export enum methodsReuqest {
+  manually = 'manually',
+  email = 'email',
+  web = 'web',
+}
+
 export interface ITimeSLA {
   data: {
     id: string
     timeSLA: string
   }[]
 }
-
 export interface IIncindent {
   id: string
   numberINC: number
@@ -39,7 +44,7 @@ export interface IIncindent {
   executor: string
   spaceParts: string[]
   active: boolean
-  methodsReuqest: string
+  methodsReuqest: methodsReuqest
   rating: number
   parentalIncident: string
   relatedIncident: string
@@ -83,7 +88,7 @@ export interface Incindent {
   executor: string
   spaceParts: string[]
   active: boolean
-  methodsReuqest: string
+  methodsReuqest: methodsReuqest
   rating: number
   parentalIncident: string
   relatedIncident: string
@@ -325,7 +330,7 @@ export const incidentLogs: ModelAttributes<Model, IncidentLogs> = {
     allowNull: false,
   },
   log: {
-    type: DataType.STRING,
+    type: DataType.STRING(1024),
     allowNull: false,
   },
 }

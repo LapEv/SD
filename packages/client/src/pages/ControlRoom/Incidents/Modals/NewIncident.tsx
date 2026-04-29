@@ -1,66 +1,70 @@
 import React, { useEffect, useState, memo } from 'react'
-import { Box, Stack, Typography, useTheme } from '@mui/material'
+import { Stack, Typography } from '@mui/material'
 import {
   useForm,
   useFieldArray,
   Controller,
   useFormState,
 } from 'react-hook-form'
-import { MultiTextField, TextField } from 'components/TextFields'
-import { ChooseModalProps, AddValuesProps } from './interfaces'
-import { modalStyle } from 'static/styles'
+import {
+  MultiTextFieldIncident,
+  TextFieldIncidents,
+} from 'components/TextFields'
 import { ButtonsModalSection } from 'components/Buttons'
 import { MapINCInputFields } from '../data'
 import { useIncidents } from 'hooks/incidents/useINC'
-import { DropDown, emptyValue } from 'components/DropDown'
+import { DropDownINC, emptyOptionsDD } from 'components/DropDown'
 import { useClients } from 'hooks/clients/useClients'
 import { Options } from 'components/DropDown/interface'
 import { useContracts } from 'hooks/contracts/useContracts'
 import { Contracts } from 'store/slices/contracts/interfaces'
 import { SLA } from 'store/slices/sla/interfaces'
-import { DateTimeField } from 'components/DatePicker'
+import { DateTimePickerFieldEditINC } from 'components/DatePicker'
 import dayjs, { Dayjs } from 'dayjs'
 import { getSLATime } from 'utils/getSLATime'
 import { useAuth } from 'hooks/auth/useAuth'
-import { FilterOptions } from '../Utils/FilterOptions'
-import { ITheme } from 'themes/themeConfig'
+import { AddValuesProps, ChooseModalProps, methodsReuqest } from '../interfaces'
+import { BoxModal } from 'components/MUI'
+import { useTableINC } from 'hooks/tableINC/useTableINC'
 
 export const NewIncident = memo(
   React.forwardRef<unknown, ChooseModalProps>(
     ({ handleModal, title }: ChooseModalProps, ref) => {
       const [{ user }] = useAuth()
       const [{ clients }, { getClients }] = useClients()
-      const [{ contracts }, { getContractsByClientID, resetContracts }] =
-        useContracts()
-      const [
-        { typesOfWork, incStatuses },
-        { getTypesOfWork, newINC, getIncidentStatuses },
-      ] = useIncidents()
+      const [{ contracts }, { getContracts }] = useContracts()
+      const [{ typesOfWork, incStatuses }, { getTypesOfWork, newINC }] =
+        useIncidents()
+      const [{ timeInterval }] = useTableINC()
       const [clientsList, setClientsList] = useState<Options[]>([])
-      const [selectedClient, setSelectedClient] = useState<Options>(emptyValue)
-      const [activeContract, setActiveContract] = useState<Contracts>()
+      const [selectedClient, setSelectedClient] =
+        useState<Options>(emptyOptionsDD)
+      const [activeContract, setActiveContract] = useState<Contracts | null>(
+        null,
+      )
       const [contractList, setContractList] = useState<Options[]>([])
       const [selectedContract, setSelectedContract] =
-        useState<Options>(emptyValue)
+        useState<Options>(emptyOptionsDD)
       const [objectList, setObjectList] = useState<Options[]>([])
-      const [selectedObject, setSelectedObject] = useState<Options>(emptyValue)
-      const [dateValue, setDateValue] = useState<Dayjs>(dayjs())
+      const [selectedObject, setSelectedObject] =
+        useState<Options>(emptyOptionsDD)
+      const [dateValue, setDateValue] = useState<string | Dayjs>(dayjs())
       const [slaList, setSLAList] = useState<Options[]>([])
-      const [selectedSLA, setSelectedSLA] = useState<Options>(emptyValue)
+      const [selectedSLA, setSelectedSLA] = useState<Options>(emptyOptionsDD)
       const [typeOfWorkList, setTypeOfWorkList] = useState<Options[]>([])
       const [selectedTypeOfWork, setSelectedTypeOfWork] =
-        useState<Options>(emptyValue)
+        useState<Options>(emptyOptionsDD)
       const [equipmentList, setEquipmentList] = useState<Options[]>([])
       const [selectedEquipment, setSelectedEquipment] =
-        useState<Options>(emptyValue)
+        useState<Options>(emptyOptionsDD)
       const [modelList, setModelList] = useState<Options[]>([])
-      const [selectedModel, setSelectedModel] = useState<Options>(emptyValue)
+      const [selectedModel, setSelectedModel] =
+        useState<Options>(emptyOptionsDD)
       const [typicalMalfunctionList, setTypicalMalfunctionList] = useState<
         Options[]
       >([])
       const [selectedTypicalMalfunction, setSelectedTypicalMalfunction] =
-        useState<Options>(emptyValue)
-      const theme = useTheme() as ITheme
+        useState<Options>(emptyOptionsDD)
 
       const { handleSubmit, control } = useForm<AddValuesProps>({
         mode: 'onBlur',
@@ -78,8 +82,6 @@ export const NewIncident = memo(
         const id_incStatus = incStatuses.find(item =>
           item.statusINC.includes('Зарегистрирован'),
         )?.id as string
-        const { nameSort, direction, limit, page, filterOptions } =
-          FilterOptions()
 
         const newINCobject = {
           clientID: selectedClient.id,
@@ -98,34 +100,49 @@ export const NewIncident = memo(
           comment: list[13].value,
           applicant: list[11].value,
           applicantContacts: list[12].value,
-          methodsReuqest: 'manually',
-          nameSort,
-          direction,
-          limit,
-          page,
-          filterOptions,
+          methodsReuqest: methodsReuqest.manually,
+          timeInterval,
         }
         newINC(newINCobject)
         handleModal(false)
       }
 
       useEffect(() => {
-        getIncidentStatuses()
-        getClients()
-        resetContracts()
+        setContractList([])
+        if (!clients.length) {
+          getClients()
+        }
+        if (!contracts.length) {
+          getContracts()
+        }
+        if (!typesOfWork.length) {
+          getTypesOfWork()
+        }
       }, [])
 
       const setClient = (data: Options) => {
-        if (!data) return
+        if (!data.id) {
+          setSelectedClient(emptyOptionsDD)
+          setSelectedContract(emptyOptionsDD)
+          setContractList([])
+          return
+        }
         setSelectedClient(data)
-        getContractsByClientID(data.id)
-        setSelectedContract(emptyValue)
-        setSelectedObject(emptyValue)
-        setSelectedEquipment(emptyValue)
-        setSelectedModel(emptyValue)
-        setSelectedTypicalMalfunction(emptyValue)
-        setSelectedSLA(emptyValue)
-        setSelectedTypeOfWork(emptyValue)
+        const listContracts = contracts
+          .filter(({ id_client }) => id_client === data.id)
+          .map(({ contract, id }) => {
+            return {
+              label: contract,
+              id: id as string,
+            }
+          })
+        setContractList(listContracts)
+        setSelectedObject(emptyOptionsDD)
+        setSelectedEquipment(emptyOptionsDD)
+        setSelectedModel(emptyOptionsDD)
+        setSelectedTypicalMalfunction(emptyOptionsDD)
+        setSelectedSLA(emptyOptionsDD)
+        setSelectedTypeOfWork(emptyOptionsDD)
       }
 
       useEffect(() => {
@@ -137,6 +154,16 @@ export const NewIncident = memo(
         })
         setClientsList(list)
       }, [clients])
+
+      useEffect(() => {
+        const listTypesOfWork = typesOfWork.map(({ typeOfWork, id }) => {
+          return {
+            label: typeOfWork,
+            id: id as string,
+          }
+        })
+        setTypeOfWorkList(listTypesOfWork)
+      }, [typesOfWork])
 
       const setContract = (data: Options) => {
         setSelectedContract(data)
@@ -170,37 +197,28 @@ export const NewIncident = memo(
             },
           ) as Options[]
           setEquipmentList(listEquipment)
-          setSelectedObject(emptyValue)
-          setSelectedEquipment(emptyValue)
-          setSelectedModel(emptyValue)
-          setSelectedTypicalMalfunction(emptyValue)
-          setSelectedSLA(emptyValue)
-          setSelectedTypeOfWork(emptyValue)
         } else {
-          setActiveContract(undefined)
-          setObjectList([])
+          setActiveContract(null)
           setObjectList([])
           setEquipmentList([])
+          setModelList([])
+          setTypicalMalfunctionList([])
+          setSLAList([])
+          setTypeOfWorkList([])
         }
+        setSelectedObject(emptyOptionsDD)
+        setSelectedEquipment(emptyOptionsDD)
+        setSelectedModel(emptyOptionsDD)
+        setSelectedTypicalMalfunction(emptyOptionsDD)
+        setSelectedSLA(emptyOptionsDD)
+        setSelectedTypeOfWork(emptyOptionsDD)
       }
-
-      useEffect(() => {
-        const listContracts = contracts.map(({ contract, id }) => {
-          return {
-            label: contract,
-            id: id as string,
-          }
-        })
-        setContractList(listContracts)
-      }, [contracts])
 
       const setSLA = (data: Options) => {
         setSelectedSLA(data)
         if (!data.id) {
-          setSelectedTypeOfWork({
-            label: '',
-            id: '',
-          })
+          setSelectedTypeOfWork(emptyOptionsDD)
+          setTypeOfWorkList([])
           setDateValue(dayjs())
           return
         }
@@ -211,28 +229,16 @@ export const NewIncident = memo(
           label: getTypeOfWork?.typeOfWork as string,
           id: getTypeOfWork?.id as string,
         })
-        getTypesOfWork()
         const timeSLA = getSLATime({ days, time, timeEnd, timeStart })
-
-        const newdate = dayjs()
-          .set('date', timeSLA.getDate())
-          .set('month', timeSLA.getMonth())
-          .set('year', timeSLA.getFullYear())
-          .set('hour', timeSLA.getHours())
-          .set('minute', timeSLA.getMinutes())
-          .set('second', timeSLA.getSeconds())
-        setDateValue(newdate)
+        // const newdate = dayjs()
+        //   .set('date', timeSLA.getDate())
+        //   .set('month', timeSLA.getMonth())
+        //   .set('year', timeSLA.getFullYear())
+        //   .set('hour', timeSLA.getHours())
+        //   .set('minute', timeSLA.getMinutes())
+        //   .set('second', timeSLA.getSeconds())
+        setDateValue(dayjs(timeSLA))
       }
-
-      useEffect(() => {
-        const listTypesOfWork = typesOfWork.map(({ typeOfWork, id }) => {
-          return {
-            label: typeOfWork,
-            id: id as string,
-          }
-        })
-        setTypeOfWorkList(listTypesOfWork)
-      }, [typesOfWork])
 
       const setEquimpent = (data: Options) => {
         setSelectedEquipment(data)
@@ -249,10 +255,14 @@ export const NewIncident = memo(
             },
           ) as Options[]
           setModelList(listModels)
-          setSelectedModel(emptyValue)
-          setSelectedTypicalMalfunction(emptyValue)
+          setSelectedModel(emptyOptionsDD)
+          setSelectedTypicalMalfunction(emptyOptionsDD)
         } else {
           setModelList([])
+          setSelectedModel(emptyOptionsDD)
+          setSelectedEquipment(emptyOptionsDD)
+          setSelectedTypicalMalfunction(emptyOptionsDD)
+          setTypicalMalfunctionList([])
         }
       }
 
@@ -274,37 +284,25 @@ export const NewIncident = memo(
             },
           ) as Options[]
           setTypicalMalfunctionList(listTypical)
-          setSelectedTypicalMalfunction(emptyValue)
+          setSelectedTypicalMalfunction(emptyOptionsDD)
         } else {
           setTypicalMalfunctionList([])
+          setSelectedModel(emptyOptionsDD)
+          setSelectedTypicalMalfunction(emptyOptionsDD)
         }
       }
 
-      const cellProps = {
-        width: '45%',
-        m: 2,
-        mt: theme.fontSize === 'small' ? 4 : 2,
-      }
-
       return (
-        <Box
+        <BoxModal
           ref={ref}
           tabIndex={-1}
-          sx={{ ...modalStyle, width: '80%', minHeight: 500 }}
+          className={'modalMainContainer newINC'}
           component="form"
           onSubmit={handleSubmit(changeData)}>
-          <Typography variant={'h6'}>{title}</Typography>
-          <Stack
-            direction={{ xs: 'column', sm: 'row' }}
-            justifyContent="space-around"
-            alignItems="flex-start"
-            sx={{
-              flexWrap: 'wrap',
-              height: theme.fontSize === 'small' ? 450 : 570,
-              flexDirection: 'column!important',
-              width: '100%',
-              ml: 2,
-            }}>
+          <Typography variant={'h1'} className={'newINC'}>
+            {title}
+          </Typography>
+          <Stack direction="column" useFlexGap className={'newINC'}>
             {fields.map(
               (
                 { id, name, label, validation, type, required, tabIndex },
@@ -312,16 +310,16 @@ export const NewIncident = memo(
               ) => {
                 return (
                   <Controller
-                    key={id}
+                    key={`${label}_${id}`}
                     control={control}
                     name={`list.${index}.value`}
                     rules={validation}
                     render={({ field }) => {
                       if (name === 'client') {
                         return (
-                          <DropDown
+                          <DropDownINC
                             data={clientsList}
-                            props={cellProps}
+                            className={'dropdownCellsNewINC'}
                             onChange={setClient}
                             value={selectedClient.label || ''}
                             label={label}
@@ -332,9 +330,9 @@ export const NewIncident = memo(
                       }
                       if (name === 'contract') {
                         return (
-                          <DropDown
+                          <DropDownINC
                             data={contractList}
-                            props={cellProps}
+                            className={'dropdownCellsNewINC'}
                             onChange={setContract}
                             value={selectedContract.label || ''}
                             label={label}
@@ -345,9 +343,9 @@ export const NewIncident = memo(
                       }
                       if (name === 'object') {
                         return (
-                          <DropDown
+                          <DropDownINC
                             data={objectList}
-                            props={cellProps}
+                            className={'dropdownCellsNewINC'}
                             onChange={setSelectedObject}
                             value={selectedObject.label || ''}
                             label={label}
@@ -358,9 +356,9 @@ export const NewIncident = memo(
                       }
                       if (name === 'sla') {
                         return (
-                          <DropDown
+                          <DropDownINC
                             data={slaList}
-                            props={cellProps}
+                            className={'dropdownCellsNewINC'}
                             onChange={setSLA}
                             value={selectedSLA.label || ''}
                             label={label}
@@ -369,11 +367,11 @@ export const NewIncident = memo(
                           />
                         )
                       }
-                      if (name === 'typeOfWrok') {
+                      if (name === 'typeOfWork') {
                         return (
-                          <DropDown
+                          <DropDownINC
                             data={typeOfWorkList}
-                            props={cellProps}
+                            className={'dropdownCellsNewINC'}
                             onChange={setSelectedTypeOfWork}
                             value={selectedTypeOfWork.label || ''}
                             label={label}
@@ -384,9 +382,9 @@ export const NewIncident = memo(
                       }
                       if (name === 'equipment') {
                         return (
-                          <DropDown
+                          <DropDownINC
                             data={equipmentList}
-                            props={cellProps}
+                            className={'dropdownCellsNewINC'}
                             onChange={setEquimpent}
                             value={selectedEquipment.label || ''}
                             label={label}
@@ -397,9 +395,9 @@ export const NewIncident = memo(
                       }
                       if (name === 'model') {
                         return (
-                          <DropDown
+                          <DropDownINC
                             data={modelList}
-                            props={cellProps}
+                            className={'dropdownCellsNewINC'}
                             onChange={setModel}
                             value={selectedModel.label || ''}
                             label={label}
@@ -410,9 +408,9 @@ export const NewIncident = memo(
                       }
                       if (name === 'typicalMalfunction') {
                         return (
-                          <DropDown
+                          <DropDownINC
                             data={typicalMalfunctionList}
-                            props={cellProps}
+                            className={'dropdownCellsNewINC'}
                             onChange={setSelectedTypicalMalfunction}
                             value={selectedTypicalMalfunction.label || ''}
                             label={label}
@@ -423,23 +421,24 @@ export const NewIncident = memo(
                       }
                       if (name === 'timeSLA') {
                         return (
-                          <DateTimeField
+                          <DateTimePickerFieldEditINC
                             dateValue={dateValue as Dayjs}
                             setDateValue={setDateValue}
-                            sx={cellProps}
+                            label={'Выберите дату'}
+                            className={'datePickerFilter newINC'}
                           />
                         )
                       }
                       if (name === 'description' || name === 'comments') {
                         return (
-                          <MultiTextField
+                          <MultiTextFieldIncident
                             {...field}
                             inputRef={field.ref}
                             label={label}
                             type={type}
                             required={required ?? true}
                             variant="outlined"
-                            sx={cellProps}
+                            className={'textMultiCellsNewINC'}
                             margin="normal"
                             multiline
                             maxRows={3}
@@ -450,26 +449,30 @@ export const NewIncident = memo(
                             helperText={
                               (errors?.list ?? [])[index]?.value?.message
                             }
-                            inputProps={{ step: 1, tabIndex }}
+                            slotProps={{
+                              input: {
+                                tabIndex,
+                              },
+                            }}
                           />
                         )
                       }
                       return (
-                        <TextField
+                        <TextFieldIncidents
                           {...field}
                           inputRef={field.ref}
                           label={label}
                           type={type}
                           required={required ?? true}
                           variant="outlined"
-                          sx={cellProps}
+                          sx={{ width: '100%' }}
+                          className={'textCellsNewINC'}
                           margin="normal"
                           value={field.value || ''}
                           error={!!(errors?.list ?? [])[index]?.value?.message}
                           helperText={
                             (errors?.list ?? [])[index]?.value?.message
                           }
-                          inputProps={{ step: 1, tabIndex }}
                         />
                       )
                     }}
@@ -482,7 +485,7 @@ export const NewIncident = memo(
             closeModal={() => handleModal(false)}
             btnName="Сохранить"
           />
-        </Box>
+        </BoxModal>
       )
     },
   ),

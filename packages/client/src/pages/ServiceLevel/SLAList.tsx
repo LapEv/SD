@@ -1,13 +1,13 @@
 import React, { memo, useEffect, useState, SyntheticEvent } from 'react'
-import { Box, ListItemText, ListItemButton, Modal } from '@mui/material'
+import { ListItemText, ListItemButton, Modal } from '@mui/material'
 import Collapse from '@mui/material/Collapse'
 import { RotateButton, EditButton } from 'components/Buttons'
-import { classifier, classifierComponent } from 'static/styles'
 import { ModalChangeName } from 'components/ModaQuestions'
 import { useSLA } from 'hooks/sla/useSLA'
 import { IServiceListData } from 'store/slices/sla/interfaces'
 import { SLAPage } from './'
 import { useAuth } from 'hooks/auth/useAuth'
+import { MuiDiv } from 'components/MUI'
 
 export const SLAList = memo(
   ({
@@ -74,7 +74,7 @@ export const SLAList = memo(
     }, [activeSLA])
 
     return (
-      <Box sx={classifier}>
+      <MuiDiv className={'containerCollapse'}>
         <Modal
           open={modal}
           onClose={() => setModal(false)}
@@ -89,7 +89,8 @@ export const SLAList = memo(
         </Modal>
         <ListItemButton
           divider={open}
-          sx={{ ...classifierComponent, height }}
+          className={'itemButtonCollapse1 height'}
+          sx={{ height }}
           onClick={handleClick}>
           <ListItemText
             primary={sla ?? ola}
@@ -99,7 +100,7 @@ export const SLAList = memo(
           <RotateButton open={open} handleClick={handleClick} />
         </ListItemButton>
         <Collapse
-          sx={{ width: '100%', height: 'auto' }}
+          className={'width_100_height_auto'}
           in={open}
           timeout="auto"
           unmountOnExit>
@@ -116,7 +117,7 @@ export const SLAList = memo(
             key={`${id}`}
           />
         </Collapse>
-      </Box>
+      </MuiDiv>
     )
   },
 )

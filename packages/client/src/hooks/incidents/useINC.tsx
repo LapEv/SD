@@ -4,15 +4,9 @@ import { useAppDispatch } from 'store/hooks'
 import { INCActions } from './incActions'
 import { INCState } from 'store/slices/incidents/interfaces'
 import {
-  changeExecutor,
-  changeINC,
   changeIncidentStatuses,
-  changeResponsible,
-  changeStatus,
   changeTypesOfWork,
   changeTypesCompletedWork,
-  changeUserClosing,
-  changeUserClosingCheck,
   deleteIncidentStatuses,
   deleteTypesOfWork,
   deleteTypesCompletedWork,
@@ -25,14 +19,20 @@ import {
   newTypeOfWork,
   newTypeCompletedWork,
   getINCs,
-  getFilter,
-  changeComment,
   changeStateIncidentStatuses,
+  getINCsByDate,
+  changeExecutorSVR,
+  changeResponsibleSVR,
+  changeStatusSVR,
+  changeINC,
 } from 'api/incidents'
 import {
-  setActiveINC,
   setLoadingINC,
-  setStateOutputFilter,
+  setFilteredLength,
+  setFiltered,
+  changeExecutor,
+  changeResponsible,
+  changeStatus,
 } from 'store/slices/incidents'
 
 export function useIncidents(): [INCState, INCActions] {
@@ -45,11 +45,11 @@ export function useIncidents(): [INCState, INCActions] {
       getINC() {
         dispatch(getINC())
       },
-      getFilter() {
-        dispatch(getFilter())
-      },
       getINCs(data) {
         dispatch(getINCs(data))
+      },
+      getINCsByDate(data) {
+        dispatch(getINCsByDate(data))
       },
       getIncidentStatuses() {
         dispatch(getIncidentStatuses())
@@ -63,6 +63,21 @@ export function useIncidents(): [INCState, INCActions] {
       newINC(data) {
         dispatch(newINC(data))
       },
+      changeExecutor(data) {
+        dispatch(changeExecutorSVR(data))
+        dispatch(changeExecutor(data))
+      },
+      changeResponsible(data) {
+        dispatch(changeResponsibleSVR(data))
+        dispatch(changeResponsible(data))
+      },
+      changeStatus(data) {
+        dispatch(changeStatusSVR(data))
+        dispatch(changeStatus(data))
+      },
+      changeINC(data) {
+        dispatch(changeINC(data))
+      },
       newIncidentStatuses(data) {
         dispatch(newIncidentStatuses(data))
       },
@@ -74,27 +89,6 @@ export function useIncidents(): [INCState, INCActions] {
       },
       deleteIncidentStatuses(data) {
         dispatch(deleteIncidentStatuses(data))
-      },
-      changeINC(data) {
-        dispatch(changeINC(data))
-      },
-      changeExecutor(data) {
-        dispatch(changeExecutor(data))
-      },
-      changeResponsible(data) {
-        dispatch(changeResponsible(data))
-      },
-      changeStatus(data) {
-        dispatch(changeStatus(data))
-      },
-      changeUserClosingCheck(data) {
-        dispatch(changeUserClosingCheck(data))
-      },
-      changeUserClosing(data) {
-        dispatch(changeUserClosing(data))
-      },
-      changeComment(data) {
-        dispatch(changeComment(data))
       },
       deleteTypesOfWork(data) {
         dispatch(deleteTypesOfWork(data))
@@ -114,14 +108,14 @@ export function useIncidents(): [INCState, INCActions] {
       changeTypesCompletedWork(data) {
         dispatch(changeTypesCompletedWork(data))
       },
-      setActiveINC(id) {
-        dispatch(setActiveINC(id))
-      },
       setLoadingINC(data) {
         dispatch(setLoadingINC(data))
       },
-      setStateOutputFilter(data) {
-        dispatch(setStateOutputFilter(data))
+      setFilteredLength(data) {
+        dispatch(setFilteredLength(data))
+      },
+      setFiltered(data) {
+        dispatch(setFiltered(data))
       },
     },
   ]

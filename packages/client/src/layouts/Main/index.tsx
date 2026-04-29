@@ -95,9 +95,10 @@ export const MainLayout = memo(() => {
               backgroundColor: theme.palette.background.paper,
               width,
               minHeight: '100vh',
+              height: '100vH',
               display: 'flex',
               justifyContent: 'center',
-              alignItems: 'center',
+              alignItems: 'flex-start',
               p: 0,
             }}>
             <Outlet />

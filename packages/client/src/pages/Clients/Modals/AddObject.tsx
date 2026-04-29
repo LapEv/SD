@@ -1,5 +1,5 @@
 import React, { useState, useEffect, memo } from 'react'
-import { Box, Modal, Typography } from '@mui/material'
+import { Modal, Typography } from '@mui/material'
 import {
   useForm,
   useFieldArray,
@@ -13,17 +13,15 @@ import {
   answerModalAddAddressInObject,
 } from './interfaces'
 import { MapObjectInputFields } from '../data'
-import { modalStyle } from 'static/styles'
 import { ButtonsModalSection } from 'components/Buttons'
-import { DropDown, emptyValue } from 'components/DropDown'
+import { DropDown, emptyOptionsDD } from 'components/DropDown'
 import { useAddresses } from 'hooks/addresses/useAddresses'
 import { useMessage } from 'hooks/message/useMessage'
 import { Options } from 'components/DropDown/interface'
 import { useObjects } from 'hooks/objects/useObjects'
 import { useClients } from 'hooks/clients/useClients'
 import { ModalAddAddressInObject } from './'
-import { useTheme } from '@emotion/react'
-import { ITheme } from 'themes/themeConfig'
+import { BoxModal } from 'components/MUI'
 
 export const AddObject = memo(
   React.forwardRef<unknown, ChooseModalProps>(
@@ -33,15 +31,14 @@ export const AddObject = memo(
       const [{ regions, addresses }, { getRegions, getAddresses, addAddress }] =
         useAddresses()
       const [{ objects }, { getObjects, newObject }] = useObjects()
-      const [client, setClient] = useState<Options>(emptyValue)
-      const [region, setRegion] = useState<Options>(emptyValue)
+      const [client, setClient] = useState<Options>(emptyOptionsDD)
+      const [region, setRegion] = useState<Options>(emptyOptionsDD)
       const [errRegion, setErrRegion] = useState<boolean>(false)
-      const [address, setAddress] = useState<Options>(emptyValue)
+      const [address, setAddress] = useState<Options>(emptyOptionsDD)
       const [errAddress, setErrAddress] = useState<boolean>(false)
       const [newAddressName, setNewAddress] = useState<string>('')
       const [modal, setModal] = useState<boolean>(false)
       const modalAddRef = React.createRef()
-      const theme = useTheme() as ITheme
 
       const { handleSubmit, control } = useForm<AddValuesProps>({
         mode: 'onBlur',
@@ -106,7 +103,7 @@ export const AddObject = memo(
 
       const checkAddress = (text: string) => {
         const isAddress = addresses.find(item => item.address === text)
-        if (isAddress || !text) return
+        if (isAddress || text === '') return
         setNewAddress(text)
         setErrRegion(true)
         setErrAddress(true)
@@ -148,8 +145,10 @@ export const AddObject = memo(
         }
       }, [addresses])
 
+      console.log('modal = ', modal)
+
       return (
-        <Box ref={ref} tabIndex={-1}>
+        <BoxModal ref={ref} tabIndex={-1}>
           <Modal
             open={modal}
             onClose={() => setModal(false)}
@@ -162,11 +161,11 @@ export const AddObject = memo(
               address={newAddressName}
             />
           </Modal>
-          <Box
-            sx={modalStyle}
+          <BoxModal
+            className={'modalMainContainer'}
             component="form"
             onSubmit={handleSubmit(changeData)}>
-            <Typography variant={'h6'}>{title}</Typography>
+            <Typography variant={'h1'}>{title}</Typography>
             <DropDown
               data={clients.map(item => {
                 return {
@@ -174,7 +173,7 @@ export const AddObject = memo(
                   ['id']: item.id as string,
                 }
               })}
-              props={{ mt: 3 }}
+              props={{ mt: 2, mb: 1 }}
               onChange={setClient}
               value={client.label}
               label="Выберите клиента"
@@ -183,7 +182,7 @@ export const AddObject = memo(
             {fields.map(({ id, label, validation, type, required }, index) => {
               return (
                 <Controller
-                  key={id}
+                  key={`${label}_${id}`}
                   control={control}
                   name={`list.${index}.value`}
                   rules={validation}
@@ -195,16 +194,7 @@ export const AddObject = memo(
                       type={type}
                       variant="outlined"
                       required={required ?? true}
-                      sx={{
-                        width: '90%',
-                        height: theme.fontSize === 'small' ? 30 : 40,
-                        mt:
-                          index === 0
-                            ? theme.fontSize === 'small'
-                              ? 7
-                              : 6
-                            : 5,
-                      }}
+                      className={'textContainer_w90_mt3'}
                       margin="normal"
                       value={field.value || ''}
                       error={!!(errors?.list ?? [])[index]?.value?.message}
@@ -221,7 +211,7 @@ export const AddObject = memo(
                   ['id']: item.id as string,
                 }
               })}
-              props={{ mt: 5 }}
+              props={{ mt: 3 }}
               onBlur={checkAddress}
               onChange={setAddress}
               value={address.label}
@@ -236,7 +226,7 @@ export const AddObject = memo(
                   ['id']: item.id as string,
                 }
               })}
-              props={{ mt: 6 }}
+              props={{ mt: 4, mb: 2 }}
               onChange={setRegion}
               value={region.label}
               label="Выберите регион"
@@ -247,8 +237,8 @@ export const AddObject = memo(
               closeModal={() => handleModal(false)}
               btnName="Сохранить"
             />
-          </Box>
-        </Box>
+          </BoxModal>
+        </BoxModal>
       )
     },
   ),

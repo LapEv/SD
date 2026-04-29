@@ -1,11 +1,5 @@
 import React, { useState, useEffect, memo } from 'react'
-import {
-  Box,
-  Checkbox,
-  FormControlLabel,
-  Typography,
-  useTheme,
-} from '@mui/material'
+import { Checkbox, FormControlLabel, Typography } from '@mui/material'
 import {
   useForm,
   useFieldArray,
@@ -15,17 +9,16 @@ import {
 import { TextField } from 'components/TextFields'
 import { ChooseModalProps, AddValuesProps } from './interfaces'
 import { MapProfileInputFieldsAdmin } from '../data'
-import { modalStyle } from 'static/styles'
 import { ButtonsModalSection } from 'components/Buttons'
 import { useStructure } from 'hooks/structure/useStructure'
-import { DropDown, emptyValue } from 'components/DropDown'
+import { DropDown, emptyOptionsDD } from 'components/DropDown'
 import { useRoles } from 'hooks/roles/useRoles'
 import { Item } from 'components/CheckBoxGroup'
 import { useAuth } from 'hooks/auth/useAuth'
 import { DataList } from 'components/CheckBoxGroup/interface'
 import { Options } from 'components/DropDown/interface'
 import { Department } from 'store/slices/structure/interfaces'
-import { ITheme } from 'themes/themeConfig'
+import { BoxModal, MuiDiv } from 'components/MUI'
 
 export const AddUser = memo(
   React.forwardRef<unknown, ChooseModalProps>(
@@ -34,17 +27,16 @@ export const AddUser = memo(
       const [{ divisions }] = useStructure()
       const [{ rolesGroup }, { getRolesGroupNotRoles }] = useRoles()
       const [dataGroup, setDataGroup] = useState<DataList[]>([])
-      const [division, setDivision] = useState<Options>(emptyValue)
+      const [division, setDivision] = useState<Options>(emptyOptionsDD)
       const [listDepartments, setDepartments] = useState<Options[]>([])
-      const [department, setDepartment] = useState<Options>(emptyValue)
+      const [department, setDepartment] = useState<Options>(emptyOptionsDD)
       const [id_rolesGroup, setGroup] = useState<string>('')
       const [errSelectedItems, setErrSelectedItems] = useState<boolean>(false)
       const [chiefDivision, setCheckedCheifDivision] = useState<boolean>(false)
       const [chiefDepartment, setCheckedCheifDepartment] =
         useState<boolean>(false)
-      const [statusName, setStatusName] = useState<Options>(emptyValue)
+      const [statusName, setStatusName] = useState<Options>(emptyOptionsDD)
 
-      const theme = useTheme() as ITheme
       const { handleSubmit, control } = useForm<AddValuesProps>({
         mode: 'onBlur',
         defaultValues: {
@@ -135,10 +127,10 @@ export const AddUser = memo(
       }, [rolesGroup])
 
       return (
-        <Box
+        <BoxModal
           ref={ref}
           tabIndex={-1}
-          sx={modalStyle}
+          className={'modalMainContainer'}
           component="form"
           onSubmit={handleSubmit(changeData)}>
           <Typography variant={'h6'}>{title}</Typography>
@@ -149,7 +141,7 @@ export const AddUser = memo(
                 ['id']: item.id as string,
               }
             })}
-            props={{ mt: theme.fontSize === 'small' ? 6 : 4 }}
+            className={'dropdown_mt4'}
             onChange={setStatusName}
             value={statusName.label}
             label="Выберите статус пользователя"
@@ -162,14 +154,14 @@ export const AddUser = memo(
                 ['id']: item.id as string,
               }
             })}
-            props={{ mt: theme.fontSize === 'small' ? 6 : 4 }}
+            className={'dropdown_mt4'}
             onChange={changeDivision}
             value={division.label}
             label="Выберите подразделение"
             errorLabel="Не выбрано подразделение!"
           />
           <FormControlLabel
-            sx={{ width: '85%', mt: 1 }}
+            className={'checkBoxContainer'}
             name={'Шеф подразделения'}
             label={'Шеф подразделения'}
             control={
@@ -183,14 +175,14 @@ export const AddUser = memo(
           />
           <DropDown
             data={listDepartments}
-            // props={{ mt: 1 }}
+            props={{ mt: 1 }}
             onChange={setDepartment}
             value={department.label}
             label="Выберите отдел"
             errorLabel="Не выбран отдел!"
           />
           <FormControlLabel
-            sx={{ width: '85%', mt: 1 }}
+            className={'checkBoxContainer'}
             name={'Шеф отдела'}
             label={'Шеф отдела'}
             control={
@@ -205,7 +197,7 @@ export const AddUser = memo(
           {fields.map(({ id, label, validation, type, required }, index) => {
             return (
               <Controller
-                key={id}
+                key={`${label}_${id}`}
                 control={control}
                 name={`list.${index}.value`}
                 rules={validation}
@@ -218,18 +210,7 @@ export const AddUser = memo(
                     type={type}
                     required={required ?? true}
                     variant="outlined"
-                    sx={{
-                      width: '90%',
-                      height: theme.fontSize === 'small' ? 30 : 40,
-                      mt:
-                        index === 0
-                          ? theme.fontSize === 'small'
-                            ? 1
-                            : 1
-                          : theme.fontSize === 'small'
-                            ? 5
-                            : 3,
-                    }}
+                    className="textContainer_w90_mt3"
                     margin="normal"
                     value={field.value || ''}
                     error={!!(errors?.list ?? [])[index]?.value?.message}
@@ -250,18 +231,18 @@ export const AddUser = memo(
               groupChecked={null}
               onChooseItems={setRolesGroup}
               initChecked={initChecked}
-              key={id}
-              props={{ ml: theme.fontSize === 'small' ? 23 : 7, p: 1 }}
+              key={`${name}_${id}`}
+              className={'listModalAddUser'}
             />
           ))}
-          <Box sx={{ color: theme.palette.error.main, minHeight: 10, mt: 1 }}>
+          <MuiDiv className={'modalError'}>
             {errSelectedItems && 'Не выбрана ни одна роль или группа ролей!'}
-          </Box>
+          </MuiDiv>
           <ButtonsModalSection
             closeModal={() => handleModal(false)}
             btnName="Сохранить"
           />
-        </Box>
+        </BoxModal>
       )
     },
   ),

@@ -47,9 +47,6 @@ export class filesService {
     try {
       if (files.constructor !== Array) {
         const file = files as UploadedFile
-        if (!fs.existsSync(pathFiles)) {
-          file.mv(pathFiles)
-        }
         const uploadedFiles = [
           {
             name: filesName,
@@ -59,29 +56,35 @@ export class filesService {
             id_incFiles,
           },
         ]
-        await FilesRepos.bulkCreate(uploadedFiles)
+        if (!fs.existsSync(pathFiles)) {
+          file.mv(pathFiles)
+          await FilesRepos.bulkCreate(uploadedFiles)
+        }
         res.status(200).json(uploadedFiles)
         return
       }
-      const uploadedFiles = files.map((item: UploadedFile, index: number) => {
-        const filePath =
-          process.env.NODE_ENV === 'development'
-            ? path.join(
-                __dirname,
-                `../Files/${typeDir}/${incident}/${filesName[index]}`,
-              )
-            : `process.env.FILE_PATH/${typeDir}/${incident}/${filesName[index]}`
-        if (!fs.existsSync(filePath)) {
-          item.mv(filePath)
-        }
-        return {
-          name: filesName[index],
-          size: item.size,
-          mimetype: item.mimetype,
-          path: `${typeDir}/${incident}/${filesName[index]}`,
-          id_incFiles,
-        }
-      })
+      const uploadedFiles = files
+        .map((item: UploadedFile, index: number) => {
+          const filePath =
+            process.env.NODE_ENV === 'development'
+              ? path.join(
+                  __dirname,
+                  `../Files/${typeDir}/${incident}/${filesName[index]}`,
+                )
+              : `process.env.FILE_PATH/${typeDir}/${incident}/${filesName[index]}`
+          if (!fs.existsSync(filePath)) {
+            item.mv(filePath)
+            return {
+              name: filesName[index],
+              size: item.size,
+              mimetype: item.mimetype,
+              path: `${typeDir}/${incident}/${filesName[index]}`,
+              id_incFiles,
+            }
+          }
+          return {}
+        })
+        .filter(item => item.name)
       await FilesRepos.bulkCreate(uploadedFiles)
       res.status(200).json(uploadedFiles)
     } catch (err) {

@@ -1,10 +1,10 @@
-import { defineConfig } from 'vite'
+import { defineConfig, PluginOption } from 'vite'
 import react from '@vitejs/plugin-react'
 import * as path from 'path'
 
 export default defineConfig(({ mode }) => {
   return {
-    plugins: [react()],
+    plugins: [react() as PluginOption[]],
     esbuild: {
       logOverride: { 'this-is-undefined-in-esm': 'silent' },
     },
@@ -14,7 +14,7 @@ export default defineConfig(({ mode }) => {
       __BASE_URL__: JSON.stringify(
         mode === 'development'
           ? 'localhost'
-          : process.env.SERVER_HOST ?? 'http://www.sdtest.sb-i.ru',
+          : (process.env.SERVER_HOST ?? 'http://www.sdtest.sb-i.ru'),
       ),
     },
     build: {

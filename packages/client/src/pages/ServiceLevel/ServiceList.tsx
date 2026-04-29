@@ -1,19 +1,16 @@
 import { memo, useEffect, useState } from 'react'
-import { Box, ListItemText, ListItemButton } from '@mui/material'
+import { ListItemText, ListItemButton } from '@mui/material'
 import Collapse from '@mui/material/Collapse'
 import { RotateButton } from 'components/Buttons'
 import { IServiceList, IServiceListDataPage } from 'store/slices/sla/interfaces'
 import { useSLA } from 'hooks/sla/useSLA'
-import { classifier, classifierComponent } from 'static/styles'
 import { SLAList } from '.'
-import { useTheme } from '@emotion/react'
-import { ITheme } from 'themes/themeConfig'
+import { MuiDiv } from 'components/MUI'
 
 export const ServiceList = memo(({ name, label }: IServiceList) => {
   const [{ sla, ola, activeList }, { setActiveList, getSLA, getOLA }] = useSLA()
   const [open, setOpen] = useState<boolean>(false)
   const [data, setData] = useState<IServiceListDataPage[]>([])
-  const theme = useTheme() as ITheme
 
   const handleClick = () => {
     setOpen(!open)
@@ -88,19 +85,16 @@ export const ServiceList = memo(({ name, label }: IServiceList) => {
   }, [activeList])
 
   return (
-    <Box sx={classifier}>
+    <MuiDiv className={'containerCollapse'}>
       <ListItemButton
         divider={open}
-        sx={{
-          ...classifierComponent,
-          height: theme.fontSize === 'small' ? 40 : 50,
-        }}
+        className={'itemButtonCollapse1 height'}
         onClick={handleClick}>
         <ListItemText primary={label} />
         <RotateButton open={open} handleClick={handleClick} size={'2rem'} />
       </ListItemButton>
       <Collapse
-        sx={{ width: '100%', height: 'auto' }}
+        className={'width_100_height_auto'}
         in={open}
         timeout="auto"
         unmountOnExit>
@@ -127,11 +121,10 @@ export const ServiceList = memo(({ name, label }: IServiceList) => {
               TypesOfWork={TypesOfWork}
               id={id as string}
               key={`${id}`}
-              height={theme.fontSize === 'small' ? 40 : 50}
             />
           ),
         )}
       </Collapse>
-    </Box>
+    </MuiDiv>
   )
 })

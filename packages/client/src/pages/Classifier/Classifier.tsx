@@ -1,12 +1,11 @@
 import React, { memo, useEffect, useState } from 'react'
-import { Box, Container, Modal, Typography, List } from '@mui/material'
+import { Container, Modal, Typography, List } from '@mui/material'
 import { useAuth } from 'hooks/auth/useAuth'
 import { DropDownMenu } from 'components/DropDownButtonMenu'
 import { menuData, Equipments } from './'
 import { ChooseModal } from './Modals/ChooseModal'
 import { useClassifier } from 'hooks/classifier/useClassifier'
-import { headerForPages, mainHeaderForPages } from 'static/styles'
-import { page } from 'static/styles/pages/main'
+import { MuiDiv } from 'components/MUI'
 
 export const ClassifierPage = memo(() => {
   const modalClientRef = React.createRef()
@@ -33,7 +32,7 @@ export const ClassifierPage = memo(() => {
   }, [])
 
   return (
-    <Container component="main" maxWidth="md" sx={mainHeaderForPages}>
+    <Container component="main" maxWidth="md" className={'mainHeaderForPages'}>
       <Modal
         open={modal}
         onClose={() => setModal(false)}
@@ -45,7 +44,7 @@ export const ClassifierPage = memo(() => {
           handleModal={handleModal}
         />
       </Modal>
-      <Box component="div" sx={headerForPages}>
+      <MuiDiv className={'headerForPages'}>
         <Typography variant="h6">Классификатор</Typography>
         {admin && (
           <DropDownMenu
@@ -55,8 +54,8 @@ export const ClassifierPage = memo(() => {
             onClick={checkClickMenu}
           />
         )}
-      </Box>
-      <List sx={{ ...page, maxWidth: 1200 }}>
+      </MuiDiv>
+      <List className={'pageListContainer'}>
         {equipments.map(
           ({ equipment, id, ClassifierModels, TypicalMalfunctions }) => (
             <Equipments

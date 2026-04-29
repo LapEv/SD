@@ -98,6 +98,7 @@ export interface ClassifierModelForINC {
   id: string
   model: string
   active: boolean
+  ClassifierModels?: ClassifierModels[]
 }
 
 export interface TypicalMalfunctionForINC {

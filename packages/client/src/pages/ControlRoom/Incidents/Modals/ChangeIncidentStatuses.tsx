@@ -1,9 +1,8 @@
 import React, { memo } from 'react'
 import { useState, useEffect } from 'react'
-import { Box, Typography, useTheme } from '@mui/material'
-import { modalStyle } from 'static/styles'
+import { Typography } from '@mui/material'
 import { ButtonsModalSection } from 'components/Buttons'
-import { DropDown, emptyValue } from 'components/DropDown'
+import { DropDown, emptyOptionsDD } from 'components/DropDown'
 import { Options } from 'components/DropDown/interface'
 import {
   useForm,
@@ -14,7 +13,8 @@ import {
 import { TextField } from 'components/TextFields'
 import { MapINCStatusInputFields } from '../data'
 import { useIncidents } from 'hooks/incidents/useINC'
-import { AddValuesProps, ChooseModalProps } from './interfaces'
+import { AddValuesProps, ChooseModalProps } from '../interfaces'
+import { BoxModal, MuiDiv } from 'components/MUI'
 
 export const ChangeIncidentStatuses = memo(
   React.forwardRef<unknown, ChooseModalProps>(
@@ -23,9 +23,8 @@ export const ChangeIncidentStatuses = memo(
         useIncidents()
       const [listIncStatuses, setListIncStatuses] = useState<Options[]>([])
       const [selectedIncStatuses, setSelectedIncStatuses] =
-        useState<Options>(emptyValue)
+        useState<Options>(emptyOptionsDD)
       const [errSelectedItems, setErrSelectedItems] = useState<string>('')
-      const theme = useTheme()
 
       const { handleSubmit, control } = useForm<AddValuesProps>({
         mode: 'onBlur',
@@ -42,7 +41,7 @@ export const ChangeIncidentStatuses = memo(
       const changeData = ({ list }: AddValuesProps) => {
         if (!selectedIncStatuses) {
           setErrSelectedItems('Не выбран статус инцидента')
-          setSelectedIncStatuses(emptyValue)
+          setSelectedIncStatuses(emptyOptionsDD)
           return
         }
         changeIncidentStatuses({
@@ -63,7 +62,7 @@ export const ChangeIncidentStatuses = memo(
       const checkIncStatusesValue = (value: string) => {
         const isNew = incStatuses.findIndex(item => item.statusINC === value)
         if (isNew < 0) {
-          setSelectedIncStatuses(emptyValue)
+          setSelectedIncStatuses(emptyOptionsDD)
         }
       }
 
@@ -83,13 +82,13 @@ export const ChangeIncidentStatuses = memo(
       }, [incStatuses])
 
       return (
-        <Box
+        <BoxModal
           ref={ref}
           tabIndex={-1}
-          sx={{ ...modalStyle, paddingLeft: 5 }}
+          className={'modalMainContainer'}
           component="form"
           onSubmit={handleSubmit(changeData)}>
-          <Typography variant={'h6'}>{title}</Typography>
+          <Typography variant={'h1'}>{title}</Typography>
           <DropDown
             data={listIncStatuses}
             props={{ mt: 4 }}
@@ -99,11 +98,11 @@ export const ChangeIncidentStatuses = memo(
             errorLabel="Не выбран статус инцидента!"
             onBlur={text => checkIncStatusesValue(text)}
           />
-          <Box sx={{ mt: 2, width: '90%' }}>
+          <MuiDiv className={'w90_mt1'}>
             {fields.map(({ id, label, validation, type, required }, index) => {
               return (
                 <Controller
-                  key={id}
+                  key={`${label}_${id}`}
                   control={control}
                   name={`list.${index}.value`}
                   rules={validation}
@@ -115,7 +114,7 @@ export const ChangeIncidentStatuses = memo(
                       type={type}
                       variant="outlined"
                       required={required ?? true}
-                      sx={{ width: '100%', mt: 2, height: 40 }}
+                      className={'textContainer_mt2'}
                       margin="normal"
                       value={field.value || ''}
                       error={!!(errors?.list ?? [])[index]?.value?.message}
@@ -125,21 +124,13 @@ export const ChangeIncidentStatuses = memo(
                 />
               )
             })}
-          </Box>
-          <Box
-            sx={{
-              mt: 2,
-              width: '100%',
-              pl: 3,
-            }}></Box>
-          <Box sx={{ color: theme.palette.error.main, height: 20 }}>
-            {errSelectedItems}
-          </Box>
+          </MuiDiv>
+          <MuiDiv className={'modalErrorMT2'}>{errSelectedItems}</MuiDiv>
           <ButtonsModalSection
             closeModal={() => handleModal(false)}
             btnName={'Изменить'}
           />
-        </Box>
+        </BoxModal>
       )
     },
   ),

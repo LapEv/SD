@@ -1,5 +1,5 @@
 import React, { memo, useEffect, useState } from 'react'
-import { Box, Typography, useTheme } from '@mui/material'
+import { Typography } from '@mui/material'
 import {
   useForm,
   useFieldArray,
@@ -9,13 +9,12 @@ import {
 import { TextField } from 'components/TextFields'
 import { ChooseModalProps, AddValuesProps } from './interfaces'
 import { MapRoleInputFields } from '../data'
-import { modalStyle } from 'static/styles'
 import { ButtonsModalSection } from 'components/Buttons'
 import { useRoles } from 'hooks/roles/useRoles'
 import { NewRole } from 'storeRoles/interfaces'
 import { DataList } from 'components/CheckBoxGroup/interface'
 import { Item } from 'components/CheckBoxGroup'
-import { ITheme } from 'themes/themeConfig'
+import { BoxModal, MuiDiv } from 'components/MUI'
 
 export const AddRole = memo(
   React.forwardRef<unknown, ChooseModalProps>(
@@ -26,7 +25,6 @@ export const AddRole = memo(
         [],
       )
       const [errSelectedItems, setErrSelectedItems] = useState<boolean>(false)
-      const theme = useTheme() as ITheme
 
       const { handleSubmit, control } = useForm<AddValuesProps>({
         mode: 'onBlur',
@@ -63,7 +61,7 @@ export const AddRole = memo(
           return
         }
         setSelectedRolesGroups([...selectedRolesGroups, id])
-        if ([...selectedRolesGroups, id] && errSelectedItems)
+        if ([...selectedRolesGroups, id].length && errSelectedItems)
           setErrSelectedItems(false)
       }
 
@@ -83,17 +81,17 @@ export const AddRole = memo(
       }, [])
 
       return (
-        <Box
+        <BoxModal
           ref={ref}
           tabIndex={-1}
-          sx={modalStyle}
+          className={'modalMainContainer'}
           component="form"
           onSubmit={handleSubmit(changeData)}>
-          <Typography variant={'h6'}>{title}</Typography>
+          <Typography variant={'h1'}>{title}</Typography>
           {fields.map(({ id, label, validation, type, required }, index) => {
             return (
               <Controller
-                key={id}
+                key={`${label}_${id}`}
                 control={control}
                 name={`list.${index}.value`}
                 rules={validation}
@@ -104,12 +102,7 @@ export const AddRole = memo(
                     label={label}
                     type={type}
                     variant="outlined"
-                    sx={{
-                      width: '90%',
-                      m: 2,
-                      mt: 4,
-                      height: theme.fontSize === 'small' ? 30 : 40,
-                    }}
+                    className="textContainer_w90_mt3"
                     margin="normal"
                     required={required ?? true}
                     value={field.value || ''}
@@ -120,20 +113,10 @@ export const AddRole = memo(
               />
             )
           })}
-          <Typography variant={'body1'} sx={{ m: 2 }}>
+          <Typography variant={'body1'} sx={{ mt: 3, mb: 2 }}>
             Выберите группу для этой роли
           </Typography>
-
-          <Box
-            sx={{
-              width: '85%',
-              pl: 2,
-              pt: 1,
-              height: 'auto',
-              maxHeight: 300,
-              overflowY: 'auto',
-              overflowX: 'hidden',
-            }}>
+          <MuiDiv className={'listItemAddRole'}>
             {dataGroup.map(({ name, id, initChecked }) => (
               <Item
                 name={name}
@@ -141,19 +124,19 @@ export const AddRole = memo(
                 groupChecked={null}
                 onChooseItems={checkRolesGroup}
                 initChecked={initChecked}
-                key={`${id}`}
+                key={`${name}_${id}`}
               />
             ))}
-          </Box>
-          <Box sx={{ color: theme.palette.error.main, height: 20, mt: 2 }}>
+          </MuiDiv>
+          <MuiDiv className={'modalErrorMT2'}>
             {errSelectedItems && 'Не выбрана ни одна группа!'}
-          </Box>
+          </MuiDiv>
 
           <ButtonsModalSection
             closeModal={() => handleModal(false)}
             btnName={'Сохранить'}
           />
-        </Box>
+        </BoxModal>
       )
     },
   ),

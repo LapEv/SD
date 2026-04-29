@@ -1,5 +1,5 @@
 import React, { memo, useEffect, useState } from 'react'
-import { Box, Typography } from '@mui/material'
+import { Typography } from '@mui/material'
 import {
   useForm,
   useFieldArray,
@@ -9,12 +9,12 @@ import {
 import { TextField } from 'components/TextFields'
 import { ChooseModalProps, AddValuesPropsSLA } from './interfaces'
 import { MapSLAInputFields } from '../data'
-import { modalStyle } from 'static/styles'
 import { ButtonsModalSection } from 'components/Buttons'
 import { useSLA } from 'hooks/sla/useSLA'
-import { DropDown, emptyValue } from 'components/DropDown'
+import { DropDown, emptyOptionsDD } from 'components/DropDown'
 import { Options } from 'components/DropDown/interface'
 import { useIncidents } from 'hooks/incidents/useINC'
+import { BoxModal } from 'components/MUI'
 
 export const NewSLA = memo(
   React.forwardRef<unknown, ChooseModalProps>(
@@ -22,7 +22,7 @@ export const NewSLA = memo(
       const [, { newSLA }] = useSLA()
       const [{ typesOfWork }, { getTypesOfWork }] = useIncidents()
       const [listTypes, setListTypes] = useState<Options[]>([])
-      const [selectedType, setSelectedType] = useState<Options>(emptyValue)
+      const [selectedType, setSelectedType] = useState<Options>(emptyOptionsDD)
 
       const { handleSubmit: handleSubmitAddSLA, control: controlAddSLA } =
         useForm<AddValuesPropsSLA>({
@@ -64,18 +64,18 @@ export const NewSLA = memo(
       }, [])
 
       return (
-        <Box
+        <BoxModal
           ref={ref}
           tabIndex={-1}
-          sx={modalStyle}
+          className={'modalMainContainer'}
           component="form"
           onSubmit={handleSubmitAddSLA(changeData)}>
-          <Typography variant={'h6'}>{title}</Typography>
+          <Typography variant={'h1'}>{title}</Typography>
           {fieldsAddSLA.map(
             ({ id, name, label, validation, type, required }, index) => {
               return (
                 <Controller
-                  key={id}
+                  key={`${label}_${id}`}
                   control={controlAddSLA}
                   name={`listAddSLA.${index}.value`}
                   rules={validation}
@@ -87,10 +87,7 @@ export const NewSLA = memo(
                         label={label}
                         type={type}
                         variant="outlined"
-                        sx={{
-                          width: '90%',
-                          mt: 5,
-                        }}
+                        className="textContainer_mt2"
                         margin="normal"
                         required={required ?? true}
                         value={field.value ?? ''}
@@ -102,17 +99,16 @@ export const NewSLA = memo(
                           (errorsAddSLA?.listAddSLA ?? [])[index]?.value
                             ?.message
                         }
-                        InputProps={{
-                          inputProps: { min: type === 'number' ? 0 : '' },
+                        slotProps={{
+                          input: {
+                            inputProps: { min: type === 'number' ? 0 : '' },
+                          },
                         }}
                       />
                     ) : (
                       <DropDown
                         data={listTypes}
-                        props={{
-                          mt: 5,
-                          width: '90%',
-                        }}
+                        className="dropdownModalList"
                         onChange={setSelectedType}
                         value={selectedType.label || ''}
                         label="Выберите тип работ"
@@ -128,7 +124,7 @@ export const NewSLA = memo(
             closeModal={() => handleModal(false)}
             btnName="Сохранить"
           />
-        </Box>
+        </BoxModal>
       )
     },
   ),

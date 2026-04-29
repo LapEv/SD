@@ -1,15 +1,11 @@
-import React, { memo, useEffect, useState } from 'react'
+import React, { ChangeEvent, memo, useEffect, useState } from 'react'
+import { Collapse, ListItemButton, ListItemText, Modal } from '@mui/material'
 import {
-  Box,
-  Collapse,
-  ListItemButton,
-  ListItemText,
-  Modal,
-  useTheme,
-} from '@mui/material'
-import { IconPopoverButton, RotateButton } from 'components/Buttons'
+  ClearSearchModalSection,
+  IconPopoverButton,
+  RotateButton,
+} from 'components/Buttons'
 import { Item } from 'components/CheckBoxGroup'
-import { classifierChild2Component, popoverIcon } from 'static/styles'
 import { DataList } from 'components/CheckBoxGroup/interface'
 import { TextField } from 'components/TextFields'
 import { useFilteredData } from 'hooks/useFilteredData'
@@ -17,10 +13,9 @@ import { useAuth } from 'hooks/auth/useAuth'
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline'
 import { useObjects } from 'hooks/objects/useObjects'
 import { AddObject } from './Modals'
-import { SearchIconElement } from 'components/Icons'
 import { ModalTitles } from './data'
 import { IObjectList } from './interfaces'
-import { ITheme } from 'themes/themeConfig'
+import { MuiDiv } from 'components/MUI'
 
 export const ContractObjectList = memo(
   ({ objectID, onChooseItems }: IObjectList) => {
@@ -34,7 +29,6 @@ export const ContractObjectList = memo(
     const filteredData = useFilteredData<DataList>(objectsData, filterText, [
       'name',
     ])
-    const theme = useTheme() as ITheme
 
     const openObjectList = () => {
       setOpenObject(!openObject)
@@ -61,7 +55,7 @@ export const ContractObjectList = memo(
     }
 
     return (
-      <Box sx={{ width: '95%', mt: 1 }}>
+      <MuiDiv className={'flexColumn'}>
         <Modal
           open={modal}
           onClose={() => setModal(false)}
@@ -75,40 +69,35 @@ export const ContractObjectList = memo(
         </Modal>
         <ListItemButton
           divider={openObject}
-          sx={{
-            ...classifierChild2Component,
-            height: theme.fontSize === 'small' ? 30 : 40,
-          }}
+          className={'itemContainerLabel'}
           onClick={openObjectList}>
           <ListItemText primary={'Объекты'} sx={{ ml: 2 }} />
           <RotateButton open={openObject} />
         </ListItemButton>
         <Collapse
-          sx={{ width: '100%', p: 2, pl: 5, pr: 5 }}
+          className={'collapseList collapseList_p'}
           in={openObject}
           timeout="auto"
           unmountOnExit>
-          <Box
-            sx={{
-              display: 'flex',
-              justifyContent: 'flex-start',
-              alignItems: 'center',
-              height: theme.fontSize === 'small' ? 30 : 40,
-              mt: 1,
-            }}>
+          <MuiDiv className={'boxList_flexSC'}>
             <TextField
               variant="outlined"
-              sx={{
-                width: '90%',
-                mt: 2,
-                height: theme.fontSize === 'small' ? 30 : 40,
-              }}
+              className={'textContainer_w90_mt2'}
               label="Введите фильтр"
               margin="normal"
               value={filterText || ''}
-              onChange={e => setFilterText(e.target.value ?? '')}
-              InputProps={{
-                endAdornment: <SearchIconElement />,
+              onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                setFilterText(e.target.value ?? '')
+              }
+              slotProps={{
+                input: {
+                  endAdornment: (
+                    <ClearSearchModalSection
+                      length={filterText.length}
+                      handleClick={() => setFilterText('')}
+                    />
+                  ),
+                },
               }}
             />
             {admin && (
@@ -117,22 +106,11 @@ export const ContractObjectList = memo(
                 onClick={AddNewObject}
                 icon={<AddCircleOutlineIcon />}
                 propsPopover={{ ml: -1 }}
-                sx={{
-                  ...popoverIcon,
-                  width: theme.fontSize === 'small' ? 30 : 40,
-                  height: theme.fontSize === 'small' ? 30 : 40,
-                }}
+                className={'addIconButton'}
               />
             )}
-          </Box>
-          <Box
-            sx={{
-              maxHeight: '35vH',
-              overflowX: 'hidden',
-              overflowY: 'auto',
-              height: 'auto',
-              mt: 2,
-            }}>
+          </MuiDiv>
+          <MuiDiv className={'listViewColumn'}>
             {filteredData?.map(({ name, id, initChecked, comment }) => (
               <Item
                 name={name}
@@ -145,9 +123,9 @@ export const ContractObjectList = memo(
                 key={id as string}
               />
             ))}
-          </Box>
+          </MuiDiv>
         </Collapse>
-      </Box>
+      </MuiDiv>
     )
   },
 )

@@ -1,10 +1,9 @@
 import React, { memo } from 'react'
 import { AddValuesProps, ChooseModalProps } from './interfaces'
 import { useState, useEffect } from 'react'
-import { Box, Typography, useTheme } from '@mui/material'
-import { modalStyle } from 'static/styles'
+import { Typography } from '@mui/material'
 import { ButtonsModalSection } from 'components/Buttons'
-import { DropDown, emptyValue } from 'components/DropDown'
+import { DropDown, emptyOptionsDD } from 'components/DropDown'
 import { useAddresses } from 'hooks/addresses/useAddresses'
 import { Options } from 'components/DropDown/interface'
 import { Addresses } from 'store/slices/addresses/interfaces'
@@ -21,7 +20,7 @@ import { Objects } from 'store/slices/objects/interfaces'
 import { useClients } from 'hooks/clients/useClients'
 import { deepEqual } from 'utils/deepEqual'
 import { useMessage } from 'hooks/message/useMessage'
-import { ITheme } from 'themes/themeConfig'
+import { BoxModal, MuiDiv } from 'components/MUI'
 
 export const ChangeObject = memo(
   React.forwardRef<unknown, ChooseModalProps>(
@@ -36,15 +35,14 @@ export const ChangeObject = memo(
       const [listRegions, setListRegions] = useState<Options[]>([])
       const [listClients, setListClients] = useState<Options[]>([])
       const [selectedObjects, setSelectedObjects] =
-        useState<Options>(emptyValue)
+        useState<Options>(emptyOptionsDD)
       const [selectedClients, setSelectedClients] =
-        useState<Options>(emptyValue)
+        useState<Options>(emptyOptionsDD)
       const [selectedAddresses, setSelectedAddresses] =
-        useState<Options>(emptyValue)
+        useState<Options>(emptyOptionsDD)
       const [selectedRegions, setSelectedRegions] =
-        useState<Options>(emptyValue)
+        useState<Options>(emptyOptionsDD)
       const [errSelectedItems, setErrSelectedItems] = useState<string>('')
-      const theme = useTheme() as ITheme
 
       const { handleSubmit, control, reset } = useForm<AddValuesProps>({
         mode: 'onBlur',
@@ -69,7 +67,7 @@ export const ChangeObject = memo(
         }
         if (!selectedRegions) {
           setErrSelectedItems('Не выбран регион')
-          setSelectedRegions(emptyValue)
+          setSelectedRegions(emptyOptionsDD)
           return
         }
         const newObject = {
@@ -195,28 +193,28 @@ export const ChangeObject = memo(
       const checkObjectValue = (value: string) => {
         const isNew = objects.findIndex(item => item.object === value)
         if (isNew < 0) {
-          setSelectedAddresses(emptyValue)
+          setSelectedAddresses(emptyOptionsDD)
         }
       }
 
       const checkClientValue = (value: string) => {
         const isNew = clients.findIndex(item => item.client === value)
         if (isNew < 0) {
-          setSelectedClients(emptyValue)
+          setSelectedClients(emptyOptionsDD)
         }
       }
 
       const checkAddressValue = (value: string) => {
         const isNew = addresses.findIndex(item => item.address === value)
         if (isNew < 0) {
-          setSelectedAddresses(emptyValue)
+          setSelectedAddresses(emptyOptionsDD)
         }
       }
 
       const checkRegionValue = (value: string) => {
         const isNew = regions.findIndex(item => item.region === value)
         if (isNew < 0) {
-          setSelectedRegions(emptyValue)
+          setSelectedRegions(emptyOptionsDD)
         }
       }
 
@@ -272,16 +270,16 @@ export const ChangeObject = memo(
       }, [regions])
 
       return (
-        <Box
+        <BoxModal
           ref={ref}
           tabIndex={-1}
-          sx={{ ...modalStyle, paddingLeft: 5 }}
+          className={'modalMainContainer'}
           component="form"
           onSubmit={handleSubmit(changeData)}>
-          <Typography variant={'h6'}>{title}</Typography>
+          <Typography variant={'h1'}>{title}</Typography>
           <DropDown
             data={listObjects}
-            props={{ mt: theme.fontSize === 'small' ? 6 : 4 }}
+            props={{ mt: 4 }}
             onChange={data => changeSelectedObject(data)}
             value={selectedObjects.label || ''}
             label="Выберите объект"
@@ -290,7 +288,7 @@ export const ChangeObject = memo(
           />
           <DropDown
             data={listClients}
-            props={{ mt: theme.fontSize === 'small' ? 6 : 4 }}
+            props={{ mt: 4 }}
             onChange={data => changeSelectedClients(data)}
             value={selectedClients.label || ''}
             label="Выберите клиента"
@@ -299,7 +297,7 @@ export const ChangeObject = memo(
           />
           <DropDown
             data={listAddresses}
-            props={{ mt: theme.fontSize === 'small' ? 6 : 4 }}
+            props={{ mt: 4 }}
             onChange={data => changeSelectedAddresses(data)}
             value={selectedAddresses.label || ''}
             label="Выберите адрес"
@@ -308,7 +306,7 @@ export const ChangeObject = memo(
           />
           <DropDown
             data={listRegions}
-            props={{ mt: theme.fontSize === 'small' ? 6 : 4 }}
+            props={{ mt: 4, mb: 1 }}
             onChange={data => changeSelectedRegions(data)}
             value={selectedRegions.label || ''}
             label="Выберите регион"
@@ -318,7 +316,7 @@ export const ChangeObject = memo(
           {fields.map(({ id, label, validation, type, required }, index) => {
             return (
               <Controller
-                key={id}
+                key={`${label}_${id}`}
                 control={control}
                 name={`list.${index}.value`}
                 rules={validation}
@@ -330,18 +328,7 @@ export const ChangeObject = memo(
                     type={type}
                     variant="outlined"
                     required={required ?? true}
-                    sx={{
-                      width: '90%',
-                      height: theme.fontSize === 'small' ? 30 : 40,
-                      mt:
-                        index === 0
-                          ? theme.fontSize === 'small'
-                            ? 6
-                            : 4
-                          : theme.fontSize === 'small'
-                            ? 5
-                            : 3,
-                    }}
+                    className={'textContainer_w90_mt3'}
                     margin="normal"
                     value={field.value || ''}
                     error={!!(errors?.list ?? [])[index]?.value?.message}
@@ -351,20 +338,12 @@ export const ChangeObject = memo(
               />
             )
           })}
-          <Box
-            sx={{
-              mt: 2,
-              width: '100%',
-              pl: 3,
-            }}></Box>
-          <Box sx={{ color: theme.palette.error.main, height: 20 }}>
-            {errSelectedItems}
-          </Box>
+          <MuiDiv className={'modalErrorMT2'}>{errSelectedItems}</MuiDiv>
           <ButtonsModalSection
             closeModal={() => handleModal(false)}
             btnName={'Изменить'}
           />
-        </Box>
+        </BoxModal>
       )
     },
   ),

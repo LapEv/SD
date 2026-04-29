@@ -1,4 +1,4 @@
-import { Box, Typography } from '@mui/material'
+import { Typography } from '@mui/material'
 import {
   useForm,
   useFieldArray,
@@ -13,8 +13,8 @@ import {
   ProfileChangePasswordValues,
 } from './interfaces'
 import { useAuth } from 'hooks/auth/useAuth'
-import { modalStyle } from 'static/styles'
 import { memo } from 'react'
+import { BoxModal } from 'components/MUI'
 
 export const ProfileChangePassword = memo(
   ({ handleModal, userId }: ProfileChangePasswordProps) => {
@@ -41,11 +41,11 @@ export const ProfileChangePassword = memo(
     }
 
     return (
-      <Box
-        sx={modalStyle}
+      <BoxModal
+        className={'modalMainContainer'}
         component="form"
         onSubmit={handleSubmit(changePasswordData)}>
-        <Typography variant={'h6'}>Смена пароля</Typography>
+        <Typography variant={'h1'}>Смена пароля</Typography>
         {fields.map(({ id, label, validation, type, required }, index) => {
           return (
             <Controller
@@ -60,7 +60,7 @@ export const ProfileChangePassword = memo(
                   label={label}
                   type={type}
                   variant="outlined"
-                  sx={{ width: '90%', m: 2, mt: 4, height: 40 }}
+                  className={'textContainer_w90_mt3'}
                   margin="normal"
                   required={required ?? true}
                   value={field.value || ''}
@@ -75,7 +75,7 @@ export const ProfileChangePassword = memo(
           closeModal={() => handleModal(false)}
           btnName="Сохранить"
         />
-      </Box>
+      </BoxModal>
     )
-  }
+  },
 )

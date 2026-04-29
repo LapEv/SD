@@ -2,27 +2,23 @@ import { createAsyncThunk } from '@reduxjs/toolkit'
 import { authhost, ApiEndPoints } from './config'
 import {
   AddINC,
-  ChangeINC,
   INCStatuses,
   AddINCStatuses,
   ChangeINCStatuses,
   TypesOfWork,
   AddTypesOfWork,
   ChangeTypesOfWork,
-  ChangeExecutor,
-  ChangeResponsible,
-  ChangeClosingCheck,
-  ChangeClosing,
-  ChangeStatus,
   TypesCompletedWork,
   AddTypesCompletedWork,
   ChangeTypesCompletedWork,
-  GetINCsByParams,
-  ChangeComment,
   AnswerGetINC,
+  GetINCsByParams,
+  ChangeResponsible,
+  ChangeExecutor,
+  ChangeStatus,
+  ChangeINC,
 } from 'store/slices/incidents/interfaces'
 import axios from 'axios'
-import { ICheckUser } from 'storeAuth/interfaces'
 
 interface ValidationError {
   message: string
@@ -49,18 +45,21 @@ export const getINC = createAsyncThunk(
   },
 )
 
-export const getFilter = createAsyncThunk(
-  'incidents/getFilter',
-  async (_, thunkAPI) => {
+export const getINCs = createAsyncThunk(
+  'incidents/getINCs',
+  async (params: GetINCsByParams, thunkAPI) => {
     try {
-      const { data } = await authhost.get<ICheckUser>(
-        ApiEndPoints.INC.getFilter,
+      const { data } = await authhost.get<AnswerGetINC>(
+        ApiEndPoints.INC.getINCs,
+        {
+          params: { params },
+        },
       )
       return data
     } catch (error) {
       if (axios.isAxiosError<ValidationError, Record<string, unknown>>(error)) {
         return thunkAPI.rejectWithValue(
-          `Не удалось получить данные по фильтрам: \n${
+          `Не удалось получить данные по инцидентам: \n${
             error.response?.data.message ?? error.response?.data
           }`,
         )
@@ -71,18 +70,13 @@ export const getFilter = createAsyncThunk(
   },
 )
 
-export const getINCs = createAsyncThunk(
-  'incidents/getINCs',
-  async (
-    { limit, nameSort, direction, page, filterOptions }: GetINCsByParams,
-    thunkAPI,
-  ) => {
+export const getINCsByDate = createAsyncThunk(
+  'incidents/getINCsByDate',
+  async (endDate: Date, thunkAPI) => {
     try {
       const { data } = await authhost.get<AnswerGetINC>(
-        ApiEndPoints.INC.getINCs,
-        {
-          params: { limit, nameSort, direction, page, filterOptions },
-        },
+        ApiEndPoints.INC.getINCsByDate,
+        { params: { endDate } },
       )
       return data
     } catch (error) {
@@ -125,69 +119,17 @@ export const newINC = createAsyncThunk(
   },
 )
 
-export const changeINC = createAsyncThunk(
-  'incidents/changeINC',
-  async (dataINC: ChangeINC, thunkAPI) => {
+export const changeExecutorSVR = createAsyncThunk(
+  'incidents/changeExecutorSVR',
+  async (_data: ChangeExecutor, thunkAPI) => {
     try {
-      const { data } = await authhost.post(ApiEndPoints.INC.changeINC, dataINC)
+      await authhost.post(ApiEndPoints.INC.changeExecutor, _data)
       return {
-        data,
         message: {
-          text: 'Инцидент изменен!',
-          type: 'success',
-        },
-      }
-    } catch (error) {
-      if (axios.isAxiosError<ValidationError, Record<string, unknown>>(error)) {
-        return thunkAPI.rejectWithValue(
-          `Не удалось изменить инцидент: \n${
-            error.response?.data.message ?? error.response?.data
-          }`,
-        )
-      } else {
-        console.error(error)
-      }
-    }
-  },
-)
-
-export const changeExecutor = createAsyncThunk(
-  'incidents/changeExecutor',
-  async (
-    {
-      id,
-      id_incExecutor,
-      incident,
-      executor,
-      userID,
-      nameSort,
-      direction,
-      limit,
-      page,
-      filterOptions,
-    }: ChangeExecutor,
-    thunkAPI,
-  ) => {
-    try {
-      const { data } = await authhost.post(ApiEndPoints.INC.changeExecutor, {
-        id,
-        id_incExecutor,
-        incident,
-        executor,
-        userID,
-        nameSort,
-        direction,
-        limit,
-        page,
-        filterOptions,
-      })
-      return {
-        data,
-        message: {
-          text: id_incExecutor.length
-            ? `${incident}: Назначен исполнитель "${executor}"`
-            : `${incident}: Удален исполнитель!`,
-          type: id_incExecutor.length ? 'success' : 'info',
+          text: _data.id_incExecutor.length
+            ? `${_data.incident}: Назначен исполнитель "${_data.executor}"`
+            : `${_data.incident}: Удален исполнитель!`,
+          type: _data.id_incExecutor.length ? 'success' : 'info',
         },
       }
     } catch (error) {
@@ -204,43 +146,17 @@ export const changeExecutor = createAsyncThunk(
   },
 )
 
-export const changeResponsible = createAsyncThunk(
-  'incidents/changeResponsible',
-  async (
-    {
-      id,
-      id_incResponsible,
-      incident,
-      responsible,
-      userID,
-      nameSort,
-      direction,
-      limit,
-      page,
-      filterOptions,
-    }: ChangeResponsible,
-    thunkAPI,
-  ) => {
+export const changeResponsibleSVR = createAsyncThunk(
+  'incidents/changeResponsibleSVR',
+  async (_data: ChangeResponsible, thunkAPI) => {
     try {
-      const { data } = await authhost.post(ApiEndPoints.INC.changeResponsible, {
-        id,
-        id_incResponsible,
-        incident,
-        responsible,
-        userID,
-        nameSort,
-        direction,
-        limit,
-        page,
-        filterOptions,
-      })
+      await authhost.post(ApiEndPoints.INC.changeResponsible, _data)
       return {
-        data,
         message: {
-          text: id_incResponsible.length
-            ? `${incident}: Назначен ответственный "${responsible}"`
-            : `${incident}: Удален ответственный!`,
-          type: id_incResponsible.length ? 'success' : 'info',
+          text: _data.id_incResponsible.length
+            ? `${_data.incident}: Назначен ответственный "${_data.responsible}"`
+            : `${_data.incident}: Удален ответственный!`,
+          type: _data.id_incResponsible.length ? 'success' : 'info',
         },
       }
     } catch (error) {
@@ -257,48 +173,14 @@ export const changeResponsible = createAsyncThunk(
   },
 )
 
-export const changeStatus = createAsyncThunk(
-  'incidents/changeStatus',
-  async (
-    {
-      id,
-      id_incStatus,
-      incident,
-      status,
-      userID,
-      timeSLA,
-      commentCloseCheck,
-      spaceParts,
-      typeCompletedWork,
-      nameSort,
-      direction,
-      limit,
-      page,
-      filterOptions,
-    }: ChangeStatus,
-    thunkAPI,
-  ) => {
+export const changeStatusSVR = createAsyncThunk(
+  'incidents/changeStatusSVR',
+  async (_data: ChangeStatus, thunkAPI) => {
     try {
-      const { data } = await authhost.post(ApiEndPoints.INC.changeStatus, {
-        id,
-        id_incStatus,
-        incident,
-        status,
-        userID,
-        timeSLA,
-        commentCloseCheck,
-        spaceParts,
-        typeCompletedWork,
-        nameSort,
-        direction,
-        limit,
-        page,
-        filterOptions,
-      })
+      await authhost.post(ApiEndPoints.INC.changeStatus, _data)
       return {
-        data,
         message: {
-          text: `${incident}: Назначен статус "${status}"`,
+          text: `${_data._incident}: Назначен статус "${_data.status}"`,
           type: 'success',
         },
       }
@@ -316,89 +198,22 @@ export const changeStatus = createAsyncThunk(
   },
 )
 
-export const changeUserClosingCheck = createAsyncThunk(
-  'incidents/changeUserClosingCheck',
-  async ({ id, id_incClosingCheck }: ChangeClosingCheck, thunkAPI) => {
+export const changeINC = createAsyncThunk(
+  'incidents/changeINC',
+  async (dataINC: ChangeINC, thunkAPI) => {
     try {
-      const { data } = await authhost.post(
-        ApiEndPoints.INC.changeUserClosingCheck,
-        {
-          id,
-          id_incClosingCheck,
-        },
-      )
+      const { data } = await authhost.post(ApiEndPoints.INC.changeINC, dataINC)
       return {
         data,
         message: {
-          text: `Назначен ответственный за выполнение!`,
+          text: 'Инцидент изменен!',
           type: 'success',
         },
       }
     } catch (error) {
       if (axios.isAxiosError<ValidationError, Record<string, unknown>>(error)) {
         return thunkAPI.rejectWithValue(
-          `Не удалось назначить ответственного за выполнение: \n${
-            error.response?.data.message ?? error.response?.data
-          }`,
-        )
-      } else {
-        console.error(error)
-      }
-    }
-  },
-)
-
-export const changeUserClosing = createAsyncThunk(
-  'incidents/changeUserClosing',
-  async ({ id, id_incClosing }: ChangeClosing, thunkAPI) => {
-    try {
-      const { data } = await authhost.post(
-        ApiEndPoints.INC.changeUserClosingCheck,
-        {
-          id,
-          id_incClosing,
-        },
-      )
-      return {
-        data,
-        message: {
-          text: `Назначен ответственный за закрытие!`,
-          type: 'success',
-        },
-      }
-    } catch (error) {
-      if (axios.isAxiosError<ValidationError, Record<string, unknown>>(error)) {
-        return thunkAPI.rejectWithValue(
-          `Не удалось назначить ответственного за закрытие: \n${
-            error.response?.data.message ?? error.response?.data
-          }`,
-        )
-      } else {
-        console.error(error)
-      }
-    }
-  },
-)
-
-export const changeComment = createAsyncThunk(
-  'incidents/changeComment',
-  async ({ id, comment }: ChangeComment, thunkAPI) => {
-    try {
-      const { data } = await authhost.post(ApiEndPoints.INC.changeComment, {
-        id,
-        comment,
-      })
-      return {
-        data,
-        message: {
-          text: 'Комментарий для инцидента изменен!',
-          type: 'success',
-        },
-      }
-    } catch (error) {
-      if (axios.isAxiosError<ValidationError, Record<string, unknown>>(error)) {
-        return thunkAPI.rejectWithValue(
-          `Не удалось изменить комментарий к инциденту: \n${
+          `Не удалось изменить инцидент: \n${
             error.response?.data.message ?? error.response?.data
           }`,
         )

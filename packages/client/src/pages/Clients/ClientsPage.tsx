@@ -1,13 +1,12 @@
 import React, { memo, useEffect, useState } from 'react'
-import { Box, Container, Modal, Typography, List } from '@mui/material'
+import { Container, Modal, Typography, List } from '@mui/material'
 import { useAuth } from 'hooks/auth/useAuth'
 import { DropDownMenu } from 'components/DropDownButtonMenu'
 import { menuData } from './data'
 import { ChooseModal } from './Modals/ChooseModal'
-import { headerForPages, mainHeaderForPages } from 'static/styles'
 import { useClients } from 'hooks/clients/useClients'
 import { ClientsList } from './ClientsList'
-import { page } from 'static/styles/pages/main'
+import { MuiDiv } from 'components/MUI'
 
 export const ClientsPage = memo(() => {
   const modalClientRef = React.createRef()
@@ -33,7 +32,7 @@ export const ClientsPage = memo(() => {
   }, [])
 
   return (
-    <Container component="main" maxWidth="md" sx={mainHeaderForPages}>
+    <Container component="main" maxWidth="md" className={'mainHeaderForPages'}>
       <Modal
         open={modal}
         onClose={() => setModal(false)}
@@ -46,7 +45,7 @@ export const ClientsPage = memo(() => {
           handleModal={handleModal}
         />
       </Modal>
-      <Box component="div" sx={headerForPages}>
+      <MuiDiv className={'headerForPages'}>
         <Typography variant="h6">Клиенты</Typography>
         {admin && (
           <DropDownMenu
@@ -56,8 +55,8 @@ export const ClientsPage = memo(() => {
             onClick={checkClickMenu}
           />
         )}
-      </Box>
-      <List sx={{ ...page, maxWidth: 1200 }}>
+      </MuiDiv>
+      <List className={'pageListContainer'}>
         {clients.map(({ client, legalName, id }) => (
           <ClientsList client={client} legalName={legalName} id={id} key={id} />
         ))}

@@ -1,11 +1,10 @@
 import React, { memo, useEffect, useState } from 'react'
 import {
-  Box,
   Typography,
   ListItemButton,
   ListItemText,
   Collapse,
-  useTheme,
+  Divider,
 } from '@mui/material'
 import {
   useForm,
@@ -16,7 +15,6 @@ import {
 import { TextField } from 'components/TextFields'
 import { ChooseModalProps, AddValuesProps } from './interfaces'
 import { MapNewContractInputFields } from '../data'
-import { classifierChild2Component, modalStyle } from 'static/styles'
 import { ButtonsModalSection, RotateButton } from 'components/Buttons'
 import { useMessage } from 'hooks/message/useMessage'
 import { useContracts } from 'hooks/contracts/useContracts'
@@ -24,7 +22,7 @@ import { DateField } from 'components/DatePicker'
 import { useClassifier } from 'hooks/classifier/useClassifier'
 import { Options } from 'components/DropDown/interface'
 import { useSLA } from 'hooks/sla/useSLA'
-import { DropDown, DropDownMultiple, emptyValue } from 'components/DropDown'
+import { DropDown, DropDownMultiple, emptyOptionsDD } from 'components/DropDown'
 import { useObjects } from 'hooks/objects/useObjects'
 import { useClients } from 'hooks/clients/useClients'
 import { convetStringToDate } from 'utils/convertDate'
@@ -34,7 +32,7 @@ import {
   ICheckBoxGroupData,
 } from 'components/CheckBoxGroup/interface'
 import { CheckBoxGroups, Item } from 'components/CheckBoxGroup'
-import { ITheme } from 'themes/themeConfig'
+import { BoxModal } from 'components/MUI'
 
 export const AddContract = memo(
   React.forwardRef<unknown, ChooseModalProps>(
@@ -47,7 +45,7 @@ export const AddContract = memo(
       const [{ equipments }, { getClassifierEquipments }] = useClassifier()
       const [{ sla }, { getSLA }] = useSLA()
       const [{ objects }, { getObjects }] = useObjects()
-      const [client, setClient] = useState<Options>(emptyValue)
+      const [client, setClient] = useState<Options>(emptyOptionsDD)
       const [slaList, setSLAList] = useState<Options[]>([])
       const [objectList, setObjectList] = useState<DataList[]>([])
       const [selectedObjects, setSelectedObjects] = useState<string[]>([])
@@ -57,8 +55,7 @@ export const AddContract = memo(
       const [selectedEquipments, setSelectedEquipments] = useState<string[]>([])
       const [selectedModels, setSelectedModels] = useState<string[]>([])
       const [errSLA, setErrSLA] = useState<boolean>(false)
-      const [dateValue, setDateValue] = useState<Dayjs>(dayjs())
-      const theme = useTheme() as ITheme
+      const [dateValue, setDateValue] = useState<string | Dayjs>(dayjs())
       const { handleSubmit, control } = useForm<AddValuesProps>({
         mode: 'onBlur',
         defaultValues: {
@@ -148,13 +145,13 @@ export const AddContract = memo(
       }
 
       return (
-        <Box
+        <BoxModal
           ref={ref}
           tabIndex={-1}
-          sx={modalStyle}
+          className={'modalMainContainer'}
           component="form"
           onSubmit={handleSubmit(changeData)}>
-          <Typography variant={'h6'}>{title}</Typography>
+          <Typography variant={'h1'}>{title}</Typography>
           <DropDown
             data={clients.map(item => {
               return {
@@ -162,7 +159,7 @@ export const AddContract = memo(
                 ['id']: item.id as string,
               }
             })}
-            props={{ mt: 3 }}
+            props={{ mt: 3, mb: 1 }}
             onChange={setClient}
             value={client.label}
             label="Выберите клиента"
@@ -171,7 +168,7 @@ export const AddContract = memo(
           {fields.map(({ id, label, validation, type, required }, index) => {
             return (
               <Controller
-                key={id}
+                key={`${label}_${id}`}
                 control={control}
                 name={`list.${index}.value`}
                 rules={validation}
@@ -183,12 +180,7 @@ export const AddContract = memo(
                     type={type}
                     variant="outlined"
                     required={required ?? true}
-                    sx={{
-                      width: '90%',
-                      height: theme.fontSize === 'small' ? 30 : 40,
-                      mt:
-                        index === 0 ? (theme.fontSize === 'small' ? 7 : 6) : 5,
-                    }}
+                    className={'textContainer_w90_mt3'}
                     margin="normal"
                     value={field.value || ''}
                     error={!!(errors?.list ?? [])[index]?.value?.message}
@@ -201,9 +193,10 @@ export const AddContract = memo(
           <DateField
             dateValue={dateValue as Dayjs}
             setDateValue={setDateValue}
-            sx={{ mt: 5, width: '90%' }}
+            className={'datePicker'}
           />
           <DropDownMultiple
+            className={'dropdown dropdown_mt4 multiline'}
             data={sla.map(item => {
               return {
                 ['label']: item.sla as string,
@@ -219,13 +212,13 @@ export const AddContract = memo(
           />
           <ListItemButton
             divider={openList}
-            sx={{ ...classifierChild2Component, mt: 2 }}
+            className={'itemContainerLabel'}
             onClick={() => (setOpenList(!openList), setOpenListObjects(false))}>
             <ListItemText primary={'Выбор классификатора'} sx={{ ml: 2 }} />
             <RotateButton open={openList} />
           </ListItemButton>
           <Collapse
-            sx={{ ...classifierChild2Component, width: '85%' }}
+            className={'collapseContainer'}
             in={openList}
             timeout="auto"
             unmountOnExit>
@@ -237,18 +230,24 @@ export const AddContract = memo(
               onChooseItems={setSelectedModels}
             />
           </Collapse>
-
+          <Divider
+            orientation="horizontal"
+            variant="middle"
+            flexItem
+            sx={{ mt: 2 }}
+          />
           <ListItemButton
             divider={openListObjects}
-            sx={{ ...classifierChild2Component, mt: 1 }}
+            className={'itemContainerLabel'}
             onClick={() => (
-              setOpenListObjects(!openListObjects), setOpenList(false)
+              setOpenListObjects(!openListObjects),
+              setOpenList(false)
             )}>
             <ListItemText primary={'Выбор объектов'} sx={{ ml: 2 }} />
             <RotateButton open={openListObjects} />
           </ListItemButton>
           <Collapse
-            sx={{ ...classifierChild2Component, width: '85%' }}
+            className={'collapseContainer width95'}
             in={openListObjects}
             timeout="auto"
             unmountOnExit>
@@ -260,15 +259,22 @@ export const AddContract = memo(
                 groupChecked={null}
                 onChooseItems={onChooseObjects}
                 initChecked={initChecked}
-                key={id as string}
+                key={`${name}_${id}`}
               />
             ))}
           </Collapse>
+          <Divider
+            orientation="horizontal"
+            variant="middle"
+            flexItem
+            sx={{ mt: 2 }}
+          />
+
           <ButtonsModalSection
             closeModal={() => handleModal(false)}
             btnName="Сохранить"
           />
-        </Box>
+        </BoxModal>
       )
     },
   ),

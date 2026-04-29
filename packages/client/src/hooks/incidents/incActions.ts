@@ -2,26 +2,23 @@ import {
   AddINC,
   AddINCStatuses,
   AddTypesOfWork,
-  ChangeClosing,
-  ChangeClosingCheck,
-  ChangeExecutor,
-  ChangeINC,
   ChangeINCStatuses,
-  ChangeResponsible,
   ChangeTypesOfWork,
-  ChangeStatus,
   AddTypesCompletedWork,
   ChangeTypesCompletedWork,
-  GetINCsByParams,
-  ChangeComment,
   INCStatuses,
-  OutputFilter,
+  GetINCsByParams,
+  INC,
+  ChangeExecutor,
+  ChangeResponsible,
+  ChangeStatus,
+  ChangeINC,
 } from 'store/slices/incidents/interfaces'
 
 export interface INCActions {
   getINC: () => void
-  getFilter: () => void
   getINCs: (data: GetINCsByParams) => void
+  getINCsByDate: (endDate: Date) => void
   getIncidentStatuses: () => void
   getTypesOfWork: () => void
   getTypesCompletedWork: () => void
@@ -32,18 +29,15 @@ export interface INCActions {
   deleteIncidentStatuses: (data: string[]) => void
   deleteTypesOfWork: (data: string[]) => void
   deleteTypesCompletedWork: (data: string[]) => void
-  changeINC: (data: ChangeINC) => void
   changeExecutor: (data: ChangeExecutor) => void
   changeResponsible: (data: ChangeResponsible) => void
   changeStatus: (data: ChangeStatus) => void
-  changeUserClosingCheck: (data: ChangeClosingCheck) => void
-  changeUserClosing: (data: ChangeClosing) => void
-  changeComment: (data: ChangeComment) => void
+  changeINC: (data: ChangeINC) => void
   changeIncidentStatuses: (data: ChangeINCStatuses) => void
   changeStateIncidentStatuses: (data: INCStatuses[]) => void
   changeTypesOfWork: (data: ChangeTypesOfWork) => void
   changeTypesCompletedWork: (data: ChangeTypesCompletedWork) => void
-  setActiveINC: (id: string) => void
   setLoadingINC: (data: boolean) => void
-  setStateOutputFilter: (data: OutputFilter) => void
+  setFilteredLength: (data: number) => void
+  setFiltered: (data: INC[]) => void
 }

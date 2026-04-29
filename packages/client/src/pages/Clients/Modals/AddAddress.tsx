@@ -1,5 +1,5 @@
 import React, { useState, useEffect, memo } from 'react'
-import { Box, Typography, useTheme } from '@mui/material'
+import { Typography } from '@mui/material'
 import {
   useForm,
   useFieldArray,
@@ -9,13 +9,12 @@ import {
 import { TextField } from 'components/TextFields'
 import { ChooseModalProps, AddValuesProps } from './interfaces'
 import { MapAddressInputFields } from '../data'
-import { modalStyle } from 'static/styles'
 import { ButtonsModalSection } from 'components/Buttons'
-import { DropDown, emptyValue } from 'components/DropDown'
+import { DropDown, emptyOptionsDD } from 'components/DropDown'
 import { useAddresses } from 'hooks/addresses/useAddresses'
 import { useMessage } from 'hooks/message/useMessage'
 import { Options } from 'components/DropDown/interface'
-import { ITheme } from 'themes/themeConfig'
+import { BoxModal } from 'components/MUI'
 
 export const AddAddress = memo(
   React.forwardRef<unknown, ChooseModalProps>(
@@ -23,8 +22,7 @@ export const AddAddress = memo(
       const [, { setMessage }] = useMessage()
       const [{ regions, addresses }, { getRegions, getAddresses, newAddress }] =
         useAddresses()
-      const [region, setRegion] = useState<Options>(emptyValue)
-      const theme = useTheme() as ITheme
+      const [region, setRegion] = useState<Options>(emptyOptionsDD)
       const { handleSubmit, control } = useForm<AddValuesProps>({
         mode: 'onBlur',
         defaultValues: {
@@ -64,13 +62,13 @@ export const AddAddress = memo(
       }, [])
 
       return (
-        <Box
+        <BoxModal
           ref={ref}
           tabIndex={-1}
-          sx={modalStyle}
+          className={'modalMainContainer'}
           component="form"
           onSubmit={handleSubmit(changeData)}>
-          <Typography variant={'h6'}>{title}</Typography>
+          <Typography variant={'h1'}>{title}</Typography>
           <DropDown
             data={regions.map(item => {
               return {
@@ -87,7 +85,7 @@ export const AddAddress = memo(
           {fields.map(({ id, label, validation, type, required }, index) => {
             return (
               <Controller
-                key={id}
+                key={`${label}_${id}`}
                 control={control}
                 name={`list.${index}.value`}
                 rules={validation}
@@ -99,12 +97,7 @@ export const AddAddress = memo(
                     type={type}
                     variant="outlined"
                     required={required ?? true}
-                    sx={{
-                      width: '90%',
-                      height: theme.fontSize === 'small' ? 30 : 40,
-                      mt:
-                        index === 0 ? (theme.fontSize === 'small' ? 7 : 6) : 5,
-                    }}
+                    className={'textContainer_w90'}
                     margin="normal"
                     value={field.value || ''}
                     error={!!(errors?.list ?? [])[index]?.value?.message}
@@ -118,7 +111,7 @@ export const AddAddress = memo(
             closeModal={() => handleModal(false)}
             btnName="Сохранить"
           />
-        </Box>
+        </BoxModal>
       )
     },
   ),

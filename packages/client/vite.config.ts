@@ -1,11 +1,13 @@
-import { defineConfig } from 'vite'
+import { defineConfig, PluginOption } from 'vite'
 import react from '@vitejs/plugin-react'
 import path from 'path'
 import dotenv from 'dotenv'
 
 dotenv.config({ path: '../../.env' })
 export default defineConfig(({ mode }) => {
-  console.log('mode = ', mode)
+  console.log('process.env.CLIENT_PORT = ', process.env.CLIENT_PORT)
+  console.log('process.env.SERVER_PORT = ', process.env.SERVER_PORT)
+  console.log('process.env.SERVER_HOST = ', process.env.SERVER_HOST)
   return {
     server: {
       port: Number(process.env.CLIENT_PORT) || 3002,
@@ -15,10 +17,10 @@ export default defineConfig(({ mode }) => {
       __BASE_URL__: JSON.stringify(
         mode === 'development'
           ? 'localhost'
-          : process.env.SERVER_HOST ?? 'http://www.sdtest.sb-i.ru',
+          : (process.env.SERVER_HOST ?? 'http://www.sdtest.sb-i.ru'),
       ),
     },
-    plugins: [react()],
+    plugins: [react() as PluginOption[]],
     esbuild: {
       logOverride: { 'this-is-undefined-in-esm': 'silent' },
     },

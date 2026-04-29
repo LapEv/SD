@@ -1,17 +1,16 @@
-import React, { memo } from 'react'
+import React, { ChangeEvent, memo } from 'react'
 import { ModalProps } from './interfaces'
 import { useState } from 'react'
-import { Box, Typography, useTheme } from '@mui/material'
-import { modalStyle } from 'static/styles'
+import { Box, Typography } from '@mui/material'
 import { ButtonsSectionNoSubmit } from 'components/Buttons'
 import { TextField } from 'components/TextFields'
+import { BoxModal, MuiDiv } from 'components/MUI'
 
 export const DeleteUserModal = memo(
   React.forwardRef<unknown, ModalProps>(
     ({ handleModal, title, answerFromModal }: ModalProps, ref) => {
       const [reasonOfDelete, setReason] = useState<string>('')
       const [errSelectedItems, setErrSelectedItems] = useState<string>('')
-      const theme = useTheme()
 
       const changeData = () => {
         if (!reasonOfDelete.length) {
@@ -23,33 +22,28 @@ export const DeleteUserModal = memo(
       }
 
       return (
-        <Box
+        <BoxModal
           ref={ref}
           tabIndex={-1}
-          sx={{ ...modalStyle, paddingLeft: 5 }}
+          className={'modalMainContainer'}
           component="form">
-          <Typography variant={'h6'} sx={{ textAlign: 'center' }}>
+          <Typography variant={'h1'} sx={{ textAlign: 'center' }}>
             {title}
           </Typography>
-          <Box
-            sx={{
-              mt: 2,
-              width: '100%',
-              pl: 3,
-            }}>
+          <Box className={'container_mt2_pl3_w100'}>
             <TextField
               label="Причина удаления"
               variant="outlined"
               required
-              sx={{ width: '100%', mt: 2, height: 40 }}
+              className={'textContainer_w90_mt2'}
               margin="normal"
               value={reasonOfDelete || ''}
-              onChange={e => setReason(e.target.value ?? '')}
+              onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                setReason(e.target.value ?? '')
+              }
             />
           </Box>
-          <Box sx={{ color: theme.palette.error.main, height: 20 }}>
-            {errSelectedItems}
-          </Box>
+          <MuiDiv className={'modalError'}>{errSelectedItems}</MuiDiv>
           <ButtonsSectionNoSubmit
             btnSecondHandle={() => answerFromModal(false, reasonOfDelete)}
             btnHandle={changeData}
@@ -58,7 +52,7 @@ export const DeleteUserModal = memo(
             btnDisabled={false}
             btnSecondDisabled={false}
           />
-        </Box>
+        </BoxModal>
       )
     },
   ),

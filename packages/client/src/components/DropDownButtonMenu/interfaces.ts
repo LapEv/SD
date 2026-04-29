@@ -1,3 +1,5 @@
+import { JSX } from 'react'
+
 export interface DropDownMenuProps {
   popover: string
   data: {
@@ -20,7 +22,9 @@ export interface DropDownMenuTooltipProps {
     icon?: JSX.Element
   }[]
   divider?: number[]
-  onClick: (name: string | null) => void
+  onClick: (name: string) => void
   icon?: JSX.Element
   sx?: Record<string, unknown>
+  className?: string
+  classNameIcon?: string
 }

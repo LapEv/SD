@@ -16,6 +16,8 @@ export const Item = memo(
     oneChecked,
     props,
     noEmpty,
+    className,
+    classItemText,
   }: IItem) => {
     const [checked, setChecked] = useState<boolean>(
       (initChecked as boolean) ?? false,
@@ -73,6 +75,7 @@ export const Item = memo(
             ml: theme.fontSize === 'small' ? 5 : 0,
             ...props,
           }}
+          className={`itemsContaimer ${className}`}
           control={
             <Checkbox
               sx={{
@@ -87,13 +90,15 @@ export const Item = memo(
         {comment?.length && (
           <ListItemText
             secondary={comment}
-            sx={{ ml: theme.fontSize === 'small' ? 10 : 5, ...props }}
+            className={classItemText}
+            sx={props}
           />
         )}
         {comment2?.length && (
           <ListItemText
             secondary={comment2}
-            sx={{ ml: theme.fontSize === 'small' ? 10 : 5, ...props }}
+            sx={props}
+            className={classItemText}
           />
         )}
       </>

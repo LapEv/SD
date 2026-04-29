@@ -1,5 +1,5 @@
-import React, { memo, useEffect, useState } from 'react'
-import { Box, Typography, useTheme } from '@mui/material'
+import React, { ChangeEvent, memo, useEffect, useState } from 'react'
+import { Typography } from '@mui/material'
 import {
   useForm,
   useFieldArray,
@@ -9,20 +9,20 @@ import {
 import { TextField } from 'components/TextFields'
 import { ChooseModalProps, AddValuesProps } from './interfaces'
 import { MapRolesGroupInputFields } from '../data'
-import { boxDataModal, modalStyle } from 'static/styles'
-import { ButtonsModalSection } from 'components/Buttons'
+import {
+  ButtonsModalSection,
+  ClearSearchModalSection,
+} from 'components/Buttons'
 import { useRoles } from 'hooks/roles/useRoles'
 import { NewRolesGroup, Roles } from 'storeRoles/interfaces'
 import { Item } from 'components/CheckBoxGroup'
-import { ITheme } from 'themes/themeConfig'
-import { SearchIconElement } from 'components/Icons'
 import { useFilteredData } from 'hooks/useFilteredData'
+import { BoxModal, MuiDiv } from 'components/MUI'
 
 export const AddRolesGroup = memo(
   React.forwardRef<unknown, ChooseModalProps>(
     ({ handleModal, title }: ChooseModalProps, ref) => {
       const [{ roles }, { newRolesGroup, getRolesGroup, getRoles }] = useRoles()
-      const theme = useTheme() as ITheme
       const [selectedRoles, setSelectedRoles] = useState<string[]>([])
       const [errSelectedItems, setErrSelectedItems] = useState<boolean>(false)
       const [filterText, setFilterText] = useState<string>('')
@@ -61,7 +61,7 @@ export const AddRolesGroup = memo(
           return
         }
         setSelectedRoles([...selectedRoles, id])
-        if ([...selectedRoles, id] && errSelectedItems)
+        if ([...selectedRoles, id].length && errSelectedItems)
           setErrSelectedItems(false)
       }
 
@@ -75,17 +75,17 @@ export const AddRolesGroup = memo(
       }
 
       return (
-        <Box
+        <BoxModal
           ref={ref}
           tabIndex={-1}
-          sx={modalStyle}
+          className={'modalMainContainer'}
           component="form"
           onSubmit={handleSubmit(changeData)}>
-          <Typography variant={'h6'}>{title}</Typography>
+          <Typography variant={'h1'}>{title}</Typography>
           {fields.map(({ id, label, validation, type, required }, index) => {
             return (
               <Controller
-                key={id}
+                key={`${label}_${id}`}
                 control={control}
                 name={`list.${index}.value`}
                 rules={validation}
@@ -96,12 +96,7 @@ export const AddRolesGroup = memo(
                     label={label}
                     type={type}
                     variant="outlined"
-                    sx={{
-                      width: '90%',
-                      m: 2,
-                      mt: 4,
-                      height: theme.fontSize === 'small' ? 30 : 40,
-                    }}
+                    className="textContainer_w90_mt3"
                     margin="normal"
                     required={required ?? true}
                     value={field.value || ''}
@@ -112,39 +107,47 @@ export const AddRolesGroup = memo(
               />
             )
           })}
-          <Typography variant={'body1'} sx={{ m: 2 }}>
+          <Typography variant={'body1'} sx={{ mt: 3 }}>
             Выберите роли
           </Typography>
           <TextField
             variant="outlined"
-            sx={{ width: '90%', mt: 2, height: 40 }}
+            className="modalTextContainer"
             label="Введите фильтр"
             margin="normal"
             value={filterText || ''}
-            onChange={e => setText(e.target.value ?? '')}
-            InputProps={{
-              endAdornment: <SearchIconElement />,
+            onChange={(e: ChangeEvent<HTMLInputElement>) =>
+              setText(e.target.value ?? '')
+            }
+            slotProps={{
+              input: {
+                endAdornment: (
+                  <ClearSearchModalSection
+                    length={filterText.length}
+                    handleClick={() => setFilterText('')}
+                  />
+                ),
+              },
             }}
           />
-
-          <Box sx={boxDataModal}>
-            {filteredObjects.map(item => (
+          <MuiDiv className={'boxDataModal'}>
+            {filteredObjects.map(({ nameRole, id }) => (
               <Item
-                name={item.nameRole}
-                id={`${item.id}`}
+                name={nameRole}
+                id={`${id}`}
                 onChooseItems={setRoles}
-                key={item.id}
+                key={`${nameRole}_${id}`}
               />
             ))}
-          </Box>
-          <Box sx={{ color: theme.palette.error.main, height: 20 }}>
+          </MuiDiv>
+          <MuiDiv className={'modalError'}>
             {errSelectedItems && 'Не выбрана ни одна роль!'}
-          </Box>
+          </MuiDiv>
           <ButtonsModalSection
             closeModal={() => handleModal(false)}
             btnName={'Сохранить'}
           />
-        </Box>
+        </BoxModal>
       )
     },
   ),

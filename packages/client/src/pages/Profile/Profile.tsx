@@ -1,17 +1,17 @@
-import { Box, Container, Modal, Typography } from '@mui/material'
+import { Container, Modal, Typography } from '@mui/material'
 import { memo, useState } from 'react'
 import { ProfileMain } from './ProfileMain'
 import { useAuth } from 'hooks/auth/useAuth'
 import { ProfileChangePassword } from './ProfileChangePassword'
-import { headerForPages, mainHeaderForPages } from 'static/styles'
 import { UserProfile } from 'storeAuth/interfaces'
+import { MuiDiv } from 'components/MUI'
 
 export const ProfilePage = memo(() => {
   const [{ user }] = useAuth()
   const [modal, setModal] = useState<boolean>(false)
 
   return (
-    <Container component="main" maxWidth="md" sx={mainHeaderForPages}>
+    <Container component="main" maxWidth="md" className={'mainHeaderForPages'}>
       <Modal
         open={modal}
         onClose={() => setModal(false)}
@@ -24,9 +24,9 @@ export const ProfilePage = memo(() => {
           />
         </>
       </Modal>
-      <Box component="div" sx={headerForPages}>
+      <MuiDiv className={'headerForPages'}>
         <Typography variant="h6">Профиль</Typography>
-      </Box>
+      </MuiDiv>
       <ProfileMain
         setModal={() => setModal(prev => !prev)}
         dataUser={user as UserProfile}

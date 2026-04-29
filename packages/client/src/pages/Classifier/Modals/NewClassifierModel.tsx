@@ -1,5 +1,5 @@
 import React, { useState, useEffect, memo } from 'react'
-import { Box, Typography, useTheme } from '@mui/material'
+import { Typography } from '@mui/material'
 import {
   useForm,
   useFieldArray,
@@ -9,28 +9,26 @@ import {
 import { TextField } from 'components/TextFields'
 import { ChooseModalProps, AddValuesProps } from './interfaces'
 import { MapModelsInputFields } from '../data'
-import { modalStyle, boxDataModal } from 'static/styles'
 import { ButtonsModalSection } from 'components/Buttons'
 import { useClassifier } from 'hooks/classifier/useClassifier'
-import { DropDown, emptyValue } from 'components/DropDown'
+import { DropDown, emptyOptionsDD } from 'components/DropDown'
 import { Options } from 'components/DropDown/interface'
 import { Item } from 'components/CheckBoxGroup'
 import { TypicalMalfunctions } from 'store/slices/classifier/interfaces'
-import { ITheme } from 'themes/themeConfig'
+import { BoxModal, MuiDiv } from 'components/MUI'
 
 export const NewClassifierModel = memo(
   React.forwardRef<unknown, ChooseModalProps>(
     ({ handleModal, title }: ChooseModalProps, ref) => {
       const [{ equipments }, { newClassifierModel, resetTypicalMalfunction }] =
         useClassifier()
-      const [equipment, setEquipment] = useState<Options>(emptyValue)
+      const [equipment, setEquipment] = useState<Options>(emptyOptionsDD)
       const [typicalMalfunctions, setTypicalMalfunctions] = useState<
         TypicalMalfunctions[]
       >([])
       const [selectedTypicalMalfunctions, setGroup] = useState<string[]>([])
       const [errSelectedItems, setErrSelectedItems] = useState<boolean>(false)
       const [noTypical, setNoTypical] = useState<boolean>(false)
-      const theme = useTheme() as ITheme
 
       const { handleSubmit, control } = useForm<AddValuesProps>({
         mode: 'onBlur',
@@ -86,13 +84,12 @@ export const NewClassifierModel = memo(
       }, [typicalMalfunctions])
 
       return (
-        <Box
+        <BoxModal
           ref={ref}
           tabIndex={-1}
-          sx={{ ...modalStyle, minHeight: 300 }}
-          component="form"
+          className={'modalMainContainer modalMainContainerMH8'}
           onSubmit={handleSubmit(changeData)}>
-          <Typography variant={'h6'}>{title}</Typography>
+          <Typography variant={'h1'}>{title}</Typography>
           <DropDown
             data={equipments.map(item => {
               return {
@@ -100,7 +97,7 @@ export const NewClassifierModel = memo(
                 ['id']: item.id as string,
               }
             })}
-            props={{ mt: 3 }}
+            props={{ mt: 4 }}
             onChange={chooseClassifierEquipment}
             value={equipment.label}
             label="Выберите классификатор оборудования"
@@ -109,7 +106,7 @@ export const NewClassifierModel = memo(
           {fields.map(({ id, label, validation, type, required }, index) => {
             return (
               <Controller
-                key={id}
+                key={`${label}_${id}`}
                 control={control}
                 name={`list.${index}.value`}
                 rules={validation}
@@ -120,12 +117,7 @@ export const NewClassifierModel = memo(
                     label={label}
                     type={type}
                     variant="outlined"
-                    sx={{
-                      width: '90%',
-                      height: theme.fontSize === 'small' ? 30 : 40,
-                      mt:
-                        index === 0 ? (theme.fontSize === 'small' ? 7 : 6) : 5,
-                    }}
+                    className="textContainer_w90"
                     margin="normal"
                     required={required ?? true}
                     value={field.value || ''}
@@ -139,27 +131,15 @@ export const NewClassifierModel = memo(
           <Typography variant={'body1'} sx={{ mt: 2, width: '90%' }}>
             Выберите типовые неисправности для этой модели:
           </Typography>
-          {noTypical ? (
+          {noTypical && (
             <Typography
-              variant={'subtitle1'}
+              variant={'subtitle2'}
               sx={{ mt: 2, width: '85%', height: 40 }}>
               Для этого классификатора нет типовых неисправностей. Необходимо
               сначала их внести!
             </Typography>
-          ) : (
-            <Typography
-              variant={'h3'}
-              sx={{
-                mt: 2,
-                width: '85%',
-                height: 10,
-              }}></Typography>
           )}
-          <Box
-            sx={{
-              ...boxDataModal,
-              mt: 0,
-            }}>
+          <MuiDiv className={'boxDataModal mt0 h35Vh'}>
             {typicalMalfunctions.map(({ typicalMalfunction, id }) => (
               <Item
                 name={typicalMalfunction}
@@ -170,12 +150,12 @@ export const NewClassifierModel = memo(
                 key={id}
               />
             ))}
-          </Box>
+          </MuiDiv>
           <ButtonsModalSection
             closeModal={() => handleModal(false)}
             btnName="Сохранить"
           />
-        </Box>
+        </BoxModal>
       )
     },
   ),

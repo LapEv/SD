@@ -1,22 +1,15 @@
 import React, { memo, useEffect, useState, SyntheticEvent } from 'react'
-import {
-  Box,
-  ListItemText,
-  ListItemButton,
-  Modal,
-  useTheme,
-} from '@mui/material'
+import { ListItemText, ListItemButton, Modal } from '@mui/material'
 import Collapse from '@mui/material/Collapse'
 import { RotateButton, EditButton } from 'components/Buttons'
 import {
   ClassifierEquipment,
   ClassifierModels,
 } from 'store/slices/classifier/interfaces'
-import { classifier, classifierComponent } from 'static/styles'
 import { useClassifier } from 'hooks/classifier/useClassifier'
 import { Models } from './Models'
 import { ModalChangeName } from 'components/ModaQuestions'
-import { ITheme } from 'themes/themeConfig'
+import { MuiDiv } from 'components/MUI'
 
 export const Equipments = memo(
   ({
@@ -33,7 +26,6 @@ export const Equipments = memo(
     const [open, setOpen] = useState(false)
     const [modal, setModal] = useState<boolean>(false)
     const [modelData, setModelData] = useState<ClassifierModels[]>()
-    const theme = useTheme() as ITheme
 
     const handleClick = () => {
       setOpen(!open)
@@ -75,7 +67,7 @@ export const Equipments = memo(
     }, [activeEquipment])
 
     return (
-      <Box sx={classifier}>
+      <MuiDiv className={'containerCollapse'}>
         <Modal
           open={modal}
           onClose={() => setModal(false)}
@@ -91,14 +83,14 @@ export const Equipments = memo(
         </Modal>
         <ListItemButton
           divider={open}
-          sx={classifierComponent}
+          className={'itemButtonCollapse1'}
           onClick={handleClick}>
           <ListItemText primary={equipment} />
           <EditButton handleClick={editEquipment} />
           <RotateButton open={open} handleClick={handleClick} />
         </ListItemButton>
         <Collapse
-          sx={{ width: '100%', height: theme.fontSize === 'small' ? 40 : 50 }}
+          className={'collapseList'}
           in={open}
           timeout="auto"
           unmountOnExit>
@@ -113,7 +105,7 @@ export const Equipments = memo(
             />
           ))}
         </Collapse>
-      </Box>
+      </MuiDiv>
     )
   },
 )

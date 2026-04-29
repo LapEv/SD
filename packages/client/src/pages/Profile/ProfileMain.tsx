@@ -11,10 +11,10 @@ import { ChangeEvent, memo, useEffect } from 'react'
 import { TextField } from 'components/TextFields'
 import { Button } from 'components/Buttons'
 import { ProfileMainProps, ProfileValues } from './interfaces'
-import { pageProfile } from 'static/styles/pages/main'
 import { ProfileAvatar, ProfileAppOptions } from '.'
 import { useFiles } from 'hooks/files/useFiles'
 import { Files } from 'store/slices/files/interfaces'
+import { BoxModal } from 'components/MUI'
 
 export const ProfileMain = memo(({ setModal, dataUser }: ProfileMainProps) => {
   const [
@@ -46,9 +46,7 @@ export const ProfileMain = memo(({ setModal, dataUser }: ProfileMainProps) => {
   }, [])
 
   return (
-    <Box
-      component="form"
-      sx={{ ...pageProfile, maxWidth: 1200, height: '100%' }}>
+    <BoxModal component="form" className={'pageProfileContainer'}>
       <ProfileAvatar
         id={dataUser.id}
         changeAvatar={changeAvatar}
@@ -107,6 +105,6 @@ export const ProfileMain = memo(({ setModal, dataUser }: ProfileMainProps) => {
         Изменить пароль
       </Button>
       <ProfileAppOptions />
-    </Box>
+    </BoxModal>
   )
 })

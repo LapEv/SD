@@ -41,7 +41,7 @@ export const passwordValidation = {
       return 'Пароль должен сожержать хотя бы одну цифру'
     }
     if (value.length > 40) {
-      return 'Длина логина состовлять не более 40 символов'
+      return 'Длина пароля состовлять не более 40 символов'
     }
     return true
   },
@@ -159,6 +159,32 @@ export const textValidationENGlowercase = {
 export const phoneValidation = {
   required: REQUIRED_FIELD,
   validate: (value: string) => {
+    if (!value.match(`^[+]?[\\d]+$`)) {
+      return 'Только цифры!'
+    }
+    if (value.substring(0, 1) !== '8' && value.substring(0, 2) !== '+7') {
+      return 'Должен начинаться с "8" или "+7"!'
+    }
+    if (value.substring(0, 1) === '8' && value.length > 11) {
+      return 'Слишком много цифр!'
+    }
+    if (value.substring(0, 1) === '8' && value.length < 11) {
+      return 'Слишком мало цифр!'
+    }
+    if (value.substring(0, 2) === '+7' && value.length > 12) {
+      return 'Слишком много цифр!'
+    }
+    if (value.substring(0, 2) === '+7' && value.length < 12) {
+      return 'Слишком мало цифр!'
+    }
+    return true
+  },
+}
+
+export const phoneValidationNewINC = {
+  // required: REQUIRED_FIELD,
+  validate: (value: string) => {
+    if (!value) return true
     if (!value.match(`^[+]?[\\d]+$`)) {
       return 'Только цифры!'
     }
@@ -315,4 +341,27 @@ export const checkCommentINCValidation = (text: string) => {
     return 'Превышен лимит в 1024 символа'
   }
   return ''
+}
+
+export const phoneValidationEditINC = (value: string) => {
+  if (!value) return true
+  if (!value.match(`^[+]?[\\d]+$`)) {
+    return 'Только цифры!'
+  }
+  if (value.substring(0, 1) !== '8' && value.substring(0, 2) !== '+7') {
+    return 'Должен начинаться с "8" или "+7"!'
+  }
+  if (value.substring(0, 1) === '8' && value.length > 11) {
+    return 'Слишком много цифр!'
+  }
+  if (value.substring(0, 1) === '8' && value.length < 11) {
+    return 'Слишком мало цифр!'
+  }
+  if (value.substring(0, 2) === '+7' && value.length > 12) {
+    return 'Слишком много цифр!'
+  }
+  if (value.substring(0, 2) === '+7' && value.length < 12) {
+    return 'Слишком мало цифр!'
+  }
+  return true
 }

@@ -136,6 +136,11 @@ export const incidentRouter = (apiRouter: Router) => {
     service.getINCs,
   )
   router.get(
+    '/getINCsByDate',
+    roleMiddleware(['getINCsByDate', 'SUPERADMIN']),
+    service.getINCsByDate,
+  )
+  router.get(
     '/getAllINC',
     roleMiddleware(['getAllINC', 'SUPERADMIN']),
     service.getAllINC,
@@ -162,7 +167,12 @@ export const incidentRouter = (apiRouter: Router) => {
   )
   router.post(
     '/changeINC',
-    roleMiddleware(['changeINC', 'SUPERADMIN']),
+    roleMiddleware([
+      'changeINC',
+      'AdministrationCCA',
+      'Dispatcher',
+      'SUPERADMIN',
+    ]),
     service.changeINC,
   )
   router.post(
@@ -218,12 +228,5 @@ export const incidentRouter = (apiRouter: Router) => {
     roleMiddleware(['ADMIN', 'SUPERADMIN']),
     service.changeTimeSLAs,
   )
-
-  router.get(
-    '/changetime',
-    roleMiddleware(['ADMIN', 'SUPERADMIN']),
-    service.changetime,
-  )
-
   apiRouter.use('/incidents', router)
 }

@@ -6,7 +6,7 @@ import {
   Warehouse,
   Classifier,
   SLA,
-} from 'layouts/Main/icons'
+} from 'components/SVGIcons'
 import { Routes } from 'utils/routes'
 import Diversity3Icon from '@mui/icons-material/Diversity3'
 import ListAltIcon from '@mui/icons-material/ListAlt'
@@ -163,15 +163,6 @@ export const controlRoomCustomFilter = [
   },
 ]
 
-export const emptyRoomlistFilter = [
-  {
-    text: ' - Статус: Все',
-    icon: <></>,
-    to: Routes.Incidents,
-    id: 'Все',
-  },
-]
-
 export const clientData = [
   {
     text: 'Оставить заявку',
@@ -190,6 +181,15 @@ export const clientData = [
     icon: <HelpCenterIcon />,
     to: Routes.toTechSupport,
     type: 'component',
+  },
+]
+
+export const emptyRoomlistFilter = [
+  {
+    text: ' - Статус: Все',
+    icon: <></>,
+    to: Routes.Incidents,
+    id: 'Все',
   },
 ]
 

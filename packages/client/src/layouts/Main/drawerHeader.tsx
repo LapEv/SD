@@ -1,9 +1,9 @@
 import { FC, memo } from 'react'
 import { styled } from '@mui/material/styles'
 import { IconButton, Typography, Box, useTheme } from '@mui/material'
-import { LeftArrow, RightArrow } from 'layouts/Main/icons'
+import { LeftArrow, RightArrow } from 'components/SVGIcons'
 import { DrawerHeaderProps } from './interfaces'
-import { ITheme, ThemeMode } from 'themes/themeConfig'
+import { ITheme } from 'themes/themeConfig'
 
 export const DrawerHeader: FC<DrawerHeaderProps> = memo(
   ({ open, toggleDrawer }) => {
@@ -19,8 +19,7 @@ export const DrawerHeader: FC<DrawerHeaderProps> = memo(
       padding: theme.spacing(0, 1),
       ...theme.mixins.toolbar,
     }))
-    const theme = useTheme()
-
+    const theme = useTheme() as ITheme
     return (
       <DrawerHeader
         sx={{
@@ -41,22 +40,9 @@ export const DrawerHeader: FC<DrawerHeaderProps> = memo(
             flexDirection: 'column',
             justifyContent: 'space-around',
             alignItems: 'center',
+            minHeight: theme.fontSize === 'small' ? 40 : 55,
           }}>
-          {open ? (
-            <Typography variant="h6">SD</Typography>
-          ) : (
-            <Typography
-              variant="h6"
-              sx={{
-                zIndex: -1,
-                color:
-                  theme.palette.mode === ThemeMode.dark
-                    ? (theme as ITheme).colorTheme.colorLight
-                    : (theme as ITheme).colorTheme.colorDark,
-              }}>
-              .
-            </Typography>
-          )}
+          {open && <Typography variant="h6">SBI</Typography>}
         </Box>
 
         <IconButton onClick={() => toggleDrawer(!open)}>

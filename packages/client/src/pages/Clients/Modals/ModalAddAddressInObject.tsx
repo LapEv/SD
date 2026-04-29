@@ -1,5 +1,5 @@
 import React, { useState, useEffect, memo } from 'react'
-import { Box, Typography } from '@mui/material'
+import { Typography } from '@mui/material'
 import {
   useForm,
   useFieldArray,
@@ -9,11 +9,11 @@ import {
 import { TextField } from 'components/TextFields'
 import { AddValuesPropsTwoForms, IModalAddAddressInObject } from './interfaces'
 import { MapNewAddressModalInputFields } from '../data'
-import { modalStyle } from 'static/styles'
 import { ButtonsModalSection } from 'components/Buttons'
-import { DropDown, emptyValue } from 'components/DropDown'
+import { DropDown, emptyOptionsDD } from 'components/DropDown'
 import { useAddresses } from 'hooks/addresses/useAddresses'
 import { Options } from 'components/DropDown/interface'
+import { BoxModal, MuiDiv } from 'components/MUI'
 
 export const ModalAddAddressInObject = memo(
   React.forwardRef<unknown, IModalAddAddressInObject>(
@@ -21,7 +21,7 @@ export const ModalAddAddressInObject = memo(
       const [{ regions }, { getRegions, newAddress }] = useAddresses()
 
       MapNewAddressModalInputFields[0].value = address
-      const [region, setRegion] = useState<Options>(emptyValue)
+      const [region, setRegion] = useState<Options>(emptyOptionsDD)
       const { control: controlADD, handleSubmit: handleSubmitAddAddress } =
         useForm<AddValuesPropsTwoForms>({
           mode: 'onBlur',
@@ -54,14 +54,14 @@ export const ModalAddAddressInObject = memo(
       }, [])
 
       return (
-        <Box
+        <BoxModal
           ref={ref}
           tabIndex={-1}
-          sx={modalStyle}
+          className={'modalMainContainer'}
           component="form"
           key={2}
           onSubmit={handleSubmitAddAddress(AddAddress)}>
-          <Typography variant={'h6'}>{question}</Typography>
+          <Typography variant={'body1'}>{question}</Typography>
           <DropDown
             data={regions.map(item => {
               return {
@@ -69,21 +69,20 @@ export const ModalAddAddressInObject = memo(
                 ['id']: item.id as string,
               }
             })}
-            props={{ mt: 3 }}
+            props={{ mt: 2, mb: -1 }}
             onChange={setRegion}
             value={region.label}
             label="Выберите регион"
             errorLabel="Не выбран регион!"
           />
-          <Box sx={{ mt: 2, width: '90%' }}>
+          <MuiDiv className={'w90_mt2'}>
             {filedsModal.map(
               ({ id, label, validation, type, required }, index) => {
                 return (
                   <Controller
-                    key={id}
+                    key={`${label}_${id}`}
                     control={controlADD}
                     name={`list2.${index}.value`}
-                    // {...registerADD(`list2.${index}.value`)}
                     rules={validation}
                     render={({ field }) => (
                       <TextField
@@ -93,7 +92,7 @@ export const ModalAddAddressInObject = memo(
                         type={type}
                         variant="outlined"
                         required={required ?? true}
-                        sx={{ width: '100%', mt: 2, height: 40 }}
+                        className={'textContainer_mt3'}
                         margin="normal"
                         value={field.value || ''}
                         error={
@@ -106,9 +105,9 @@ export const ModalAddAddressInObject = memo(
                     )}
                   />
                 )
-              }
+              },
             )}
-          </Box>
+          </MuiDiv>
           <ButtonsModalSection
             closeModal={() =>
               handleModal({
@@ -120,8 +119,8 @@ export const ModalAddAddressInObject = memo(
             }
             btnName="Сохранить"
           />
-        </Box>
+        </BoxModal>
       )
-    }
-  )
+    },
+  ),
 )

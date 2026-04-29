@@ -5,15 +5,16 @@ import { memo } from 'react'
 import { userRotateStyles } from 'themes/rotateConfig'
 
 export const RotateButton = memo(
-  ({ open, handleClick, size }: IRotateButton) => {
+  ({ open, handleClick, size, sx }: IRotateButton) => {
     const classes = userRotateStyles()
 
     return (
       <IconButton
+        sx={sx}
         className={`${classes.iconButton} ${open ? 'expanded' : ''}`}
         onClick={handleClick}>
         <ExpandLess sx={{ fontSize: size }} />
       </IconButton>
     )
-  }
+  },
 )

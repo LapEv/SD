@@ -1,4 +1,4 @@
-import { memo, useEffect } from 'react'
+import { memo, MouseEvent, useEffect, useRef } from 'react'
 import { Routes, Route } from 'react-router-dom'
 import ErrorBoundary from 'components/ErrorBoundary'
 import './App.css'
@@ -7,15 +7,62 @@ import * as Layouts from 'layouts'
 import { Routes as Paths } from 'utils/routes'
 import { RequiredAuth } from 'hoks/RequiredAuth'
 import CircularProgress from '@mui/material/CircularProgress'
-import { Box } from '@mui/material'
 import { isEmptyObjField } from 'utils/isEmptyObject'
 import { checkLoading } from 'utils/checkLoading'
 import { useAuth } from 'hooks/auth/useAuth'
 import { Message } from 'components/Message'
 import { FullScreen } from 'components/FullScreen'
+import { useTableINC } from 'hooks/tableINC/useTableINC'
+import { minHeaderColumnWidth } from 'pages/ControlRoom/Incidents/data'
+import { MuiDiv } from 'components/MUI'
 
 const App = memo(() => {
   const [{ user }, { checkUser }] = useAuth()
+  const [{ columnX, columnOptions }, { setColumnX, setColumnOptions }] =
+    useTableINC()
+  const refApp = useRef<HTMLDivElement>(null)
+
+  const mouseUp = () => {
+    if (columnX.position > 0 && columnX.id) {
+      const newColumnOptions = columnOptions.map(value =>
+        columnX.id === value.id
+          ? {
+              ...value,
+              width: columnX.width,
+            }
+          : value,
+      )
+      setColumnOptions(newColumnOptions)
+      setColumnX({
+        position: 0,
+        id: '',
+        width: 0,
+      })
+    }
+  }
+
+  const mouseOver = (e: MouseEvent<HTMLElement>) => {
+    if (columnX.position > 0 && columnX.id) {
+      const diffWidth = e.screenX - columnX.position
+
+      if (columnX.width + diffWidth < minHeaderColumnWidth) {
+        const diffMinScreenX = columnX.width - minHeaderColumnWidth
+        setColumnX({
+          position: columnX.position - diffMinScreenX,
+          id: columnX.id,
+          width: minHeaderColumnWidth,
+        })
+        return
+      }
+
+      setColumnX({
+        position: e.screenX,
+        id: columnX.id,
+        width: columnX.width + diffWidth,
+      })
+    }
+    e.preventDefault()
+  }
 
   useEffect(() => {
     checkUser()
@@ -24,22 +71,16 @@ const App = memo(() => {
   return (
     <ErrorBoundary>
       <FullScreen>
-        <div className="App" data-testid="App">
+        <div
+          className="App"
+          data-testid="App"
+          ref={refApp}
+          onMouseUp={mouseUp}
+          onMouseMove={mouseOver}>
           {checkLoading() && (
-            <Box
-              sx={{
-                width: '100%',
-                height: '100vh',
-                minHeight: '100vh',
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-                zIndex: 1999,
-                backgroundColor: 'rgba(0,0,0,0.7)',
-                position: 'fixed',
-              }}>
+            <MuiDiv className={'appLoading'}>
               <CircularProgress />
-            </Box>
+            </MuiDiv>
           )}
           <Message />
           <Routes>

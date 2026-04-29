@@ -20,12 +20,12 @@ export interface Contracts {
   ClassifierEquipments?: ClassifierEquipment[] | []
   ClassifierModels?: ClassifierModels[] | []
   Objects?: Objects[] | []
-  Client?: Clients[] | []
+  Client?: Clients
   IncindentStatuses?: INCStatuses[] | []
 }
 
 export interface ContractsPage extends Contracts {
-  height: number
+  height?: number
 }
 
 export interface IContractData {

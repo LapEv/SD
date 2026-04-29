@@ -1,16 +1,17 @@
-import React, { SyntheticEvent, memo } from 'react'
+import React, { ChangeEvent, SyntheticEvent, memo } from 'react'
 import { ChooseModalProps } from './interfaces'
 import { useState, useEffect } from 'react'
-import { Box, Typography, useTheme } from '@mui/material'
+import { Typography } from '@mui/material'
 import { useRoles } from 'hooks/roles/useRoles'
-import { modalStyle, boxDataModal } from 'static/styles'
-import { ButtonsModalSection } from 'components/Buttons'
+import {
+  ButtonsModalSection,
+  ClearSearchModalSection,
+} from 'components/Buttons'
 import { Item } from 'components/CheckBoxGroup'
 import { TextField } from 'components/TextFields'
 import { useFilteredData } from 'hooks/useFilteredData'
-import { SearchIconElement } from 'components/Icons'
 import { RolesGroup } from 'storeRoles/interfaces'
-import { ITheme } from 'themes/themeConfig'
+import { BoxModal, MuiDiv } from 'components/MUI'
 
 export const DeleteRolesGroup = memo(
   React.forwardRef<unknown, ChooseModalProps>(
@@ -25,7 +26,6 @@ export const DeleteRolesGroup = memo(
         filterText,
         ['groupName', 'group'],
       )
-      const theme = useTheme() as ITheme
 
       const changeData = (event: SyntheticEvent<EventTarget>) => {
         event.preventDefault()
@@ -45,7 +45,7 @@ export const DeleteRolesGroup = memo(
           return
         }
         setSelectedRolesGroup([...selectedRolesGroup, id])
-        if ([...selectedRolesGroup, id] && errSelectedItems)
+        if ([...selectedRolesGroup, id].length && errSelectedItems)
           setErrSelectedItems(false)
       }
 
@@ -55,25 +55,34 @@ export const DeleteRolesGroup = memo(
       }, [])
 
       return (
-        <Box
+        <BoxModal
           ref={ref}
           tabIndex={-1}
-          sx={{ ...modalStyle, paddingLeft: 5 }}
+          className={'modalMainContainer'}
           component="form"
           onSubmit={changeData}>
-          <Typography variant={'h6'}>{title}</Typography>
+          <Typography variant={'h1'}>{title}</Typography>
           <TextField
             variant="outlined"
-            sx={{ width: '90%', mt: 2, height: 40 }}
+            className="modalTextContainer"
             label="Фильтр по группе ролей"
             margin="normal"
             value={filterText || ''}
-            onChange={({ target }) => setFilterText(target.value ?? '')}
-            InputProps={{
-              endAdornment: <SearchIconElement />,
+            onChange={(e: ChangeEvent<HTMLInputElement>) =>
+              setFilterText(e.target.value ?? '')
+            }
+            slotProps={{
+              input: {
+                endAdornment: (
+                  <ClearSearchModalSection
+                    length={filterText.length}
+                    handleClick={() => setFilterText('')}
+                  />
+                ),
+              },
             }}
           />
-          <Box sx={{ ...boxDataModal }}>
+          <MuiDiv className={'boxDataModal'}>
             {filteredRolesGroups.map(({ groupName, group, id }) => (
               <Item
                 name={groupName}
@@ -81,18 +90,20 @@ export const DeleteRolesGroup = memo(
                 id={`${id}`}
                 groupChecked={false}
                 onChooseItems={onChooseItems}
-                key={id}
+                key={`${groupName}_${id}`}
+                className={'listItemsChangeRolesGr'}
+                classItemText={'listItemsTextContainer'}
               />
             ))}
-          </Box>
-          <Box sx={{ color: theme.palette.error.main, height: 20 }}>
+          </MuiDiv>
+          <MuiDiv className={'modalError'}>
             {errSelectedItems && 'Не выбрана ни одна роль или группа ролей!'}
-          </Box>
+          </MuiDiv>
           <ButtonsModalSection
             closeModal={() => handleModal(false)}
             btnName="Удалить"
           />
-        </Box>
+        </BoxModal>
       )
     },
   ),

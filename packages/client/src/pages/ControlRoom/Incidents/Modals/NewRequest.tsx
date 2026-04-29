@@ -1,10 +1,10 @@
 import React, { memo } from 'react'
-import { Box, Typography } from '@mui/material'
+import { Typography } from '@mui/material'
 // import { useForm, useFieldArray, useFormState } from 'react-hook-form'
 // import { ChooseModalProps, AddValuesProps } from './interfaces'
-import { ChooseModalProps } from './interfaces'
-import { modalStyle } from 'static/styles'
 import { ButtonsModalSection } from 'components/Buttons'
+import { ChooseModalProps } from '../interfaces'
+import { BoxModal } from 'components/MUI'
 // import { MapINCStatusInputFields } from '../data'
 
 export const NewRequest = memo(
@@ -30,10 +30,10 @@ export const NewRequest = memo(
       // }
 
       return (
-        <Box ref={ref} tabIndex={-1} sx={modalStyle}>
+        <BoxModal ref={ref} tabIndex={-1} className={'modalMainContainer'}>
           {/* component="form"
           onSubmit={handleSubmit(changeData)}> */}
-          <Typography variant={'h6'}>{title}</Typography>
+          <Typography variant={'h1'}>{title}</Typography>
           {/* {fields.map(
           ({ name, id, label, validation, type, required }, index) => {
             return (
@@ -65,7 +65,7 @@ export const NewRequest = memo(
             closeModal={() => handleModal(false)}
             btnName="Сохранить"
           />
-        </Box>
+        </BoxModal>
       )
     },
   ),

@@ -2,6 +2,34 @@ import { Autocomplete as MuiAutocomplete, styled } from '@mui/material'
 import { ITheme, ThemeMode } from 'themes/themeConfig'
 
 export const Autocomplete = styled(MuiAutocomplete)(({ theme }) => ({
+  listbox: {
+    borderWidth: 1,
+    fontWeight: 'normal',
+    minHeight: 40,
+    maxHeight: 225,
+    backgroundColor:
+      theme.palette.mode === ThemeMode.light
+        ? (theme as ITheme).colorTheme.colorDark
+        : (theme as ITheme).colorTheme.colorLight,
+  },
+  option: {
+    color:
+      theme.palette.mode === ThemeMode.light
+        ? (theme as ITheme).colorTheme.colorLight
+        : (theme as ITheme).colorTheme.colorDark,
+    borderColor:
+      theme.palette.mode === ThemeMode.light
+        ? (theme as ITheme).colorTheme.colorLight
+        : (theme as ITheme).colorTheme.colorDark,
+    '& :hover': {
+      color:
+        theme.palette.mode === ThemeMode.light
+          ? (theme as ITheme).colorTheme.colorLight
+          : (theme as ITheme).colorTheme.colorDark,
+      fontWeight: 'bold',
+    },
+  },
+
   '& input': {
     padding: '0!important',
     paddingLeft: '7px!important',
@@ -41,40 +69,5 @@ export const Autocomplete = styled(MuiAutocomplete)(({ theme }) => ({
       theme.palette.mode === ThemeMode.light
         ? (theme as ITheme).colorTheme.colorLight
         : (theme as ITheme).colorTheme.colorDark,
-  },
-}))
-
-export const AutocompleteIncidents = styled(MuiAutocomplete)(({ theme }) => ({
-  '& input': {
-    padding: '0!important',
-  },
-  '.MuiAutocomplete-input': {
-    width: '100%',
-  },
-  '.MuiAutocomplete-endAdornment': {
-    right: '0!important',
-  },
-  '.MuiAutocomplete-clearIndicator': {
-    color:
-      theme.palette.mode === ThemeMode.dark
-        ? (theme as ITheme).colorTheme.colorLight
-        : (theme as ITheme).colorTheme.colorDark,
-    '& .MuiSvgIcon-root': {
-      width: 15,
-      height: 15,
-    },
-  },
-  '.MuiAutocomplete-popupIndicator': {
-    color:
-      theme.palette.mode === ThemeMode.dark
-        ? (theme as ITheme).colorTheme.colorLight
-        : (theme as ITheme).colorTheme.colorDark,
-    '.MuiSvgIcon-root': {
-      width: 28,
-      height: 28,
-    },
-  },
-  '.MuiAutocomplete-popper': {
-    width: '120%',
   },
 }))

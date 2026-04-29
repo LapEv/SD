@@ -41,11 +41,6 @@ export const AppConst = {
   attrINC: 'INC',
   numberDigit: 9,
   startINC: 23221,
-  methodsReuqest: {
-    manually: 'manually',
-    email: 'email',
-    web: 'web',
-  },
   ActionComment: {
     incidentRegistration: 'Зарегистрирован инцидент под номером ',
     changeExecutor: {

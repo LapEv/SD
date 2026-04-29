@@ -37,7 +37,7 @@ export const NavBar = memo(() => {
     <AppBar position="fixed" sx={{ zIndex: 1, display: 'none' }}>
       <Toolbar>
         <Typography variant="h6" component="div">
-          SD
+          SBI
         </Typography>
         {menuData.map(value => (
           <NavItem key={value.text} {...value} />

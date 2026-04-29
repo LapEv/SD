@@ -5,7 +5,6 @@ import { User } from 'storeAuth/interfaces'
 import { RotateButton } from 'components/Buttons'
 import { ProfileData } from './'
 import { useAuth } from 'hooks/auth/useAuth'
-import { listItemButton } from 'static/styles/listItemButton'
 
 export const ListUsers = memo((user: User) => {
   const [{ activeUserInfo }, { getUserInfo, setActiveUserInfo }] = useAuth()
@@ -28,7 +27,10 @@ export const ListUsers = memo((user: User) => {
 
   return (
     <Box>
-      <ListItemButton divider={open} sx={listItemButton} onClick={handleClick}>
+      <ListItemButton
+        divider={open}
+        className={'itemButtonCollapse'}
+        onClick={handleClick}>
         <Box>
           <ListItemText
             primary={`${user.lastName} ${user.firstName} ${user.middleName}`}

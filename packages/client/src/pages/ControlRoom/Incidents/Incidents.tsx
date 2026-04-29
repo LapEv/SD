@@ -1,26 +1,22 @@
-import { useEffect, memo } from 'react'
-import { Box, Container } from '@mui/material'
-import { useAuth } from 'hooks/auth/useAuth'
-import { TableIncidents } from '.'
-import { mainHeaderForINCPage } from 'static/styles'
-import { useIncidents } from 'hooks/incidents/useINC'
+import { memo } from 'react'
+import { Container } from '@mui/material'
+import { TableIncidents } from './TableIncidents'
+import { CustomToolbar } from './components/CustomToolbar'
+import { MUIModal } from './Modals/MUIModal'
+import { MuiDiv } from 'components/MUI'
+import { INCFooter } from './INCFooter'
 
 export const IncidentsPage = memo(() => {
-  const [, { getFieldEngineers, getDispatchers }] = useAuth()
-  const [, { getIncidentStatuses, getTypesCompletedWork }] = useIncidents()
-
-  useEffect(() => {
-    getFieldEngineers()
-    getDispatchers()
-    getIncidentStatuses()
-    getTypesCompletedWork()
-  }, [])
-
   return (
-    <Container component="main" maxWidth="md" sx={mainHeaderForINCPage}>
-      <Box sx={{ width: '100%', p: 1 }}>
-        <TableIncidents />
-      </Box>
+    <Container component="main" maxWidth="md" className={'mainHeaderForPages'}>
+      <MuiDiv className={'mainTableStyle'}>
+        <MUIModal />
+        <MuiDiv className={'tableBorder'}>
+          <CustomToolbar />
+          <TableIncidents />
+          <INCFooter />
+        </MuiDiv>
+      </MuiDiv>
     </Container>
   )
 })

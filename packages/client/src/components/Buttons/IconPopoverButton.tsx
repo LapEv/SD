@@ -1,5 +1,5 @@
 import { useState, MouseEvent, memo } from 'react'
-import { useTheme, Popover, IconButton } from '@mui/material'
+import { Popover, IconButton } from '@mui/material'
 import { IconButtonProps } from './interfaces'
 import { PopoverTypography } from 'components/Popover/PopoverTypography'
 
@@ -12,22 +12,11 @@ export const IconPopoverButton = memo(
     size,
     sx,
     propsPopover,
+    className,
   }: IconButtonProps) => {
     const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null)
-    const theme = useTheme()
-
-    const sxDefault = {
-      m: 1,
-      width: 40,
-      height: 40,
-      borderRadius: '20%',
-      color: theme.palette.primary.contrastText,
-      backgroundColor: theme.palette.primary.main,
-      boxShadow: 5,
-    }
 
     const open = Boolean(anchorEl)
-
     return (
       <>
         <IconButton
@@ -37,7 +26,8 @@ export const IconPopoverButton = memo(
           onMouseLeave={() => setAnchorEl(null)}
           onClick={onClick}
           size={size ?? 'small'}
-          sx={{ ...sxDefault, ...sx }}
+          sx={sx}
+          className={className}
           aria-controls={open ? 'account-menu' : undefined}
           aria-haspopup="true"
           aria-expanded={open ? 'true' : undefined}>

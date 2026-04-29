@@ -1,5 +1,7 @@
-import { TypographyPropsVariantOverrides } from '@mui/material'
-import { Variant } from '@mui/material/styles/createTypography'
+import {
+  TypographyPropsVariantOverrides,
+  TypographyVariant,
+} from '@mui/material'
 import { OverridableStringUnion } from '@mui/types'
 
 export interface IModalChangeName {
@@ -9,7 +11,7 @@ export interface IModalChangeName {
   answer: (answer: boolean, text: string) => void
   variant?:
     | OverridableStringUnion<
-        'inherit' | Variant,
+        'inherit' | TypographyVariant,
         TypographyPropsVariantOverrides
       >
     | undefined

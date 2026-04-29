@@ -18,7 +18,7 @@ import { useSLA } from 'hooks/sla/useSLA'
 import { MapOLAViewInputFields, MapSLAViewInputFields } from './data'
 import { useAuth } from 'hooks/auth/useAuth'
 import { Options } from 'components/DropDown/interface'
-import { DropDown, emptyValue } from 'components/DropDown'
+import { DropDown, emptyOptionsDD } from 'components/DropDown'
 import { useIncidents } from 'hooks/incidents/useINC'
 
 export const SLAPage = memo(
@@ -38,7 +38,7 @@ export const SLAPage = memo(
     const [{ admin }] = useAuth()
     const [btnDisabled, setbtnDisabled] = useState<boolean>(true)
     const [listTypes, setListTypes] = useState<Options[]>([])
-    const [selectedType, setSelectedType] = useState<Options>(emptyValue)
+    const [selectedType, setSelectedType] = useState<Options>(emptyOptionsDD)
     const [slaData, setSlaData] = useState<SLAList>(
       sla
         ? {

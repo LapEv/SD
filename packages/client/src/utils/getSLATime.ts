@@ -3,10 +3,20 @@ interface IGetTime {
   time: string
   timeStart: string
   timeEnd: string
+  timeRegistration?: string
 }
 
-export const getSLATime = ({ days, time, timeStart, timeEnd }: IGetTime) => {
-  const now = new Date()
+export const getSLATime = ({
+  days,
+  time,
+  timeStart,
+  timeEnd,
+  timeRegistration,
+}: IGetTime) => {
+  const now = timeRegistration ? new Date(timeRegistration) : new Date()
+  timeRegistration
+    ? now.setTime(now.getTime() + now.getTimezoneOffset() * 60 * 1000)
+    : null
   const nowDateTime = now.toISOString().split('T')[0]
   const DateTimeStart = new Date(nowDateTime + 'T' + timeStart)
   const DateTimeEnd = new Date(nowDateTime + 'T' + timeEnd)
@@ -16,7 +26,6 @@ export const getSLATime = ({ days, time, timeStart, timeEnd }: IGetTime) => {
   const hoursOffset = Number(newTime[0])
     ? 1000 * 60 * 60 * Number(newTime[0])
     : 0
-
   const timeOffsetMM = hoursOffset + minutesOffset + secondsOffset
   const dayTS = 1000 * 60 * 60 * 24
   const daysOffset = Number(days) * dayTS
@@ -24,6 +33,7 @@ export const getSLATime = ({ days, time, timeStart, timeEnd }: IGetTime) => {
   const startTime = DateTimeStart.getTime()
   const endTime = DateTimeEnd.getTime()
   const diffWorkTime = endTime - startTime
+
   if (diffWorkTime === 0) {
     now.setTime(slaTime)
     now.setDate(now.getDate())
@@ -31,7 +41,6 @@ export const getSLATime = ({ days, time, timeStart, timeEnd }: IGetTime) => {
   }
 
   const diff = now.getTime() + timeOffsetMM - endTime
-
   if (diff > 0) {
     const daysNumbers = diff > 0 ? Number(days) + 1 : Number(days)
     DateTimeStart.setDate(DateTimeStart.getDate() + daysNumbers)
