@@ -125,7 +125,7 @@ export const FilterTriggers = memo(
             disabled={item.columnType !== 'boolean' ? false : true}
             label="Оператор"
             data={CheckOperators(item.columnType, operators).map(
-              ({ operatorLabel }) => operatorLabel,
+              (item: IOperator) => item.operatorLabel,
             )}
             onChange={setOperator}
             classNameSelect={'selectFilterTrigger'}

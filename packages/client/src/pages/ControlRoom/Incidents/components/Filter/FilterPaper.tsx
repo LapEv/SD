@@ -5,8 +5,10 @@ import { useMessage } from 'hooks/message/useMessage'
 import { IFilter } from '../../interfaces'
 import { useTableINC } from 'hooks/tableINC/useTableINC'
 import { operators, SETTINGS_DEFAULT } from '../../data'
-import { GetActiveColumnOptions } from 'pages/ControlRoom/Incidents'
-import { CheckOperators } from 'pages/ControlRoom/Incidents'
+import {
+  GetActiveColumnOptions,
+  CheckOperators,
+} from 'pages/ControlRoom/Incidents'
 import { ButtonsFilterINCs } from 'components/Buttons'
 import {
   ILogicOperator,
