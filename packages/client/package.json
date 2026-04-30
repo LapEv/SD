@@ -25,6 +25,7 @@
     "@reduxjs/toolkit": "^2.11.2",
     "@types/hoist-non-react-statics": "^3.3.7",
     "@types/node": "^25.3.0",
+    "@vitejs/plugin-react": "^4.2.1",
     "axios": "^1.13.5",
     "dayjs": "^1.11.19",
     "dotenv": "^16.4.5",
