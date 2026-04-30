@@ -10,8 +10,8 @@ import {
   ILogicOperator,
   ILogicOperatorLabel,
 } from 'store/slices/tableINC/interfaces'
-import { GetActiveColumnOptions } from '../../utils/GetActiveColumnOptions'
-import { CheckOperators } from '../../utils/CheckOperators'
+import { GetActiveColumnOptions } from '../../Utils/GetActiveColumnOptions'
+import { CheckOperators } from '../../Utils/CheckOperators'
 
 export const FilterPaper = memo(({ handleCloseFilterPanel }: IFilter) => {
   const [{ filterListOptions, columnOptions }, { setFilterListOptions }] =

@@ -1,7 +1,7 @@
 import { LinearProgressWithLabel } from 'components/LinearProgress/LinearProgress'
 import { IIndicatorCell } from '../../interfaces'
 import { MuiDiv } from 'components/MUI'
-import { GetIndicatorData } from '../../utils/GetIndicatorData'
+import { GetIndicatorData } from '../../Utils/GetIndicatorData'
 
 export const Indicator = ({
   timeSLA,

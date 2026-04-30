@@ -19,7 +19,7 @@ import {
 } from 'store/slices/tableINC/interfaces'
 import { FilterValue } from './FilterValue'
 import { MuiDiv } from 'components/MUI'
-import { CheckOperators } from '../../utils/CheckOperators'
+import { CheckOperators } from '../../Utils/CheckOperators'
 
 export const FilterTriggers = memo(
   ({ item, filterList, setFilterList }: IFilterTriggers) => {
