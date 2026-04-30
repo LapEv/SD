@@ -10,7 +10,6 @@ import {
   SETTINGS_DEFAULT,
 } from '../../data'
 import { useTableINC } from 'hooks/tableINC/useTableINC'
-import { CheckOperators } from 'pages/ControlRoom/Incidents/utils/CheckOperators'
 import { Dayjs } from 'dayjs'
 import {
   IFilterListOptions,
@@ -20,6 +19,7 @@ import {
 } from 'store/slices/tableINC/interfaces'
 import { FilterValue } from './FilterValue'
 import { MuiDiv } from 'components/MUI'
+import { CheckOperators } from '../../utils/CheckOperators'
 
 export const FilterTriggers = memo(
   ({ item, filterList, setFilterList }: IFilterTriggers) => {
