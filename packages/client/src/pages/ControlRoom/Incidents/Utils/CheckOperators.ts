@@ -1,6 +1,9 @@
 import { INC_CellType, IOperator } from '../interfaces'
 
-export const CheckOperators = (type: INC_CellType, operators: IOperator[]) => {
+export const CheckOperators = (
+  type: INC_CellType,
+  operators: IOperator[],
+): IOperator[] => {
   if (type === 'value') return operators
   if (type === 'dateTime')
     return operators.filter(

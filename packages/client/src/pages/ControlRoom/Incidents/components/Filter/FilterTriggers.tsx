@@ -10,7 +10,7 @@ import {
   SETTINGS_DEFAULT,
 } from '../../data'
 import { useTableINC } from 'hooks/tableINC/useTableINC'
-import { CheckOperators } from '../../utils/CheckOperators'
+import { CheckOperators } from 'pages/ControlRoom/Incidents'
 import { Dayjs } from 'dayjs'
 import {
   IFilterListOptions,

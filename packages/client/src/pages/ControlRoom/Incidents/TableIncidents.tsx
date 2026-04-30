@@ -5,8 +5,8 @@ import { useAuth } from 'hooks/auth/useAuth'
 import { INCHeader } from './INCHeader'
 import { INCBody } from './INCBody'
 import { useTableINC } from 'hooks/tableINC/useTableINC'
-import { getInitialSettings } from './utils/GetInitialSettings'
 import { MuiDiv } from 'components/MUI'
+import { getInitialSettings } from 'pages/ControlRoom/Incidents'
 
 export const TableIncidents = memo(() => {
   const [

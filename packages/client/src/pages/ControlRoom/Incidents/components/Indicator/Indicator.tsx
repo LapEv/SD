@@ -1,6 +1,6 @@
 import { LinearProgressWithLabel } from 'components/LinearProgress/LinearProgress'
 import { IIndicatorCell } from '../../interfaces'
-import { GetIndicatorData } from '../../utils/GetIndicatorData'
+import { GetIndicatorData } from 'pages/ControlRoom/Incidents'
 import { MuiDiv } from 'components/MUI'
 
 export const Indicator = ({
