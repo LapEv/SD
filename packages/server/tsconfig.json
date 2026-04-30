@@ -1,11 +1,13 @@
 {
   "compilerOptions": {
+    // "allowImportingTsExtensions": true,
+    // "noEmit": true,
     "composite": true,
     "target": "es2019",
-    // "module": "commonjs",
+    "module": "commonjs",
     // "moduleResolution": "node",
-    "module": "preserve",
-    "moduleResolution": "bundler",
+    // "module": "esnext",
+    "moduleResolution": "node10",
     "esModuleInterop": true,
     "sourceMap": true,
     "declaration": true,
@@ -22,13 +24,11 @@
     "forceConsistentCasingInFileNames": true,
     "lib": ["DOM", "es2019", "esnext.asynciterable"],
     "types": ["node"],
-    // "baseUrl": ".",
     "paths": {
       "*": ["./types/*"],
       "/*": ["./*"],
       "react": ["./node_modules/@types/react"]
     },
-    // "typeRoots": ["./types", "./node_modules/@types"],
     "skipLibCheck": true,
     "outDir": "dist"
   }
