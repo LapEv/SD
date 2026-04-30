@@ -5,15 +5,13 @@ import { useMessage } from 'hooks/message/useMessage'
 import { IFilter } from '../../interfaces'
 import { useTableINC } from 'hooks/tableINC/useTableINC'
 import { operators, SETTINGS_DEFAULT } from '../../data'
-import {
-  GetActiveColumnOptions,
-  CheckOperators,
-} from 'pages/ControlRoom/Incidents'
 import { ButtonsFilterINCs } from 'components/Buttons'
 import {
   ILogicOperator,
   ILogicOperatorLabel,
 } from 'store/slices/tableINC/interfaces'
+import { GetActiveColumnOptions } from 'pages/ControlRoom/Incidents/utils/GetActiveColumnOptions'
+import { CheckOperators } from 'pages/ControlRoom/Incidents/utils/CheckOperators'
 
 export const FilterPaper = memo(({ handleCloseFilterPanel }: IFilter) => {
   const [{ filterListOptions, columnOptions }, { setFilterListOptions }] =
