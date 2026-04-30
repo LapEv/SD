@@ -12,7 +12,7 @@ import {
   changeNameDepartment,
 } from 'api/structure'
 import { setActiveDepartment, setActiveDivision } from 'store/slices/structure'
-import { RootState } from 'store'
+import { RootState } from 'store/index'
 import { StructureState } from 'store/slices/structure/interfaces'
 
 export function useStructure(): [StructureState, StructureActions] {

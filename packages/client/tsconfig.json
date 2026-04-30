@@ -1,6 +1,5 @@
 {
   "compilerOptions": {
-    "ignoreDeprecations": "6.0",
     "target": "ESNext",
     "useDefineForClassFields": true,
     "lib": ["DOM", "DOM.Iterable", "ESNext", "webworker"],
@@ -11,18 +10,24 @@
     "strict": true,
     "forceConsistentCasingInFileNames": true,
     "module": "ESNext",
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "react-jsx",
-    // "rootDir": "./",
-    "baseUrl": "./src/",
     "paths": {
-      "storeAuth/*": ["store/slices/auth/*"],
-      "storeRoles/*": ["store/slices/roles/*"],
-      "themes/*": ["themes/*"],
-      "styles/*": ["./src/themes/styles/*"],
+      "auth/*": ["./src/auth/*"],
+      "api/*": ["./src/api/*"],
+      "hooks/*": ["./src/hooks/*"],
+      "hoks/*": ["./src/hoks/*"],
+      "pages/*": ["./src/pages/*"],
+      "store/*": ["./src/store/*"],
+      "layouts/*": ["./src/layouts/*"],
+      "components/*": ["./src/components/*"],
+      "utils/*": ["./src/utils/*"],
+      "storeAuth/*": ["./src/store/slices/auth/*"],
+      "storeRoles/*": ["./src/store/slices/roles/*"],
+      "themes/*": ["./src/themes/*"],
       "/*": ["./node_modules/*", "../../node_modules/*"],
       "react": ["./node_modules/@types/react"]
     }

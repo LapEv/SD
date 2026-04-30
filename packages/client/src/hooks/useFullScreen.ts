@@ -28,9 +28,9 @@ export function useFullScreen(): [
     setFullScreen(
       Boolean(
         doc.fullscreenElement ||
-          doc.mozFullScreenElement ||
-          doc.webkitFullscreenElement ||
-          doc.msFullscreenElement,
+        doc.mozFullScreenElement ||
+        doc.webkitFullscreenElement ||
+        doc.msFullscreenElement,
       ),
     )
   })
@@ -74,5 +74,9 @@ export function useFullScreen(): [
       document.removeEventListener('fullscreenchange', onFullscreenChange)
   }, [])
 
-  return [elementRef, fullScreen, toggleFullScreen]
+  return [
+    elementRef as RefObject<DocumentElementWithFullScreen>,
+    fullScreen,
+    toggleFullScreen,
+  ]
 }

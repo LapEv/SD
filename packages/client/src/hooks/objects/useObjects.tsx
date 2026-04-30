@@ -1,5 +1,5 @@
 import { useSelector } from 'react-redux'
-import { RootState } from 'store'
+import { RootState } from 'store/index'
 import { useAppDispatch } from 'store/hooks'
 import { ObjectsActions } from './objectsActions'
 import { changeObject, deleteObjects, getObjects, newObject } from 'api/objects'

@@ -1,5 +1,5 @@
 import { Component, PropsWithChildren } from 'react'
-import { Error } from 'pages'
+import { Error } from 'pages/index'
 
 interface ErrorBoundaryState {
   hasError: boolean

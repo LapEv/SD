@@ -1,3 +1,4 @@
+import { JSX } from 'react'
 import { User } from 'storeAuth/interfaces'
 
 export interface DrawerHeaderProps {

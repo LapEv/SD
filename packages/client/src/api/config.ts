@@ -1,5 +1,5 @@
 import axios, { InternalAxiosRequestConfig } from 'axios'
-import { store } from 'store'
+import { store } from 'store/index'
 import { clearUser } from 'storeAuth/index'
 
 export const ApiEndPoints = {

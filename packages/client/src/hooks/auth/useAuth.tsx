@@ -16,7 +16,7 @@ import {
   deleteAvatar,
 } from 'api/user'
 import { signin, signup } from 'api/user'
-import { RootState } from 'store'
+import { RootState } from 'store/index'
 import { useAppDispatch } from 'store/hooks'
 import {
   setActiveUserInfo,

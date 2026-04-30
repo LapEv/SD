@@ -1,5 +1,5 @@
 import { useSelector } from 'react-redux'
-import { RootState } from 'store'
+import { RootState } from 'store/index'
 import { useAppDispatch } from 'store/hooks'
 import { FilesState } from 'store/slices/files/interfaces'
 import { FilesActions } from './filesActions'

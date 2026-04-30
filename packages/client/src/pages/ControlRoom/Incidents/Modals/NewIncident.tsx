@@ -26,6 +26,7 @@ import { useAuth } from 'hooks/auth/useAuth'
 import { AddValuesProps, ChooseModalProps, methodsReuqest } from '../interfaces'
 import { BoxModal } from 'components/MUI'
 import { useTableINC } from 'hooks/tableINC/useTableINC'
+import { INCStatuses } from 'store/slices/incidents/interfaces'
 
 export const NewIncident = memo(
   React.forwardRef<unknown, ChooseModalProps>(
@@ -79,7 +80,7 @@ export const NewIncident = memo(
       })
 
       function changeData({ list }: AddValuesProps) {
-        const id_incStatus = incStatuses.find(item =>
+        const id_incStatus = incStatuses.find((item: INCStatuses) =>
           item.statusINC.includes('Зарегистрирован'),
         )?.id as string
 

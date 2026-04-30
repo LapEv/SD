@@ -1,5 +1,4 @@
-import { MessageFunctions, ImapMessageAttributes } from 'imap'
-import Connection = require('imap')
+import Connection, { MessageFunctions, ImapMessageAttributes } from 'imap'
 const Imap = require('imap')
 const { simpleParser } = require('mailparser')
 import { ParsedMail } from 'mailparser'

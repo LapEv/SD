@@ -12,7 +12,7 @@ import {
   changeNameRolesGroup,
   changeNameRole,
 } from 'api/roles'
-import { RootState } from 'store'
+import { RootState } from 'store/index'
 import { useAppDispatch } from 'store/hooks'
 import { RolesActions } from './rolesActions'
 import { setActiveRolesGroup } from 'storeRoles/index'

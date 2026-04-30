@@ -1,5 +1,5 @@
 import { useSelector } from 'react-redux'
-import { RootState } from 'store'
+import { RootState } from 'store/index'
 import { useAppDispatch } from 'store/hooks'
 import { AddressesActions } from './AddressesActions'
 import { AddressesState } from 'store/slices/addresses/interfaces'
