@@ -4,7 +4,7 @@ export {
   GetIndicatorData,
   GetActiveColumnOptions,
   CheckOperators,
-} from './utils/index'
+} from 'pages/ControlRoom/Incidents/utils'
 export { Indicator } from './components/Indicator/Indicator'
 export { Status } from './components/Status/Status'
 export { EditINC } from './components/Edit/EditINC'

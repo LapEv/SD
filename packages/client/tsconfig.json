@@ -33,7 +33,5 @@
     }
   },
   "include": ["src"],
-  // "exclude": ["node_modules", "src/**/*.spec.ts"],
-  // "files": ["src/custom.d.ts"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }
