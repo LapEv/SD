@@ -40,7 +40,8 @@
     "reflect-metadata": "^0.2.2",
     "sequelize": "^6.37.7",
     "sequelize-typescript": "^2.1.6",
-    "serialize-javascript": "^7.0.2"
+    "serialize-javascript": "^7.0.2",
+    "vite": "3.0.7"
   },
   "devDependencies": {
     "@types/cors": "^2.8.19",
@@ -49,6 +50,7 @@
     "@types/pg": "^8.16.0",
     "@typescript-eslint/eslint-plugin": "6.21.0",
     "@typescript-eslint/parser": "6.21.0",
+    "@vitejs/plugin-react": "4.2.1",
     "babel-jest": "^30.2.0",
     "eslint": "8.57.0",
     "jest": "^30.2.0",
@@ -57,7 +59,7 @@
     "ts-jest": "^29.4.6",
     "ts-node": "^10.9.2",
     "typescript": "^5.9.3",
-    "vite": "7.3.1"
+    "vite": "3.0.7"
   },
   "license": "MIT"
 }

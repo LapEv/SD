@@ -23,7 +23,9 @@ async function init() {
         fileSize: 200 * 1024 * 1024 * 1024, //20MB max file(s) size
       },
       tempFileDir: '/Files/',
-    }),
+      /*  eslint-disable @typescript-eslint/no-explicit-any */
+    }) as any,
+    /* eslint-enable @typescript-eslint/no-explicit-any */
   )
 
   app.use(express.json({ limit: '50mb' }))
