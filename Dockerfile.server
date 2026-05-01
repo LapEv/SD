@@ -1,7 +1,7 @@
 ARG NODE_VERSION=24
 ARG SERVER_PORT=3002
 
-FROM node:$NODE_VERSION-bookworm as base
+FROM node:$NODE_VERSION-slim as base
 RUN apt-get update && apt-get install -y nodejs && apt-get install -y npm
 WORKDIR /app
 
