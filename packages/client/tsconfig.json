@@ -9,8 +9,9 @@
     "allowSyntheticDefaultImports": true,
     "strict": true,
     "forceConsistentCasingInFileNames": true,
+    // "ignoreDeprecations": "6.0",
     "module": "ESNext",
-    "moduleResolution": "node10",
+    "moduleResolution": "bundler",
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
@@ -33,5 +34,7 @@
     }
   },
   "include": ["src"],
+  "exclude": ["node_modules", "src/**/*.spec.ts"],
+  "files": ["src/custom.d.ts", "src/client.d.ts"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }
