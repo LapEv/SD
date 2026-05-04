@@ -3,8 +3,7 @@ import { userService } from '../services/userService'
 import { check } from 'express-validator'
 import { auth } from '../data/auth'
 import { authMiddleware } from '../middleware/authMiddleware'
-
-const roleMiddleware = require('../middleware/roleMiddleware') /* tslint:disable no-var-requires */
+import { roleMiddleware } from '/middleware/roleMiddleware'
 
 export const userRouter = (apiRouter: Router) => {
   const service = new userService()

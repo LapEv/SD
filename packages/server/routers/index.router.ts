@@ -13,14 +13,13 @@ import { objectsRouter } from './objectsRouter'
 import { incidentRouter } from './IncidentRouter'
 import { filesRouter } from './filesRouter'
 
-export const apiRouter: Router = Router()
+const apiRouter: Router = Router()
 
 userRouter(apiRouter)
 roleRouter(apiRouter)
 divisionRouter(apiRouter)
 departmentRouter(apiRouter)
 userStatusRouter(apiRouter)
-addressRouter(apiRouter)
 addressRouter(apiRouter)
 clientRouter(apiRouter)
 classifierRouter(apiRouter)
@@ -29,3 +28,5 @@ contractRouter(apiRouter)
 objectsRouter(apiRouter)
 incidentRouter(apiRouter)
 filesRouter(apiRouter)
+
+export { apiRouter }

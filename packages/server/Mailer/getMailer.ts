@@ -1,5 +1,5 @@
 import Connection, { MessageFunctions, ImapMessageAttributes } from 'imap'
-const Imap = require('imap')
+import Imap from 'imap'
 const { simpleParser } = require('mailparser')
 import { ParsedMail } from 'mailparser'
 import { checkTemplateFromMail } from './checkTemplate'
@@ -7,9 +7,9 @@ import { checkTemplateFromMail } from './checkTemplate'
 const { EMAIL_USER, EMAIL_PASSWORD, EMAIL_HOST } = process.env
 
 const imapConfig = {
-  user: EMAIL_USER,
-  password: EMAIL_PASSWORD,
-  host: EMAIL_HOST,
+  user: EMAIL_USER as string,
+  password: EMAIL_PASSWORD as string,
+  host: EMAIL_HOST as string,
   port: 993,
   tls: true,
 }
@@ -22,7 +22,7 @@ export const getEmails = () => {
       imap.openBox('INBOX', false, () => {
         imap.search(
           ['UNSEEN', ['SINCE', new Date()]],
-          (err: Error, results: []) => {
+          (err: Error, results: number[]) => {
             if (err) throw err
             else if (!results || !results.length) {
               console.log(
