@@ -2,8 +2,8 @@
   "compilerOptions": {
     "composite": true,
     "target": "es2019",
-    "module": "commonjs",
-    "moduleResolution": "node",
+    "module": "ESNext",
+    "moduleResolution": "bundler",
     "esModuleInterop": true,
     "sourceMap": true,
     "declaration": true,

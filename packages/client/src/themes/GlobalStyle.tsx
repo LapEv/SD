@@ -34,12 +34,12 @@ export const GlobalStyle = () => {
             theme.palette.mode === ThemeMode.light ? ' #2b2b2b' : ' #2b2b2b',
         },
         'input:-webkit-autofill': {
-          '-webkit-box-shadow': `0 0 0 50px ${
+          WebkitBoxShadow: `0 0 0 50px ${
             theme.palette.mode === ThemeMode.dark
               ? theme.colorTheme.colorDark
               : theme.colorTheme.colorLight
           } inset`,
-          '-webkit-text-fill-color':
+          WebkitTextFillColor:
             theme.palette.mode === ThemeMode.light
               ? theme.colorTheme.colorDark
               : theme.colorTheme.colorLight,
