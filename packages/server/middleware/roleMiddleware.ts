@@ -12,7 +12,7 @@ const include = [
   },
 ]
 
-export const roleMiddleware = (roles: string[]) => {
+module.exports = function (roles: []) {
   return async function (_req: Request, res: Response, next: NextFunction) {
     if (_req.method === 'OPTIONS') {
       next()

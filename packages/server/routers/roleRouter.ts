@@ -1,6 +1,6 @@
 import { Router } from 'express'
 import { roleService } from '../services/roleService'
-import { roleMiddleware } from '/middleware/roleMiddleware'
+const roleMiddleware = require('../middleware/roleMiddleware')
 
 export const roleRouter = (apiRouter: Router) => {
   const service = new roleService()

@@ -1,6 +1,6 @@
 import { Router } from 'express'
 import { slaService } from '../services/slaService'
-import { roleMiddleware } from '/middleware/roleMiddleware'
+const roleMiddleware = require('../middleware/roleMiddleware')
 
 export const slaRouter = (apiRouter: Router) => {
   const service = new slaService()

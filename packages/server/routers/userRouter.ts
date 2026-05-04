@@ -3,7 +3,7 @@ import { userService } from '../services/userService'
 import { check } from 'express-validator'
 import { auth } from '../data/auth'
 import { authMiddleware } from '../middleware/authMiddleware'
-import { roleMiddleware } from '/middleware/roleMiddleware'
+const roleMiddleware = require('../middleware/roleMiddleware')
 
 export const userRouter = (apiRouter: Router) => {
   const service = new userService()
