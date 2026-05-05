@@ -129,6 +129,7 @@ export const ChangeIncidentStatuses = memo(
           <ButtonsModalSection
             closeModal={() => handleModal(false)}
             btnName={'Изменить'}
+            sx={{ mt: '12px!important' }}
           />
         </BoxModal>
       )

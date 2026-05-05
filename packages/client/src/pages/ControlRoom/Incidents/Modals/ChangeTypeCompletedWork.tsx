@@ -135,6 +135,7 @@ export const ChangeTypeCompletedWork = memo(
           <ButtonsModalSection
             closeModal={() => handleModal(false)}
             btnName={'Изменить'}
+            sx={{ mt: '12px!important' }}
           />
         </BoxModal>
       )

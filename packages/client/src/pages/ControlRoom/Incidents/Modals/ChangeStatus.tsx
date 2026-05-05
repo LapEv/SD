@@ -293,6 +293,7 @@ export const ChangeStatus = memo(
           <ButtonsModalSection
             closeModal={() => handleModal({ state: false, data })}
             btnName={'Сохранить'}
+            sx={{ mt: '12px!important' }}
           />
         </BoxModal>
       )

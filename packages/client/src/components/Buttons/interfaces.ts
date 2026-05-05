@@ -3,6 +3,7 @@ import { JSX, SyntheticEvent, type PropsWithChildren } from 'react'
 export type Handle = {
   closeModal: (state: boolean) => void
   btnName: string
+  sx?: Record<string, unknown>
 }
 
 export type HandleSection = {

@@ -92,6 +92,7 @@ export const ChangeStateStatuses = memo(
             btnSecondName="Отменить"
             btnDisabled={false}
             btnSecondDisabled={false}
+            containerProps={{ mt: '16px!important' }}
           />
         </BoxModal>
       )

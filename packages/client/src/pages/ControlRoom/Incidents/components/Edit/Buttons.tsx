@@ -95,7 +95,10 @@ export const Buttons = ({
           </Button>
         </MuiDiv>
         <MuiDiv>
-          <Button onClick={() => setNewINC(inc)}>Отменить</Button>
+          <Button onClick={() => setNewINC(inc)}>Отменить изменения</Button>
+          <Button onClick={() => handleModal(false)} sx={{ ml: 5 }}>
+            Закрыть
+          </Button>
           <Button onClick={saveData} disabled={disabled} sx={{ ml: 5 }}>
             Сохранить
           </Button>

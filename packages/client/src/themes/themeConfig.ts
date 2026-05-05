@@ -249,7 +249,7 @@ export const ThemeConfig = ({
             '&.dropdownCellsNewINC': {
               width: '90%',
               margin: '16px',
-              marginTop: fontSize === 'small' ? '32px' : '16px',
+              marginTop: fontSize === 'small' ? '8px' : '16px',
               marginLeft: fontSize === 'small' ? '8px' : '8px',
             },
           },
@@ -638,7 +638,7 @@ export const ThemeConfig = ({
                     ? colorTheme.colorDark
                     : colorTheme.colorLight,
                 '& > input': {
-                  paddingTop: '10px',
+                  paddingTop: fontSize === 'small' ? 5 : 10,
                   paddingLeft: '5px',
                   paddingRight: '5px',
                   color:
@@ -653,7 +653,7 @@ export const ThemeConfig = ({
               marginTop: '24px',
               height: 30,
               '& label': {
-                top: '-10px',
+                top: fontSize === 'small' ? -6 : -10,
               },
               '& > .MuiInputBase-root': {
                 width: '100%',
@@ -666,13 +666,13 @@ export const ThemeConfig = ({
             '&.textCellsNewINC': {
               width: '90%',
               margin: '16px',
-              marginTop: fontSize === 'small' ? '32px' : '16px',
+              marginTop: fontSize === 'small' ? '8px' : '16px',
               marginLeft: '8px',
             },
             '&.textMultiCellsNewINC': {
               width: '90%',
               margin: '8px',
-              marginTop: fontSize === 'small' ? '32px' : '16px',
+              marginTop: fontSize === 'small' ? '8px' : '16px',
               height: 90,
             },
             '&.textMultiCellsCloseINC': {
@@ -905,7 +905,8 @@ export const ThemeConfig = ({
               borderStyle: 'solid',
               borderRadius: 3,
               boxShadow: 24,
-              padding: '20px',
+              padding:
+                fontSize === 'small' ? '20px!important' : '32px!important',
               paddingLeft: '25px',
               overflowY: 'auto',
               overflowX: 'hidden',
@@ -1097,7 +1098,7 @@ export const ThemeConfig = ({
                 flex: 1,
                 height: '35px',
                 '& > .MuiChip-root': {
-                  height: fontSize === 'small' ? '16px' : '24px',
+                  height: fontSize === 'small' ? '22px' : '24px',
                   fontSize: fontSize === 'small' ? 8 : 12,
                 },
               },
@@ -1226,6 +1227,12 @@ export const ThemeConfig = ({
               '& > .MuiLinearProgress-root': {
                 width: '100%',
               },
+            },
+            '&.buttonsModalSection': {
+              display: 'flex',
+              justifyContent: 'space-around',
+              marginTop: fontSize === 'small' ? '30px' : '24px',
+              width: '100%',
             },
           },
         },
@@ -1388,7 +1395,7 @@ export const ThemeConfig = ({
               display: 'flex',
               flexDirection: 'column',
               gap: 20,
-              width: fontSize === 'small' ? 850 : 900,
+              width: fontSize === 'small' ? 890 : 900,
               padding: 20,
               paddingLeft: 10,
               paddingRight: 10,
@@ -1589,33 +1596,33 @@ export const ThemeConfig = ({
         styleOverrides: {
           root: {
             '&.viewColumnsIconButton': {
-              width: fontSize === 'small' ? 40 : 35,
-              height: fontSize === 'small' ? 40 : 35,
+              width: fontSize === 'small' ? 29 : 35,
+              height: fontSize === 'small' ? 29 : 35,
             },
             '&.settingsIconButton': {
-              width: fontSize === 'small' ? 40 : 35,
-              height: fontSize === 'small' ? 40 : 35,
+              width: fontSize === 'small' ? 29 : 35,
+              height: fontSize === 'small' ? 29 : 35,
             },
             '&.quickIconButton': {
-              width: fontSize === 'small' ? 40 : 35,
-              height: fontSize === 'small' ? 40 : 35,
+              width: fontSize === 'small' ? 29 : 35,
+              height: fontSize === 'small' ? 29 : 35,
             },
             '&.filterIconButton': {
-              width: fontSize === 'small' ? 40 : 35,
-              height: fontSize === 'small' ? 40 : 35,
+              width: fontSize === 'small' ? 29 : 35,
+              height: fontSize === 'small' ? 29 : 35,
             },
             '&.exportExcelIconButton': {
-              width: fontSize === 'small' ? 40 : 35,
-              height: fontSize === 'small' ? 40 : 35,
+              width: fontSize === 'small' ? 29 : 35,
+              height: fontSize === 'small' ? 29 : 35,
             },
             '&.clearFilterIconButton': {
-              width: fontSize === 'small' ? 40 : 35,
-              height: fontSize === 'small' ? 40 : 35,
+              width: fontSize === 'small' ? 29 : 35,
+              height: fontSize === 'small' ? 29 : 35,
               margin: 0,
             },
             '&.editIconButton': {
-              width: fontSize === 'small' ? 35 : 30,
-              height: fontSize === 'small' ? 35 : 30,
+              width: fontSize === 'small' ? 23 : 30,
+              height: fontSize === 'small' ? 23 : 30,
               margin: 0,
             },
             '&.editINCIconButton': {
@@ -1626,24 +1633,24 @@ export const ThemeConfig = ({
               right: 24,
             },
             '&.searchIconButton': {
-              width: fontSize === 'small' ? 40 : 35,
-              height: fontSize === 'small' ? 40 : 35,
+              width: fontSize === 'small' ? 29 : 35,
+              height: fontSize === 'small' ? 29 : 35,
             },
             '&.attachIconButton': {
-              width: fontSize === 'small' ? 40 : 35,
-              height: fontSize === 'small' ? 40 : 35,
+              width: fontSize === 'small' ? 29 : 35,
+              height: fontSize === 'small' ? 29 : 35,
             },
             '&.printIconButton': {
-              width: fontSize === 'small' ? 40 : 35,
-              height: fontSize === 'small' ? 40 : 35,
+              width: fontSize === 'small' ? 29 : 35,
+              height: fontSize === 'small' ? 29 : 35,
             },
             '&.newIncidentIconButton': {
-              width: fontSize === 'small' ? 40 : 35,
-              height: fontSize === 'small' ? 40 : 35,
+              width: fontSize === 'small' ? 29 : 35,
+              height: fontSize === 'small' ? 29 : 35,
             },
             '&.menuINCIconButton': {
-              width: fontSize === 'small' ? 25 : 30,
-              height: fontSize === 'small' ? 25 : 30,
+              width: fontSize === 'small' ? 23 : 30,
+              height: fontSize === 'small' ? 23 : 30,
               borderRadius: '20%',
               marginLeft: '10px',
               color:
@@ -1657,8 +1664,8 @@ export const ThemeConfig = ({
             },
             '&.addIconButton': {
               marginTop: '8px',
-              width: fontSize === 'small' ? 30 : 40,
-              height: fontSize === 'small' ? 30 : 40,
+              width: fontSize === 'small' ? 33 : 40,
+              height: fontSize === 'small' ? 33 : 40,
               borderRadius: '20%',
               color:
                 mode === ThemeMode.light
@@ -1760,7 +1767,7 @@ export const ThemeConfig = ({
             },
             '&.newINC': {
               flexWrap: 'wrap',
-              height: fontSize === 'small' ? 480 : 550,
+              height: fontSize === 'small' ? 440 : 550,
               width: '52%',
               marginTop: '8px',
               justifyContent: 'flex-start',
@@ -2050,21 +2057,22 @@ export const ThemeConfig = ({
             },
             '&.newINC': {
               width: '90%',
-              margin: '16px!important',
+              margin:
+                fontSize === 'small' ? '16px!important' : '16px!important',
               marginTop:
-                fontSize === 'small' ? '32px!important' : '16px!important',
+                fontSize === 'small' ? '8px!important' : '16px!important',
               marginLeft: '8px!important',
             },
 
             '&.textContainer_mt2': {
               width: '100%',
               height: fontSize === 'small' ? 30 : 40,
-              marginTop: fontSize === 'small' ? '8px' : '16px',
+              marginTop: fontSize === 'small' ? '20px' : '16px',
             },
             '&.textContainer_mt3': {
               width: '100%',
               height: fontSize === 'small' ? 30 : 40,
-              marginTop: fontSize === 'small' ? '16px' : '24px',
+              marginTop: fontSize === 'small' ? '30px' : '24px',
             },
             '&.textContainer': {
               width: '100%',
@@ -2098,7 +2106,7 @@ export const ThemeConfig = ({
               alignItems: 'flex-start',
               justifyContent: 'flex-start',
               padding: '8px',
-              marginLeft: fontSize === 'small' ? '40px' : '0px',
+              marginLeft: fontSize === 'small' ? '0px' : '0px',
             },
             '&.checkBoxContainer': {
               width: '85%',

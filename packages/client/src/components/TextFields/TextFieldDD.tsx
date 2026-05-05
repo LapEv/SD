@@ -12,7 +12,7 @@ export const TextFieldDD = styled(MuiTextField)(({ theme }) => ({
         ? (theme as ITheme).colorTheme.colorLight
         : (theme as ITheme).colorTheme.colorDark,
     '&.Mui-focused': {
-      top: (theme as ITheme).fontSize === 'small' ? -2 : -7,
+      top: (theme as ITheme).fontSize === 'small' ? -3 : -7,
     },
   },
   '.MuiInputLabel-root.Mui-error': {
@@ -20,7 +20,7 @@ export const TextFieldDD = styled(MuiTextField)(({ theme }) => ({
     marginTop: -1,
     zIndex: 999,
     '&.Mui-focused': {
-      top: (theme as ITheme).fontSize === 'small' ? -2 : -7,
+      top: (theme as ITheme).fontSize === 'small' ? -3 : -7,
     },
   },
   '.MuiInputLabel-root.MuiInputLabel-shrink': {
@@ -28,7 +28,7 @@ export const TextFieldDD = styled(MuiTextField)(({ theme }) => ({
       theme.palette.mode === ThemeMode.light
         ? (theme as ITheme).colorTheme.colorDark
         : (theme as ITheme).colorTheme.colorLight,
-    top: (theme as ITheme).fontSize === 'small' ? -2 : -7,
+    top: (theme as ITheme).fontSize === 'small' ? -3 : -7,
   },
   '.MuiInputBase-root': {
     fontWeight: 'normal',
