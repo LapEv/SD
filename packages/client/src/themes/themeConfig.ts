@@ -308,6 +308,25 @@ export const ThemeConfig = ({
       MuiListItemButton: {
         styleOverrides: {
           root: {
+            '&.mainPageIconButton': {
+              height: '100%',
+              flexDirection: 'column',
+              '& > .MuiListItemIcon-root': {
+                minWidth: 0,
+                justifyContent: 'center',
+                width: '100%',
+                height: 'auto',
+                '& > svg': {
+                  width: 100,
+                  height: 100,
+                },
+              },
+              '& > .MuiListItemText-root': {
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+              },
+            },
             '&.itemContainerLabel': {
               fontWeight: 'bold',
               fontSize: '1rem',
@@ -399,6 +418,12 @@ export const ThemeConfig = ({
               justifyContent: 'flex-start',
               alignItems: 'center',
               overflowX: 'hidden',
+            },
+            '&.mainPage': {
+              height: '100%',
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
             },
           },
         },
@@ -732,6 +757,42 @@ export const ThemeConfig = ({
       MuiDiv: {
         styleOverrides: {
           root: {
+            '&.logo_arrow': {
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'space-around',
+              alignItems: 'center',
+              minHeight: fontSize === 'small' ? 40 : 55,
+            },
+            '&.sideBarBox': {
+              width: '100%',
+              height: 150,
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'space-around',
+              alignItems: 'center',
+              padding: 12,
+            },
+            '&.avatarBox': {
+              background:
+                mode === ThemeMode.light
+                  ? colorTheme.colorDark
+                  : colorTheme.colorLight,
+              borderRadius: '50px',
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+            },
+            '&.sideBarListBox': { mmarginTop: 18, height: 'auto' },
+            '&.sideBarUserAuth': {
+              width: '100%',
+              height: 20,
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'space-around',
+              alignItems: 'center',
+              marginTop: 0,
+            },
             '&.headerForPages': {
               minHeight: fontSize === 'small' ? 40 : 55,
               width: '100%',
@@ -744,6 +805,13 @@ export const ThemeConfig = ({
                 mode === ThemeMode.light
                   ? `0px 3px 5px -1px rgba(0, 0, 0, 0.2), 0px 5px 8px 0px rgba(0, 0, 0, 0.14), 0px 1px 14px 0px rgba(0, 0, 0, 0.12)`
                   : `0px 3px 5px -1px rgba(255, 255, 255, 0.2), 0px 5px 8px 0px rgba(255, 255, 255, 0.14), 0px 1px 14px 0px rgba(255, 255, 255, 0.12)`,
+            },
+            '&.boxElementMainPage': {
+              display: 'block',
+              boxShadow: '0px 0px 9px 2px #1E515D',
+              borderRadius: 2,
+              width: 170,
+              height: 170,
             },
             '&.mainTableStyle': {
               width: '100%',
@@ -1772,6 +1840,13 @@ export const ThemeConfig = ({
               marginTop: '8px',
               justifyContent: 'flex-start',
               alignItems: 'flex-start',
+            },
+            '&.mainPageListBox': {
+              flexWrap: 'wrap',
+              width: '100%',
+              height: '75%',
+              justifyContent: 'center',
+              alignItems: 'center',
             },
           },
         },

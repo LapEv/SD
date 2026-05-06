@@ -1,5 +1,5 @@
 import { memo, useEffect } from 'react'
-import { Box, List, Typography, useTheme } from '@mui/material'
+import { List, Typography, Link, Divider } from '@mui/material'
 import { Avatar } from 'components/SVGIcons/Avatar'
 import { Routes } from 'utils/routes'
 import { useAuth } from 'hooks/auth/useAuth'
@@ -9,12 +9,12 @@ import { Files } from 'store/slices/files/interfaces'
 import { useFiles } from 'hooks/files/useFiles'
 import { AvatarBox } from 'components/AvatarBox'
 import { DataItems } from 'layouts/Main/Components/SideBar/DataItems'
-import { ITheme, ThemeMode } from 'themes/themeConfig'
+import { Link as RouterLink } from 'react-router-dom'
+import { MuiDiv } from 'components/MUI'
 
 export const SideBar = memo(({ open = false }: SideBarProps) => {
   const [{ user, avatar }, { signout }] = useAuth()
   const [, { getAvatar }] = useFiles()
-  const theme = useTheme() as ITheme
 
   useEffect(() => {
     if (avatar.length) return
@@ -25,31 +25,24 @@ export const SideBar = memo(({ open = false }: SideBarProps) => {
   }, [])
 
   return (
-    <List>
-      <Box
-        sx={{
-          width: '100%',
-          height: 150,
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'space-around',
-          alignItems: 'center',
-          mt: 2,
-        }}>
-        {!open ? <Typography variant="h6">SBI</Typography> : <></>}
-
-        <Box
+    <List sx={{ padding: 0 }}>
+      <MuiDiv className="sideBarBox">
+        {!open ? (
+          <Link
+            variant="h6"
+            sx={{ color: 'black' }}
+            component={RouterLink}
+            to={`/`}>
+            SBI
+          </Link>
+        ) : (
+          <></>
+        )}
+        <MuiDiv
+          className="avatarBox"
           sx={{
             width: open ? 100 : 45,
             height: open ? 100 : 45,
-            background:
-              theme.palette.mode === ThemeMode.light
-                ? (theme as ITheme).colorTheme.colorDark
-                : (theme as ITheme).colorTheme.colorLight,
-            borderRadius: '50px',
-            display: open ? 'flex' : 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
             mt: open ? 0 : 2,
           }}>
           {avatar.length ? (
@@ -67,7 +60,7 @@ export const SideBar = memo(({ open = false }: SideBarProps) => {
               open={open}
             />
           )}
-        </Box>
+        </MuiDiv>
         <Typography
           sx={{
             mt: open ? 1 : 0,
@@ -76,32 +69,19 @@ export const SideBar = memo(({ open = false }: SideBarProps) => {
           }}>
           {user ? user.shortName : ''}
         </Typography>
-      </Box>
-      <Box
-        component="div"
-        sx={{
-          mt: 3,
-          height: 'auto',
-        }}>
+      </MuiDiv>
+      <Divider />
+      <MuiDiv className="sideBarListBox">
         <DataItems user={user} open={open} />
-      </Box>
-      <Box
-        sx={{
-          width: '100%',
-          height: 20,
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'space-around',
-          alignItems: 'center',
-          mt: 0,
-        }}>
+      </MuiDiv>
+      <MuiDiv className="sideBarUserAuth">
         <LinkButton
           onClick={() => user && signout()}
           sx={{ width: '90%', mt: 5, display: open ? 'flex' : 'none' }}
           to={`/${Routes.Login}`}>
           {user ? 'Выйти' : 'Войти'}
         </LinkButton>
-      </Box>
+      </MuiDiv>
     </List>
   )
 })

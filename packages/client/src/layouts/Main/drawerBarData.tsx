@@ -67,6 +67,63 @@ export const menuData = [
   },
 ]
 
+export const menuDataMainPage = [
+  {
+    text: 'Инциденты',
+    icon: <ListAltIcon />,
+    to: Routes.Incidents,
+    type: 'component',
+  },
+  {
+    text: 'Запросы',
+    icon: <ConfirmationNumberIcon />,
+    to: Routes.IncidentsConfirm,
+    type: 'component',
+  },
+  {
+    text: 'Инженерская',
+    icon: <EngineeringIcon />,
+    to: Routes.EngineerRoom,
+    type: 'component',
+  },
+  {
+    text: 'Склад',
+    icon: <Warehouse />,
+    to: Routes.Warehouse,
+    type: 'component',
+  },
+  {
+    text: 'Классификатор',
+    icon: <Classifier />,
+    to: Routes.Classifier,
+    type: 'component',
+  },
+  {
+    text: 'Пользователи',
+    icon: <Users />,
+    to: Routes.Users,
+    type: 'component',
+  },
+  {
+    text: 'Клиенты',
+    icon: <Diversity3Icon />,
+    to: Routes.Clients,
+    type: 'component',
+  },
+  {
+    text: 'Уровни сервиса',
+    icon: <SLA />,
+    to: Routes.ServiceLevel,
+    type: 'component',
+  },
+  {
+    text: 'Профиль',
+    icon: <Profile />,
+    to: `/${Routes.Profile}`,
+    type: 'component',
+  },
+]
+
 export const DispatcherData = [
   { text: 'Главная', icon: <Main />, to: Routes.Index, type: 'component' },
   {
@@ -74,6 +131,27 @@ export const DispatcherData = [
     icon: <ControlRoom />,
     to: '',
     type: 'menu',
+  },
+  {
+    text: 'Пользователи',
+    icon: <Users />,
+    to: Routes.Users,
+    type: 'component',
+  },
+  {
+    text: 'Профиль',
+    icon: <Profile />,
+    to: `/${Routes.Profile}`,
+    type: 'component',
+  },
+]
+
+export const DispatcherDataMainPage = [
+  { text: 'Инциденты', icon: <ListAltIcon />, to: Routes.Incidents },
+  {
+    text: 'Запросы',
+    icon: <ConfirmationNumberIcon />,
+    to: Routes.IncidentsConfirm,
   },
   {
     text: 'Пользователи',
