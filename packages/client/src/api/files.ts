@@ -1,6 +1,10 @@
 import { createAsyncThunk } from '@reduxjs/toolkit'
 import { authhost, ApiEndPoints, authFileHost } from './config'
-import { Files, UploadFiles } from 'store/slices/files/interfaces'
+import {
+  FilesData,
+  IGetViewFile,
+  UploadFiles,
+} from 'store/slices/files/interfaces'
 import axios from 'axios'
 
 interface ValidationError {
@@ -8,11 +12,13 @@ interface ValidationError {
   errors: Record<string, string[]>
 }
 
-export const getFiles = createAsyncThunk(
-  'files/getFiles',
+export const getFilesData = createAsyncThunk(
+  'files/getFilesData',
   async (_, thunkAPI) => {
     try {
-      const { data } = await authhost.get<Files[]>(ApiEndPoints.Files.getFiles)
+      const { data } = await authhost.get<FilesData[]>(
+        ApiEndPoints.Files.getFilesData,
+      )
       return data
     } catch (error) {
       if (axios.isAxiosError<ValidationError, Record<string, unknown>>(error)) {
@@ -45,6 +51,43 @@ export const getFile = createAsyncThunk(
         data: URL.createObjectURL(new Blob([data])),
         info: data,
       }) as string
+    } catch (error) {
+      if (axios.isAxiosError<ValidationError, Record<string, unknown>>(error)) {
+        return thunkAPI.rejectWithValue(
+          `Не удалось получить данные по файлам: \n${
+            error.response?.data.message ?? error.response?.data
+          }`,
+        )
+      } else {
+        console.error(error)
+      }
+    }
+  },
+)
+export const getViewFile = createAsyncThunk(
+  'files/getViewFile',
+  async ({ pathfile, id }: IGetViewFile, thunkAPI) => {
+    try {
+      const res = await authhost.post<File>(
+        ApiEndPoints.Files.getViewFile,
+        {
+          pathfile,
+        },
+        {
+          responseType: 'blob',
+        },
+      )
+      const fileType = res.headers['content-type']
+      const blob = new Blob([res.data], {
+        type: fileType,
+      })
+      return {
+        data: JSON.stringify({
+          data: URL.createObjectURL(blob),
+          info: fileType,
+        }) as string,
+        id,
+      }
     } catch (error) {
       if (axios.isAxiosError<ValidationError, Record<string, unknown>>(error)) {
         return thunkAPI.rejectWithValue(

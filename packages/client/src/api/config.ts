@@ -139,8 +139,9 @@ export const ApiEndPoints = {
     changeTypesCompletedWork: 'incidents/changeTypesCompletedWork',
   },
   Files: {
-    getFiles: 'files/getFiles',
+    getFilesData: 'files/getFilesData',
     getFile: 'files/getFile',
+    getViewFile: 'files/getViewFile',
     getAvatar: 'files/getAvatar',
     uploadFiles: 'files/uploadFiles',
     uploadAvatars: 'files/uploadAvatars',

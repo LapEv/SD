@@ -1,4 +1,5 @@
 import { JSX } from 'react'
+import { FilesData } from 'store/slices/files/interfaces'
 import { User } from 'storeAuth/interfaces'
 
 export interface DrawerHeaderProps {
@@ -28,4 +29,12 @@ export interface ListItemStateProps {
 export interface DataItemsProps {
   user: User
   open: boolean
+}
+
+export interface IViewImage {
+  file: FilesData
+}
+
+export interface IViewButtons {
+  index: number
 }

@@ -8,8 +8,18 @@ export const MUIModal = () => {
   const modalClientRef = createRef()
 
   const onClose = (event: SyntheticEvent<EventTarget>, reason: string) => {
-    if (reason === 'backdropClick' && event) {
+    if (reason === 'backdropClick') {
       return
+    }
+    if (reason === 'escapeKeyDown') {
+      if ((event.target as HTMLElement).classList.value.includes('editINC'))
+        return
+      if (
+        (event.target as HTMLElement).classList.value.includes(
+          'viewActIconButton',
+        )
+      )
+        return
     }
     setModal({ active: false, image: '' })
   }

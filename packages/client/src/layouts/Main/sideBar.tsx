@@ -5,7 +5,7 @@ import { Routes } from 'utils/routes'
 import { useAuth } from 'hooks/auth/useAuth'
 import { LinkButton } from 'components/LinkButton'
 import { SideBarProps } from './interfaces'
-import { Files } from 'store/slices/files/interfaces'
+import { FilesData } from 'store/slices/files/interfaces'
 import { useFiles } from 'hooks/files/useFiles'
 import { AvatarBox } from 'components/AvatarBox'
 import { DataItems } from 'layouts/Main/Components/SideBar/DataItems'
@@ -18,7 +18,7 @@ export const SideBar = memo(({ open = false }: SideBarProps) => {
 
   useEffect(() => {
     if (avatar.length) return
-    const file = user?.Files as Files[]
+    const file = user?.Files as FilesData[]
     if (!file.length) return
     const pathfile = file[0].path
     getAvatar(pathfile)

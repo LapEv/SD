@@ -5,6 +5,7 @@ import { DropDownINConEdit } from 'components/DropDown'
 import { useIncidents } from 'hooks/incidents/useINC'
 import { useEffect, useMemo } from 'react'
 import { CellINC } from './CellINC'
+import { CellINCActs } from './CellINCActs'
 
 export const CompleteData = ({ newINC, setNewINC }: IEditDataINC) => {
   const [{ typesCompletedWork }, { getTypesCompletedWork }] = useIncidents()
@@ -42,9 +43,11 @@ export const CompleteData = ({ newINC, setNewINC }: IEditDataINC) => {
           value={newINC.typeCompletedWork ?? ''}
         />
       </MuiDiv>
-      <CellINC
+      <CellINCActs
         label={'Акты: '}
         value={newINC.act && newINC.act.length > 0 ? newINC.act.join(', ') : ''}
+        files={newINC.Files}
+        idINC={newINC.id}
       />
       <CellINC
         label={'ЗИП: '}

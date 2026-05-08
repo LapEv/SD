@@ -8,7 +8,7 @@ import {
   ClassifierModelForINC,
   TypicalMalfunctionForINC,
 } from '../classifier/interfaces'
-import { Files } from '../files/interfaces'
+import { FilesData } from '../files/interfaces'
 import { methodsReuqest } from 'pages/ControlRoom/Incidents/interfaces'
 
 export interface INC {
@@ -65,7 +65,7 @@ export interface INC {
   ClassifierModel?: ClassifierModelForINC
   TypicalMalfunction?: TypicalMalfunctionForINC
   IncidentLogs?: IncidentLogsForINC[]
-  Files?: Files[]
+  Files?: FilesData[]
   legalName: string
   overdue: string
   commentCloseCheck: string

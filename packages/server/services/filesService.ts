@@ -126,7 +126,7 @@ export class filesService {
       res.status(500).json({ error: ['db error', err as Error] })
     }
   }
-  getFiles = async (_req: Request, res: Response) => {
+  getFilesData = async (_req: Request, res: Response) => {
     try {
       const files = await FilesRepos.findAll({})
       res.status(200).json(files)
@@ -135,6 +135,18 @@ export class filesService {
     }
   }
   getFile = async (_req: Request, res: Response) => {
+    const { pathfile } = _req.body
+    try {
+      const pathFileServer =
+        process.env.NODE_ENV === 'development'
+          ? path.join(__dirname, `../Files/${pathfile}`)
+          : `process.env.FILE_PATH/${pathfile}`
+      res.status(200).download(pathFileServer)
+    } catch (err) {
+      res.status(500).json({ error: ['db error', err as Error] })
+    }
+  }
+  getViewFile = async (_req: Request, res: Response) => {
     const { pathfile } = _req.body
     try {
       const pathFileServer =

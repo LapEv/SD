@@ -15,9 +15,12 @@ import { FullScreen } from 'components/FullScreen'
 import { useTableINC } from 'hooks/tableINC/useTableINC'
 import { minHeaderColumnWidth } from 'pages/ControlRoom/Incidents/data'
 import { MuiDiv } from 'components/MUI'
+import { ViewFile } from 'layouts/Main/Components/ViewFile/ViewFile'
+import { useFiles } from 'hooks/files/useFiles'
 
 const App = memo(() => {
   const [{ user }, { checkUser }] = useAuth()
+  const [{ viewFilePanel }] = useFiles()
   const [{ columnX, columnOptions }, { setColumnX, setColumnOptions }] =
     useTableINC()
   const refApp = useRef<HTMLDivElement>(null)
@@ -83,6 +86,7 @@ const App = memo(() => {
             </MuiDiv>
           )}
           <Message />
+          {viewFilePanel && <ViewFile />}
           <Routes>
             <Route path={Paths.Index} element={<Layouts.Main />}>
               <Route

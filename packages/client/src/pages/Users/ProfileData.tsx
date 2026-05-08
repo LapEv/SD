@@ -24,7 +24,7 @@ import { DeleteUserModal } from './Modals/DeleteUserModal'
 import { User } from 'storeAuth/interfaces'
 import { AvatarBox } from 'components/AvatarBox'
 import { useFiles } from 'hooks/files/useFiles'
-import { Files } from 'store/slices/files/interfaces'
+import { FilesData } from 'store/slices/files/interfaces'
 import { ITheme, ThemeMode } from 'themes/themeConfig'
 
 export const ProfileData = memo((user: User) => {
@@ -131,7 +131,7 @@ export const ProfileData = memo((user: User) => {
 
   useEffect(() => {
     if (avatar.length) return
-    const file = userData?.Files as Files[]
+    const file = userData?.Files as FilesData[]
     if (!file.length) return
     const pathfile = file[0].path
     getAvatar(pathfile)

@@ -10,7 +10,7 @@ export const MainPage = memo(() => {
     <Container component="main" className="mainPage">
       <Stack
         direction={{ xs: 'column', sm: 'row' }}
-        spacing={{ xs: 10, sm: 2, md: 5 }}
+        spacing={{ xs: 10, sm: 2 }}
         padding={8}
         className="mainPageListBox">
         {<MenuData user={user} />}

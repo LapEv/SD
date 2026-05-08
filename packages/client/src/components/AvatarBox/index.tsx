@@ -2,8 +2,9 @@ import Avatar, { AvatarProps } from '@mui/material/Avatar'
 import { AddUserIcon } from './AddUserIcon'
 import { ITheme, ThemeMode } from 'themes/themeConfig'
 import { useTheme } from '@mui/material'
+import { memo } from 'react'
 
-export function AvatarBox(props: AvatarProps) {
+export const AvatarBox = memo((props: AvatarProps) => {
   const theme = useTheme() as ITheme
 
   return (
@@ -20,4 +21,4 @@ export function AvatarBox(props: AvatarProps) {
       {!props.src && <AddUserIcon />}
     </Avatar>
   )
-}
+})

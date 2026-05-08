@@ -1,4 +1,5 @@
 import { Dayjs } from 'dayjs'
+import { FilesData } from 'store/slices/files/interfaces'
 import { INC, Order } from 'store/slices/incidents/interfaces'
 import {
   IColumnOptions,
@@ -327,6 +328,13 @@ export interface IEditINC {
 export interface ICellINC {
   label: string
   value: string | undefined
+}
+
+export interface ICellINCActs {
+  label: string
+  value: string | undefined
+  files: FilesData[] | undefined
+  idINC: string
 }
 
 export interface IDataINC {

@@ -750,6 +750,7 @@ export const ThemeConfig = ({
               paddingTop: fontSize === 'small' ? 0 : 1,
               paddingLeft: fontSize === 'small' ? '8px' : '16px',
               paddingRight: fontSize === 'small' ? '8px' : '16px',
+              overflow: 'hidden',
             },
           },
         },
@@ -812,6 +813,7 @@ export const ThemeConfig = ({
               borderRadius: 2,
               width: 170,
               height: 170,
+              margin: 20,
             },
             '&.mainTableStyle': {
               width: '100%',
@@ -1302,6 +1304,40 @@ export const ThemeConfig = ({
               marginTop: fontSize === 'small' ? '30px' : '24px',
               width: '100%',
             },
+            '&.viewActContainer': {
+              position: 'absolute',
+              width: '100%',
+              height: '100%',
+              backgroundColor: 'rgba(0,0,0,0.9)',
+              zIndex: 9999,
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+            },
+            '&.viewActBox': {
+              width: 'calc(100% - 140px)',
+              maxHeight: '95%',
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              color:
+                mode === ThemeMode.light
+                  ? colorTheme.colorLight
+                  : colorTheme.colorDark,
+              // '& > img': {
+              //   maxWidth: '100%',
+              // },
+            },
+            '&.viewButtonPanel': {
+              position: 'absolute',
+              width: 150,
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              top: 5,
+              right: 5,
+              backgroundColor: 'rgba(0,0,0,1)',
+            },
           },
         },
       },
@@ -1332,6 +1368,22 @@ export const ThemeConfig = ({
               justifyContent: 'center',
               alignItems: 'center',
               fontSize: fontSize === 'small' ? '11px' : '14px',
+            },
+            '&.viewSpanPanel': {
+              position: 'absolute',
+              top: 5,
+              left: 15,
+              backgroundColor: 'rgba(0,0,0,1)',
+              color: colorTheme.colorLight,
+              fontSize: fontSize === 'small' ? 14 : 18,
+            },
+            '&.viewInfoPanel': {
+              position: 'absolute',
+              bottom: 10,
+              left: 15,
+              backgroundColor: 'rgba(0,0,0,1)',
+              color: colorTheme.colorLight,
+              fontSize: fontSize === 'small' ? 12 : 16,
             },
           },
         },
@@ -1452,6 +1504,13 @@ export const ThemeConfig = ({
                   ? colorTheme.colorLight
                   : colorTheme.colorDark,
             },
+          },
+        },
+      },
+      MuiCircularProgress: {
+        styleOverrides: {
+          root: {
+            zIndex: 99999,
           },
         },
       },
@@ -1630,6 +1689,10 @@ export const ThemeConfig = ({
               zIndex: 99,
               borderRadius: 15,
             },
+            '&.viewFileTooltip': {
+              backgroundColor: 'rgba(97, 97, 97, 0.92)',
+              color: '#FFF',
+            },
           },
         },
       },
@@ -1694,11 +1757,11 @@ export const ThemeConfig = ({
               margin: 0,
             },
             '&.editINCIconButton': {
-              width: fontSize === 'small' ? 18 : 24,
-              height: fontSize === 'small' ? 18 : 24,
+              width: fontSize === 'small' ? 24 : 30,
+              height: fontSize === 'small' ? 24 : 30,
               margin: 0,
               position: 'absolute',
-              right: 24,
+              right: 15,
             },
             '&.searchIconButton': {
               width: fontSize === 'small' ? 29 : 35,
@@ -1750,6 +1813,38 @@ export const ThemeConfig = ({
               marginLeft: '40px',
               marginBottom: '8px',
             },
+            '&.viewActIconButton': {
+              width: fontSize === 'small' ? 24 : 30,
+              height: fontSize === 'small' ? 24 : 30,
+              borderRadius: '15%',
+              color:
+                mode === ThemeMode.light
+                  ? colorTheme.colorDark
+                  : colorTheme.colorLight,
+              backgroundColor:
+                mode === ThemeMode.light
+                  ? colorTheme.colorLight
+                  : colorTheme.colorDark,
+              boxShadow:
+                mode === ThemeMode.light
+                  ? `0px 0px 8px 1px rgba(0, 0, 0, 0.5)`
+                  : `0px 0px 8px 1px rgba(255, 255, 255, 0.5)`,
+              marginLeft: '10px',
+            },
+            '&.arrowIconButton': {
+              width: 70,
+              height: '100%',
+              borderRadius: 0,
+              color:
+                mode === ThemeMode.light
+                  ? colorTheme.colorLight
+                  : colorTheme.colorDark,
+            },
+            '&.viewActButtons': {
+              width: fontSize === 'small' ? 40 : 45,
+              height: fontSize === 'small' ? 40 : 45,
+              color: colorTheme.colorLight,
+            },
           },
         },
       },
@@ -1781,8 +1876,8 @@ export const ThemeConfig = ({
               height: fontSize === 'small' ? 18 : 20,
             },
             '&.editINCIcon': {
-              width: fontSize === 'small' ? 18 : 22,
-              height: fontSize === 'small' ? 18 : 22,
+              width: fontSize === 'small' ? 22 : 27,
+              height: fontSize === 'small' ? 22 : 27,
             },
             '&.editIcon': {
               width: fontSize === 'small' ? 25 : 30,
@@ -1820,6 +1915,14 @@ export const ThemeConfig = ({
                 mode === ThemeMode.light
                   ? colorTheme.colorLight
                   : colorTheme.colorDark,
+            },
+            '&.viewActIcon': {
+              width: fontSize === 'small' ? 18 : 20,
+              height: fontSize === 'small' ? 18 : 20,
+            },
+            '&.viewActCloseIcon': {
+              width: fontSize === 'small' ? 30 : 35,
+              height: fontSize === 'small' ? 30 : 35,
             },
           },
         },

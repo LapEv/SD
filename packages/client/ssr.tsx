@@ -4,7 +4,7 @@ import { store } from './src/store'
 import ThemeWrapper from './src/themes/ThemeWrapper'
 import { StaticRouter } from 'react-router-dom'
 import { CacheProvider } from '@emotion/react'
-import type { EmotionCache } from '@emotion/css'
+import { EmotionCache } from '@emotion/cache'
 
 export function render(url: string, cache: EmotionCache) {
   return renderToString(
