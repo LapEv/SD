@@ -79,7 +79,7 @@ export const getViewFile = createAsyncThunk(
       )
       const fileType = res.headers['content-type']
       const blob = new Blob([res.data], {
-        type: fileType,
+        type: fileType as string,
       })
       return {
         data: JSON.stringify({

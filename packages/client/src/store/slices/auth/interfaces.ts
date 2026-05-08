@@ -1,5 +1,5 @@
 import { RolesGroup } from 'storeRoles/interfaces'
-import { Files } from '../files/interfaces'
+import { FilesData } from '../files/interfaces'
 
 export interface User {
   id?: string
@@ -21,7 +21,7 @@ export interface User {
   id_rolesGroup?: string
   status?: string
   RolesGroup?: RolesGroup
-  Files?: Files[]
+  Files?: FilesData[]
   appOptions?: AppOptions
 }
 
