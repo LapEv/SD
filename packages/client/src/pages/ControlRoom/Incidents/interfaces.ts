@@ -210,6 +210,15 @@ export interface CloseINCProps {
   id_incFiles: string
 }
 
+export interface AddActProps {
+  modalImage?: string
+  handleModalAddAct: (data: DataAddAct) => void
+  title?: string
+  incident: string
+  id_incFiles: string
+  files: FilesData[] | undefined
+}
+
 export interface DataCloseINC {
   state: boolean
   typeCompletedWork?: Options
@@ -218,6 +227,14 @@ export interface DataCloseINC {
   spaceParts?: string[]
   act?: string[]
   data: Options
+}
+
+export interface DataAddAct {
+  state: boolean
+  files?: FileList[]
+  act?: string[]
+  incident: string
+  id_incFiles: string
 }
 
 export interface Options {
@@ -335,6 +352,7 @@ export interface ICellINCActs {
   value: string | undefined
   files: FilesData[] | undefined
   idINC: string
+  incident: string
 }
 
 export interface IDataINC {

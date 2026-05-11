@@ -1338,6 +1338,39 @@ export const ThemeConfig = ({
               right: 5,
               backgroundColor: 'rgba(0,0,0,1)',
             },
+            '&.addActContainer': {
+              borderWidth: 2,
+              borderColor:
+                mode === ThemeMode.light
+                  ? colorTheme.colorDark
+                  : colorTheme.colorLight,
+              borderStyle: 'solid',
+              marginTop: fontSize === 'small' ? '12px' : '16px',
+              width: '90%',
+              borderRadius: 5,
+              padding: 5,
+              maxHeight: 200,
+              minHeight: 200,
+              height: 'auto',
+              overflowY: 'auto',
+              '& > .MuiChip-root': {
+                fontSize: fontSize === 'small' ? 11 : 15,
+                margin: 2,
+              },
+              '&.noActs': {
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                flexDirection: 'column',
+                cursor: 'pointer',
+              },
+            },
+            '&.noActBox': {
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              flexDirection: 'column',
+            },
           },
         },
       },
@@ -1814,8 +1847,8 @@ export const ThemeConfig = ({
               marginBottom: '8px',
             },
             '&.viewActIconButton': {
-              width: fontSize === 'small' ? 24 : 30,
-              height: fontSize === 'small' ? 24 : 30,
+              width: fontSize === 'small' ? 19 : 25,
+              height: fontSize === 'small' ? 19 : 25,
               borderRadius: '15%',
               color:
                 mode === ThemeMode.light
@@ -1829,7 +1862,7 @@ export const ThemeConfig = ({
                 mode === ThemeMode.light
                   ? `0px 0px 8px 1px rgba(0, 0, 0, 0.5)`
                   : `0px 0px 8px 1px rgba(255, 255, 255, 0.5)`,
-              marginLeft: '10px',
+              marginLeft: '5px',
             },
             '&.arrowIconButton': {
               width: 70,
@@ -1917,12 +1950,16 @@ export const ThemeConfig = ({
                   : colorTheme.colorDark,
             },
             '&.viewActIcon': {
-              width: fontSize === 'small' ? 18 : 20,
-              height: fontSize === 'small' ? 18 : 20,
+              width: fontSize === 'small' ? 16 : 18,
+              height: fontSize === 'small' ? 16 : 18,
             },
             '&.viewActCloseIcon': {
               width: fontSize === 'small' ? 30 : 35,
               height: fontSize === 'small' ? 30 : 35,
+            },
+            '&.noActIcon': {
+              width: fontSize === 'small' ? 40 : 50,
+              height: fontSize === 'small' ? 40 : 50,
             },
           },
         },

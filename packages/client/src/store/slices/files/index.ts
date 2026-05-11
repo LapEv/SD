@@ -12,6 +12,7 @@ const initialState: FilesState = {
     idINC: '',
     files: [],
   },
+  addAct: { status: false, incident: '', id_incFiles: '', files: [] },
 }
 
 export const filesSlice = createSlice({
@@ -26,6 +27,9 @@ export const filesSlice = createSlice({
     },
     setViewFilePanel(state, action) {
       state.viewFilePanel = action.payload
+    },
+    setAddAct(state, action) {
+      state.addAct = action.payload
     },
   },
   extraReducers: builder => {
@@ -84,5 +88,5 @@ export const filesSlice = createSlice({
 })
 
 export const filesReducer = filesSlice.reducer
-export const { resetUploadFiles, setViewFiles, setViewFilePanel } =
+export const { resetUploadFiles, setViewFiles, setViewFilePanel, setAddAct } =
   filesSlice.actions

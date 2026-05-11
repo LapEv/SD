@@ -48,6 +48,7 @@ export const CompleteData = ({ newINC, setNewINC }: IEditDataINC) => {
         value={newINC.act && newINC.act.length > 0 ? newINC.act.join(', ') : ''}
         files={newINC.Files}
         idINC={newINC.id}
+        incident={newINC.incident}
       />
       <CellINC
         label={'ЗИП: '}

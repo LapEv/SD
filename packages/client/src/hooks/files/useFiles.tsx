@@ -14,6 +14,7 @@ import {
   resetUploadFiles,
   setViewFiles,
   setViewFilePanel,
+  setAddAct,
 } from 'store/slices/files'
 
 export function useFiles(): [FilesState, FilesActions] {
@@ -46,6 +47,9 @@ export function useFiles(): [FilesState, FilesActions] {
       },
       setViewFilePanel(data) {
         dispatch(setViewFilePanel(data))
+      },
+      setAddAct(data) {
+        dispatch(setAddAct(data))
       },
     },
   ]

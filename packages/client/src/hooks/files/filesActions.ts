@@ -1,4 +1,5 @@
 import {
+  AddActsModal,
   IGetViewFile,
   IViewFiles,
   UploadFiles,
@@ -12,5 +13,6 @@ export interface FilesActions {
   uploadFiles: (data: UploadFiles) => void
   resetUploadFiles: () => void
   setViewFiles: (data: IViewFiles) => void
+  setAddAct: (data: AddActsModal) => void
   setViewFilePanel: (data: boolean) => void
 }

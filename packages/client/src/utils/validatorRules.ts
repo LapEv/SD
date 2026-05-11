@@ -306,7 +306,19 @@ export const timeValidation = {
   },
 }
 
-export const fileValidation = (files: FileList) => {
+// export const fileValidation = (files: FileList) => {
+//   const requiredTypes = ['image', 'application/pdf']
+//   const requiredSize = 1024 * 1024 * 2
+//   const valError = []
+
+//   if (files.length > 10) {
+//     return {
+//       status: false,
+//       error: `Не более 10 файлов!`,
+//     }
+//   }
+
+export const fileValidation = (files: File[]) => {
   const requiredTypes = ['image', 'application/pdf']
   const requiredSize = 1024 * 1024 * 2
   const valError = []

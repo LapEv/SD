@@ -8,9 +8,16 @@ export interface FilesData {
 }
 
 export interface UploadFiles {
-  files: FileList
+  files: File[]
   incident?: string
   id_incFiles: string
+}
+
+export interface AddActsModal {
+  status: boolean
+  incident?: string
+  id_incFiles: string
+  files?: FilesData[] | undefined
 }
 
 export interface AnswerUploaded {
@@ -26,6 +33,7 @@ export type FilesState = {
   error?: string
   viewFiles: IViewFiles
   viewFilePanel: boolean
+  addAct: AddActsModal
 }
 
 export interface IViewFiles {

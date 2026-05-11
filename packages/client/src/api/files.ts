@@ -64,6 +64,7 @@ export const getFile = createAsyncThunk(
     }
   },
 )
+
 export const getViewFile = createAsyncThunk(
   'files/getViewFile',
   async ({ pathfile, id }: IGetViewFile, thunkAPI) => {

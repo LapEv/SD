@@ -8,6 +8,7 @@ import {
   useState,
   WheelEvent,
 } from 'react'
+import { emptyImgPosition } from './emptyImgPosition'
 
 export const ViewImage = ({ file }: IViewImage) => {
   const [isPanning, setPanning] = useState(false)
@@ -15,13 +16,7 @@ export const ViewImage = ({ file }: IViewImage) => {
     width: 0,
     height: 0,
   })
-  const [position, setPosition] = useState({
-    oldX: 0,
-    oldY: 0,
-    x: 0,
-    y: 0,
-    z: 1,
-  })
+  const [position, setPosition] = useState(emptyImgPosition)
   const containerRef = useRef<HTMLDivElement>(null)
 
   const onLoad = (e: SyntheticEvent<HTMLImageElement, Event>) => {
@@ -29,6 +24,7 @@ export const ViewImage = ({ file }: IViewImage) => {
       width: (e.target as HTMLImageElement).naturalWidth,
       height: (e.target as HTMLImageElement).naturalHeight,
     })
+    setPosition(emptyImgPosition)
   }
 
   const onMouseDown = (e: MouseEvent<HTMLDivElement>) => {

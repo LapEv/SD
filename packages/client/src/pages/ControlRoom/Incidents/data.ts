@@ -698,6 +698,7 @@ export const ModalTitles = {
   printINC: 'Выберите тип печати списка инцидентов',
   changeStateStatuses: 'Изменить порядок статусов инцидента',
   changeIncident: 'Изменить инцидент',
+  addActs: 'Добавить акты',
 }
 
 export const MapINCStatusInputFields = [
@@ -993,6 +994,16 @@ export const MapINCStatusCloseInputFields = [
     name: 'spaceParts',
     label: 'Выберите ЗИП и подмену',
     validation: forSpacePartsValidation,
+    type: 'text',
+    required: false,
+  },
+]
+
+export const MapAddActInputFields = [
+  {
+    name: 'act',
+    label: 'Приложите акт',
+    validation: NoRequiredValidation,
     type: 'text',
     required: false,
   },
