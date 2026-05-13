@@ -52,7 +52,7 @@ services:
     depends_on:
       - postgres
     volumes:
-      - ./packages/server/Files:/${FILE_PATH}
+      - ./tmp/${FILE_PATH}:/${FILE_PATH}
 
   pgadmin:
     container_name: sd-pgadmin

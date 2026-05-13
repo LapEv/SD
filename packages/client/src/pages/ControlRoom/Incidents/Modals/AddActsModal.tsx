@@ -43,7 +43,10 @@ export const AddActsModal = ({ inc, newINC, setNewINC }: IAddActsModal) => {
       const endDate = currentDate.setDate(
         currentDate.getDate() - (timeInterval ?? timeIntervalData[0].value),
       )
-      changeINCAddFiles({ endDate: new Date(endDate), logs })
+      changeINCAddFiles({
+        endDate: timeInterval === 0 ? 0 : new Date(endDate),
+        logs,
+      })
       setAddAct({ status: false, id_incFiles: '' })
 
       const newViewFile = { ...(viewFiles.files as FilesData[]), files }

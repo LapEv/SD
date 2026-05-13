@@ -26,7 +26,6 @@ export const DrawerHeader: FC<DrawerHeaderProps> = memo(
       padding: theme.spacing(0, 1),
       ...theme.mixins.toolbar,
     }))
-    console.log('fontSize = ', fontSize)
     return (
       <DrawerHeader
         sx={{

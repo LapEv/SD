@@ -1220,12 +1220,20 @@ export class incidentService {
       if (logs.length > 0) {
         await IncidentLogsRepos.bulkCreate(logs)
       }
+      if (endDate === 0) {
+        const incs = await IncidentRepos.findAll({
+          where: { active: true },
+          include: this.includes,
+        })
+        const count = incs.length
+        res.status(200).json({ incs, count })
+      }
       const incs = await IncidentRepos.findAll({
         where: { createdAt: { [Op.gt]: endDate } },
         include: this.Includes,
       })
 
-      res.status(200).json({ incs })
+      res.status(200).json({ incs, count: incs.length })
     } catch (err) {
       res.status(500).json({ error: ['db error', err as Error] })
     }

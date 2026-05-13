@@ -9,7 +9,7 @@ import {
   ChangeExecutor,
   ChangeResponsible,
   IncidentLogsForINC,
-  AnswerAddINCFile,
+  DataINC,
 } from './interfaces'
 import {
   getINC,
@@ -231,11 +231,11 @@ export const incidentsSlise = createSlice({
     builder.addCase(changeINCAddFiles.fulfilled, (state, { payload }) => {
       state.isLoadingINC = false
       state.error = ''
-      const { data } = payload as AnswerAddINCFile
-      const _incs = createINCData(data)
+      const { incs, count } = payload?.data as DataINC
+      const _incs = createINCData(incs)
       state.incidents = _incs
       state.filtered = _incs
-      state.filteredLength = data.length
+      state.filteredLength = count
     })
     builder.addCase(changeINCAddFiles.pending, state => {
       state.isLoadingINC = true

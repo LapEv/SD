@@ -43,7 +43,7 @@ export class filesService {
     const pathFiles =
       process.env.NODE_ENV === 'development'
         ? path.join(__dirname, `../Files/${typeDir}/${incident}/${filesName}`)
-        : `process.env.FILE_PATH/${typeDir}/${incident}/${filesName}`
+        : `${process.env.FILE_PATH}/${typeDir}/${incident}/${filesName}`
     try {
       if (files.constructor !== Array) {
         const file = files as UploadedFile
@@ -71,7 +71,7 @@ export class filesService {
                   __dirname,
                   `../Files/${typeDir}/${incident}/${filesName[index]}`,
                 )
-              : `process.env.FILE_PATH/${typeDir}/${incident}/${filesName[index]}`
+              : `${process.env.FILE_PATH}/${typeDir}/${incident}/${filesName[index]}`
           if (!fs.existsSync(filePath)) {
             item.mv(filePath)
             return {
@@ -98,7 +98,7 @@ export class filesService {
     const pathCheckFiles =
       process.env.NODE_ENV === 'development'
         ? path.join(__dirname, `../Files/${typeDir}/${id}/`)
-        : `process.env.FILE_PATH/${typeDir}/${id}/`
+        : `${process.env.FILE_PATH}/${typeDir}/${id}/`
     const pathFiles = `${pathCheckFiles}${fileName}`
     try {
       await isEmptyDir(pathCheckFiles, id)
@@ -140,7 +140,7 @@ export class filesService {
       const pathFileServer =
         process.env.NODE_ENV === 'development'
           ? path.join(__dirname, `../Files/${pathfile}`)
-          : `process.env.FILE_PATH/${pathfile}`
+          : `${process.env.FILE_PATH}/${pathfile}`
       res.status(200).download(pathFileServer)
     } catch (err) {
       res.status(500).json({ error: ['db error', err as Error] })
@@ -152,7 +152,7 @@ export class filesService {
       const pathFileServer =
         process.env.NODE_ENV === 'development'
           ? path.join(__dirname, `../Files/${pathfile}`)
-          : `process.env.FILE_PATH/${pathfile}`
+          : `${process.env.FILE_PATH}/${pathfile}`
       res.status(200).download(pathFileServer)
     } catch (err) {
       res.status(500).json({ error: ['db error', err as Error] })
@@ -164,7 +164,7 @@ export class filesService {
       const pathFileServer =
         process.env.NODE_ENV === 'development'
           ? path.join(__dirname, `../Files/${pathfile}`)
-          : `process.env.FILE_PATH/${pathfile}`
+          : `${process.env.FILE_PATH}/${pathfile}`
       res.status(200).download(pathFileServer)
     } catch (err) {
       res.status(500).json({ error: ['db error: ', err as Error] })
@@ -177,7 +177,7 @@ export class filesService {
       const pathCheckFiles =
         process.env.NODE_ENV === 'development'
           ? path.join(__dirname, `../Files/${typeDir}/${id}/`)
-          : `process.env.FILE_PATH/${typeDir}/${id}/`
+          : `${process.env.FILE_PATH}/${typeDir}/${id}/`
       await isEmptyDir(pathCheckFiles, id)
       await userRepos.update(id, { id_avatarFiles: '' })
       const user = (await userRepos.findOne({

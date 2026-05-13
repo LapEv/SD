@@ -18,7 +18,6 @@ import {
   ChangeStatus,
   ChangeINC,
   ChangeINCAddFiles,
-  INC,
 } from 'store/slices/incidents/interfaces'
 import axios from 'axios'
 
@@ -230,7 +229,7 @@ export const changeINCAddFiles = createAsyncThunk(
   'incidents/changeINCAddFiles',
   async (dataINC: ChangeINCAddFiles, thunkAPI) => {
     try {
-      const { data } = await authhost.post<INC[]>(
+      const { data } = await authhost.post<AnswerGetINC>(
         ApiEndPoints.INC.changeINCAddFiles,
         dataINC,
       )

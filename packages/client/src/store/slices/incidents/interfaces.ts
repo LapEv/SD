@@ -186,11 +186,16 @@ export interface AnswerGetINC {
 }
 
 export interface AnswerAddINCFile {
-  data: INC[]
+  data: DataINC
   message: {
     text: string
     type: string
   }
+}
+
+export interface DataINC {
+  incs: INC[]
+  count: number
 }
 
 export interface AnswerGetINCs {
@@ -342,7 +347,7 @@ export interface ChangeINC {
 }
 
 export interface ChangeINCAddFiles {
-  endDate: Date
+  endDate: Date | number
   logs: ChangeLogsEditINC[]
 }
 
