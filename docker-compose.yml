@@ -1,10 +1,10 @@
 services:
-  postgres:
-    container_name: sbi-db
+  sd_postgres:
+    container_name: sd-db
     image: postgres:14
     restart: always
     ports:
-      - '${POSTGRES_PORT}:${POSTGRES_PORT}'
+      - '7432:${POSTGRES_PORT}'
     environment:
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       POSTGRES_USER: ${POSTGRES_USER}
@@ -20,9 +20,9 @@ services:
     networks:
       - back
 
-  server:
-    container_name: sbi-server
-    image: sbi-server
+  sd_server:
+    container_name: sd-server
+    image: sd-server
     build:
       context: .
       dockerfile: Dockerfile.server
@@ -56,16 +56,16 @@ services:
     networks:
       - back
 
-  pgadmin:
-    container_name: sbi-pgadmin
+  sd_pgadmin:
+    container_name: sd-pgadmin
     image: dpage/pgadmin4:latest
     restart: always
     environment:
       PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL}
       PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD}
-      PGADMIN_LISTEN_PORT: 5050
+      PGADMIN_LISTEN_PORT: 5051
     ports:
-      - '5050:5050'
+      - '5051:5051'
     volumes:
       - ./tmp/pgadmin:/var/lib/pgadmin
     depends_on:
@@ -73,27 +73,6 @@ services:
         condition: service_healthy
     networks:
       - back
-
-  nginx:
-    container_name: sbi-nginx
-    image: nginx:latest
-    restart: always
-    ports:
-      - '80:80'
-      - '443:443'
-    volumes:
-      - ./nginx.conf:/etc/nginx/nginx.conf
-      - ./etc/letsencrypt:/etc/letsencrypt
-    depends_on:
-      - server
-      - pgadmin
-    networks:
-      - back
-
-volumes:
-  pgadmin:
-  postgresql:
-  Files:
 
 networks:
   back:
