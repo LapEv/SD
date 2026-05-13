@@ -176,6 +176,16 @@ export const incidentRouter = (apiRouter: Router) => {
     service.changeINC,
   )
   router.post(
+    '/changeINCAddFiles',
+    roleMiddleware([
+      'changeINC',
+      'AdministrationCCA',
+      'Dispatcher',
+      'SUPERADMIN',
+    ]),
+    service.changeINCAddFiles,
+  )
+  router.post(
     '/changeExecutor',
     roleMiddleware(['changeExecutor', 'SUPERADMIN']),
     service.changeExecutor,

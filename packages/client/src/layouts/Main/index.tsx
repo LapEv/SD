@@ -85,7 +85,11 @@ export const MainLayout = memo(() => {
         <Box sx={{ display: 'flex', width: '100%' }}>
           <NavBar />
           <Drawer sx={{ display: 'flex' }} variant="permanent" open={open}>
-            <DrawerHeader open={open} toggleDrawer={toggleDrawer} />
+            <DrawerHeader
+              open={open}
+              toggleDrawer={toggleDrawer}
+              fontSize={(theme as ITheme).fontSize}
+            />
             <Divider />
             <SideBar open={open} />
           </Drawer>

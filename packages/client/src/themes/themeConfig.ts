@@ -1091,6 +1091,10 @@ export const ThemeConfig = ({
               width: '100%',
               paddingLeft: '24px',
             },
+            '&.w90_mt3': {
+              marginTop: fontSize === 'small' ? '16px' : '24px',
+              width: '90%',
+            },
             '&.w90_mt2': {
               marginTop: fontSize === 'small' ? '8px' : '16px',
               width: '90%',
@@ -1353,9 +1357,18 @@ export const ThemeConfig = ({
               minHeight: 200,
               height: 'auto',
               overflowY: 'auto',
+              cursor: 'copy',
+              position: 'relative',
               '& > .MuiChip-root': {
                 fontSize: fontSize === 'small' ? 11 : 15,
+                height: fontSize === 'small' ? 24 : 32,
                 margin: 2,
+                cursor: 'auto',
+                zIndex: 3,
+                color:
+                  mode === ThemeMode.dark
+                    ? colorTheme.colorLight
+                    : colorTheme.colorDark,
               },
               '&.noActs': {
                 display: 'flex',
@@ -1370,6 +1383,35 @@ export const ThemeConfig = ({
               justifyContent: 'center',
               alignItems: 'center',
               flexDirection: 'column',
+              color:
+                mode === ThemeMode.dark
+                  ? colorTheme.colorLight
+                  : colorTheme.colorDark,
+              fontSize: fontSize === 'small' ? '12px' : '16px',
+            },
+            '&.addActBoxBackground': {
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              flexDirection: 'column',
+              position: 'absolute',
+              width: '100%',
+              height: '100%',
+              top: 0,
+              left: 0,
+              opacity: 0.2,
+              zIndex: 2,
+              color:
+                mode === ThemeMode.dark
+                  ? colorTheme.colorLight
+                  : colorTheme.colorDark,
+              fontSize: fontSize === 'small' ? '12px' : '16px',
+            },
+            '&.opacity005': {
+              opacity: 0.05,
+            },
+            '&.w100': {
+              width: '100%',
             },
           },
         },

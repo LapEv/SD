@@ -26,44 +26,42 @@ export const CellINCActs = ({
       <MuiDiv className="cellINCLabel">
         {label}
         {value ? (
-          <>
-            <Tooltip
-              title="Просмотр"
-              enterDelay={300}
-              leaveDelay={100}
-              placement="top">
-              <IconButton className={'viewActIconButton'} onClick={onClick}>
-                <VisibilityOutlinedIcon
-                  className={'viewActIcon'}
-                  fontSize="small"
-                />
-              </IconButton>
-            </Tooltip>
-            <Tooltip
-              title="Добавить"
-              enterDelay={300}
-              leaveDelay={100}
-              placement="top">
-              <IconButton
-                className={'viewActIconButton'}
-                onClick={() =>
-                  setAddAct({
-                    status: true,
-                    id_incFiles: idINC,
-                    incident,
-                    files,
-                  })
-                }>
-                <AddCircleOutlineOutlinedIcon
-                  className={'viewActIcon'}
-                  fontSize="small"
-                />
-              </IconButton>
-            </Tooltip>
-          </>
+          <Tooltip
+            title="Просмотр"
+            enterDelay={300}
+            leaveDelay={100}
+            placement="top">
+            <IconButton className={'viewActIconButton'} onClick={onClick}>
+              <VisibilityOutlinedIcon
+                className={'viewActIcon'}
+                fontSize="small"
+              />
+            </IconButton>
+          </Tooltip>
         ) : (
           <></>
         )}
+        <Tooltip
+          title="Добавить"
+          enterDelay={300}
+          leaveDelay={100}
+          placement="top">
+          <IconButton
+            className={'viewActIconButton'}
+            onClick={() =>
+              setAddAct({
+                status: true,
+                id_incFiles: idINC,
+                incident,
+                files,
+              })
+            }>
+            <AddCircleOutlineOutlinedIcon
+              className={'viewActIcon'}
+              fontSize="small"
+            />
+          </IconButton>
+        </Tooltip>
       </MuiDiv>
       <MuiDiv className="cellINCValue">{value ?? ''}</MuiDiv>
     </MuiDiv>

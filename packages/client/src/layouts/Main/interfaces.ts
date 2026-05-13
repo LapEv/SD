@@ -5,6 +5,7 @@ import { User } from 'storeAuth/interfaces'
 export interface DrawerHeaderProps {
   open?: boolean
   toggleDrawer: (check: boolean) => void
+  fontSize: string
 }
 
 export interface SideBarProps {

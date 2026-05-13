@@ -1,20 +1,14 @@
-import React, {
-  useState,
-  useCallback,
-  DragEvent,
-  memo,
-  useRef,
-  ChangeEvent,
-} from 'react'
-import { AddActProps } from '../interfaces'
+import React, { useState, DragEvent, memo, useRef, ChangeEvent } from 'react'
+import { AddActProps } from '../../interfaces'
 import { Chip, Typography } from '@mui/material'
 import { ButtonsSection } from 'components/Buttons'
-import { colorIndicator } from '../data'
+import { colorIndicator } from '../../data'
 import CloudUploadOutlinedIcon from '@mui/icons-material/CloudUploadOutlined'
 import { fileValidation } from 'utils/validatorRules'
 import { BoxModal, MuiDiv } from 'components/MUI'
 import { LinearProgressWithLabel } from 'components/LinearProgress/LinearProgress'
 import { useUploadProgress } from 'api/useUploadProgress'
+import { FilesData } from 'store/slices/files/interfaces'
 
 export const AddAct = memo(
   React.forwardRef<unknown, AddActProps>(
@@ -33,21 +27,18 @@ export const AddAct = memo(
       })
       const refInputFile = useRef<HTMLInputElement>(null)
 
-      const handleDragOver = useCallback((event: DragEvent<HTMLDivElement>) => {
+      const handleDragOver = (event: DragEvent<HTMLDivElement>) => {
         event.preventDefault()
         setDragOver(true)
         setErrSelectedItems('')
-      }, [])
+      }
 
-      const handleDragLeave = useCallback(
-        (event: DragEvent<HTMLDivElement>) => {
-          event.preventDefault()
-          setDragOver(false)
-        },
-        [],
-      )
+      const handleDragLeave = (event: DragEvent<HTMLDivElement>) => {
+        event.preventDefault()
+        setDragOver(false)
+      }
 
-      const handleDrop = useCallback((event: DragEvent<HTMLDivElement>) => {
+      const handleDrop = (event: DragEvent<HTMLDivElement>) => {
         event.preventDefault()
         setErrSelectedItems('')
         setDragOver(false)
@@ -55,20 +46,25 @@ export const AddAct = memo(
         if (files) {
           handleFile(files as File[])
         }
-      }, [])
+      }
 
-      const handleFile = (files: File[]) => {
-        const checkFiles = fileValidation(files)
+      const handleFile = (_files: File[]) => {
+        setErrSelectedItems('')
+        const checkFiles = fileValidation(
+          _files,
+          selectedFiles as File[],
+          files,
+        )
         if (!checkFiles.status) {
           setErrSelectedItems(checkFiles.error)
           return
         }
         const newList =
           selectedFiles && selectedFiles?.length > 0
-            ? [...(selectedFiles as File[]), ...files]
-            : files
+            ? [...(selectedFiles as File[]), ..._files]
+            : _files
         setSelectedFiles(newList)
-        const names = Array.from(newList as File[])
+        const names = Array.from(newList)
           .map(item => item.name)
           .join(', ')
         setSelectedNameFiles(names)
@@ -81,6 +77,7 @@ export const AddAct = memo(
           setErrSelectedItems(
             `На каждый инцидент не более 10 файлов! Было: ${selectedFiles?.length}, всего: ${(selectedFiles?.length as number) + (files?.length as number)}`,
           )
+          return
         }
         if (selectedFiles?.length) {
           const result = await uploadProgress()
@@ -92,10 +89,8 @@ export const AddAct = memo(
           }
           handleModalAddAct({
             state: true,
-            files: result?.data,
+            files: [...result.data, ...(files as FilesData[])],
             act: [selectedNameFiles],
-            incident,
-            id_incFiles,
           })
           return
         }
@@ -109,8 +104,6 @@ export const AddAct = memo(
         setSelectedFiles(newList)
       }
 
-      console.log('selectedFiles = ', selectedFiles)
-
       return (
         <BoxModal
           ref={ref}
@@ -123,7 +116,8 @@ export const AddAct = memo(
             className={`addActContainer ${selectedFiles && selectedFiles?.length ? '' : 'noActs'}`}
             onDragOver={handleDragOver}
             onDragLeave={handleDragLeave}
-            onDrop={handleDrop}>
+            onDrop={handleDrop}
+            onClick={() => refInputFile.current?.click()}>
             {selectedFiles && selectedFiles?.length > 0 ? (
               selectedFiles?.map((item: File) => (
                 <Chip
@@ -135,25 +129,27 @@ export const AddAct = memo(
               ))
             ) : (
               <MuiDiv className="noActBox">
-                <CloudUploadOutlinedIcon
-                  className="noActIcon"
-                  onClick={() => refInputFile.current?.click()}
-                />
+                <CloudUploadOutlinedIcon className="noActIcon" />
                 Загрузите или перетащите сюда файлы
-                <input
-                  ref={refInputFile}
-                  type="file"
-                  accept="image/jpeg,application/pdf"
-                  hidden
-                  onChange={({ target }: ChangeEvent<HTMLInputElement>) =>
-                    handleFile(Array.from(target.files as FileList))
-                  }
-                  name="files[]"
-                  multiple
-                  style={{ display: 'none' }}
-                />
               </MuiDiv>
             )}
+            <MuiDiv
+              className={`addActBoxBackground ${selectedFiles && selectedFiles?.length < 3 ? '' : 'opacity005'}`}>
+              <CloudUploadOutlinedIcon className="noActIcon" />
+              Загрузите или перетащите сюда файлы
+            </MuiDiv>
+            <input
+              ref={refInputFile}
+              type="file"
+              accept="image/*,application/pdf"
+              hidden
+              onChange={({ target }: ChangeEvent<HTMLInputElement>) =>
+                handleFile(Array.from(target.files as FileList))
+              }
+              name="files[]"
+              multiple
+              style={{ display: 'none' }}
+            />
           </MuiDiv>
           <MuiDiv className={'modalErrorCloseCheckNC'}>
             {errSelectedItems}
@@ -173,9 +169,7 @@ export const AddAct = memo(
             />
           </MuiDiv>
           <ButtonsSection
-            btnSecondHandle={() =>
-              handleModalAddAct({ state: false, incident, id_incFiles })
-            }
+            btnSecondHandle={() => handleModalAddAct({ state: false })}
             btnName="Сохранить"
             btnSecondName="Отмена"
             btnDisabled={false}

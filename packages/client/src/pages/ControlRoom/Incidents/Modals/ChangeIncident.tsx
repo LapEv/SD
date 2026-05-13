@@ -1,6 +1,6 @@
 import React, { useState, memo } from 'react'
-import { Divider, Modal } from '@mui/material'
-import { DataAddAct, ChooseModalProps } from '../interfaces'
+import { Divider } from '@mui/material'
+import { ChooseModalProps } from '../interfaces'
 import { BoxModal, MuiDiv } from 'components/MUI'
 import { INC } from 'store/slices/incidents/interfaces'
 import {
@@ -13,49 +13,21 @@ import {
   CommentsData,
   Logs,
   Buttons,
-  AddAct,
+  AddActsModal,
 } from '../index'
 import { deepEqual } from 'utils/deepEqual'
-import { ModalTitles } from '../data'
-import { useFiles } from 'hooks/files/useFiles'
 
 export const ChangeIncident = memo(
   React.forwardRef<unknown, ChooseModalProps>(
     ({ handleModal, inc }: ChooseModalProps, ref) => {
       const [newINC, setNewINC] = useState(inc as INC)
-      const [{ addAct }, { setAddAct }] = useFiles()
-
-      const modalClientRef = React.createRef()
-
-      const handleModalAddAct = (item: DataAddAct) => {
-        if (!item.state) {
-          setAddAct({ status: false, id_incFiles: '' })
-        }
-      }
 
       return (
         <BoxModal
           ref={ref}
           tabIndex={-1}
           className={'modalMainContainer editINC'}>
-          <Modal
-            open={addAct.status}
-            onClose={handleModalAddAct}
-            aria-labelledby="modal-modal-title"
-            aria-describedby="modal-modal-description">
-            {addAct ? (
-              <AddAct
-                ref={modalClientRef}
-                handleModalAddAct={handleModalAddAct}
-                title={ModalTitles.addActs}
-                incident={addAct.incident as string}
-                id_incFiles={addAct.id_incFiles as string}
-                files={addAct.files}
-              />
-            ) : (
-              <></>
-            )}
-          </Modal>
+          <AddActsModal inc={inc} newINC={newINC} setNewINC={setNewINC} />
           <MuiDiv className="editContainer">
             <TitleINC newINC={newINC} handleModal={handleModal} />
             <MuiDiv className="editDataContainer">

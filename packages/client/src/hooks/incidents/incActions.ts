@@ -13,6 +13,7 @@ import {
   ChangeResponsible,
   ChangeStatus,
   ChangeINC,
+  ChangeINCAddFiles,
 } from 'store/slices/incidents/interfaces'
 
 export interface INCActions {
@@ -33,6 +34,7 @@ export interface INCActions {
   changeResponsible: (data: ChangeResponsible) => void
   changeStatus: (data: ChangeStatus) => void
   changeINC: (data: ChangeINC) => void
+  changeINCAddFiles: (data: ChangeINCAddFiles) => void
   changeIncidentStatuses: (data: ChangeINCStatuses) => void
   changeStateIncidentStatuses: (data: INCStatuses[]) => void
   changeTypesOfWork: (data: ChangeTypesOfWork) => void

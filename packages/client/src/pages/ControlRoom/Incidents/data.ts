@@ -1108,6 +1108,7 @@ export const emptyINC = {
   parentalIncident: '',
   relatedIncident: '',
   methodsReuqest: methodsReuqest.manually,
+  files: [],
 }
 
 export const logs = {

@@ -21,7 +21,6 @@ export const Columns = ({ cell, index }: IColumns) => {
   const createSortHandler =
     (property: keyof INC_Data, sortable: boolean | undefined) => () => {
       if (!sortable) return
-      console.log('createSortHandler')
       handleRequestSort(property)
     }
 

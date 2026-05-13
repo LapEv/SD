@@ -7,11 +7,12 @@ import { MuiDiv } from 'components/MUI'
 import { Link as RouterLink } from 'react-router-dom'
 
 export const DrawerHeader: FC<DrawerHeaderProps> = memo(
-  ({ open, toggleDrawer }) => {
+  ({ open, toggleDrawer, fontSize }) => {
     const DrawerHeader = styled('div')(({ theme }) => ({
       minWidth: '100%',
-      mt: 0,
-      minHeight: '0px!important',
+      marginTop: 0,
+      minHeight: '40px!important',
+      height: 40,
       zIndex: 1,
       display: 'flex',
       justifyContent: 'space-between',
@@ -25,8 +26,13 @@ export const DrawerHeader: FC<DrawerHeaderProps> = memo(
       padding: theme.spacing(0, 1),
       ...theme.mixins.toolbar,
     }))
+    console.log('fontSize = ', fontSize)
     return (
-      <DrawerHeader sx={{ pl: open ? 3 : 0 }}>
+      <DrawerHeader
+        sx={{
+          pl: open ? 3 : 0,
+          minHeight: `${fontSize === 'small' ? '40px!important' : '55px!important'}`,
+        }}>
         <MuiDiv className="logo_arrow">
           {open && (
             <Link

@@ -231,10 +231,10 @@ export interface DataCloseINC {
 
 export interface DataAddAct {
   state: boolean
-  files?: FileList[]
+  files?: FilesData[]
   act?: string[]
-  incident: string
-  id_incFiles: string
+  incident?: string
+  id_incFiles?: string
 }
 
 export interface Options {

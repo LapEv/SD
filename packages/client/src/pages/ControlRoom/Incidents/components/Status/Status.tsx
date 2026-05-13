@@ -244,6 +244,7 @@ export const Status = memo(
           commentCloseCheck,
           spaceParts,
           files,
+          Files: files,
           act,
           timeCloseCheck: currentDate,
           id_incClosingCheck: user.id!,

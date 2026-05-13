@@ -11,7 +11,7 @@ import {
   useRef,
 } from 'react'
 import { FileProps } from 'storeAuth/interfaces'
-import { fileValidation } from 'utils/validatorRules'
+import { fileValidationAvatar } from 'utils/validatorRules'
 import { useMessage } from 'hooks/message/useMessage'
 import { ITheme, ThemeMode } from 'themes/themeConfig'
 
@@ -53,7 +53,7 @@ export const ProfileAvatar = memo(
     }, [])
 
     const handleFileDragChange = (files: FileList) => {
-      const checkFiles = fileValidation(files)
+      const checkFiles = fileValidationAvatar(files)
       if (!checkFiles.status) {
         setMessage({
           type: 'error',
@@ -66,7 +66,7 @@ export const ProfileAvatar = memo(
 
     const handleFileChange = ({ target }: ChangeEvent<HTMLInputElement>) => {
       const files = target?.files as FileList
-      const checkFiles = fileValidation(target?.files as FileList)
+      const checkFiles = fileValidationAvatar(target?.files as FileList)
       if (!checkFiles.status) {
         setMessage({
           type: 'error',

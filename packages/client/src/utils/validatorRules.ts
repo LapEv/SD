@@ -1,3 +1,5 @@
+import { FilesData } from 'store/slices/files/interfaces'
+
 const REQUIRED_FIELD = 'Обязательно для заполнения'
 interface IWatch {
   list: {
@@ -306,19 +308,7 @@ export const timeValidation = {
   },
 }
 
-// export const fileValidation = (files: FileList) => {
-//   const requiredTypes = ['image', 'application/pdf']
-//   const requiredSize = 1024 * 1024 * 2
-//   const valError = []
-
-//   if (files.length > 10) {
-//     return {
-//       status: false,
-//       error: `Не более 10 файлов!`,
-//     }
-//   }
-
-export const fileValidation = (files: File[]) => {
+export const fileValidationAvatar = (files: FileList) => {
   const requiredTypes = ['image', 'application/pdf']
   const requiredSize = 1024 * 1024 * 2
   const valError = []
@@ -343,6 +333,54 @@ export const fileValidation = (files: File[]) => {
     return {
       status: false,
       error: `Некоторые файлы не поддерживаются (только картинки или pdf) или превышен лимит на размер файла (2Mb)!`,
+    }
+  }
+  return { status: true, error: '' }
+}
+
+export const fileValidation = (
+  files: File[],
+  selectedFiles?: File[],
+  existingFiles?: FilesData[],
+) => {
+  const requiredTypes = ['image', 'application/pdf']
+  const requiredSize = 1024 * 1024 * 10
+
+  if (files.length > 10) {
+    return {
+      status: false,
+      error: `Не более 10 файлов!`,
+    }
+  }
+
+  for (const file of files) {
+    const checkType = !requiredTypes.find(item => file.type.includes(item))
+    if (checkType) {
+      return {
+        status: false,
+        error: `Файл ${file.name} не поддерживается, Только картинки и pdf!`,
+      }
+    }
+    if (file.size > requiredSize) {
+      return {
+        status: false,
+        error: `Файл ${file.name} превышен лимит на размер файла (10Mb)!`,
+      }
+    }
+    const checkSelectedFiles = selectedFiles?.find(
+      ({ name, size }) => file.name === name && file.size === size,
+    )
+    if (checkSelectedFiles) {
+      return { status: false, error: `Такой файл ${file.name} уже добавлен!` }
+    }
+    const checkExistingFiles = existingFiles?.find(
+      ({ name, size }) => file.name === name && file.size === Number(size),
+    )
+    if (checkExistingFiles) {
+      return {
+        status: false,
+        error: `Такой файл ${file.name} уже существует в этом инциденте!`,
+      }
     }
   }
   return { status: true, error: '' }

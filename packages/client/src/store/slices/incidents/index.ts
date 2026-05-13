@@ -9,6 +9,7 @@ import {
   ChangeExecutor,
   ChangeResponsible,
   IncidentLogsForINC,
+  AnswerAddINCFile,
 } from './interfaces'
 import {
   getINC,
@@ -32,6 +33,7 @@ import {
   changeResponsibleSVR,
   changeINC,
   changeStatusSVR,
+  changeINCAddFiles,
 } from 'api/incidents'
 import { emptyINC } from 'pages/ControlRoom/Incidents/data'
 
@@ -222,6 +224,23 @@ export const incidentsSlise = createSlice({
       state.isLoadingINC = true
     })
     builder.addCase(getINCsByDate.rejected, (state, { payload }) => {
+      state.isLoadingINC = false
+      state.error = payload as string
+    })
+
+    builder.addCase(changeINCAddFiles.fulfilled, (state, { payload }) => {
+      state.isLoadingINC = false
+      state.error = ''
+      const { data } = payload as AnswerAddINCFile
+      const _incs = createINCData(data)
+      state.incidents = _incs
+      state.filtered = _incs
+      state.filteredLength = data.length
+    })
+    builder.addCase(changeINCAddFiles.pending, state => {
+      state.isLoadingINC = true
+    })
+    builder.addCase(changeINCAddFiles.rejected, (state, { payload }) => {
       state.isLoadingINC = false
       state.error = payload as string
     })
@@ -438,19 +457,6 @@ export const incidentsSlise = createSlice({
       state.isLoadingINC = false
       state.error = payload as string
     })
-    // builder.addCase(changeStatus.fulfilled, (state, { payload }) => {
-    //   state.isLoadingINC = false
-    //   state.error = ''
-    //   const { incs, filterListData } = payload?.data as AnswerGetINC
-    //   state.incidents = createINCData(incs)
-    // })
-    // builder.addCase(changeStatus.pending, state => {
-    //   state.isLoadingINC = true
-    // })
-    // builder.addCase(changeStatus.rejected, (state, { payload }) => {
-    //   state.isLoadingINC = false
-    //   state.error = payload as string
-    // })
   },
 })
 

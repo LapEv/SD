@@ -25,6 +25,7 @@ import {
   changeResponsibleSVR,
   changeStatusSVR,
   changeINC,
+  changeINCAddFiles,
 } from 'api/incidents'
 import {
   setLoadingINC,
@@ -77,6 +78,9 @@ export function useIncidents(): [INCState, INCActions] {
       },
       changeINC(data) {
         dispatch(changeINC(data))
+      },
+      changeINCAddFiles(data) {
+        dispatch(changeINCAddFiles(data))
       },
       newIncidentStatuses(data) {
         dispatch(newIncidentStatuses(data))

@@ -118,6 +118,7 @@ export const ApiEndPoints = {
     getINCsByDate: 'incidents/getINCsByDate',
     newINC: 'incidents/newINC',
     changeINC: 'incidents/changeINC',
+    changeINCAddFiles: 'incidents/changeINCAddFiles',
     changeExecutor: 'incidents/changeExecutor',
     changeResponsible: 'incidents/changeResponsible',
     changeStatus: 'incidents/changeStatus',

@@ -1,13 +1,6 @@
-import React, {
-  useState,
-  ChangeEvent,
-  useCallback,
-  DragEvent,
-  memo,
-  useRef,
-} from 'react'
+import React, { useState, ChangeEvent, DragEvent, memo, useRef } from 'react'
 import { AddValuesProps, CloseINCProps } from '../interfaces'
-import { IconButton, Typography } from '@mui/material'
+import { Typography, Chip } from '@mui/material'
 import { ButtonsModalSection } from 'components/Buttons'
 import {
   useForm,
@@ -23,12 +16,11 @@ import { colorIndicator, MapINCStatusCloseInputFields } from '../data'
 import { DropDownINC, emptyOptionsDD } from 'components/DropDown'
 import { Options } from 'components/DropDown/interface'
 import { useIncidents } from 'hooks/incidents/useINC'
-import AttachFileIcon from '@mui/icons-material/AttachFile'
 import { fileValidation } from 'utils/validatorRules'
-import { useMessage } from 'hooks/message/useMessage'
 import { BoxModal, MuiDiv } from 'components/MUI'
 import { LinearProgressWithLabel } from 'components/LinearProgress/LinearProgress'
 import { useUploadProgress } from 'api/useUploadProgress'
+import CloudUploadOutlinedIcon from '@mui/icons-material/CloudUploadOutlined'
 
 export const ChangeStatus = memo(
   React.forwardRef<unknown, CloseINCProps>(
@@ -36,54 +28,54 @@ export const ChangeStatus = memo(
       { handleModal, title, data, incident, id_incFiles }: CloseINCProps,
       ref,
     ) => {
-      const [, { setMessage }] = useMessage()
       const [{ typesCompletedWork }] = useIncidents()
       const [selectedTypeCompletedWork, setSelectedTypeCompletedWork] =
         useState<Options>(emptyOptionsDD)
-      const [selectedFiles, setSelectedFiles] = useState<FileList | null>()
+      const [selectedFiles, setSelectedFiles] = useState<File[] | null>()
       const [selectedNameFiles, setSelectedNameFiles] = useState<string>('')
       const [, setDragOver] = useState<boolean>(false)
       const [errSelectedItems, setErrSelectedItems] = useState<string>('')
       const { uploadProgress, progress } = useUploadProgress({
-        files: selectedFiles as FileList,
+        files: selectedFiles as File[],
         incident,
         id_incFiles,
       })
       const refInputFile = useRef<HTMLInputElement>(null)
 
-      const handleDragOver = useCallback((event: DragEvent<HTMLDivElement>) => {
+      const handleDragOver = (event: DragEvent<HTMLDivElement>) => {
         event.preventDefault()
         setDragOver(true)
-      }, [])
+        setErrSelectedItems('')
+      }
 
-      const handleDragLeave = useCallback(
-        (event: DragEvent<HTMLDivElement>) => {
-          event.preventDefault()
-          setDragOver(false)
-        },
-        [],
-      )
-
-      const handleDrop = useCallback((event: DragEvent<HTMLDivElement>) => {
+      const handleDragLeave = (event: DragEvent<HTMLDivElement>) => {
         event.preventDefault()
         setDragOver(false)
-        const files = event.dataTransfer.files
-        if (files) {
-          handleFile(files)
-        }
-      }, [])
+      }
 
-      const handleFile = (files: FileList) => {
-        const checkFiles = fileValidation(files)
+      const handleDrop = (event: DragEvent<HTMLDivElement>) => {
+        event.preventDefault()
+        setErrSelectedItems('')
+        setDragOver(false)
+        const files = Array.from(event.dataTransfer.files)
+        if (files) {
+          handleFile(files as File[])
+        }
+      }
+
+      const handleFile = (files: File[]) => {
+        setErrSelectedItems('')
+        const checkFiles = fileValidation(files, selectedFiles as File[])
         if (!checkFiles.status) {
-          setMessage({
-            type: 'error',
-            text: checkFiles.error,
-          })
+          setErrSelectedItems(checkFiles.error)
           return
         }
-        setSelectedFiles(files)
-        const names = Array.from(files as FileList)
+        const newList =
+          selectedFiles && selectedFiles?.length > 0
+            ? [...(selectedFiles as File[]), ...files]
+            : files
+        setSelectedFiles(newList)
+        const names = Array.from(newList)
           .map(item => item.name)
           .join(', ')
         setSelectedNameFiles(names)
@@ -103,6 +95,12 @@ export const ChangeStatus = memo(
 
       const changeData = async ({ list }: AddValuesProps) => {
         if (selectedFiles?.length) {
+          if ((selectedFiles?.length as number) > 10) {
+            setErrSelectedItems(
+              `На каждый инцидент не более 10 файлов! Всего: ${selectedFiles?.length as number}`,
+            )
+            return
+          }
           const result = await uploadProgress()
           if (result?.status !== 200) {
             setErrSelectedItems(
@@ -114,7 +112,7 @@ export const ChangeStatus = memo(
             state: true,
             typeCompletedWork: selectedTypeCompletedWork,
             commentCloseCheck: list[1].value,
-            files: result?.data,
+            files: result.data,
             spaceParts: list[3].value
               ?.split(/,| |;|\|./)
               .filter(item => item !== ''),
@@ -134,6 +132,14 @@ export const ChangeStatus = memo(
         })
       }
 
+      const onRemoveFile = (item: File) => {
+        setErrSelectedItems('')
+        const newList = selectedFiles?.filter(({ name }) => name !== item.name)
+        const names = newList?.map(item => item.name).join(', ') as string
+        setSelectedNameFiles(names)
+        setSelectedFiles(newList)
+      }
+
       return (
         <BoxModal
           ref={ref}
@@ -142,8 +148,8 @@ export const ChangeStatus = memo(
           component="form"
           onFocus={() => setErrSelectedItems('')}
           onSubmit={handleSubmit(changeData)}>
-          <Typography variant={'h1'}>{title}</Typography>
-          <MuiDiv className={'w90_mt2'}>
+          <Typography variant={'h1'}>{`${title} ${incident}`}</Typography>
+          <MuiDiv className={'w90_mt3'}>
             {fields.map(
               ({ id, label, validation, type, required, name }, index) => {
                 return (
@@ -197,56 +203,47 @@ export const ChangeStatus = memo(
                       }
                       if (name === 'act') {
                         return (
-                          <TextFieldIncidents
-                            {...field}
-                            inputRef={field.ref}
-                            label={label}
-                            type={type}
-                            variant="outlined"
-                            required={required ?? true}
-                            className={'textContainer_mt2'}
-                            sx={{ width: '100%' }}
+                          <MuiDiv
+                            className={`addActContainer w100 ${selectedFiles && selectedFiles?.length ? '' : 'noActs'}`}
                             onDragOver={handleDragOver}
                             onDragLeave={handleDragLeave}
                             onDrop={handleDrop}
-                            margin="normal"
-                            value={selectedNameFiles || ''}
-                            error={
-                              !!(errors?.list ?? [])[index]?.value?.message
-                            }
-                            helperText={
-                              (errors?.list ?? [])[index]?.value?.message
-                            }
-                            slotProps={{
-                              input: {
-                                fullWidth: true,
-                                endAdornment: (
-                                  <IconButton className={`attachIconButton `}>
-                                    <AttachFileIcon
-                                      className={`attachIcon`}
-                                      onClick={() =>
-                                        refInputFile.current?.click()
-                                      }
-                                    />
-                                    <input
-                                      ref={refInputFile}
-                                      type="file"
-                                      accept="image/jpeg,application/pdf"
-                                      hidden
-                                      onChange={({
-                                        target,
-                                      }: ChangeEvent<HTMLInputElement>) =>
-                                        handleFile(target.files as FileList)
-                                      }
-                                      name="files[]"
-                                      multiple
-                                      style={{ display: 'none' }}
-                                    />
-                                  </IconButton>
-                                ),
-                              },
-                            }}
-                          />
+                            onClick={() => refInputFile.current?.click()}>
+                            {selectedFiles && selectedFiles?.length > 0 ? (
+                              selectedFiles?.map((item: File) => (
+                                <Chip
+                                  key={`${item.name}_${item.size}`}
+                                  label={`${item.name}`}
+                                  onDelete={() => onRemoveFile(item)}
+                                  sx={{ mx: 0.25 }}
+                                />
+                              ))
+                            ) : (
+                              <MuiDiv className="noActBox">
+                                <CloudUploadOutlinedIcon className="noActIcon" />
+                                Загрузите или перетащите сюда файлы
+                              </MuiDiv>
+                            )}
+                            <MuiDiv
+                              className={`addActBoxBackground ${selectedFiles && selectedFiles?.length < 3 ? '' : 'opacity005'}`}>
+                              <CloudUploadOutlinedIcon className="noActIcon" />
+                              Загрузите или перетащите сюда файлы
+                            </MuiDiv>
+                            <input
+                              ref={refInputFile}
+                              type="file"
+                              accept="image/*,application/pdf"
+                              hidden
+                              onChange={({
+                                target,
+                              }: ChangeEvent<HTMLInputElement>) =>
+                                handleFile(Array.from(target.files as FileList))
+                              }
+                              name="files[]"
+                              multiple
+                              style={{ display: 'none' }}
+                            />
+                          </MuiDiv>
                         )
                       }
                       return (
@@ -257,7 +254,7 @@ export const ChangeStatus = memo(
                           type={type}
                           variant="outlined"
                           required={required ?? true}
-                          className={'textContainer_mt2'}
+                          className={`${name === 'spaceParts' ? 'textContainer_mt3' : 'textContainer_mt2'}`}
                           sx={{ width: '100%' }}
                           margin="normal"
                           value={field.value || ''}

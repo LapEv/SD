@@ -65,7 +65,8 @@ export interface INC {
   ClassifierModel?: ClassifierModelForINC
   TypicalMalfunction?: TypicalMalfunctionForINC
   IncidentLogs?: IncidentLogsForINC[]
-  Files?: FilesData[]
+  Files?: FilesData[] | undefined
+  files: FilesData[] | undefined
   legalName: string
   overdue: string
   commentCloseCheck: string
@@ -181,6 +182,14 @@ export interface AnswerGetINC {
     responsible: string[]
     overdue: string[]
     sla: string[]
+  }
+}
+
+export interface AnswerAddINCFile {
+  data: INC[]
+  message: {
+    text: string
+    type: string
   }
 }
 
@@ -323,10 +332,16 @@ export interface ChangeStatus {
   act?: string[]
   spaceParts?: string[]
   files?: FileList[]
+  Files?: FileList[]
 }
 
 export interface ChangeINC {
   editINC: INCEdit
+  endDate: Date
+  logs: ChangeLogsEditINC[]
+}
+
+export interface ChangeINCAddFiles {
   endDate: Date
   logs: ChangeLogsEditINC[]
 }
@@ -351,6 +366,11 @@ export interface ChangeLogsEditINC {
   id_incLogUser: string
 }
 
+export interface INCEditAddFiles {
+  id: string
+  act: string[]
+  files: FilesData[]
+}
 export interface INCEdit {
   id: string
   act: string[]
@@ -366,7 +386,7 @@ export interface INCEdit {
   id_incEquipment: string
   executor: string
   id_incExecutor: string
-  files?: string
+  files?: FilesData[]
   model: string
   id_incModel: string
   responsible: string

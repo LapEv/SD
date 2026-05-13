@@ -52,6 +52,7 @@ import { IClassifierEquipment, IClassifierModels } from '/models/classifier'
 import { getOrderINC } from '../utils/getOrder'
 import { getNewINC } from '../utils/getNewINC'
 import { checkTemplateFromSD } from '../Mailer/checkTemplate'
+import { IPrepareStatusObj } from './interfaces'
 
 export class incidentService {
   get Includes() {
@@ -435,9 +436,7 @@ export class incidentService {
       return { [Op.or]: item as WhereOptions }
     })
   }
-  /*  eslint-disable @typescript-eslint/no-explicit-any */
-  prepareStatusObj = (data: any) => {
-    /* eslint-enable @typescript-eslint/no-explicit-any */
+  prepareStatusObj = (data: IPrepareStatusObj) => {
     const currentDate = new Date(
       new Date().getTime() + AppConst.timeGMT * 60 * 60 * 1000,
     )
@@ -1202,6 +1201,22 @@ export class incidentService {
             'Ошибка с изменением инцидента! Попробуйте перезагрузить страницу и заново внести изменения. Или обратитесь к администратору.',
         })
       }
+      if (logs.length > 0) {
+        await IncidentLogsRepos.bulkCreate(logs)
+      }
+      const incs = await IncidentRepos.findAll({
+        where: { createdAt: { [Op.gt]: endDate } },
+        include: this.Includes,
+      })
+
+      res.status(200).json({ incs })
+    } catch (err) {
+      res.status(500).json({ error: ['db error', err as Error] })
+    }
+  }
+  changeINCAddFiles = async (_req: Request, res: Response) => {
+    const { logs, endDate } = _req.body
+    try {
       if (logs.length > 0) {
         await IncidentLogsRepos.bulkCreate(logs)
       }

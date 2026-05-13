@@ -17,6 +17,8 @@ import {
   ChangeExecutor,
   ChangeStatus,
   ChangeINC,
+  ChangeINCAddFiles,
+  INC,
 } from 'store/slices/incidents/interfaces'
 import axios from 'axios'
 
@@ -214,6 +216,35 @@ export const changeINC = createAsyncThunk(
       if (axios.isAxiosError<ValidationError, Record<string, unknown>>(error)) {
         return thunkAPI.rejectWithValue(
           `Не удалось изменить инцидент: \n${
+            error.response?.data.message ?? error.response?.data
+          }`,
+        )
+      } else {
+        console.error(error)
+      }
+    }
+  },
+)
+
+export const changeINCAddFiles = createAsyncThunk(
+  'incidents/changeINCAddFiles',
+  async (dataINC: ChangeINCAddFiles, thunkAPI) => {
+    try {
+      const { data } = await authhost.post<INC[]>(
+        ApiEndPoints.INC.changeINCAddFiles,
+        dataINC,
+      )
+      return {
+        data,
+        message: {
+          text: 'Акты добавлены!',
+          type: 'success',
+        },
+      }
+    } catch (error) {
+      if (axios.isAxiosError<ValidationError, Record<string, unknown>>(error)) {
+        return thunkAPI.rejectWithValue(
+          `Не удалось добавить акты: \n${
             error.response?.data.message ?? error.response?.data
           }`,
         )
