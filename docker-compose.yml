@@ -52,7 +52,7 @@ services:
     depends_on:
       - sd_postgres
     volumes:
-      - ./tmp/${FILE_PATH}:/${FILE_PATH}
+      - ./tmp/${FILE_PATH}:/app/${FILE_PATH}
     networks:
       - back
 
