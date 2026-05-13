@@ -50,7 +50,7 @@ services:
       EMAIL_USER: ${EMAIL_USER}
       EMAIL_PASSWORD: ${EMAIL_PASSWORD}
     depends_on:
-      - postgres
+      - sd_postgres
     volumes:
       - ./tmp/${FILE_PATH}:/${FILE_PATH}
     networks:
@@ -69,7 +69,7 @@ services:
     volumes:
       - ./tmp/pgadmin:/var/lib/pgadmin
     depends_on:
-      postgres:
+      sd_postgres:
         condition: service_healthy
     networks:
       - back
