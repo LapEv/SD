@@ -49,6 +49,7 @@ services:
       EMAIL_PORT: ${EMAIL_PORT}
       EMAIL_USER: ${EMAIL_USER}
       EMAIL_PASSWORD: ${EMAIL_PASSWORD}
+      TZ: Europe/Moscow
     depends_on:
       - sd_postgres
     volumes:
