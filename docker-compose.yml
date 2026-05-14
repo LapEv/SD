@@ -10,7 +10,7 @@ services:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_DB: ${POSTGRES_DB}
       PGDATA: /var/lib/postgresql/data/pgdata
-      TZ: Europe/Moscow
+      TZ: Etc/UTC
     volumes:
       - ./tmp/pgdata:/var/lib/postgresql/data
     healthcheck:
@@ -50,7 +50,7 @@ services:
       EMAIL_PORT: ${EMAIL_PORT}
       EMAIL_USER: ${EMAIL_USER}
       EMAIL_PASSWORD: ${EMAIL_PASSWORD}
-      TZ: Europe/Moscow
+      TZ: Etc/UTC
     depends_on:
       - sd_postgres
     volumes:
@@ -66,7 +66,7 @@ services:
       PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL}
       PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD}
       PGADMIN_LISTEN_PORT: 5051
-      TZ: Europe/Moscow
+      TZ: Etc/UTC
     ports:
       - '5051:5051'
     volumes:
