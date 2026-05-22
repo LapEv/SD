@@ -109,10 +109,7 @@ export const incidentsSlise = createSlice({
                 {
                   User: { id: userID, shortName: userShortName },
                   id: `log_${id}_${item?.logs?.length}`,
-                  time: new Date(
-                    new Date().getTime() -
-                      new Date().getTimezoneOffset() * 60 * 1000,
-                  ).toISOString(),
+                  time: new Date().toISOString(),
                   log: `Для инцидента под номером ${incident} изменён исполнитель ${executor}`,
                 },
               ],
@@ -146,10 +143,7 @@ export const incidentsSlise = createSlice({
                 {
                   User: { id: userID, shortName: userShortName },
                   id: `log_${id}_${item?.logs?.length}`,
-                  time: new Date(
-                    new Date().getTime() -
-                      new Date().getTimezoneOffset() * 60 * 1000,
-                  ).toISOString(),
+                  time: new Date().toISOString(),
                   log: `Для инцидента под номером ${incident} изменён ответственный ${responsible}`,
                 },
               ],

@@ -1,5 +1,5 @@
 export const mailConst = {
-  ourMail: 'e_lap@mail.ru',
+  ourMail: 'help@sb-i.ru',
   mailMessages: {
     footer:
       'Данное сообщение отправлено автоматически, не надо на него отвечать.',
@@ -21,9 +21,9 @@ export const mailConst = {
       model: 'Модель оборудования:',
       malfunction: 'Неисправность:',
       status: 'Статус:',
-      timeRegistration: 'Время регистрации:',
-      timeChangeStatus: 'Время изменения статуса:',
-      timeSLA: 'Крайний срок выполнения:',
+      timeRegistration: 'Время регистрации (MSK):',
+      timeChangeStatus: 'Время изменения статуса (MSK):',
+      timeSLA: 'Крайний срок выполнения (MSK):',
       description: 'Описание проблемы:',
       commentCloseCheck: 'Комментарий к закрытию:',
       applicant: 'Заявитель:',

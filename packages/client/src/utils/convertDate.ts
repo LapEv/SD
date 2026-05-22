@@ -67,3 +67,34 @@ export const convertTimeStampToString = (dateTime: string) => {
   const timeArr = dateTimeArr[3].split(/[:.]/)
   return `${dateTimeArr[2]}.${dateTimeArr[1]}.${dateTimeArr[0]} ${timeArr[0]}:${timeArr[1]}:${timeArr[2]}`
 }
+
+export const convertTimeStringToMM = (time: string) => {
+  if (!time) return 0
+  const timeArr = time.split(/[:.]/)
+  const hh_seconds = Number(timeArr[0]) * 60 * 60
+  const mm_seconds = Number(timeArr[1]) * 60
+  const ss_seconds = Number(timeArr[2])
+  return (hh_seconds + mm_seconds + ss_seconds) * 1000
+}
+
+export const getDateTimeofSLA = (time: number) => {
+  const today = new Date()
+  today.setHours(0, 0, 0, 0) // Начало дня
+  const timestamp = today.getTime()
+  return timestamp + time
+}
+
+export const convertToCurrentTZ = (dateTime: string) => {
+  if (!dateTime) return dateTime
+  const TZTimeTS = new Date().getTimezoneOffset() * 60 * 1000
+  const dateTimeTS = new Date(dateTime).getTime()
+  const _dateTimeTS = dateTimeTS - TZTimeTS
+  const _dateTime = new Date(_dateTimeTS)
+  return _dateTime.toISOString()
+}
+
+export const convertTSToCurrentTZ = (dateTime: string) => {
+  if (!dateTime) return dateTime
+  const ts_tz = convertToCurrentTZ(dateTime)
+  return convertTimeStampToString(ts_tz)
+}

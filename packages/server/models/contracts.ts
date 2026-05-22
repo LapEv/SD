@@ -50,7 +50,7 @@ export const contracts: ModelAttributes<Model, Contracts> = {
     allowNull: false,
   },
   date: {
-    type: DataType.DATE,
+    type: DataType.DATEONLY,
     allowNull: false,
   },
   notificationEmail: {

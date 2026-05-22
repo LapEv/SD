@@ -38,10 +38,11 @@ import { mailerChangeStatus, mailerRegInc } from '../Mailer'
 import {
   IIncindent,
   IIncindentStatuses,
+  Incindent,
   INewINCFromMail,
   ITimeSLA,
 } from '/models/incidents'
-import { Op, WhereOptions } from 'sequelize'
+import { Op, Order, WhereOptions } from 'sequelize'
 import { IContracts, IContractsSLA } from '/models/contracts'
 import { IClients } from '/models/clients'
 import { IObjects } from '/models/objects'
@@ -207,7 +208,12 @@ export class incidentService {
     {
       model: Contracts,
       required: true,
-      attributes: ['id', 'contract', 'active', 'notificationEmail'],
+      attriIncidentLogsReposbutes: [
+        'id',
+        'contract',
+        'active',
+        'notificationEmail',
+      ],
       include: [
         {
           model: IncindentStatuses,
@@ -332,9 +338,25 @@ export class incidentService {
     {
       model: Files,
       required: false,
-      attributes: ['id', 'name', 'size', 'mimetype', 'path'],
+      attributes: ['id', 'name', 'size', 'mimetype', 'path', 'createdAt'],
     },
   ]
+
+  orderINC = [
+    [IncindentStatuses, 'stateNumber', 'ASC'],
+    [TypesOfWork, 'typeOfWork', 'ASC'],
+    [TypesCompletedWork, 'typeCompletedWork', 'ASC'],
+    [SLA, 'sla', 'ASC'],
+    [Clients, 'client', 'ASC'],
+    [Contracts, 'contract', 'ASC'],
+    [Objects, 'object', 'ASC'],
+    [Users, 'shortName', 'ASC'],
+    [ClassifierEquipment, 'equipment', 'ASC'],
+    [ClassifierModels, 'model', 'ASC'],
+    [TypicalMalfunctions, 'typicalMalfunction', 'ASC'],
+    [IncidentLogs, 'time', 'ASC'],
+    [Files, 'createdAt', 'ASC'],
+  ] as Order
 
   checkDataFilter = async (data: []) => {
     return await Promise.all(
@@ -436,10 +458,8 @@ export class incidentService {
       return { [Op.or]: item as WhereOptions }
     })
   }
-  prepareStatusObj = (data: IPrepareStatusObj) => {
-    const currentDate = new Date(
-      new Date().getTime() + AppConst.timeGMT * 60 * 60 * 1000,
-    )
+  prepareStatusObj = async (data: IPrepareStatusObj, id: string) => {
+    const currentDate = new Date()
     if (data.status === 'Зарегистрирован') {
       return {
         _data: {
@@ -450,22 +470,24 @@ export class incidentService {
       }
     }
     if (data.status === 'В работе') {
-      const sla =
-        new Date(data.timeSLA).getTime() + AppConst.timeGMT * 60 * 60 * 1000
+      const inc = (await IncidentRepos.findOne({
+        where: { id: id },
+      })) as IIncindent
+      const { timeInWork } = inc
+      const sla = new Date(data.timeSLA).getTime()
       const now = currentDate.getTime()
       const overdue = now > sla ? true : false
       return {
         _data: {
           ...data,
-          timeInWork: currentDate,
+          timeInWork: timeInWork ?? currentDate,
           overdue,
         },
         currentDate,
       }
     }
     if (data.status === 'Ожидание ЗИП/оборудования') {
-      const sla =
-        new Date(data.timeSLA).getTime() + AppConst.timeGMT * 60 * 60 * 1000
+      const sla = new Date(data.timeSLA).getTime()
       const now = currentDate.getTime()
       const overdue = now > sla ? true : false
       return {
@@ -477,14 +499,14 @@ export class incidentService {
       }
     }
     if (data.status === 'Решён') {
-      const sla =
-        new Date(data.timeSLA).getTime() + AppConst.timeGMT * 60 * 60 * 1000
+      const sla = new Date(data.timeSLA).getTime()
       const now = currentDate.getTime()
       const overdue = now > sla ? true : false
       return {
         _data: {
           ...data,
           overdue,
+          timeCloseCheck: currentDate,
         },
         currentDate,
       }
@@ -768,9 +790,7 @@ export class incidentService {
   }: INewINCFromMail) => {
     const numberINC = AppConst.numberINC
     const incident = AppConst.incident
-    const timeRegistration = new Date(
-      new Date().getTime() + AppConst.timeGMT * 60 * 60 * 1000,
-    )
+    const timeRegistration = new Date()
 
     const clientID = (await ClientsRepos.findOne({
       where: { client },
@@ -816,7 +836,7 @@ export class incidentService {
       numberINC,
       incident,
       clientINC,
-      timeSLA: timeRegistration,
+      timeSLA: new Date(timeRegistration.getTime() * 30 * 60 * 1000),
       timeRegistration,
       description: comment,
       methodsReuqest: 'email',
@@ -848,6 +868,8 @@ export class incidentService {
 
     const inc = (await IncidentRepos.findOne({
       where: { id: newINCdb.id },
+      include: this.includes,
+      order: this.orderINC,
     })) as IIncindent
 
     return inc
@@ -856,7 +878,7 @@ export class incidentService {
     const {
       id_incStatus,
       clientINC,
-      timeSLA,
+      slaDiff,
       description,
       comment,
       methodsReuqest,
@@ -883,8 +905,12 @@ export class incidentService {
     try {
       const numberINC = AppConst.numberINC
       const incident = AppConst.incident
-      const timeRegistration = new Date(
-        new Date().getTime() + AppConst.timeGMT * 60 * 60 * 1000,
+      const timeRegistration = new Date()
+      const timeSLA = new Date(new Date().getTime() + slaDiff)
+      const timeZone = AppConst.timeGMT * 60 * 60 * 1000
+      const timeRegistrationForEmail = new Date(new Date().getTime() + timeZone)
+      const timeSLAForEmail = new Date(
+        new Date().getTime() + slaDiff + timeZone,
       )
 
       const status = (await IncidentStatusesRepos.findOne({
@@ -934,6 +960,7 @@ export class incidentService {
       const inc = (await IncidentRepos.findOne({
         where: { id: newINCdb.id },
         include: this.includes,
+        order: this.orderINC,
       })) as IIncindent
 
       const isStatusses = inc?.Contract.IncindentStatuses.map(
@@ -947,8 +974,8 @@ export class incidentService {
           incident,
           status: inc?.IncindentStatus.statusINC ?? '',
           clientINC,
-          timeRegistration: convertDateToString(timeRegistration) ?? '',
-          timeSLA,
+          timeRegistration: convertDateToString(timeRegistrationForEmail) ?? '',
+          timeSLA: convertDateToString(timeSLAForEmail) ?? '',
           client: inc?.Client?.client ?? '',
           legalName: inc?.Client?.legalName ?? '',
           object: inc?.Object?.object ?? '',
@@ -974,6 +1001,7 @@ export class incidentService {
         const incs = await IncidentRepos.findAll({
           where: { createdAt: { [Op.gt]: _endDate } },
           include: this.Includes,
+          order: this.orderINC,
         })
         const count = await IncidentRepos.count({
           where: { createdAt: { [Op.gt]: _endDate } },
@@ -986,6 +1014,7 @@ export class incidentService {
         const incs = await IncidentRepos.findAll({
           where: { active: true },
           include: this.includes,
+          order: this.orderINC,
         })
         const count = incs.length
         res.status(200).json({ incs, count })
@@ -1013,7 +1042,7 @@ export class incidentService {
     }
   }
   getAllINC = (_req: Request, res: Response) => {
-    IncidentRepos.findAll({ include: this.includes })
+    IncidentRepos.findAll({ include: this.includes, order: this.orderINC })
       .then(item => res.status(200).json(item))
       .catch(err => res.status(500).json({ error: ['db error: ', err.status] }))
   }
@@ -1022,6 +1051,7 @@ export class incidentService {
       const incs = await IncidentRepos.findAll({
         where: { active: true },
         include: this.includes,
+        order: this.orderINC,
       })
       const count = incs.length
       res.status(200).json({ incs, count })
@@ -1041,6 +1071,7 @@ export class incidentService {
     const incs = (await IncidentRepos.findAll({
       where: { active: true },
       include: this.includes,
+      order: this.orderINC,
     })) as IIncindent[]
     const statusList = [
       ...new Set(incs.map(item => item.IncindentStatus.statusINC)),
@@ -1139,10 +1170,11 @@ export class incidentService {
   getINCsByDate = async (_req: Request, res: Response) => {
     try {
       const { endDate } = _req.query
-      const incs = await IncidentRepos.findAll({
+      const incs = (await IncidentRepos.findAll({
         where: { createdAt: { [Op.gt]: endDate } },
         include: this.Includes,
-      })
+        order: this.orderINC,
+      })) as Incindent[]
       res.status(200).json({ incs, count: incs.length })
     } catch (err) {
       res.status(500).json({ error: ['db error', err as Error] })
@@ -1157,6 +1189,7 @@ export class incidentService {
       const incs = await IncidentRepos.findAll({
         where: { active: true },
         include: this.includes,
+        order: this.orderINC,
       })
       res.status(200).json(incs)
     } catch (err) {
@@ -1169,7 +1202,10 @@ export class incidentService {
       await IncidentRepos.destroy({
         where: { id: selectedINCs },
       })
-      const incs = await IncidentRepos.findAll({ include: this.includes })
+      const incs = await IncidentRepos.findAll({
+        include: this.includes,
+        order: this.orderINC,
+      })
       res.status(200).json(incs)
     } catch (err) {
       res.status(500).json({ error: ['db error', err as Error] })
@@ -1184,6 +1220,7 @@ export class incidentService {
       const incs = await IncidentRepos.findAll({
         where: { active: true },
         include: this.includes,
+        order: this.orderINC,
       })
       res.status(200).json(incs)
     } catch (err) {
@@ -1202,11 +1239,13 @@ export class incidentService {
         })
       }
       if (logs.length > 0) {
-        await IncidentLogsRepos.bulkCreate(logs)
+        const log = { ...logs, time: new Date() }
+        await IncidentLogsRepos.bulkCreate(log)
       }
       const incs = await IncidentRepos.findAll({
         where: { createdAt: { [Op.gt]: endDate } },
         include: this.Includes,
+        order: this.orderINC,
       })
 
       res.status(200).json({ incs })
@@ -1218,12 +1257,14 @@ export class incidentService {
     const { logs, endDate } = _req.body
     try {
       if (logs.length > 0) {
-        await IncidentLogsRepos.bulkCreate(logs)
+        const log = { ...logs, time: new Date() }
+        await IncidentLogsRepos.bulkCreate(log)
       }
       if (endDate === 0) {
         const incs = await IncidentRepos.findAll({
           where: { active: true },
           include: this.includes,
+          order: this.orderINC,
         })
         const count = incs.length
         res.status(200).json({ incs, count })
@@ -1231,6 +1272,7 @@ export class incidentService {
       const incs = await IncidentRepos.findAll({
         where: { createdAt: { [Op.gt]: endDate } },
         include: this.Includes,
+        order: this.orderINC,
       })
 
       res.status(200).json({ incs, count: incs.length })
@@ -1251,12 +1293,9 @@ export class incidentService {
             'Ошибка с назначением исполнителя! Попробуйте назначить исполнителя заново или обратитесь к администратору.',
         })
       }
-      const currentDate = new Date(
-        new Date().getTime() + AppConst.timeGMT * 60 * 60 * 1000,
-      )
       await IncidentLogsRepos.create({
         id_incLog: id,
-        time: currentDate,
+        time: new Date(),
         log: `${AppConst.ActionComment.changeExecutor.first}${incident}${AppConst.ActionComment.changeExecutor.second}${executor}`,
         id_incLogUser: userID,
       })
@@ -1279,12 +1318,9 @@ export class incidentService {
             'Ошибка с назначением ответственного! Попробуйте назначить ответственного заново или обратитесь к администратору.',
         })
       }
-      const currentDate = new Date(
-        new Date().getTime() + AppConst.timeGMT * 60 * 60 * 1000,
-      )
       await IncidentLogsRepos.create({
         id_incLog: id,
-        time: currentDate,
+        time: new Date(),
         log: `${AppConst.ActionComment.changeResponsible.first}${incident}${AppConst.ActionComment.changeResponsible.second}${responsible}`,
         id_incLogUser: userID,
       })
@@ -1296,7 +1332,7 @@ export class incidentService {
   changeStatus = async (_req: Request, res: Response) => {
     const { id, log, ...data } = _req.body
     try {
-      const obj = this.prepareStatusObj(data)
+      const obj = await this.prepareStatusObj(data, id)
       const isUpdate = await IncidentRepos.update(id, obj._data)
       if (isUpdate && isUpdate[0] <= 0) {
         return res.status(403).json({
@@ -1304,24 +1340,30 @@ export class incidentService {
             'Ошибка с изменением статуса! Попробуйте изменить статус заново или обратитесь к администратору.',
         })
       }
-      await IncidentLogsRepos.create(log.log)
+      const _log = log.log
+      const logs = { ..._log, time: new Date() }
+
+      await IncidentLogsRepos.create(logs)
       const inc = (await IncidentRepos.findOne({
         where: { id },
         include: this.includes,
+        order: this.orderINC,
       })) as IIncindent
 
       const isStatusses = inc.Contract.IncindentStatuses.filter(
         (item: IIncindentStatuses) => item.id === data.id_incStatus,
       ).filter((item: IIncindentStatuses) => item)
-
+      const timeZone = AppConst.timeGMT * 60 * 60 * 1000
+      const timeChangeStatus = new Date(new Date().getTime() + timeZone)
+      const timeSLA = new Date(Date.parse(inc.timeSLA) + timeZone)
       if (isStatusses && isStatusses.length) {
         await mailerChangeStatus({
           mailTo: inc.Contract.notificationEmail ?? '',
           incident: inc.incident,
           status: data.status,
           clientINC: inc.clientINC,
-          timeChangeStatus: convertDateToString(obj.currentDate) ?? '',
-          timeSLA: inc.timeSLA,
+          timeChangeStatus: convertDateToString(timeChangeStatus) ?? '',
+          timeSLA: convertDateToString(timeSLA) ?? '',
           client: inc.Client.client ?? '',
           legalName: inc.Client.legalName ?? '',
           object: inc.Object.object ?? '',
@@ -1362,6 +1404,7 @@ export class incidentService {
         where: { active: true },
         // include: { all: true },
         include: this.includes,
+        order: this.orderINC,
       })
       res.status(200).json(incs)
     } catch (err) {
@@ -1376,6 +1419,7 @@ export class incidentService {
         where: { active: true },
         // include: { all: true },
         include: this.includes,
+        order: this.orderINC,
       })
       res.status(200).json(incs)
     } catch (err) {
@@ -1390,6 +1434,7 @@ export class incidentService {
         where: { active: true },
         // include: { all: true },
         include: this.includes,
+        order: this.orderINC,
       })
       res.status(200).json({ id, comment })
     } catch (err) {
@@ -1400,6 +1445,8 @@ export class incidentService {
     try {
       const incs = (await IncidentRepos.findAll({
         where: { active: true },
+        include: this.includes,
+        order: this.orderINC,
       })) as IIncindent[]
       const timeSLA = incs.map(item => {
         return { id: item.id, timeSLA: item.timeSLA }
@@ -1417,6 +1464,8 @@ export class incidentService {
       })
       const incs = await IncidentRepos.findAll({
         where: { active: true },
+        include: this.includes,
+        order: this.orderINC,
       })
       res.status(200).json(incs)
     } catch (err) {
@@ -1425,13 +1474,17 @@ export class incidentService {
   }
 
   getAllINCLogs = (_req: Request, res: Response) => {
-    IncidentLogsRepos.findAll({ include: this.incLogs })
+    IncidentLogsRepos.findAll({
+      include: this.incLogs,
+      order: [['time', 'desc']] as Order,
+    })
       .then(item => res.status(200).json(item))
       .catch(err => res.status(500).json({ error: ['db error', err.status] }))
   }
   getINCLogs = (_req: Request, res: Response) => {
     IncidentLogsRepos.findAll({
       where: { active: true },
+      order: [['time', 'desc']] as Order,
       include: this.incLogs,
     })
       .then(logs => {

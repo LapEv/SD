@@ -37,11 +37,11 @@ export const NewOLA = memo(
 
       function changeData({ list }: AddValuesProps) {
         newOLA({
-          ola: list[0].value,
-          days: list[1].value,
-          time: list[3].value,
-          timeStart: list[4].value,
-          timeEnd: list[5].value,
+          ola: list[0].value as string,
+          days: list[1].value as number,
+          time: list[3].value as string,
+          timeStart: list[4].value as string,
+          timeEnd: list[5].value as string,
           id_typeOfWork: selectedType.id,
         })
         handleModal(false)

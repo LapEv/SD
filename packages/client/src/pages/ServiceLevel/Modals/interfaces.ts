@@ -8,7 +8,7 @@ export interface AddValuesProps {
   list: {
     name: string
     label: string
-    value: string
+    value: string | number
     validation: object
     type: string
     required: boolean
@@ -19,7 +19,7 @@ export interface AddValuesPropsSLA {
   listAddSLA: {
     name: string
     label: string
-    value: string
+    value: string | number
     validation: object
     type: string
     required: boolean

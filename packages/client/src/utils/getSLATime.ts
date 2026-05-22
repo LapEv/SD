@@ -1,5 +1,7 @@
+import { convertTimeStringToMM, getDateTimeofSLA } from './convertDate'
+
 interface IGetTime {
-  days: string
+  days: number
   time: string
   timeStart: string
   timeEnd: string
@@ -17,39 +19,53 @@ export const getSLATime = ({
   timeRegistration
     ? now.setTime(now.getTime() + now.getTimezoneOffset() * 60 * 1000)
     : null
-  const nowDateTime = now.toISOString().split('T')[0]
-  const DateTimeStart = new Date(nowDateTime + 'T' + timeStart)
-  const DateTimeEnd = new Date(nowDateTime + 'T' + timeEnd)
-  const newTime = time.split(':')
-  const secondsOffset = Number(newTime[2]) ? 1000 * Number(newTime[2]) : 0
-  const minutesOffset = Number(newTime[1]) ? 1000 * 60 * Number(newTime[1]) : 0
-  const hoursOffset = Number(newTime[0])
-    ? 1000 * 60 * 60 * Number(newTime[0])
-    : 0
-  const timeOffsetMM = hoursOffset + minutesOffset + secondsOffset
-  const dayTS = 1000 * 60 * 60 * 24
-  const daysOffset = Number(days) * dayTS
-  const slaTime = now.getTime() + timeOffsetMM + daysOffset
-  const startTime = DateTimeStart.getTime()
-  const endTime = DateTimeEnd.getTime()
-  const diffWorkTime = endTime - startTime
-
-  if (diffWorkTime === 0) {
-    now.setTime(slaTime)
-    now.setDate(now.getDate())
-    return now
+  const day_mm = 24 * 60 * 60 * 1000
+  const days_mm = days * 24 * 60 * 60 * 1000
+  const time_mm = convertTimeStringToMM(time)
+  const timeStart_mm = convertTimeStringToMM(timeStart)
+  const timeEnd_mm = convertTimeStringToMM(timeEnd)
+  const diffWorkTime =
+    timeEnd_mm - timeStart_mm === 0 ? days_mm : timeEnd_mm - timeStart_mm
+  const now_mm = new Date().getTime()
+  const todayEnd_mm = getDateTimeofSLA(
+    timeEnd_mm > 0 ? timeEnd_mm : convertTimeStringToMM('23:59:59'),
+  )
+  const diffWorkTimeToday = todayEnd_mm - now_mm > 0 ? todayEnd_mm - now_mm : 0
+  const inDay = time_mm / diffWorkTimeToday
+  const slaTS = new Date()
+  if (time_mm === 0) {
+    if (days_mm > 0) {
+      const slaTime = now_mm + days_mm
+      slaTS.setTime(slaTime)
+      slaTS.setDate(slaTS.getDate())
+      return { slaTS, slaDiff: days_mm }
+    }
+    if (days_mm <= 0) {
+      slaTS.setTime(now_mm)
+      slaTS.setDate(slaTS.getDate())
+      return { slaTS, slaDiff: 0 }
+    }
   }
-
-  const diff = now.getTime() + timeOffsetMM - endTime
-  if (diff > 0) {
-    const daysNumbers = diff > 0 ? Number(days) + 1 : Number(days)
-    DateTimeStart.setDate(DateTimeStart.getDate() + daysNumbers)
-    DateTimeStart.setTime(
-      DateTimeStart.getTime() + timeOffsetMM - (endTime - now.getTime()),
-    )
-    return DateTimeStart
+  if (inDay <= 1 && diffWorkTimeToday > 0) {
+    const slaTime = now_mm + time_mm + days_mm
+    slaTS.setTime(slaTime)
+    slaTS.setDate(slaTS.getDate())
+    return { slaTS, slaDiff: slaTime - now_mm }
   }
-  now.setTime(slaTime)
-  now.setDate(now.getDate() + Number(days))
-  return now
+  const nextDayStart = getDateTimeofSLA(timeStart_mm) + day_mm
+  if (inDay <= 1 && diffWorkTimeToday === 0) {
+    const slaTime = nextDayStart + time_mm + days_mm
+    slaTS.setTime(slaTime)
+    slaTS.setDate(slaTS.getDate())
+    return { slaTS, slaDiff: slaTime - now_mm }
+  }
+  const remainderOfToday = time_mm - diffWorkTimeToday
+  const diff =
+    Math.floor(remainderOfToday / diffWorkTime) * day_mm +
+    (remainderOfToday % diffWorkTime) +
+    days_mm
+  const slaTime = nextDayStart + diff
+  slaTS.setTime(slaTime)
+  slaTS.setDate(slaTS.getDate())
+  return { slaTS, slaDiff: slaTime - now_mm }
 }

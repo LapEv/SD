@@ -1,4 +1,4 @@
-import { convertDateToStringFromDBT } from 'utils/convertDate'
+import { convertTSToCurrentTZ } from 'utils/convertDate'
 import { IDataINC } from '../../interfaces'
 import { CellINC } from './CellINC'
 
@@ -7,19 +7,19 @@ export const TimeData = ({ newINC }: IDataINC) => {
     <>
       <CellINC
         label={'Регистрация: '}
-        value={convertDateToStringFromDBT(newINC?.timeRegistration)}
+        value={convertTSToCurrentTZ(newINC?.timeRegistration)}
       />
       <CellINC
         label={'В работу: '}
-        value={convertDateToStringFromDBT(newINC?.timeInWork)}
+        value={convertTSToCurrentTZ(newINC?.timeInWork)}
       />
       <CellINC
         label={'Решён: '}
-        value={convertDateToStringFromDBT(newINC?.timeCloseCheck)}
+        value={convertTSToCurrentTZ(newINC?.timeCloseCheck)}
       />
       <CellINC
         label={'Закрытие: '}
-        value={convertDateToStringFromDBT(newINC?.timeClose)}
+        value={convertTSToCurrentTZ(newINC?.timeClose)}
       />
     </>
   )

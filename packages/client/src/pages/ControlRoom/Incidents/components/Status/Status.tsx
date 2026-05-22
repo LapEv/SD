@@ -31,10 +31,7 @@ export const Status = memo(
         item => item.id === status.id,
       ) as INCStatuses
       if (oldStatus.stateNumber === newStatus.stateNumber) return
-      const currentDate = new Date(
-        new Date().getTime() - new Date().getTimezoneOffset() * 60 * 1000,
-      ).toISOString()
-
+      const currentDate = new Date().toISOString()
       const log = {
         User: { id: user.id!, shortName: user.shortName! },
         log: {
@@ -220,9 +217,7 @@ export const Status = memo(
         })
         return
       }
-      const currentDate = new Date(
-        new Date().getTime() - new Date().getTimezoneOffset() * 60 * 1000,
-      ).toISOString()
+      const currentDate = new Date().toISOString()
       const log = {
         User: { id: user.id!, shortName: user.shortName! },
         log: {

@@ -1,7 +1,7 @@
 import { TableCell } from '@mui/material'
 import { ICells } from '../interfaces'
 import { Indicator } from './Indicator/Indicator'
-import { convertTimeStampToString } from 'utils/convertDate'
+import { convertTSToCurrentTZ } from 'utils/convertDate'
 import { Status } from './Status/Status'
 import { Executor } from './Executor/Executor'
 import { Responsible } from './Responsible/Responsible'
@@ -24,6 +24,7 @@ export const Cells = ({
           timeReg={row.timeRegistration}
           timeCloseCheck={row.timeCloseCheck}
           status={row.status}
+          inc={row.incident}
         />
       </TableCell>
     )
@@ -110,7 +111,7 @@ export const Cells = ({
       padding="normal"
       width={width}
       sx={{ width: width, maxWidth: width, minWidth: minWidth }}>
-      {type === 'dateTime' ? convertTimeStampToString(value) : value}
+      {type === 'dateTime' ? convertTSToCurrentTZ(value) : value}
     </TableCell>
   )
 }

@@ -44,10 +44,10 @@ export const ContractData = ({ newINC, setNewINC }: IEditDataINC) => {
       timeStart,
       timeRegistration: newINC.timeRegistration,
     })
-    setDateValue(dayjs(timeSLA))
+    setDateValue(dayjs(timeSLA.slaTS))
     setNewINC({
       ...newINC,
-      timeSLA: timeSLA.toISOString(),
+      timeSLA: timeSLA.slaTS.toISOString(),
       sla: label,
       id_incSLA: id,
     })

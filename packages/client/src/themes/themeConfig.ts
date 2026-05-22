@@ -1231,7 +1231,7 @@ export const ThemeConfig = ({
               borderRadius: 5,
               padding: fontSize === 'small' ? '6px' : '10px',
               overflowY: 'auto',
-              maxHeight: 100,
+              maxHeight: 140,
               marginTop: fontSize === 'small' ? '6px' : '10px',
               marginLeft: 5,
             },

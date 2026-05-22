@@ -26,7 +26,6 @@ import { useAuth } from 'hooks/auth/useAuth'
 import { AddValuesProps, ChooseModalProps, methodsReuqest } from '../interfaces'
 import { BoxModal } from 'components/MUI'
 import { useTableINC } from 'hooks/tableINC/useTableINC'
-import { INCStatuses } from 'store/slices/incidents/interfaces'
 
 export const NewIncident = memo(
   React.forwardRef<unknown, ChooseModalProps>(
@@ -50,6 +49,7 @@ export const NewIncident = memo(
       const [selectedObject, setSelectedObject] =
         useState<Options>(emptyOptionsDD)
       const [dateValue, setDateValue] = useState<string | Dayjs>(dayjs())
+      const [slaDiff, setSLADiff] = useState<number>(0)
       const [slaList, setSLAList] = useState<Options[]>([])
       const [selectedSLA, setSelectedSLA] = useState<Options>(emptyOptionsDD)
       const [typeOfWorkList, setTypeOfWorkList] = useState<Options[]>([])
@@ -80,7 +80,7 @@ export const NewIncident = memo(
       })
 
       function changeData({ list }: AddValuesProps) {
-        const id_incStatus = incStatuses.find((item: INCStatuses) =>
+        const id_incStatus = incStatuses.find(item =>
           item.statusINC.includes('Зарегистрирован'),
         )?.id as string
 
@@ -90,7 +90,7 @@ export const NewIncident = memo(
           objectID: selectedObject.id,
           SLAID: selectedSLA.id,
           typeOfWorkID: selectedTypeOfWork.id,
-          timeSLA: dayjs(dateValue).format('YYYY-MM-DD HH:mm:ss.000Z[Z]'),
+          slaDiff,
           id_incStatus,
           clientINC: list[10].value,
           responsibleID: user.id as string,
@@ -112,8 +112,16 @@ export const NewIncident = memo(
         setContractList([])
         if (!clients.length) {
           getClients()
+          getContracts()
+          getTypesOfWork()
+          return
         }
-        if (!contracts.length) {
+        const count = contracts.reduce(
+          (acc, item) =>
+            !acc.includes(item.id_client) ? [...acc, item.id_client] : acc,
+          [] as string[],
+        ).length
+        if (!contracts.length || count === 1) {
           getContracts()
         }
         if (!typesOfWork.length) {
@@ -122,10 +130,10 @@ export const NewIncident = memo(
       }, [])
 
       const setClient = (data: Options) => {
+        setSelectedClient(emptyOptionsDD)
+        setSelectedContract(emptyOptionsDD)
+        setContractList([])
         if (!data.id) {
-          setSelectedClient(emptyOptionsDD)
-          setSelectedContract(emptyOptionsDD)
-          setContractList([])
           return
         }
         setSelectedClient(data)
@@ -230,15 +238,14 @@ export const NewIncident = memo(
           label: getTypeOfWork?.typeOfWork as string,
           id: getTypeOfWork?.id as string,
         })
-        const timeSLA = getSLATime({ days, time, timeEnd, timeStart })
-        // const newdate = dayjs()
-        //   .set('date', timeSLA.getDate())
-        //   .set('month', timeSLA.getMonth())
-        //   .set('year', timeSLA.getFullYear())
-        //   .set('hour', timeSLA.getHours())
-        //   .set('minute', timeSLA.getMinutes())
-        //   .set('second', timeSLA.getSeconds())
-        setDateValue(dayjs(timeSLA))
+        const { slaTS, slaDiff } = getSLATime({
+          days,
+          time,
+          timeEnd,
+          timeStart,
+        })
+        setDateValue(dayjs(slaTS))
+        setSLADiff(slaDiff)
       }
 
       const setEquimpent = (data: Options) => {

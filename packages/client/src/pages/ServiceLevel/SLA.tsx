@@ -84,7 +84,7 @@ export const SLAPage = memo(
       if (sla) {
         changeSLA({
           sla: list[0].value as string,
-          days: list[1].value as string,
+          days: list[1].value as number,
           time: list[2].value as string,
           timeStart: list[3].value as string,
           timeEnd: list[4].value as string,
@@ -95,7 +95,7 @@ export const SLAPage = memo(
       if (ola) {
         changeOLA({
           ola: list[0].value as string,
-          days: list[1].value as string,
+          days: list[1].value as number,
           time: list[2].value as string,
           timeStart: list[3].value as string,
           timeEnd: list[4].value as string,

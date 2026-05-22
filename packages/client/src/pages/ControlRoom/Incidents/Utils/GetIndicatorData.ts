@@ -8,16 +8,11 @@ export const GetIndicatorData = ({
   timeCloseCheck,
   status,
 }: IIndicatorCell): AnswerIndicatorData => {
-  const now = new Date().getTime()
-  const sla =
-    Date.parse(timeSLA) + new Date(timeSLA).getTimezoneOffset() * 60 * 1000
-  const reg =
-    Date.parse(timeReg) + new Date(timeReg).getTimezoneOffset() * 60 * 1000
-
+  const now = Date.parse(new Date().toISOString())
+  const sla = Date.parse(timeSLA)
+  const reg = Date.parse(timeReg)
   if (timeCloseCheck && (status === 'Решён' || status === 'Закрыт')) {
-    const close =
-      Date.parse(timeCloseCheck) +
-      new Date(timeCloseCheck).getTimezoneOffset() * 60 * 1000
+    const close = Date.parse(timeCloseCheck)
     const diff = sla - reg
     const closeDiff = sla - close
     const percent = 100 - (closeDiff * 100) / diff

@@ -97,7 +97,7 @@ export interface AddINC {
   objectID: string
   SLAID: string
   typeOfWorkID: string
-  timeSLA: string
+  slaDiff: number
   clientINC: string
   responsibleID: string
   equipmentId: string

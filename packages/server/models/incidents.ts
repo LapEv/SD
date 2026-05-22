@@ -95,6 +95,8 @@ export interface Incindent {
   applicant: string
   applicantContacts: string
   overdue: boolean
+  createdAt: string
+  updatedAt: string
 }
 
 export const incident: ModelAttributes<Model, Incindent> = {
@@ -119,23 +121,23 @@ export const incident: ModelAttributes<Model, Incindent> = {
     allowNull: true,
   },
   timeRegistration: {
-    type: DataType.DATE,
+    type: 'timestamp without time zone',
     allowNull: true,
   },
   timeInWork: {
-    type: DataType.DATE,
+    type: 'timestamp without time zone',
     allowNull: true,
   },
   timeSLA: {
-    type: DataType.DATE,
-    allowNull: false,
+    type: 'timestamp without time zone',
+    allowNull: true,
   },
   timeCloseCheck: {
-    type: DataType.DATE,
+    type: 'timestamp without time zone',
     allowNull: true,
   },
   timeClose: {
-    type: DataType.DATE,
+    type: 'timestamp without time zone',
     allowNull: true,
   },
   description: {
@@ -207,6 +209,14 @@ export const incident: ModelAttributes<Model, Incindent> = {
     type: DataType.BOOLEAN,
     allowNull: false,
     defaultValue: false,
+  },
+  createdAt: {
+    type: 'timestamp without time zone',
+    allowNull: false,
+  },
+  updatedAt: {
+    type: 'timestamp without time zone',
+    allowNull: false,
   },
 }
 
@@ -316,6 +326,8 @@ export interface IncidentLogs {
   id: string
   time: string
   log: string
+  createdAt: string
+  updatedAt: string
 }
 
 export const incidentLogs: ModelAttributes<Model, IncidentLogs> = {
@@ -326,11 +338,19 @@ export const incidentLogs: ModelAttributes<Model, IncidentLogs> = {
     primaryKey: true,
   },
   time: {
-    type: DataType.DATE,
+    type: 'timestamp without time zone',
     allowNull: false,
   },
   log: {
     type: DataType.STRING(1024),
+    allowNull: false,
+  },
+  createdAt: {
+    type: 'timestamp without time zone',
+    allowNull: false,
+  },
+  updatedAt: {
+    type: 'timestamp without time zone',
     allowNull: false,
   },
 }

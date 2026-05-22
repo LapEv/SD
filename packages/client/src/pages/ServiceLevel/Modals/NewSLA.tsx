@@ -39,11 +39,11 @@ export const NewSLA = memo(
 
       function changeData({ listAddSLA }: AddValuesPropsSLA) {
         newSLA({
-          sla: listAddSLA[0].value,
-          days: listAddSLA[1].value,
-          time: listAddSLA[2].value,
-          timeStart: listAddSLA[3].value,
-          timeEnd: listAddSLA[4].value,
+          sla: listAddSLA[0].value as string,
+          days: listAddSLA[1].value as number,
+          time: listAddSLA[2].value as string,
+          timeStart: listAddSLA[3].value as string,
+          timeEnd: listAddSLA[4].value as string,
           id_typeOfWork: selectedType.id,
         })
         handleModal(false)
