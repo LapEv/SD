@@ -618,3 +618,29 @@ export const changeTypesCompletedWork = createAsyncThunk(
     }
   },
 )
+
+export const checkForCloseINC = createAsyncThunk(
+  'incidents/checkForCloseINC',
+  async (_, thunkAPI) => {
+    try {
+      const { data } = await authhost.get(ApiEndPoints.INC.checkForCloseINC)
+      return {
+        data,
+        message: {
+          text: 'Автозакртыие инцидентов по истечению срока завершена!',
+          type: 'success',
+        },
+      }
+    } catch (error) {
+      if (axios.isAxiosError<ValidationError, Record<string, unknown>>(error)) {
+        return thunkAPI.rejectWithValue(
+          `Не удалось закрыть инциденты по истечениб срока!: \n${
+            error.response?.data.message ?? error.response?.data
+          }`,
+        )
+      } else {
+        console.error(error)
+      }
+    }
+  },
+)

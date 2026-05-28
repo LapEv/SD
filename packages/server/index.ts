@@ -2,15 +2,18 @@ import * as dotenv from 'dotenv'
 import cors from 'cors'
 import express, { Express } from 'express'
 import { createServer } from 'vite'
-import fileUpload from 'express-fileupload'
-// import { getEmails } from './Mailer/getMailer'
+import { dbConnect } from './db'
 import { apiRouter } from './routers/index.router'
 import { isDev, srcPath } from './data/app'
 import staticMiddleware from './middleware/static.middleware'
 import ssrMiddleware from './middleware/ssr.middleware'
+// import fileUpload from 'express-fileupload'
+const fileUpload = require('express-fileupload')
+// import { getEmails } from './Mailer/getMailer'
 import { getLastINC } from './utils/getLastINC'
-import { dbConnect } from './db'
 // import { checkTemplate } from './Mailer/checkTemplate'
+// import cron from 'node-cron'
+// import { checkForCloseINC } from './utils/checkForCloseINC'
 
 async function init() {
   await dbConnect()
@@ -23,9 +26,7 @@ async function init() {
         fileSize: 200 * 1024 * 1024 * 1024, //20MB max file(s) size
       },
       tempFileDir: '/Files/',
-      /*  eslint-disable @typescript-eslint/no-explicit-any */
-    }) as any,
-    /* eslint-enable @typescript-eslint/no-explicit-any */
+    }),
   )
 
   app.use(express.json({ limit: '50mb' }))

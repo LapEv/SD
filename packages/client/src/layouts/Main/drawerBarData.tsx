@@ -15,6 +15,7 @@ import AddCardIcon from '@mui/icons-material/AddCard'
 import AssignmentIcon from '@mui/icons-material/Assignment'
 import HelpCenterIcon from '@mui/icons-material/HelpCenter'
 import EngineeringIcon from '@mui/icons-material/Engineering'
+import AdminPanelSettingsOutlinedIcon from '@mui/icons-material/AdminPanelSettingsOutlined'
 
 export const menuData = [
   {
@@ -63,6 +64,12 @@ export const menuData = [
     text: 'Профиль',
     icon: <Profile />,
     to: `/${Routes.Profile}`,
+    type: 'component',
+  },
+  {
+    text: 'Система',
+    icon: <AdminPanelSettingsOutlinedIcon />,
+    to: `/${Routes.System}`,
     type: 'component',
   },
 ]
@@ -120,6 +127,12 @@ export const menuDataMainPage = [
     text: 'Профиль',
     icon: <Profile />,
     to: `/${Routes.Profile}`,
+    type: 'component',
+  },
+  {
+    text: 'Система',
+    icon: <AdminPanelSettingsOutlinedIcon />,
+    to: `/${Routes.System}`,
     type: 'component',
   },
 ]

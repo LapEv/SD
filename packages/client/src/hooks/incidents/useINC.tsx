@@ -26,6 +26,7 @@ import {
   changeStatusSVR,
   changeINC,
   changeINCAddFiles,
+  checkForCloseINC,
 } from 'api/incidents'
 import {
   setLoadingINC,
@@ -120,6 +121,9 @@ export function useIncidents(): [INCState, INCActions] {
       },
       setFiltered(data) {
         dispatch(setFiltered(data))
+      },
+      checkForCloseINC() {
+        dispatch(checkForCloseINC())
       },
     },
   ]

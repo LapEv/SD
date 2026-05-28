@@ -137,6 +137,14 @@ const App = memo(() => {
                 }
               />
               <Route
+                path={Paths.System}
+                element={
+                  <RequiredAuth>
+                    <Pages.System />
+                  </RequiredAuth>
+                }
+              />
+              <Route
                 path={Paths.Classifier}
                 element={
                   <RequiredAuth>

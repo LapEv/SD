@@ -13,3 +13,10 @@ export {
 export { sla, ola } from './sla'
 export { addresses, regions } from './adresses'
 export { objects } from './objects'
+export {
+  incident,
+  incindentStatuses,
+  typesOfWork,
+  typesCompletedWork,
+} from './incidents'
+export { files } from './files'

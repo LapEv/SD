@@ -238,5 +238,10 @@ export const incidentRouter = (apiRouter: Router) => {
     roleMiddleware(['ADMIN', 'SUPERADMIN']),
     service.changeTimeSLAs,
   )
+  router.get(
+    '/checkForCloseINC',
+    roleMiddleware(['ADMIN', 'SUPERADMIN']),
+    service.checkForCloseINC,
+  )
   apiRouter.use('/incidents', router)
 }

@@ -137,7 +137,8 @@ export const ApiEndPoints = {
     getTypesCompletedWork: 'incidents/getTypesCompletedWork',
     newTypeCompletedWork: 'incidents/newTypeCompletedWork',
     deleteTypesCompletedWork: 'incidents/deleteTypesCompletedWork',
-    changeTypesCompletedWork: 'incidents/changeTypesCompletedWork',
+    changeTypesCompletedWork: 'changeTypesCompletedWork',
+    checkForCloseINC: 'incidents/checkForCloseINC',
   },
   Files: {
     getFilesData: 'files/getFilesData',
@@ -147,6 +148,10 @@ export const ApiEndPoints = {
     uploadFiles: 'files/uploadFiles',
     uploadAvatars: 'files/uploadAvatars',
     deleteAvatar: 'files/deleteAvatar',
+  },
+  System: {
+    getSystem: 'system/getSystem',
+    setSystem: 'system/setSystem',
   },
 }
 

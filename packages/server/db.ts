@@ -38,6 +38,7 @@ import { throughModelTypMalfunctions } from './models/classifier'
 import { files } from './models/files'
 import dotenv from 'dotenv'
 import { isDev } from './data/app'
+import { system } from './models/system'
 
 dotenv.config({ path: '../../.env' })
 
@@ -50,7 +51,7 @@ const {
 } = process.env
 
 const sequelizeOptions: SequelizeOptions = {
-  host: isDev ? 'localhost' : POSTGRES_HOST, //db - для докера; localhost - для npm run dev:ssr
+  host: isDev ? 'localhost' : POSTGRES_HOST, //sbi-db - для докера; localhost - для npm run dev:ssr
   port: Number(POSTGRES_PORT),
   username: POSTGRES_USER,
   password: POSTGRES_PASSWORD,
@@ -61,6 +62,7 @@ const sequelizeOptions: SequelizeOptions = {
 
 export const sequelize = new Sequelize(sequelizeOptions)
 
+export const System = sequelize.define('System', system, {})
 export const Roles = sequelize.define('Roles', roles, {})
 export const RolesGroup = sequelize.define('RolesGroup', rolesGroup, {})
 export const ThroughModelRolesGroup = sequelize.define(
@@ -461,6 +463,7 @@ export const TypesCompletedWorkRepos = new Repository(
 export const IncidentLogsRepos = new Repository(IncidentLogs as ModelCtor)
 
 export const FilesRepos = new Repository(Files as ModelCtor)
+export const SystemRepos = new Repository(System as ModelCtor)
 
 export async function dbConnect() {
   try {

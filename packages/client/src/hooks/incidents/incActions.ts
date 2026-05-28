@@ -42,4 +42,5 @@ export interface INCActions {
   setLoadingINC: (data: boolean) => void
   setFilteredLength: (data: number) => void
   setFiltered: (data: INC[]) => void
+  checkForCloseINC: () => void
 }

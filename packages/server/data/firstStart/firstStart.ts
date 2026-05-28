@@ -16,6 +16,7 @@ import {
   ObjectsRepos,
   RegionsRepos,
   SLARepos,
+  SystemRepos,
   ThroughModelRolesGroupRepos,
   ThroughModelTypMalfunctionsRepos,
   TypesCompletedWorkRepos,
@@ -54,6 +55,7 @@ import { ITypesOfWork } from '/models/incidents'
 import { IAddresses, IRegions } from '/models/adresses'
 import { IDepartment } from '/models/departments'
 import { RolesGroup, IRoles } from '/models/roles'
+import { systemStartData } from './system'
 
 export const firstStart = async () => {
   try {
@@ -82,9 +84,14 @@ export const firstStart = async () => {
     const incStatuses = await IncidentStatusesRepos.getAll()
     const typesOfWork = await TypesOfWorkRepos.getAll()
     const typesCompletedWork = await TypesCompletedWorkRepos.getAll()
+    const system = await SystemRepos.getAll()
     // const files = await FilesRepos.getAll()
 
     console.log('End Check for tables!!')
+    if (!system.length) {
+      await SystemRepos.bulkCreate(systemStartData)
+    }
+
     const deleteClients = false
     if (deleteClients) {
       console.log('Delete Clients')

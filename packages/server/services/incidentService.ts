@@ -54,6 +54,7 @@ import { getOrderINC } from '../utils/getOrder'
 import { getNewINC } from '../utils/getNewINC'
 import { checkTemplateFromSD } from '../Mailer/checkTemplate'
 import { IPrepareStatusObj } from './interfaces'
+import { checkForCloseINC } from '../utils/checkForCloseINC'
 
 export class incidentService {
   get Includes() {
@@ -511,9 +512,11 @@ export class incidentService {
         currentDate,
       }
     }
+    if (data.status === 'Зыкрыт') {
+      checkForCloseINC()
+    }
     return { _data: {}, currentDate }
   }
-
   newIncidentStatuses = async (_req: Request, res: Response) => {
     try {
       const incStatuses = (await IncidentStatusesRepos.findAll({
@@ -1491,5 +1494,14 @@ export class incidentService {
         res.status(200).json(logs)
       })
       .catch(err => res.status(500).json({ error: ['db error', err] }))
+  }
+  checkForCloseINC = async (_req: Request, res: Response) => {
+    try {
+      console.log('checkForCloseINC')
+      const result = await checkForCloseINC()
+      res.status(200).json({ result })
+    } catch (err) {
+      res.status(500).json({ error: ['db error', err as Error] })
+    }
   }
 }

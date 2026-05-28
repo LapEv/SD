@@ -1,5 +1,5 @@
 export const mailConst = {
-  ourMail: 'help@sb-i.ru',
+  ourMail: 'e_lap@mail.ru',
   mailMessages: {
     footer:
       'Данное сообщение отправлено автоматически, не надо на него отвечать.',
@@ -41,6 +41,7 @@ export const AppConst = {
   attrINC: 'INC',
   numberDigit: 9,
   startINC: 23221,
+  daysForClose: 30,
   ActionComment: {
     incidentRegistration: 'Зарегистрирован инцидент под номером ',
     changeExecutor: {
@@ -55,6 +56,7 @@ export const AppConst = {
       first: 'Для инцидента под номером ',
       second: ' изменен статус ',
     },
+    closeINC: `Инциденту автоматически присвоен статус "Закрыт" по истечению срока 30 дней.`,
   },
   Statuses: {
     registered: 'Зарегистрирован',

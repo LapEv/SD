@@ -8,6 +8,7 @@ export enum Routes {
   Incidents = 'Incidents',
   IncidentsConfirm = 'IncidentsConfirm',
   Warehouse = 'warehouse',
+  System = 'System',
   Classifier = 'classifier',
   ServiceLevel = 'servicelevel',
   Users = 'users',
