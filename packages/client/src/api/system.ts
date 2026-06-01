@@ -12,10 +12,10 @@ export const getSystem = createAsyncThunk(
   'system/getSystem',
   async (_, thunkAPI) => {
     try {
-      const { data } = await authhost.get<ISystem>(
+      const { data } = await authhost.get<ISystem[]>(
         ApiEndPoints.System.getSystem,
       )
-      return data
+      return data[0]
     } catch (error) {
       if (axios.isAxiosError<ValidationError, Record<string, unknown>>(error)) {
         return thunkAPI.rejectWithValue(
@@ -33,6 +33,7 @@ export const getSystem = createAsyncThunk(
 export const setSystem = createAsyncThunk(
   'system/setSystem',
   async (system: ISystem, thunkAPI) => {
+    console.log('system = ', system)
     try {
       const { data } = await authhost.post<ISystem>(
         ApiEndPoints.System.setSystem,

@@ -24,7 +24,7 @@ const initialState: SystemState = {
     },
     incident: {
       daysForClose: 30,
-      emailTechnicalSupport: 'help@sb-i.ru',
+      emailTechnicalSupport: '',
     },
   },
   isLoadingSystem: false,

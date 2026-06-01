@@ -44,6 +44,28 @@ export const GlobalStyle = () => {
               ? theme.colorTheme.colorDark
               : theme.colorTheme.colorLight,
         },
+        'input[type=number]::-webkit-inner-spin-button': {
+          WebkitAppearance: 'none',
+          // cursor: 'pointer',
+          // display: 'block',
+          // width: '8px',
+          // color:
+          //   theme.palette.mode === ThemeMode.light
+          //     ? theme.colorTheme.colorDark
+          //     : theme.colorTheme.colorLight,
+          // textAlign: 'center',
+          // position: 'relative',
+        },
+        'input[type=number]:hover::-webkit-inner-spin-button': {
+          // background:
+          //   "#eee url('https://i.sstatic.net/YYySO.png') no-repeat 50% 50%",
+          // width: 14,
+          // height: 14,
+          // padding: 4,
+          // position: 'relative',
+          // right: 4,
+          // borderRadius: 28,
+        },
       }}
     />
   )

@@ -6,13 +6,11 @@ import { Sections } from './Sections'
 import { useSystem } from 'hooks/system/useSystem'
 
 export const SystemPage = memo(() => {
-  const [{ system }, { getSystem }] = useSystem()
+  const [, { getSystem }] = useSystem()
 
   useEffect(() => {
     getSystem()
   }, [])
-
-  console.log('system = ', system)
 
   return (
     <Container component="main" maxWidth="md" className={'mainHeaderForPages'}>

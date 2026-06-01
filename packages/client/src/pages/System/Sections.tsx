@@ -3,8 +3,9 @@ import { MuiDiv } from 'components/MUI'
 import { ISections } from './interfaces'
 import { RotateButton } from 'components/Buttons'
 import { useState } from 'react'
+import { SystemData } from './SystemData'
 
-export const Sections = ({ label }: ISections) => {
+export const Sections = ({ label, id }: ISections) => {
   const [open, setOpen] = useState(false)
 
   const handleClick = () => {
@@ -24,7 +25,9 @@ export const Sections = ({ label }: ISections) => {
         className={'collapseList'}
         in={open}
         timeout="auto"
-        unmountOnExit></Collapse>
+        unmountOnExit>
+        <SystemData id={id} />
+      </Collapse>
     </MuiDiv>
   )
 }

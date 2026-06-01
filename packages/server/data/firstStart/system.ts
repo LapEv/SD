@@ -8,7 +8,7 @@ export const systemStartData = [
       emailSystem: '',
     },
     auth: {
-      passwordMinLengthname: 5,
+      passwordMinLength: 5,
       passwordMaxLength: 30,
     },
     additional: {

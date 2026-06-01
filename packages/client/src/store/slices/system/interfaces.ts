@@ -12,6 +12,18 @@ export interface ISystem {
   incident: IIncidentSystem
 }
 
+export interface ISystemValues {
+  list: {
+    name: string
+    label: string
+    value: string | ISystem | number
+    validation: object
+    disabled: boolean
+    type: string
+    required: boolean
+  }[]
+}
+
 export interface IGeneralSystem {
   name: string
   emailSystem: string

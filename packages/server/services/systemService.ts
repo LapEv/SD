@@ -8,18 +8,16 @@ export class systemService {
       .catch(err => res.status(500).json({ error: ['db error', err.status] }))
   }
   setSystem = async (_req: Request, res: Response) => {
-    const { data } = _req.body
     try {
-      const systemData = await SystemRepos.findAll({})
-      const id = systemData[0]
-      const isUpdate = await SystemRepos.update(id, { ...data })
+      const { id, ...newData } = _req.body
+      const isUpdate = await SystemRepos.update(id, { ...newData })
       if (isUpdate[0] <= 0) {
         return res.status(403).json({
           message:
             'Ошибка с изменением параметров системы! Попробуйте перезагрузить страницу и заново внести изменения. Или обратитесь к администратору.',
         })
       }
-      res.status(200).json({ data })
+      res.status(200).json(_req.body)
     } catch (err) {
       res.status(500).json({ error: ['db error', err as Error] })
     }

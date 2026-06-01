@@ -63,6 +63,20 @@ export const nameValidation = {
   },
 }
 
+export const nameValidationNoRequired = {
+  validate: (value: string) => {
+    if (!value.length) return true
+    if (!value.match('^[а-яА-Яa-zA-Z _-]+$')) {
+      return 'Только латиниские буквы или кирилицу, цифры, несколько символов'
+    }
+    if (!value.match('^[А-ЯA-Z]')) {
+      return 'Должно начинаться с заглавной буквы'
+    }
+
+    return true
+  },
+}
+
 export const lightTextValidation = {
   required: REQUIRED_FIELD,
   validate: (value: string) => {
@@ -391,6 +405,14 @@ export const checkCommentINCValidation = (text: string) => {
     return 'Превышен лимит в 1024 символа'
   }
   return ''
+}
+
+export const numberValidation = (value: string) => {
+  if (!value) return true
+  if (!value.match(`^[+]?[\\d]+$`)) {
+    return 'Только цифры!'
+  }
+  return true
 }
 
 export const phoneValidationEditINC = (value: string) => {

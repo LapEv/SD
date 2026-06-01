@@ -752,6 +752,12 @@ export const ThemeConfig = ({
               paddingRight: fontSize === 'small' ? '8px' : '16px',
               overflow: 'hidden',
             },
+            '&.systemSectionContainer': {
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              padding: 24,
+            },
           },
         },
       },
@@ -847,6 +853,9 @@ export const ThemeConfig = ({
                   ? `0px 3px 5px -1px rgba(0, 0, 0, 0.2), 0px 5px 8px 0px rgba(0, 0, 0, 0.14), 0px 1px 14px 0px rgba(0, 0, 0, 0.12)`
                   : `0px 3px 5px -1px rgba(255, 255, 255, 0.2), 0px 5px 8px 0px rgba(255, 255, 255, 0.14), 0px 1px 14px 0px rgba(255, 255, 255, 0.12)`,
               padding: '4px',
+              '& > div': {
+                height: fontSize === 'small' ? 35 : 60,
+              },
             },
             '&.appLoading': {
               width: '100%',
@@ -1412,6 +1421,25 @@ export const ThemeConfig = ({
             },
             '&.w100': {
               width: '100%',
+            },
+            '&.filledContainer': {
+              display: 'flex',
+              flexDirection: 'row',
+              alignItems: 'flex-end',
+              height: 30,
+              marginTop: fontSize === 'small' ? '5px' : '15px',
+            },
+            '&.arrowUpDownContainer': {
+              position: 'absolute',
+              right: 0,
+              display: 'flex',
+              flexDirection: 'column',
+              cursor: 'pointer',
+            },
+            '&.textFieldInputNumberBox': {
+              width: 90,
+              position: 'relative',
+              display: 'flex',
             },
           },
         },
