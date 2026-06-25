@@ -31,21 +31,6 @@ export const TableIncidents = memo(() => {
   const [, { setMessage }] = useMessage()
 
   useEffect(() => {
-    console.log('убрать из env почтовые настройки')
-    console.log('переделать в БД все time на without TZ')
-    console.log('создать столбец isSystem в IncidentLogs')
-    console.log('внести все параметры системы')
-    console.log('переписать файлы с сервака перед обновлением')
-    console.log(
-      'посмотреть чем отличается Admin от superAdmin? чтобы убрать Славу. Проверить все учетки, как они работают под своими группами',
-    )
-    console.log('автообновление инков и sla')
-    console.log('settingsStorage записывать в users')
-    console.log('Пройтись по any')
-
-    console.log('Color Pickker всё-таки')
-    console.log('template для колонок и фильтров')
-
     getFieldEngineers()
     getDispatchers()
     getIncidentStatuses()
@@ -65,7 +50,7 @@ export const TableIncidents = memo(() => {
       if (localToken === token) return
 
       if (category === 'incidents') {
-        const { notificationsINC } = settingsStorage
+        const { notificationsINC } = getInitialSettings()
         if (action === 'changeExecutor') {
           changeExecutorSocket(data)
           if (notificationsINC.changeExecutor) {

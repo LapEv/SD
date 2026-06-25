@@ -25,10 +25,7 @@ export const TimeInterval = ({
   }
 
   return (
-    <MenuItem
-      key={`${label}${value}`}
-      sx={{ pl: 4 }}
-      onClick={checkTimeIntervalINCs}>
+    <MenuItem sx={{ pl: 4 }} onClick={checkTimeIntervalINCs}>
       <ListItemIcon>
         {timeInterval === value && <Check fontSize="small" />}
       </ListItemIcon>

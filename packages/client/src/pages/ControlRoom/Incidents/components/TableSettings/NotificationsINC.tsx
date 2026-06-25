@@ -18,10 +18,7 @@ export const NotificationsINC = ({
 
   const value = notificationsINC[name as keyof typeof notificationsINC]
   return (
-    <MenuItem
-      key={`${label}${name}`}
-      sx={{ pl: 4 }}
-      onClick={changeNotificationINCData}>
+    <MenuItem sx={{ pl: 4 }} onClick={changeNotificationINCData}>
       <ListItemIcon>{value && <Check fontSize="small" />}</ListItemIcon>
       <ListItemText primary={label} />
     </MenuItem>

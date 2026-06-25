@@ -99,6 +99,7 @@ export const TableSettings = () => {
         <Collapse in={openTimeInterval} timeout="auto" unmountOnExit>
           {timeIntervalData.map(({ label, value }) => (
             <TimeInterval
+              key={`${label}${value}`}
               label={label}
               value={value}
               setSettingsMenuOpen={setSettingsMenuOpen}
@@ -113,6 +114,7 @@ export const TableSettings = () => {
         <Collapse in={openNotification} timeout="auto" unmountOnExit>
           {notificationINCLabel.map(({ label, name }) => (
             <NotificationsINC
+              key={`${label}${name}`}
               label={label}
               name={name}
               setSettingsMenuOpen={setSettingsMenuOpen}
