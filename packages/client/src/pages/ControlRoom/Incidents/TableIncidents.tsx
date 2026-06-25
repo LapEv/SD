@@ -5,33 +5,117 @@ import { useAuth } from 'hooks/auth/useAuth'
 import { INCHeader } from './INCHeader'
 import { INCBody } from './INCBody'
 import { useTableINC } from 'hooks/tableINC/useTableINC'
+import { getInitialSettings, GetEndDate } from 'pages/ControlRoom/Incidents'
 import { MuiDiv } from 'components/MUI'
-import { getInitialSettings } from './Utils/GetInitialSettings'
+import { io } from 'socket.io-client'
+import { baseURL } from 'api/config'
+import { useMessage } from 'hooks/message/useMessage'
 
 export const TableIncidents = memo(() => {
   const [
     ,
-    { getINCsByDate, getINC, getIncidentStatuses, getTypesCompletedWork },
+    {
+      getINCsByDate,
+      getINC,
+      getIncidentStatuses,
+      getTypesCompletedWork,
+      changeExecutorSocket,
+      changeResponsibleSocket,
+      changeStatusSocket,
+      newINCSocket,
+      newINCfromMailSocket,
+    },
   ] = useIncidents()
   const [{ dense }, { setSettings }] = useTableINC()
   const [, { getFieldEngineers, getDispatchers }] = useAuth()
+  const [, { setMessage }] = useMessage()
 
   useEffect(() => {
+    console.log('убрать из env почтовые настройки')
+    console.log('переделать в БД все time на without TZ')
+    console.log('создать столбец isSystem в IncidentLogs')
+    console.log('внести все параметры системы')
+    console.log('переписать файлы с сервака перед обновлением')
+    console.log(
+      'посмотреть чем отличается Admin от superAdmin? чтобы убрать Славу. Проверить все учетки, как они работают под своими группами',
+    )
+    console.log('автообновление инков и sla')
+    console.log('settingsStorage записывать в users')
+    console.log('Пройтись по any')
+
+    console.log('Color Pickker всё-таки')
+    console.log('template для колонок и фильтров')
+
     getFieldEngineers()
     getDispatchers()
     getIncidentStatuses()
     getTypesCompletedWork()
     const settingsStorage = getInitialSettings()
     setSettings(settingsStorage)
-    const currentDate = new Date()
-    const endDate = currentDate.setDate(
-      currentDate.getDate() - settingsStorage.timeInterval,
-    )
     if (settingsStorage.timeInterval === 0) {
       getINC()
-      return
+    } else {
+      const endDate = GetEndDate(settingsStorage)
+      getINCsByDate(new Date(endDate))
     }
-    getINCsByDate(new Date(endDate))
+
+    const socket = io(baseURL, { transports: ['websocket'] })
+    socket.on('server_SBI', ({ token, category, action, data }) => {
+      const localToken = localStorage.getItem('token')
+      if (localToken === token) return
+
+      if (category === 'incidents') {
+        const { notificationsINC } = settingsStorage
+        if (action === 'changeExecutor') {
+          changeExecutorSocket(data)
+          if (notificationsINC.changeExecutor) {
+            setMessage({
+              text: `Для инцидента ${data.incident} изменен исполнитель ${data.executor}`,
+              type: 'info',
+            })
+          }
+        }
+        if (action === 'changeResponsible') {
+          changeResponsibleSocket(data)
+          if (notificationsINC.changeResponsible) {
+            setMessage({
+              text: `Для инцидента ${data.incident} изменен ответственный ${data.responsible}`,
+              type: 'info',
+            })
+          }
+        }
+        if (action === 'changeStatus') {
+          changeStatusSocket(data)
+          if (notificationsINC.changeStatus) {
+            setMessage({
+              text: `Для инцидента ${data._incident} изменен статус ${data.status}`,
+              type: 'info',
+            })
+          }
+        }
+        if (action === 'newINC') {
+          newINCSocket(data)
+          if (notificationsINC.newINC) {
+            setMessage({
+              text: `Зарегистрирован новый инцидент ${data.incident}`,
+              type: 'info',
+            })
+          }
+        }
+        if (action === 'newINCfromMail') {
+          newINCfromMailSocket(data)
+          if (notificationsINC.newINCfromMail) {
+            setMessage({
+              text: `Зарегистрирован новый инцидент ${data.incident} с почтового сервера`,
+              type: 'info',
+            })
+          }
+        }
+      }
+    })
+    return () => {
+      socket.close()
+    }
   }, [])
 
   return (

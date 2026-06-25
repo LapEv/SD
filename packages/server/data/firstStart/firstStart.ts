@@ -55,7 +55,7 @@ import { ITypesOfWork } from '/models/incidents'
 import { IAddresses, IRegions } from '/models/adresses'
 import { IDepartment } from '/models/departments'
 import { RolesGroup, IRoles } from '/models/roles'
-import { systemStartData } from './system'
+import { systemStartData, systemUser } from './system'
 
 export const firstStart = async () => {
   try {
@@ -88,9 +88,6 @@ export const firstStart = async () => {
     // const files = await FilesRepos.getAll()
 
     console.log('End Check for tables!!')
-    if (!system.length) {
-      await SystemRepos.bulkCreate(systemStartData)
-    }
 
     const deleteClients = false
     if (deleteClients) {
@@ -416,6 +413,11 @@ export const firstStart = async () => {
       )
       await userRepos.bulkCreate(userData)
       console.log('Create Div, Dep, Users, UserStatusses completed!')
+    }
+
+    if (!system.length) {
+      await SystemRepos.bulkCreate(systemStartData)
+      await userRepos.create(systemUser)
     }
   } catch (error) {
     console.error('Unable to connect to the database: ', error)

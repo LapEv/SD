@@ -682,6 +682,22 @@ export const timeIntervalData = [
   { label: '- Все инциденты', value: 0 },
 ]
 
+export const notificationINCLabel = [
+  { label: '- Новый инцидент', name: 'newINC' },
+  { label: '- Новый инцидент с почтового сервера', name: 'newINCfromMail' },
+  { label: '- Новый статус', name: 'changeStatus' },
+  { label: '- Новый исполнитель', name: 'changeExecutor' },
+  { label: '- Новый ответственный', name: 'changeResponsible' },
+]
+
+export const notificationsDataINC = {
+  newINC: true,
+  newINCfromMail: true,
+  changeStatus: true,
+  changeExecutor: true,
+  changeResponsible: true,
+}
+
 export const ModalTitles = {
   newIncident: 'Новый инцидент',
   newRequest: 'Новый запрос',
@@ -803,6 +819,7 @@ export const SETTINGS_DEFAULT: Settings = {
       columnType: columnData[3].type,
     },
   ],
+  notificationsINC: notificationsDataINC,
 }
 
 export function getColumnOptions() {
@@ -1112,7 +1129,6 @@ export const emptyINC = {
 }
 
 export const logs = {
-  timeGMT: 3,
   actionComment: {
     incidentRegistration: 'Зарегистрирован инцидент под номером ',
     changeExecutor: {

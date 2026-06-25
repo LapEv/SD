@@ -48,14 +48,6 @@ export const include = [
 ]
 export class userService {
   setUser = async (_req: Request, res: Response) => {
-    const errValidation: Result = validationResult(_req)
-    if (!errValidation.isEmpty()) {
-      const errors = errValidation.array()
-      return res.status(400).json({
-        message: `${auth.notification.errorRegistration}: ${errors[0].msg}`,
-        errValidation,
-      })
-    }
     const id = _req.body.id ?? 0
     const { password, firstName, lastName, middleName } = _req.body
     const shortName = `${lastName} ${firstName.slice(0, 1)}.${middleName.slice(
@@ -87,14 +79,6 @@ export class userService {
     }
   }
   newUser = async (_req: Request, res: Response) => {
-    const errValidation: Result = validationResult(_req)
-    if (!errValidation.isEmpty()) {
-      const errors = errValidation.array()
-      return res.status(400).json({
-        message: `${auth.notification.errorRegistration}: ${errors[0].msg}`,
-        errValidation,
-      })
-    }
     const id = _req.body.id ?? 0
     const { password, firstName, lastName, middleName } = _req.body
     const shortName = `${lastName} ${firstName.slice(0, 1)}.${middleName.slice(
@@ -156,12 +140,12 @@ export class userService {
           user.RolesGroup.group === 'SUPERADMIN' ||
           user.RolesGroup.group === 'Dispatcher')
       ) {
-        // const service = new incidentService()
-        // const filterData = await service.getFilterListFunc()
+        const service = new incidentService()
+        const filterData = await service.getFilterListFunc()
         return res.json({
           token,
           user,
-          // filterData,
+          filterData,
         })
       }
 
@@ -218,7 +202,6 @@ export class userService {
         where: { id: id },
         include,
       })) as IUser
-
       if (
         user &&
         (user.RolesGroup.group === 'ADMIN' ||
@@ -233,7 +216,6 @@ export class userService {
           filterData,
         })
       }
-
       return res.json({
         token,
         user,

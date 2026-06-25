@@ -1,7 +1,8 @@
 import { mailConst } from '../../../data/const'
+import { checkOurMail } from '../../../Mailer/checkOurMail'
 import { MailDataChangeStatus } from '/Mailer/interface'
 
-export const htmlChangeStatus = ({
+export const htmlChangeStatus = async ({
   incident,
   status,
   clientINC,
@@ -83,9 +84,7 @@ export const htmlChangeStatus = ({
       <br>
       <br>
         Это письмо сформировано автоматически, отвечать на него не нужно. Если Вы получили это сообщение по ошибке,
-        пожалуйста, сообщите об этом на адрес ${
-          mailConst.ourMail
-        } и удалите это сообщение.
+        пожалуйста, сообщите об этом на адрес ${await checkOurMail()} и удалите это сообщение.
       </div>
     </div>
   </body>

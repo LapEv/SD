@@ -39,7 +39,7 @@ export const DrawerHeader: FC<DrawerHeaderProps> = memo(
               sx={{ color: 'black' }}
               component={RouterLink}
               to={`/`}>
-              SBI
+              SD
             </Link>
           )}
         </MuiDiv>

@@ -1,4 +1,8 @@
-import { INC_HeadCell, Settings } from 'pages/ControlRoom/Incidents/interfaces'
+import {
+  INC_HeadCell,
+  INotificationINCData,
+  Settings,
+} from 'pages/ControlRoom/Incidents/interfaces'
 import {
   IColumnOptions,
   IColumnX,
@@ -16,6 +20,7 @@ export interface TableINCActions {
   setColumnBorder: (data: boolean) => void
   setCellBorder: (data: boolean) => void
   setTimeInterval: (data: number) => void
+  setNotificationsINC: (data: INotificationINCData) => void
   setSelected: (data: string[]) => void
   setColumnOptions: (data: IColumnOptions[]) => void
   setColumnX: (data: IColumnX) => void

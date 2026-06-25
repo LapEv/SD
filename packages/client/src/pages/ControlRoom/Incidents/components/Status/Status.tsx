@@ -20,7 +20,7 @@ export const Status = memo(
       modalName: '',
     })
     const [{ user }] = useAuth()
-    const [{ incStatuses }, { changeStatus, checkForCloseINC }] = useIncidents()
+    const [{ incStatuses }, { changeStatus }] = useIncidents()
     const [status, setStatus] = useState<Options>({ label: value, id: '' })
 
     const setData = (data: Options) => {
@@ -173,9 +173,6 @@ export const Status = memo(
       }
       if (oldStatus.statusINC === 'Решён') {
         if (newStatus.statusINC === 'Закрыт') {
-          console.log('checkForCloseINC')
-
-          checkForCloseINC()
           setMessage({
             text: `Нельзя назначить статус "${newStatus.statusINC}"! Это может сделать либо Заказчик, либо закроется автоматически по истечению срока!`,
             type: 'warning',

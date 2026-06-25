@@ -1,8 +1,17 @@
-import { IncidentRepos, IncidentStatusesRepos } from '../db'
+import {
+  IncidentLogsRepos,
+  IncidentRepos,
+  IncidentStatusesRepos,
+  roleGroupRepos,
+  SystemRepos,
+  userRepos,
+} from '../../db'
 import { Op } from 'sequelize'
 import { IIncindentStatuses, Incindent } from '/models/incidents'
-import { AppConst } from '../data/const'
+import { AppConst } from '../../data/const'
 import { User } from '/models/users'
+import { RolesGroup } from '/models/roles'
+import { ISystem } from '/models/system'
 
 export const modifyINCsCloseToCheckClose = async () => {
   try {
@@ -34,8 +43,6 @@ export const modifyINCsCloseToCheckClose = async () => {
 
 export const checkForCloseINC = async () => {
   try {
-    // modifyINCsCloseToCheckClose()
-    // return
     const statusClose = (await IncidentStatusesRepos.findOne({
       where: { statusINC: 'Закрыт' },
     })) as IIncindentStatuses
@@ -45,7 +52,10 @@ export const checkForCloseINC = async () => {
 
     const currentDate = new Date()
     const ts = currentDate.getTime()
-    const newDateTS = ts - AppConst.daysForClose * 24 * 60 * 60 * 1000
+    const systemOptions = (await SystemRepos.findAll({})) as ISystem[]
+    const { incident } = systemOptions[0]
+    const days = incident.daysForClose ?? AppConst.daysForClose
+    const newDateTS = ts - days * 24 * 60 * 60 * 1000
     const endDate = currentDate.setTime(newDateTS)
     const _endDate = new Date(endDate)
 
@@ -59,29 +69,29 @@ export const checkForCloseINC = async () => {
     if (!idINCs.length) {
       return { status: true, error: 'No incidents for close.' }
     }
-    // const isUpdate = await IncidentRepos.update(idINCs, {
-    //   id_incStatus: statusClose.id,
-    //   status: statusClose.statusINC,
-    // })
-    // console.log('isUpdate = ', isUpdate)
-    // if (isUpdate[0] <= 0) {
-    //   return { status: false, error: 'Error update close INC' }
-    // }
-    console.log('statusClose = ', statusClose)
-    const user = (await IncidentRepos.findOne({
-      where: { rolesGroup: 'SUPERADMIN' },
+    const isUpdate = await IncidentRepos.update(idINCs, {
+      id_incStatus: statusClose.id,
+      status: statusClose.statusINC,
+    })
+    if (isUpdate[0] <= 0) {
+      return { status: false, error: 'Error update close INC' }
+    }
+    const rolesGroup = (await roleGroupRepos.findOne({
+      where: { group: 'SUPERADMIN' },
+    })) as RolesGroup
+    const user = (await userRepos.findOne({
+      where: { id_rolesGroup: rolesGroup.id },
     })) as User
-    console.log('user = ', user)
-    // const logs = idINCs.map(id => {
-    //   return {
-    //     id_incLog: id,
-    //     time: currentDate,
-    //     log: AppConst.ActionComment.closeINC,
-    //     id_incLogUser: user.id,
-    //   }
-    // })
-    // console.log('logs = ', logs)
-    // await IncidentLogsRepos.bulkCreate(logs)
+    const logs = idINCs.map(id => {
+      return {
+        id_incLog: id,
+        time: currentDate,
+        log: AppConst.ActionComment.closeINC,
+        id_incLogUser: user.id,
+        isSystem: true,
+      }
+    })
+    await IncidentLogsRepos.bulkCreate(logs)
     return { status: true, error: '' }
   } catch (err) {
     return { status: false, error: err }

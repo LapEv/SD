@@ -58,6 +58,7 @@ export interface IIncindent {
   ClassifierEquipment: IClassifierEquipment
   ClassifierModel: IClassifierModels
   TypicalMalfunction: ITypicalMalfunctions
+  IncidentLogs: IncidentLogs
   User: IUser
   UserExecutor: IUser
   UserResponsible: IUser
@@ -326,6 +327,7 @@ export interface IncidentLogs {
   id: string
   time: string
   log: string
+  isSystem: boolean
   createdAt: string
   updatedAt: string
 }
@@ -344,6 +346,10 @@ export const incidentLogs: ModelAttributes<Model, IncidentLogs> = {
   log: {
     type: DataType.STRING(1024),
     allowNull: false,
+  },
+  isSystem: {
+    type: DataType.BOOLEAN,
+    allowNull: true,
   },
   createdAt: {
     type: 'timestamp without time zone',

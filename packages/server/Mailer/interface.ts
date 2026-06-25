@@ -66,3 +66,10 @@ export interface GetTamplateFromSD {
   clientINC: string
   commentCloseCheck: string
 }
+
+export interface ErrorSendMail {
+  code: string
+  syscall: string
+  hostname: string
+  command: string
+}

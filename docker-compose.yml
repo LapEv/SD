@@ -46,10 +46,6 @@ services:
       PGADMIN_LISTEN_PORT: ${PGADMIN_LISTEN_PORT}
       SECRET_KEY: ${SECRET_KEY}
       FILE_PATH: ${FILE_PATH}
-      EMAIL_HOST: ${EMAIL_HOST}
-      EMAIL_PORT: ${EMAIL_PORT}
-      EMAIL_USER: ${EMAIL_USER}
-      EMAIL_PASSWORD: ${EMAIL_PASSWORD}
       TZ: Etc/UTC
     depends_on:
       - sd_postgres

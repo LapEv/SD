@@ -107,6 +107,7 @@ export interface Settings {
   selected: string[]
   columnOptions: IColumnOptions[]
   filterListOptions: IFilterListOptions[]
+  notificationsINC: INotificationINCData
 }
 
 export interface IFilterTriggers {
@@ -126,6 +127,13 @@ export interface IFilter {
   handleCloseFilterPanel: () => void
 }
 
+export interface INotificationINCData {
+  newINC: boolean
+  newINCfromMail: boolean
+  changeStatus: boolean
+  changeExecutor: boolean
+  changeResponsible: boolean
+}
 export interface ICells {
   value: string
   type: string
@@ -375,4 +383,16 @@ export interface IEditButtonsINC {
   setNewINC: (data: INC) => void
   disabled: boolean
   handleModal: (data: boolean) => void
+}
+
+export interface INotificationComponent {
+  label: string
+  name: string
+  setSettingsMenuOpen: (data: boolean) => void
+}
+
+export interface ITimeIntervalComponent {
+  label: string
+  value: number
+  setSettingsMenuOpen: (data: boolean) => void
 }

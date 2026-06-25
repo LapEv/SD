@@ -90,6 +90,7 @@ import {
   changeINC,
 } from 'api/incidents'
 import { uploadFiles } from 'api/files'
+import { setSystem } from 'api/system'
 
 const initialState: MessageState = {
   text: '',
@@ -1113,6 +1114,19 @@ export const messageSlise = createSlice({
       state.isLoadingMessage = true
     })
     builder.addCase(uploadFiles.rejected, (state, { payload }) => {
+      state.isLoadingMessage = false
+      state.type = 'error'
+      state.text = payload as string
+    })
+    builder.addCase(setSystem.fulfilled, (state, { payload }) => {
+      state.isLoadingMessage = false
+      state.text = payload?.message.text as string
+      state.type = payload?.message.type as string
+    })
+    builder.addCase(setSystem.pending, state => {
+      state.isLoadingMessage = true
+    })
+    builder.addCase(setSystem.rejected, (state, { payload }) => {
       state.isLoadingMessage = false
       state.type = 'error'
       state.text = payload as string

@@ -2,6 +2,7 @@ import type { ModelAttributes } from 'sequelize'
 import { DataType, Model } from 'sequelize-typescript'
 
 export interface ISystem {
+  id: string
   general: IGeneralSystem
   auth: IAuthSystem
   additional: IAdditionalSystem
@@ -37,6 +38,12 @@ export interface IIncidentSystem {
 }
 
 export const system: ModelAttributes<Model, ISystem> = {
+  id: {
+    type: DataType.STRING,
+    defaultValue: DataType.UUIDV4,
+    allowNull: false,
+    primaryKey: true,
+  },
   general: {
     type: DataType.JSONB,
     allowNull: false,

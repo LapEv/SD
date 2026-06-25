@@ -1,7 +1,8 @@
 import { mailConst } from '../../../data/const'
+import { checkOurMail } from '../../../Mailer/checkOurMail'
 import { MailDataRegInc } from '/Mailer/interface'
 
-export const htmlRegistration = ({
+export const htmlRegistration = async ({
   incident,
   status,
   clientINC,
@@ -82,9 +83,7 @@ export const htmlRegistration = ({
       <br>
       <br>
         Это письмо сформировано автоматически, отвечать на него не нужно. Если Вы получили это сообщение по ошибке,
-        пожалуйста, сообщите об этом на адрес ${
-          mailConst.ourMail
-        } и удалите это сообщение.
+        пожалуйста, сообщите об этом на адрес ${await checkOurMail()} и удалите это сообщение.
       </div>
     </div>
   </body>

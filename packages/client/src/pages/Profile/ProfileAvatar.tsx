@@ -14,6 +14,7 @@ import { FileProps } from 'storeAuth/interfaces'
 import { fileValidationAvatar } from 'utils/validatorRules'
 import { useMessage } from 'hooks/message/useMessage'
 import { ITheme, ThemeMode } from 'themes/themeConfig'
+import { useSystem } from 'hooks/system/useSystem'
 
 export const ProfileAvatar = memo(
   ({
@@ -31,6 +32,7 @@ export const ProfileAvatar = memo(
     const [btnDisabled, setBtnDisabled] = useState<boolean>(true)
     const [, setDragOver] = useState<boolean>(false)
     const [, { setMessage }] = useMessage()
+    const [{ system }] = useSystem()
     const theme = useTheme() as ITheme
 
     const handleDragOver = useCallback((event: DragEvent<HTMLDivElement>) => {
@@ -53,7 +55,8 @@ export const ProfileAvatar = memo(
     }, [])
 
     const handleFileDragChange = (files: FileList) => {
-      const checkFiles = fileValidationAvatar(files)
+      const maxSizeFile = system.additional.maxSizeFileUpload
+      const checkFiles = fileValidationAvatar(files, maxSizeFile)
       if (!checkFiles.status) {
         setMessage({
           type: 'error',
@@ -66,7 +69,11 @@ export const ProfileAvatar = memo(
 
     const handleFileChange = ({ target }: ChangeEvent<HTMLInputElement>) => {
       const files = target?.files as FileList
-      const checkFiles = fileValidationAvatar(target?.files as FileList)
+      const maxSizeFile = system.additional.maxSizeFileUpload
+      const checkFiles = fileValidationAvatar(
+        target?.files as FileList,
+        maxSizeFile,
+      )
       if (!checkFiles.status) {
         setMessage({
           type: 'error',

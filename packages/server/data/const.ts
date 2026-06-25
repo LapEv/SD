@@ -1,5 +1,4 @@
 export const mailConst = {
-  ourMail: 'e_lap@mail.ru',
   mailMessages: {
     footer:
       'Данное сообщение отправлено автоматически, не надо на него отвечать.',
@@ -35,7 +34,6 @@ export const mailConst = {
 }
 
 export const AppConst = {
-  timeGMT: 3,
   numberINC: 0,
   incident: '',
   attrINC: 'INC',
@@ -83,5 +81,12 @@ export const AppConst = {
   fileDirectories: {
     Avatar: 'Avatar',
     IncidentActs: 'IncidentActs',
+  },
+  mailNotifications: {
+    errors: {
+      auth: 'Проблема с учетными данными почтового серевера, либо их отсутствие',
+      send: 'Ошибка отправки уведомления на email!',
+    },
+    successSend: 'Уведомление на почту отправлено успешно.',
   },
 }

@@ -1,9 +1,9 @@
 import {
   emailValidation,
   emailValidationNoRequired,
-  textValidation,
   numberValidation,
   nameValidationNoRequired,
+  NoRequiredValidation,
 } from 'utils/validatorRules'
 
 export const sections = [
@@ -20,11 +20,11 @@ export const sections = [
     id: 'emailServer',
   },
   {
-    label: 'Иницденты',
+    label: 'Инциденты',
     id: 'incident',
   },
   {
-    label: 'Доплнительные настройки',
+    label: 'Дополнительные настройки',
     id: 'additional',
   },
 ]
@@ -80,7 +80,7 @@ export const MapEmailServerSystemInputFields = [
   {
     name: 'timeZoneForNotification',
     label: 'Смещение времени для внешних уведомлений',
-    validation: textValidation,
+    validation: numberValidation,
     value: '',
     type: 'number',
     required: true,
@@ -88,34 +88,34 @@ export const MapEmailServerSystemInputFields = [
   {
     name: 'host',
     label: 'Host почтового сервера',
-    validation: textValidation,
+    validation: NoRequiredValidation,
     value: '',
     type: 'text',
-    required: true,
+    required: false,
   },
   {
     name: 'port',
     label: 'Порт почтового сервера',
-    validation: textValidation,
+    validation: numberValidation,
     value: '',
     type: 'number',
-    required: true,
+    required: false,
   },
   {
     name: 'email',
     label: 'Email почтового сервера',
-    validation: emailValidation,
+    validation: emailValidationNoRequired,
     value: '',
     type: 'text',
-    required: true,
+    required: false,
   },
   {
     name: 'password',
     label: 'Пароль почтового сервера',
-    validation: textValidation,
+    validation: NoRequiredValidation,
     value: '',
-    type: 'text',
-    required: true,
+    type: 'password',
+    required: false,
   },
 ]
 

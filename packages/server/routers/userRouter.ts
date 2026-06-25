@@ -1,36 +1,16 @@
 import { Router } from 'express'
 import { userService } from '../services/userService'
-import { check } from 'express-validator'
-import { auth } from '../data/auth'
 import { authMiddleware } from '../middleware/authMiddleware'
-const roleMiddleware = require('../middleware/roleMiddleware')
+import { checkRegDataMiddleware } from '../middleware/checkRegDataMiddleware'
+
+const roleMiddleware = require('../middleware/roleMiddleware') /* tslint:disable no-var-requires */
 
 export const userRouter = (apiRouter: Router) => {
   const service = new userService()
   const router: Router = Router()
 
-  router.post(
-    '/setUser',
-    [
-      check(auth.username, auth.emptyUsername).notEmpty(),
-      check(auth.password, auth.checkPassword()).isLength({
-        min: auth.passwordMinLength,
-        max: auth.passwordMaxLength,
-      }),
-    ],
-    service.setUser,
-  )
-  router.post(
-    '/newUser',
-    [
-      check(auth.username, auth.emptyUsername).notEmpty(),
-      check(auth.password, auth.checkPassword()).isLength({
-        min: auth.passwordMinLength,
-        max: auth.passwordMaxLength,
-      }),
-    ],
-    service.newUser,
-  )
+  router.post('/setUser', checkRegDataMiddleware, service.setUser)
+  router.post('/newUser', checkRegDataMiddleware, service.newUser)
 
   router.post('/login', service.login)
   router.post('/updateProfile', authMiddleware, service.updateProfile)

@@ -8,6 +8,7 @@ import {
 import {
   columnData,
   getColumnOptions,
+  notificationsDataINC,
   operators,
   rowsPerPageOptions,
   SETTINGS_DEFAULT,
@@ -42,6 +43,7 @@ const initialState: TableINCState = {
   columnDataList: {
     incStatuses: [],
   },
+  notificationsINC: notificationsDataINC,
 }
 
 const setLocalStorage = (state: TableINCState) => {
@@ -111,6 +113,8 @@ export const tableINCSlise = createSlice({
       state.columnX = action.payload.columnX ?? initialState.columnX
       state.filterListOptions =
         action.payload.filterListOptions ?? initialState.filterListOptions
+      state.notificationsINC =
+        action.payload.notificationsINC ?? initialState.notificationsINC
     },
     setOrder(state, action) {
       state.order = action.payload
@@ -188,6 +192,17 @@ export const tableINCSlise = createSlice({
         }),
       )
     },
+    setNotificationsINC(state, action) {
+      state.notificationsINC = action.payload
+      const stateForLocalStorage = setLocalStorage(state)
+      localStorage.setItem(
+        SETTINGS_STORAGE_KEY,
+        JSON.stringify({
+          ...stateForLocalStorage,
+          notificationsINC: action.payload,
+        }),
+      )
+    },
     setSelected(state, action) {
       state.selected = action.payload
       const stateForLocalStorage = setLocalStorage(state)
@@ -253,6 +268,7 @@ export const {
   setColumnBorder,
   setCellBorder,
   setTimeInterval,
+  setNotificationsINC,
   setSelected,
   setColumnOptions,
   setColumnX,

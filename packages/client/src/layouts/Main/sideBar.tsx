@@ -33,7 +33,7 @@ export const SideBar = memo(({ open = false }: SideBarProps) => {
             sx={{ color: 'black' }}
             component={RouterLink}
             to={`/`}>
-            SBI
+            SD
           </Link>
         ) : (
           <></>

@@ -13,6 +13,7 @@ import {
   setColumnBorder,
   setCellBorder,
   setTimeInterval,
+  setNotificationsINC,
   setSelected,
   setColumnOptions,
   setColumnX,
@@ -56,6 +57,9 @@ export function useTableINC(): [TableINCState, TableINCActions] {
       },
       setTimeInterval(data) {
         dispatch(setTimeInterval(data))
+      },
+      setNotificationsINC(data) {
+        dispatch(setNotificationsINC(data))
       },
       setSelected(data) {
         dispatch(setSelected(data))

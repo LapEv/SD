@@ -8,33 +8,26 @@ import {
   MenuItem,
   Tooltip,
 } from '@mui/material'
-import { DENISTY_OPTIONS, timeIntervalData } from '../../data'
+import {
+  DENISTY_OPTIONS,
+  notificationINCLabel,
+  timeIntervalData,
+} from '../../data'
 import { useTableINC } from 'hooks/tableINC/useTableINC'
 import { useRef, useState } from 'react'
 import { Check, ExpandLess, ExpandMore, Settings } from '@mui/icons-material'
-import { useIncidents } from 'hooks/incidents/useINC'
+import { NotificationsINC } from './NotificationsINC'
+import { TimeInterval } from './TimeInterval'
 
 export const TableSettings = () => {
   const [
-    { dense, showColumnBorders, showCellBorders, timeInterval },
-    { setDense, setColumnBorder, setCellBorder, setTimeInterval },
+    { dense, showColumnBorders, showCellBorders },
+    { setDense, setColumnBorder, setCellBorder },
   ] = useTableINC()
-  const [, { getINCsByDate, getINC }] = useIncidents()
   const [settingsMenuOpen, setSettingsMenuOpen] = useState(false)
   const settingsMenuTriggerRef = useRef<HTMLButtonElement>(null)
   const [openTimeInterval, setOpenTimeInterval] = useState<boolean>(false)
-
-  const checkTimeIntervalINCs = (count: number) => {
-    setTimeInterval(count)
-    const currentDate = new Date()
-    const endDate = currentDate.setDate(currentDate.getDate() - count)
-    if (count === 0) {
-      getINC()
-      return
-    }
-    getINCsByDate(new Date(endDate))
-    setSettingsMenuOpen(false)
-  }
+  const [openNotification, setOpenNotification] = useState<boolean>(false)
 
   return (
     <>
@@ -105,18 +98,25 @@ export const TableSettings = () => {
         </MenuItem>
         <Collapse in={openTimeInterval} timeout="auto" unmountOnExit>
           {timeIntervalData.map(({ label, value }) => (
-            <MenuItem
-              key={`${label}${value}`}
-              sx={{ pl: 4 }}
-              onClick={() => (
-                checkTimeIntervalINCs(value),
-                setSettingsMenuOpen(false)
-              )}>
-              <ListItemIcon>
-                {timeInterval === value && <Check fontSize="small" />}
-              </ListItemIcon>
-              <ListItemText primary={label} />
-            </MenuItem>
+            <TimeInterval
+              label={label}
+              value={value}
+              setSettingsMenuOpen={setSettingsMenuOpen}
+            />
+          ))}
+        </Collapse>
+        <Divider />
+        <MenuItem onClick={() => setOpenNotification(!openNotification)}>
+          <ListItemText>Уведомления о новых событиях</ListItemText>
+          {openNotification ? <ExpandLess /> : <ExpandMore />}
+        </MenuItem>
+        <Collapse in={openNotification} timeout="auto" unmountOnExit>
+          {notificationINCLabel.map(({ label, name }) => (
+            <NotificationsINC
+              label={label}
+              name={name}
+              setSettingsMenuOpen={setSettingsMenuOpen}
+            />
           ))}
         </Collapse>
       </Menu>

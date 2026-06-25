@@ -1,6 +1,3 @@
-import dotenv from 'dotenv'
-dotenv.config({ path: '../../../.env' })
-
 export const systemStartData = [
   {
     general: {
@@ -12,14 +9,14 @@ export const systemStartData = [
       passwordMaxLength: 30,
     },
     additional: {
-      maxSizeFileUpload: 50,
+      maxSizeFileUpload: 10,
     },
     emailServer: {
       timeZoneForNotification: 3,
-      host: process.env.EMAIL_HOST,
-      port: process.env.EMAIL_PORT,
-      email: process.env.EMAIL_USER,
-      password: process.env.EMAIL_PASSWORD,
+      host: '',
+      port: '',
+      email: '',
+      password: '',
     },
     incident: {
       daysForClose: 30,
@@ -27,3 +24,26 @@ export const systemStartData = [
     },
   },
 ]
+
+export const systemUser = {
+  username: 'System',
+  password: '',
+  firstName: 'System',
+  lastName: '',
+  middleName: '',
+  shortName: 'System',
+  email: '',
+  phone: '',
+  rolesGroup: '',
+  post: '',
+  division: '',
+  chiefDivision: false,
+  department: '',
+  chiefDepartment: false,
+  id_division: '',
+  id_department: '',
+  id_rolesGroup: '',
+  status: 'system',
+  reasonOfDelete: '',
+  theme: '',
+}

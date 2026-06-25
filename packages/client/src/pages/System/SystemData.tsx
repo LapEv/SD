@@ -13,7 +13,15 @@ import { chooseMapFields } from './data'
 import { ISystemData } from './interfaces'
 import { useSystem } from 'hooks/system/useSystem'
 import { BoxModal, MuiDiv } from 'components/MUI'
-import { ISystem, ISystemValues } from 'store/slices/system/interfaces'
+import {
+  IAdditionalSystem,
+  IAuthSystem,
+  IEmailServerSystem,
+  IGeneralSystem,
+  IIncidentSystem,
+  ISystem,
+  ISystemValues,
+} from 'store/slices/system/interfaces'
 import { NumberField } from 'components/TextFields/NumberField'
 
 export const SystemData = memo(({ id }: ISystemData) => {
@@ -29,7 +37,7 @@ export const SystemData = memo(({ id }: ISystemData) => {
         const obj = system[id as keyof typeof system]
         return {
           ...data,
-          value: obj[data.name as keyof typeof obj],
+          value: obj![data.name as keyof typeof obj],
         }
       }),
     },
@@ -46,9 +54,15 @@ export const SystemData = memo(({ id }: ISystemData) => {
   }
 
   const checkForChange = (newData: Record<never, never>) => {
+    const obj = systemData[id as keyof typeof systemData] as
+      | IGeneralSystem
+      | IAuthSystem
+      | IAdditionalSystem
+      | IEmailServerSystem
+      | IIncidentSystem
     const _newData = {
-      ...system,
-      [id]: { ...system[id as keyof typeof system], ...newData },
+      ...systemData,
+      [id]: { ...obj, ...newData },
     }
     setbtnDisabled(deepEqual(_newData, system as Record<never, never>))
     setSystemData(_newData)
@@ -61,7 +75,7 @@ export const SystemData = memo(({ id }: ISystemData) => {
         const obj = system[id as keyof typeof system]
         return {
           ...data,
-          value: obj[data.name as keyof typeof obj],
+          value: obj![data.name as keyof typeof obj],
         }
       }),
     })

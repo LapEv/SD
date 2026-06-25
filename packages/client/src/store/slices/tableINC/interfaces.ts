@@ -2,6 +2,7 @@ import {
   INC_CellType,
   INC_Data,
   INC_HeadCell,
+  INotificationINCData,
   IOperatorType,
 } from 'pages/ControlRoom/Incidents/interfaces'
 import { INC, INCStatuses, Order } from '../incidents/interfaces'
@@ -25,6 +26,7 @@ export interface TableINCState {
   columnDataList: {
     incStatuses: INCStatuses[]
   }
+  notificationsINC: INotificationINCData
 }
 
 export interface IColumnOptions {

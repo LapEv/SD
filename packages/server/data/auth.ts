@@ -1,12 +1,4 @@
 export const auth = {
-  passwordMinLength: 5,
-  passwordMaxLength: 30,
-  username: 'username',
-  emptyUsername: 'The user name cannot be empty',
-  password: 'password',
-  checkPassword() {
-    return `The password must be at least ${this.passwordMinLength} and no more than ${this.passwordMaxLength} characters`
-  },
   notification: {
     userNotFound: 'Пользователь не найден!',
     errorRegistration: 'Ошибка при регистрации!',

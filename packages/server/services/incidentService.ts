@@ -22,6 +22,7 @@ import {
   RegionsRepos,
   SLA,
   SLARepos,
+  SystemRepos,
   TypesCompletedWork,
   TypesCompletedWorkRepos,
   TypesOfWork,
@@ -54,7 +55,9 @@ import { getOrderINC } from '../utils/getOrder'
 import { getNewINC } from '../utils/getNewINC'
 import { checkTemplateFromSD } from '../Mailer/checkTemplate'
 import { IPrepareStatusObj } from './interfaces'
-import { checkForCloseINC } from '../utils/checkForCloseINC'
+import { checkForCloseINC } from '../tasks/taskCloseINCs/checkForCloseINC'
+import { ISystem } from '/models/system'
+const socket = require('../utils/socket')
 
 export class incidentService {
   get Includes() {
@@ -333,7 +336,7 @@ export class incidentService {
     {
       model: IncidentLogs,
       required: false,
-      attributes: ['id', 'time', 'log'],
+      attributes: ['id', 'time', 'log', 'isSystem'],
       include: this.incLogs,
     },
     {
@@ -875,8 +878,16 @@ export class incidentService {
       order: this.orderINC,
     })) as IIncindent
 
+    socket.getIO().emit('server_SBI', {
+      token: null,
+      category: 'incidents',
+      action: 'newINCfromMail',
+      data: inc,
+    })
+
     return inc
   }
+
   newINC = async (_req: Request, res: Response) => {
     const {
       id_incStatus,
@@ -910,7 +921,10 @@ export class incidentService {
       const incident = AppConst.incident
       const timeRegistration = new Date()
       const timeSLA = new Date(new Date().getTime() + slaDiff)
-      const timeZone = AppConst.timeGMT * 60 * 60 * 1000
+      const systemOptions = (await SystemRepos.findAll({})) as ISystem[]
+      const { emailServer } = systemOptions[0]
+      const tz = emailServer.timeZoneForNotification ?? 0
+      const timeZone = tz * 60 * 60 * 1000
       const timeRegistrationForEmail = new Date(new Date().getTime() + timeZone)
       const timeSLAForEmail = new Date(
         new Date().getTime() + slaDiff + timeZone,
@@ -953,12 +967,13 @@ export class incidentService {
 
       getNewINC(numberINC)
 
-      await IncidentLogsRepos.create({
+      const log = {
         id_incLog: newINCdb.id,
         time: timeRegistration,
         log: `${AppConst.ActionComment.incidentRegistration}${incident}`,
         id_incLogUser: responsibleID,
-      })
+      }
+      await IncidentLogsRepos.create(log)
 
       const inc = (await IncidentRepos.findOne({
         where: { id: newINCdb.id },
@@ -971,29 +986,63 @@ export class incidentService {
           item.statusINC === inc?.IncindentStatus.statusINC,
       ).filter((item: boolean) => item)
 
-      if (isStatusses && isStatusses.length) {
-        await mailerRegInc({
-          mailTo: inc?.Contract.notificationEmail ?? '',
-          incident,
-          status: inc?.IncindentStatus.statusINC ?? '',
-          clientINC,
-          timeRegistration: convertDateToString(timeRegistrationForEmail) ?? '',
-          timeSLA: convertDateToString(timeSLAForEmail) ?? '',
-          client: inc?.Client?.client ?? '',
-          legalName: inc?.Client?.legalName ?? '',
-          object: inc?.Object?.object ?? '',
-          objectClientID: inc?.Object?.internalClientID ?? '',
-          objectClientName: inc?.Object?.internalClientName ?? '',
-          address: inc?.Object?.Address?.address as string,
-          equipment: inc?.ClassifierEquipment?.equipment as string,
-          model: inc?.ClassifierModel?.model as string,
-          malfunction: inc?.TypicalMalfunction?.typicalMalfunction as string,
-          description: description ?? '',
-          applicant: applicant ?? '',
-          applicantContacts: applicantContacts ?? '',
-          userAccepted: inc?.User?.shortName ?? '',
-        })
+      const resultMailNotifications =
+        isStatusses && isStatusses.length
+          ? await mailerRegInc({
+              mailTo: inc?.Contract.notificationEmail ?? '',
+              incident,
+              status: inc?.IncindentStatus.statusINC ?? '',
+              clientINC,
+              timeRegistration:
+                convertDateToString(timeRegistrationForEmail) ?? '',
+              timeSLA: convertDateToString(timeSLAForEmail) ?? '',
+              client: inc?.Client?.client ?? '',
+              legalName: inc?.Client?.legalName ?? '',
+              object: inc?.Object?.object ?? '',
+              objectClientID: inc?.Object?.internalClientID ?? '',
+              objectClientName: inc?.Object?.internalClientName ?? '',
+              address: inc?.Object?.Address?.address as string,
+              equipment: inc?.ClassifierEquipment?.equipment as string,
+              model: inc?.ClassifierModel?.model as string,
+              malfunction: inc?.TypicalMalfunction
+                ?.typicalMalfunction as string,
+              description: description ?? '',
+              applicant: applicant ?? '',
+              applicantContacts: applicantContacts ?? '',
+              userAccepted: inc?.User?.shortName ?? '',
+            })
+          : null
+      const logResultMailNotifications = resultMailNotifications?.status
+        ? AppConst.mailNotifications.successSend
+        : `${AppConst.mailNotifications.errors.send} ${resultMailNotifications?.errText ?? ''} code: ${resultMailNotifications?.err?.code ?? ''} syscall: ${resultMailNotifications?.err?.syscall ?? ''} hostname: ${resultMailNotifications?.err?.hostname ?? ''} command: ${resultMailNotifications?.err?.command ?? ''}`
+      let logNotification
+      if (logResultMailNotifications !== null) {
+        logNotification = {
+          id_incLog: newINCdb.id,
+          time: timeRegistration,
+          log: logResultMailNotifications,
+          id_incLogUser: responsibleID,
+          isSystem: true,
+        }
+        await IncidentLogsRepos.create(logNotification)
       }
+
+      const socketINC =
+        logResultMailNotifications !== null
+          ? ((await IncidentRepos.findOne({
+              where: { id: newINCdb.id },
+              include: this.includes,
+              order: this.orderINC,
+            })) as IIncindent)
+          : inc
+
+      const token = _req.header('Authorization')?.replace('Bearer ', '')
+      socket.getIO().emit('server_SBI', {
+        token,
+        category: 'incidents',
+        action: 'newINC',
+        data: socketINC,
+      })
 
       if (timeInterval) {
         const currentDate = new Date()
@@ -1284,7 +1333,8 @@ export class incidentService {
     }
   }
   changeExecutor = async (_req: Request, res: Response) => {
-    const { id, id_incExecutor, incident, executor, userID } = _req.body
+    const { id, id_incExecutor, incident, executor, userID, userShortName } =
+      _req.body
     try {
       const isUpdate = await IncidentRepos.update(id, {
         id_incExecutor: id_incExecutor.length ? id_incExecutor : null,
@@ -1296,6 +1346,20 @@ export class incidentService {
             'Ошибка с назначением исполнителя! Попробуйте назначить исполнителя заново или обратитесь к администратору.',
         })
       }
+      const token = _req.header('Authorization')?.replace('Bearer ', '')
+      socket.getIO().emit('server_SBI', {
+        token,
+        category: 'incidents',
+        action: 'changeExecutor',
+        data: {
+          id,
+          id_incExecutor,
+          executor,
+          incident,
+          userID,
+          userShortName,
+        },
+      })
       await IncidentLogsRepos.create({
         id_incLog: id,
         time: new Date(),
@@ -1309,7 +1373,14 @@ export class incidentService {
     }
   }
   changeResponsible = async (_req: Request, res: Response) => {
-    const { id, id_incResponsible, incident, responsible, userID } = _req.body
+    const {
+      id,
+      id_incResponsible,
+      incident,
+      responsible,
+      userID,
+      userShortName,
+    } = _req.body
     try {
       const isUpdate = await IncidentRepos.update(id, {
         id_incResponsible: id_incResponsible.length ? id_incResponsible : null,
@@ -1321,6 +1392,20 @@ export class incidentService {
             'Ошибка с назначением ответственного! Попробуйте назначить ответственного заново или обратитесь к администратору.',
         })
       }
+      const token = _req.header('Authorization')?.replace('Bearer ', '')
+      socket.getIO().emit('server_SBI', {
+        token,
+        category: 'incidents',
+        action: 'changeResponsible',
+        data: {
+          id,
+          id_incResponsible,
+          responsible,
+          incident,
+          userID,
+          userShortName,
+        },
+      })
       await IncidentLogsRepos.create({
         id_incLog: id,
         time: new Date(),
@@ -1346,6 +1431,18 @@ export class incidentService {
       const _log = log.log
       const logs = { ..._log, time: new Date() }
 
+      const token = _req.header('Authorization')?.replace('Bearer ', '')
+      socket.getIO().emit('server_SBI', {
+        token,
+        category: 'incidents',
+        action: 'changeStatus',
+        data: {
+          id,
+          ...data,
+          log,
+        },
+      })
+
       await IncidentLogsRepos.create(logs)
       const inc = (await IncidentRepos.findOne({
         where: { id },
@@ -1356,35 +1453,51 @@ export class incidentService {
       const isStatusses = inc.Contract.IncindentStatuses.filter(
         (item: IIncindentStatuses) => item.id === data.id_incStatus,
       ).filter((item: IIncindentStatuses) => item)
-      const timeZone = AppConst.timeGMT * 60 * 60 * 1000
+      const systemOptions = (await SystemRepos.findAll({})) as ISystem[]
+      const { emailServer } = systemOptions[0]
+      const tz = emailServer.timeZoneForNotification ?? 0
+      const timeZone = tz * 60 * 60 * 1000
       const timeChangeStatus = new Date(new Date().getTime() + timeZone)
       const timeSLA = new Date(Date.parse(inc.timeSLA) + timeZone)
-      if (isStatusses && isStatusses.length) {
-        await mailerChangeStatus({
-          mailTo: inc.Contract.notificationEmail ?? '',
-          incident: inc.incident,
-          status: data.status,
-          clientINC: inc.clientINC,
-          timeChangeStatus: convertDateToString(timeChangeStatus) ?? '',
-          timeSLA: convertDateToString(timeSLA) ?? '',
-          client: inc.Client.client ?? '',
-          legalName: inc.Client.legalName ?? '',
-          object: inc.Object.object ?? '',
-          objectClientID: inc.Object.internalClientID ?? '',
-          objectClientName: inc.Object.internalClientName ?? '',
-          address: inc.Object.Address.address as string,
-          equipment: inc.ClassifierEquipment.equipment as string,
-          model: inc.ClassifierModel.model as string,
-          malfunction: inc.TypicalMalfunction.typicalMalfunction as string,
-          description: inc.description ?? '',
-          commentCloseCheck: data.commentCloseCheck ?? inc.commentCloseCheck,
-          typeCompletedWork:
-            data.typeCompletedWork && data.typeCompletedWork.label
-              ? data.typeCompletedWork.label
-              : inc.typeCompletedWork,
+
+      const resultMailNotifications =
+        isStatusses && isStatusses.length
+          ? await mailerChangeStatus({
+              mailTo: inc.Contract.notificationEmail ?? '',
+              incident: inc.incident,
+              status: data.status,
+              clientINC: inc.clientINC,
+              timeChangeStatus: convertDateToString(timeChangeStatus) ?? '',
+              timeSLA: convertDateToString(timeSLA) ?? '',
+              client: inc.Client.client ?? '',
+              legalName: inc.Client.legalName ?? '',
+              object: inc.Object.object ?? '',
+              objectClientID: inc.Object.internalClientID ?? '',
+              objectClientName: inc.Object.internalClientName ?? '',
+              address: inc.Object.Address.address as string,
+              equipment: inc.ClassifierEquipment.equipment as string,
+              model: inc.ClassifierModel.model as string,
+              malfunction: inc.TypicalMalfunction.typicalMalfunction as string,
+              description: inc.description ?? '',
+              commentCloseCheck:
+                data.commentCloseCheck ?? inc.commentCloseCheck,
+              typeCompletedWork:
+                data.typeCompletedWork && data.typeCompletedWork.label
+                  ? data.typeCompletedWork.label
+                  : inc.typeCompletedWork,
+            })
+          : null
+      const logResultMailNotifications = resultMailNotifications?.status
+        ? AppConst.mailNotifications.successSend
+        : `${AppConst.mailNotifications.errors.send} ${resultMailNotifications?.errText} code: ${resultMailNotifications?.err?.code} syscall: ${resultMailNotifications?.err?.syscall} hostname: ${resultMailNotifications?.err?.hostname} command: ${resultMailNotifications?.err?.command}`
+      if (logResultMailNotifications !== null) {
+        await IncidentLogsRepos.create({
+          ..._log,
+          time: new Date(),
+          log: logResultMailNotifications,
+          isSystem: true,
         })
       }
-
       // checkTemplate
       checkTemplateFromSD({
         newStatus: data.status,
@@ -1393,7 +1506,6 @@ export class incidentService {
         clientINC: inc.clientINC,
         commentCloseCheck: `${data.typeCompletedWork ? data.typeCompletedWork.label : ''}. ${inc.commentCloseCheck}`,
       })
-
       res.status(200).json()
     } catch (err) {
       res.status(500).json({ error: ['db error', err as Error] })
@@ -1497,7 +1609,6 @@ export class incidentService {
   }
   checkForCloseINC = async (_req: Request, res: Response) => {
     try {
-      console.log('checkForCloseINC')
       const result = await checkForCloseINC()
       res.status(200).json({ result })
     } catch (err) {

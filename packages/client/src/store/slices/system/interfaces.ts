@@ -10,6 +10,7 @@ export interface ISystem {
   additional: IAdditionalSystem
   emailServer: IEmailServerSystem
   incident: IIncidentSystem
+  id?: string
 }
 
 export interface ISystemValues {

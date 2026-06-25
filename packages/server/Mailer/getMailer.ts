@@ -3,19 +3,26 @@ import Imap from 'imap'
 const { simpleParser } = require('mailparser')
 import { ParsedMail } from 'mailparser'
 import { checkTemplateFromMail } from './checkTemplate'
+import { SystemRepos } from '../db'
+import { ISystem } from '../models/system'
+import { AppConst } from '/data/const'
 
-const { EMAIL_USER, EMAIL_PASSWORD, EMAIL_HOST } = process.env
-
-const imapConfig = {
-  user: EMAIL_USER as string,
-  password: EMAIL_PASSWORD as string,
-  host: EMAIL_HOST as string,
-  port: 993,
-  tls: true,
-}
-
-export const getEmails = () => {
+export const getEmails = async () => {
   try {
+    const { emailServer } = ((await SystemRepos.findAll({})) as ISystem[])[0]
+
+    const { email, password, host, port } = emailServer
+    if (!email || !password || !host || !port) {
+      return { status: false, info: AppConst.mailNotifications.errors.auth }
+    }
+    const imapConfig = {
+      user: email,
+      password: password,
+      host,
+      port: 993,
+      tls: true,
+    }
+
     const imap = new Imap(imapConfig)
     imap.connect()
     imap.on('ready', () => {

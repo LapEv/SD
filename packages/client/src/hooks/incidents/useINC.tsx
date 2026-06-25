@@ -35,6 +35,7 @@ import {
   changeExecutor,
   changeResponsible,
   changeStatus,
+  newINCSocket,
 } from 'store/slices/incidents'
 
 export function useIncidents(): [INCState, INCActions] {
@@ -62,19 +63,34 @@ export function useIncidents(): [INCState, INCActions] {
       getTypesCompletedWork() {
         dispatch(getTypesCompletedWork())
       },
+      newINCSocket(data) {
+        dispatch(newINCSocket(data))
+      },
       newINC(data) {
         dispatch(newINC(data))
       },
+      newINCfromMailSocket(data) {
+        dispatch(newINCSocket(data))
+      },
       changeExecutor(data) {
         dispatch(changeExecutorSVR(data))
+        dispatch(changeExecutor(data))
+      },
+      changeExecutorSocket(data) {
         dispatch(changeExecutor(data))
       },
       changeResponsible(data) {
         dispatch(changeResponsibleSVR(data))
         dispatch(changeResponsible(data))
       },
+      changeResponsibleSocket(data) {
+        dispatch(changeResponsible(data))
+      },
       changeStatus(data) {
         dispatch(changeStatusSVR(data))
+        dispatch(changeStatus(data))
+      },
+      changeStatusSocket(data) {
         dispatch(changeStatus(data))
       },
       changeINC(data) {

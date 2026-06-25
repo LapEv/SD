@@ -145,8 +145,6 @@ export const AddObject = memo(
         }
       }, [addresses])
 
-      console.log('modal = ', modal)
-
       return (
         <BoxModal ref={ref} tabIndex={-1}>
           <Modal

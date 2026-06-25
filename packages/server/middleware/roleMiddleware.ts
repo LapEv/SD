@@ -40,7 +40,6 @@ module.exports = function (roles: []) {
       }
       next()
     } catch (e) {
-      console.log(e)
       return res.status(403).json({ message: 'The user is not logged in' })
     }
   }

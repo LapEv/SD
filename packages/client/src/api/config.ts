@@ -155,6 +155,10 @@ export const ApiEndPoints = {
   },
 }
 
+export const baseURL = __BASE_URL__.includes('https')
+  ? `${__BASE_URL__}/`
+  : `http://${__BASE_URL__}:${__SERVER_PORT__}/`
+
 export const url = __BASE_URL__.includes('https')
   ? `${__BASE_URL__}/api/`
   : `http://${__BASE_URL__}:${__SERVER_PORT__}/api/`

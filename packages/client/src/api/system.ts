@@ -33,7 +33,6 @@ export const getSystem = createAsyncThunk(
 export const setSystem = createAsyncThunk(
   'system/setSystem',
   async (system: ISystem, thunkAPI) => {
-    console.log('system = ', system)
     try {
       const { data } = await authhost.post<ISystem>(
         ApiEndPoints.System.setSystem,
@@ -42,7 +41,7 @@ export const setSystem = createAsyncThunk(
       return {
         data,
         message: {
-          text: 'Параметры системы добавлены!',
+          text: 'Параметры системы изменены!',
           type: 'success',
         },
       }

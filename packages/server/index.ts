@@ -2,32 +2,22 @@ import * as dotenv from 'dotenv'
 import cors from 'cors'
 import express, { Express } from 'express'
 import { createServer } from 'vite'
-import { dbConnect } from './db'
+import { dbConnect, SystemRepos } from './db'
 import { apiRouter } from './routers/index.router'
 import { isDev, srcPath } from './data/app'
 import staticMiddleware from './middleware/static.middleware'
 import ssrMiddleware from './middleware/ssr.middleware'
-// import fileUpload from 'express-fileupload'
 const fileUpload = require('express-fileupload')
 // import { getEmails } from './Mailer/getMailer'
 import { getLastINC } from './utils/getLastINC'
-// import { checkTemplate } from './Mailer/checkTemplate'
-// import cron from 'node-cron'
-// import { checkForCloseINC } from './utils/checkForCloseINC'
+import { taskCloseINCs } from './tasks'
+import { ISystem } from './models/system'
+const socket = require('./utils/socket')
 
 async function init() {
   await dbConnect()
   dotenv.config({ path: '../../.env' })
   const app: Express = express()
-  app.use(
-    fileUpload({
-      createParentPath: true,
-      limits: {
-        fileSize: 200 * 1024 * 1024 * 1024, //20MB max file(s) size
-      },
-      tempFileDir: '/Files/',
-    }),
-  )
 
   app.use(express.json({ limit: '50mb' }))
   const corsOptions = {
@@ -73,17 +63,35 @@ async function init() {
   app.use(ssrMiddleware)
 
   getLastINC()
+  taskCloseINCs()
 
   // setInterval(() => {
   //   getEmails()
   // }, 60000)
 
+  const systemOptions = (await SystemRepos.findAll({})) as ISystem[]
+  const { additional } = systemOptions[0]
+  const maxSizeFileUpload = additional.maxSizeFileUpload ?? 10
+  app.use(
+    fileUpload({
+      createParentPath: true,
+      limits: {
+        fileSize: maxSizeFileUpload * 1024 * 1024 * 1024, //20MB max file(s) size
+      },
+      tempFileDir: '/Files/',
+    }),
+  )
+
   app.get('/', (_, res) => {
     res.json('👋 Server ready ')
   })
 
-  app.listen(port, () => {
+  const server = app.listen(port, () => {
     console.log(`  ➜ 🎸 Server is listening on port: ${port}`)
+  })
+  const io = socket.init(server)
+  io.on('connection', () => {
+    console.log('Socket IO Connected')
   })
 }
 

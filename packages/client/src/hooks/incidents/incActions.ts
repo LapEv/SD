@@ -24,6 +24,8 @@ export interface INCActions {
   getTypesOfWork: () => void
   getTypesCompletedWork: () => void
   newINC: (data: AddINC) => void
+  newINCSocket: (data: AddINC) => void
+  newINCfromMailSocket: (data: AddINC) => void
   newIncidentStatuses: (data: AddINCStatuses) => void
   newTypesOfWork: (data: AddTypesOfWork) => void
   newTypeCompletedWork: (data: AddTypesCompletedWork) => void
@@ -31,8 +33,11 @@ export interface INCActions {
   deleteTypesOfWork: (data: string[]) => void
   deleteTypesCompletedWork: (data: string[]) => void
   changeExecutor: (data: ChangeExecutor) => void
+  changeExecutorSocket: (data: ChangeExecutor) => void
   changeResponsible: (data: ChangeResponsible) => void
+  changeResponsibleSocket: (data: ChangeResponsible) => void
   changeStatus: (data: ChangeStatus) => void
+  changeStatusSocket: (data: ChangeStatus) => void
   changeINC: (data: ChangeINC) => void
   changeINCAddFiles: (data: ChangeINCAddFiles) => void
   changeIncidentStatuses: (data: ChangeINCStatuses) => void

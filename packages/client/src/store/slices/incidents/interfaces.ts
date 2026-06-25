@@ -133,6 +133,7 @@ export interface IncidentLogsForINC {
   id: string
   time: string
   log: string
+  isSystem?: boolean
   User: {
     id: string
     username: string

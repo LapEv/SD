@@ -2,52 +2,82 @@ import {
   MailDataRegInc,
   MailDataChangeStatus,
   IRegINCfromMail,
+  ErrorSendMail,
 } from './interface'
-import { mailConst } from '../data/const'
+import { AppConst, mailConst } from '../data/const'
 import { htmlRegistration, htmlChangeStatus } from '.'
+import { SystemRepos } from '../db'
+import { ISystem } from '../models/system'
 
 const nodemailer = require('nodemailer')
 
 export const mailerRegInc = async (data: MailDataRegInc) => {
-  const { EMAIL_USER, EMAIL_PASSWORD, EMAIL_HOST, EMAIL_PORT } = process.env
+  const { emailServer, incident } = (
+    (await SystemRepos.findAll({})) as ISystem[]
+  )[0]
+
+  const { email, password, host, port } = emailServer
+  if (!email || !password || !host || !port) {
+    return { status: false, errText: AppConst.mailNotifications.errors.auth }
+  }
+
   const transporter = nodemailer.createTransport({
-    host: EMAIL_HOST,
-    port: EMAIL_PORT,
+    host,
+    port,
     secure: true,
     auth: {
-      user: EMAIL_USER,
-      pass: EMAIL_PASSWORD,
+      user: email,
+      pass: password,
     },
   })
-  const info = await transporter.sendMail({
-    from: `"Уведомление службы поддержки СБИ" <${EMAIL_USER}>`,
-    to: `${mailConst.ourMail}, ${data.mailTo}`,
+
+  const message = {
+    from: `"Уведомление службы поддержки SD" <${email}>`,
+    to: `${incident.emailTechnicalSupport}, ${data.mailTo}`,
     subject: `${mailConst.mailMessages.Incidents.titleRegistration} ${data.incident}`,
     text: '',
-    html: htmlRegistration(data),
-  })
-  return info
+    html: await htmlRegistration(data),
+  }
+  try {
+    const info = await transporter.sendMail(message)
+    return { status: true, info }
+  } catch (err) {
+    return { status: false, err: err as ErrorSendMail }
+  }
 }
 
 export const mailerChangeStatus = async (data: MailDataChangeStatus) => {
-  const { EMAIL_USER, EMAIL_PASSWORD, EMAIL_HOST, EMAIL_PORT } = process.env
+  const { emailServer, incident } = (
+    (await SystemRepos.findAll({})) as ISystem[]
+  )[0]
+
+  const { email, password, host, port } = emailServer
+  if (!email || !password || !host || !port) {
+    return { status: false, errText: AppConst.mailNotifications.errors.auth }
+  }
   const transporter = nodemailer.createTransport({
-    host: EMAIL_HOST,
-    port: EMAIL_PORT,
+    host,
+    port,
     secure: true,
     auth: {
-      user: EMAIL_USER,
-      pass: EMAIL_PASSWORD,
+      user: email,
+      pass: password,
     },
   })
-  const info = await transporter.sendMail({
-    from: `"Уведомление службы поддержки СБИ" <${EMAIL_USER}>`,
-    to: `${mailConst.ourMail}, ${data.mailTo}`,
+
+  const message = {
+    from: `"Уведомление службы поддержки SD" <${email}>`,
+    to: `${incident.emailTechnicalSupport}, ${data.mailTo}`,
     subject: `${mailConst.mailMessages.Incidents.titleChangeStatus} ${data.incident}`,
     text: '',
-    html: htmlChangeStatus(data),
-  })
-  return info
+    html: await htmlChangeStatus(data),
+  }
+  try {
+    const info = await transporter.sendMail(message)
+    return { status: true, info }
+  } catch (err) {
+    return { status: false, err: err as ErrorSendMail }
+  }
 }
 
 export const sendMail = async ({
@@ -55,21 +85,32 @@ export const sendMail = async ({
   subject,
   text,
 }: IRegINCfromMail) => {
-  const { EMAIL_USER, EMAIL_PASSWORD, EMAIL_HOST, EMAIL_PORT } = process.env
+  const { emailServer, incident } = (
+    (await SystemRepos.findAll({})) as ISystem[]
+  )[0]
+
+  const { email, password, host, port } = emailServer
+  if (!email || !password || !host || !port) {
+    return { status: false, errText: AppConst.mailNotifications.errors.auth }
+  }
   const transporter = nodemailer.createTransport({
-    host: EMAIL_HOST,
-    port: EMAIL_PORT,
+    host,
+    port,
     secure: true,
     auth: {
-      user: EMAIL_USER,
-      pass: EMAIL_PASSWORD,
+      user: email,
+      pass: password,
     },
   })
-  const info = await transporter.sendMail({
-    from: `"Уведомление службы поддержки СБИ" <${EMAIL_USER}>`,
-    to: `${mailConst.ourMail}, ${addressTo}`,
-    subject,
-    text,
-  })
-  return info
+  try {
+    const info = await transporter.sendMail({
+      from: `"Уведомление службы поддержки SD" <${email}>`,
+      to: `${incident.emailTechnicalSupport}, ${addressTo}`,
+      subject,
+      text,
+    })
+    return { status: true, info }
+  } catch (err) {
+    return { status: false, err: err as ErrorSendMail }
+  }
 }

@@ -77,6 +77,16 @@ export const nameValidationNoRequired = {
   },
 }
 
+export const domainValidationNoRequired = {
+  validate: (value: string) => {
+    if (!value.length) return true
+    if (!value.match('^[а-яА-Яa-zA-Z _-.]+$')) {
+      return 'Неверный формат хоста!'
+    }
+    return true
+  },
+}
+
 export const lightTextValidation = {
   required: REQUIRED_FIELD,
   validate: (value: string) => {
@@ -244,6 +254,7 @@ export const emailValidation = {
 
 export const emailValidationNoRequired = {
   validate: (value: string) => {
+    if (value === undefined) return
     if (!value.length) return true
     if (!value.match('^[a-zA-z0-9]+[a-zA-Z\\d-_.]*@[a-z\\d-_]+\\.')) {
       return 'Неправильный email'
@@ -322,9 +333,9 @@ export const timeValidation = {
   },
 }
 
-export const fileValidationAvatar = (files: FileList) => {
+export const fileValidationAvatar = (files: FileList, maxSizeFile: number) => {
   const requiredTypes = ['image', 'application/pdf']
-  const requiredSize = 1024 * 1024 * 2
+  const requiredSize = 1024 * 1024 * maxSizeFile
   const valError = []
 
   if (files.length > 10) {

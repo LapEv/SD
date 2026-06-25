@@ -23,7 +23,7 @@ const initialState: SystemState = {
       password: '',
     },
     incident: {
-      daysForClose: 30,
+      daysForClose: 0,
       emailTechnicalSupport: '',
     },
   },
