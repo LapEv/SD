@@ -24,6 +24,7 @@
     "@types/serialize-javascript": "^5.0.4",
     "bcryptjs": "^2.4.3",
     "cors": "^2.8.6",
+    "cron": "^4.4.0",
     "cross-env": "^10.1.0",
     "dotenv": "^16.4.5",
     "eslint-config-prettier": "9.1.0",

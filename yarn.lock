@@ -2448,6 +2448,11 @@
     "@types/ms" "*"
     "@types/node" "*"
 
+"@types/luxon@~3.7.0":
+  version "3.7.2"
+  resolved "https://registry.yarnpkg.com/@types/luxon/-/luxon-3.7.2.tgz#082bb2adf54bc6fe1d514a0d80a82ac6a75cfaac"
+  integrity sha512-gW+Oib+vUtGJBtNC8V9Reww0oIpusw+4m81uncg9REGZAJfqOQHfo/nkabnc7w0QReXyPqjrbWMJk6NuAkiX3Q==
+
 "@types/mailparser@^3.4.6":
   version "3.4.6"
   resolved "https://registry.yarnpkg.com/@types/mailparser/-/mailparser-3.4.6.tgz#fcca99fe9f919f3da691a0bf5e3022c6283c3068"
@@ -3781,6 +3786,14 @@ create-require@^1.1.0:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/create-require/-/create-require-1.1.1.tgz#c1d7e8f1e5f6cfc9ff65f9cd352d37348756c333"
   integrity sha512-dcKFX3jn0MpIaXjisoRvexIJVEKzaq7z2rZKxf+MSr9TkdmHmsU4m2lcLojrj/FHl8mk5VxMmYA+ftRkP/3oKQ==
+
+cron@^4.4.0:
+  version "4.4.0"
+  resolved "https://registry.yarnpkg.com/cron/-/cron-4.4.0.tgz#1488444a23ea7134e2b7686c17711abdffcebba8"
+  integrity sha512-fkdfq+b+AHI4cKdhZlppHveI/mgz2qpiYxcm+t5E5TsxX7QrLS1VE0+7GENEk9z0EeGPcpSciGv6ez24duWhwQ==
+  dependencies:
+    "@types/luxon" "~3.7.0"
+    luxon "~3.7.0"
 
 cross-env@^10.1.0:
   version "10.1.0"
@@ -6571,6 +6584,11 @@ lru-cache@^7.4.4, lru-cache@^7.5.1, lru-cache@^7.7.1:
   version "7.18.3"
   resolved "https://registry.yarnpkg.com/lru-cache/-/lru-cache-7.18.3.tgz#f793896e0fd0e954a59dfdd82f0773808df6aa89"
   integrity sha512-jumlc0BIUrS3qJGgIkWZsyfAM7NCWiBcCDhnd+3NNM5KbBmLTgHVfWBcg6W+rLUsIpzpERPsvwUP7CckAQSOoA==
+
+luxon@~3.7.0:
+  version "3.7.2"
+  resolved "https://registry.yarnpkg.com/luxon/-/luxon-3.7.2.tgz#d697e48f478553cca187a0f8436aff468e3ba0ba"
+  integrity sha512-vtEhXh/gNjI9Yg1u4jX/0YVPMvxzHuGgCm6tC5kZyb08yjGWGnqAjGJvcXbqQR2P3MyMEFnRbpcdFS6PBcLqew==
 
 mailparser@^3.9.3:
   version "3.9.8"
