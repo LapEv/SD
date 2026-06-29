@@ -14,6 +14,7 @@ import {
   GetDispatchers,
   newUser,
   deleteAvatar,
+  resetPassword,
 } from 'api/user'
 import { signin, signup } from 'api/user'
 import { RootState } from 'store/index'
@@ -55,6 +56,9 @@ export function useAuth(): [AuthState, AuthActions] {
       },
       changePassword(data) {
         dispatch(changePassword(data))
+      },
+      resetPassword(data) {
+        dispatch(resetPassword(data))
       },
       changeUserAppOptions(options) {
         dispatch(changeUserAppOptions(options))

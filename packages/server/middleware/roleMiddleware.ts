@@ -25,7 +25,9 @@ module.exports = function (roles: []) {
       const verifycode = jwt.verify(token, SECRET_KEY as Secret)
       const { rolesGroup } = verifycode as JwtPayload
       let hasRole = false
-
+      if (roles.includes(rolesGroup as never)) {
+        hasRole = true
+      }
       const groupRoles = (await roleGroupRepos.findAll({
         where: { group: rolesGroup },
         include,

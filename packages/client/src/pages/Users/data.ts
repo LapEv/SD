@@ -24,6 +24,7 @@ export const ModalTitles = {
   сhangeNameRole: 'Изменить название роли',
   changeNameDivision: 'Изменить название дивизиона',
   changeNameDepartment: 'Изменить название отдела',
+  resetPassword: 'Сбросить пароль пользователя',
 }
 
 export const MapRoleInputFields = [
@@ -313,6 +314,16 @@ export const MapNewDepartmentNameInputFields = [
     name: 'newDepartmentID',
     label: 'Введите новый идентификатор отдела',
     validation: textValidationENGlowercase,
+    type: 'text',
+    required: true,
+  },
+]
+
+export const MapResetPasswordNameInputFields = [
+  {
+    name: 'password',
+    label: 'Введите пароль',
+    validation: passwordValidation,
     type: 'text',
     required: true,
   },

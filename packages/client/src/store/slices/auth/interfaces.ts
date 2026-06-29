@@ -102,6 +102,12 @@ export interface ChangePasswordProps {
   newPassword: string
   id: string
 }
+
+export interface ResetPasswordProps {
+  id: string
+  password: string
+}
+
 export interface ChangeAppProps {
   id: string
   appOptions: AppOptions

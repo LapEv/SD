@@ -185,6 +185,24 @@ export class userService {
       res.status(500).json({ error: ['db error', err as Error] })
     }
   }
+  resetPassword = async (_req: Request, res: Response) => {
+    const { password, id } = _req.body
+    const errValidation: Result = validationResult(_req)
+    if (!errValidation.isEmpty()) {
+      const errors = errValidation.array()
+      return res.status(400).json({
+        message: `${auth.notification.errorValidation}: ${errors[0].msg}`,
+        errValidation,
+      })
+    }
+    const hashPassword = bcrypt.hashSync(password, 7)
+    try {
+      await userRepos.update(id, { password: hashPassword })
+      res.status(200).json('Ok')
+    } catch (err) {
+      res.status(500).json({ error: ['db error', err as Error] })
+    }
+  }
   changeAvatar = async (_req: Request, res: Response) => {
     const { id_avatarFiles, id } = _req.body
     try {

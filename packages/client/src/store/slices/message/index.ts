@@ -20,6 +20,7 @@ import { MessageState } from './interfaces'
 import {
   ChangeAvatar,
   changePassword,
+  resetPassword,
   updateProfile,
   deleteUser,
   signin,
@@ -382,6 +383,19 @@ export const messageSlise = createSlice({
       state.isLoadingMessage = true
     })
     builder.addCase(changePassword.rejected, (state, { payload }) => {
+      state.isLoadingMessage = false
+      state.type = 'error'
+      state.text = payload as string
+    })
+    builder.addCase(resetPassword.fulfilled, (state, { payload }) => {
+      state.isLoadingMessage = false
+      state.text = payload?.message.text as string
+      state.type = payload?.message.type as string
+    })
+    builder.addCase(resetPassword.pending, state => {
+      state.isLoadingMessage = true
+    })
+    builder.addCase(resetPassword.rejected, (state, { payload }) => {
       state.isLoadingMessage = false
       state.type = 'error'
       state.text = payload as string

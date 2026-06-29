@@ -122,32 +122,32 @@ export const incidentRouter = (apiRouter: Router) => {
 
   router.get(
     '/getFilter',
-    roleMiddleware(['getFilter', 'SUPERADMIN']),
+    roleMiddleware(['getFilter', 'SUPERADMIN', 'Dispatcher']),
     service.getFilter,
   )
   router.get(
     '/getINC',
-    roleMiddleware(['getINC', 'SUPERADMIN']),
+    roleMiddleware(['getINC', 'SUPERADMIN', 'Dispatcher']),
     service.getINC,
   )
   router.get(
     '/getINCs',
-    roleMiddleware(['getINCs', 'SUPERADMIN']),
+    roleMiddleware(['getINCs', 'SUPERADMIN', 'Dispatcher']),
     service.getINCs,
   )
   router.get(
     '/getINCsByDate',
-    roleMiddleware(['getINCsByDate', 'SUPERADMIN']),
+    roleMiddleware(['getINCsByDate', 'SUPERADMIN', 'Dispatcher']),
     service.getINCsByDate,
   )
   router.get(
     '/getAllINC',
-    roleMiddleware(['getAllINC', 'SUPERADMIN']),
+    roleMiddleware(['getAllINC', 'SUPERADMIN', 'Dispatcher']),
     service.getAllINC,
   )
   router.post(
     '/newINC',
-    roleMiddleware(['newINC', 'SUPERADMIN']),
+    roleMiddleware(['newINC', 'SUPERADMIN', 'Dispatcher']),
     service.newINC,
   )
   router.post(
@@ -187,60 +187,60 @@ export const incidentRouter = (apiRouter: Router) => {
   )
   router.post(
     '/changeExecutor',
-    roleMiddleware(['changeExecutor', 'SUPERADMIN']),
+    roleMiddleware(['changeExecutor', 'SUPERADMIN', 'Dispatcher']),
     service.changeExecutor,
   )
   router.post(
     '/changeResponsible',
-    roleMiddleware(['changeResponsible', 'SUPERADMIN']),
+    roleMiddleware(['changeResponsible', 'SUPERADMIN', 'Dispatcher']),
     service.changeResponsible,
   )
   router.post(
     '/changeStatus',
-    roleMiddleware(['changeStatus', 'SUPERADMIN']),
+    roleMiddleware(['changeStatus', 'SUPERADMIN', 'Dispatcher']),
     service.changeStatus,
   )
   router.post(
     '/changeUserClosingCheck',
-    roleMiddleware(['changeUserClosingCheck', 'SUPERADMIN']),
+    roleMiddleware(['changeUserClosingCheck', 'SUPERADMIN', 'Dispatcher']),
     service.changeUserClosingCheck,
   )
   router.post(
     '/changeUserClosing',
-    roleMiddleware(['changeUserClosing', 'SUPERADMIN']),
+    roleMiddleware(['changeUserClosing', 'SUPERADMIN', 'Dispatcher']),
     service.changeUserClosing,
   )
   router.post(
     '/changeComment',
-    roleMiddleware(['changeComment', 'SUPERADMIN']),
+    roleMiddleware(['changeComment', 'SUPERADMIN', 'Dispatcher']),
     service.changeComment,
   )
 
   router.get(
     '/getINCLogs',
-    roleMiddleware(['getINCLogs', 'SUPERADMIN']),
+    roleMiddleware(['getINCLogs', 'SUPERADMIN', 'Dispatcher']),
     service.getINCLogs,
   )
   router.get(
     '/getAllINCLogs',
-    roleMiddleware(['getAllINCLogs', 'SUPERADMIN']),
+    roleMiddleware(['getAllINCLogs', 'SUPERADMIN', 'Dispatcher']),
     service.getAllINCLogs,
   )
 
   router.get(
     '/getTimeSLAs',
-    roleMiddleware(['ADMIN', 'SUPERADMIN']),
+    roleMiddleware(['ADMIN', 'SUPERADMIN', 'Dispatcher']),
     service.getTimeSLAs,
   )
 
   router.post(
     '/changeTimeSLAs',
-    roleMiddleware(['ADMIN', 'SUPERADMIN']),
+    roleMiddleware(['ADMIN', 'SUPERADMIN', 'Dispatcher']),
     service.changeTimeSLAs,
   )
   router.get(
     '/checkForCloseINC',
-    roleMiddleware(['ADMIN', 'SUPERADMIN']),
+    roleMiddleware(['ADMIN', 'SUPERADMIN', 'Dispatcher']),
     service.checkForCloseINC,
   )
   apiRouter.use('/incidents', router)

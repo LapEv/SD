@@ -9,6 +9,7 @@ import GroupAdd from '@mui/icons-material/GroupAdd'
 import Remove from '@mui/icons-material/Remove'
 import GroupRemove from '@mui/icons-material/GroupRemove'
 import PersonRemoveIcon from '@mui/icons-material/PersonRemove'
+import LockResetOutlinedIcon from '@mui/icons-material/LockResetOutlined'
 
 export const menuData = [
   {
@@ -50,6 +51,11 @@ export const menuData = [
     name: 'deleteUser',
     title: 'Удалить пользователя',
     icon: <PersonRemoveIcon fontSize="medium" />,
+  },
+  {
+    name: 'resetPassword',
+    title: 'Сбросить пароль пользователя',
+    icon: <LockResetOutlinedIcon fontSize="medium" />,
   },
   {
     name: 'deleteRole',

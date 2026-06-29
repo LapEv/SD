@@ -15,6 +15,7 @@ export const ApiEndPoints = {
     CheckUser: 'user/checkUser',
     UserFullInfo: 'user/getUserFullInfo',
     ChangePassword: 'user/changePassword',
+    ResetPassword: 'user/resetPassword',
     UpdateProfile: 'user/updateProfile',
     UpdateProfileAvatar: 'user/profile/changeAvatar',
     Search: 'user/search',
@@ -165,7 +166,7 @@ export const url = __BASE_URL__.includes('https')
 
 const authhost = axios.create({
   baseURL: url,
-  timeout: 5000,
+  timeout: 10000,
   headers: {
     'Content-Type': 'application/json',
   },
@@ -173,7 +174,7 @@ const authhost = axios.create({
 
 const authFileHost = axios.create({
   baseURL: url,
-  timeout: 5000,
+  timeout: 10000,
   headers: {
     'Content-Type': 'multipart/form-data',
   },
@@ -181,7 +182,7 @@ const authFileHost = axios.create({
 
 const host = axios.create({
   baseURL: url,
-  timeout: 5000,
+  timeout: 10000,
   headers: {
     'Content-Type': 'application/json',
   },
@@ -200,7 +201,6 @@ authFileHost.interceptors.request.use(authInterceptor)
 authhost.interceptors.response.use(
   res => res,
   error => {
-    console.log('res error = ', error)
     if (error.response) {
       if (error.response.status) {
         if (

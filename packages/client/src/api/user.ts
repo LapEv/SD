@@ -11,6 +11,7 @@ import {
   ICheckUser,
   NewUser,
   ChangeAppProps,
+  ResetPasswordProps,
 } from 'storeAuth/interfaces'
 import { authhost, host, ApiEndPoints, authFileHost } from './config'
 import axios from 'axios'
@@ -303,6 +304,35 @@ export const changePassword = createAsyncThunk(
       if (axios.isAxiosError<ValidationError, Record<string, unknown>>(error)) {
         return thunkAPI.rejectWithValue(
           `Не удалось изменить пароль: \n${
+            error.response?.data.message ?? error.response?.data
+          }`,
+        )
+      } else {
+        console.error(error)
+      }
+    }
+  },
+)
+
+export const resetPassword = createAsyncThunk(
+  'user/resetPassword',
+  async (value: ResetPasswordProps, thunkAPI) => {
+    try {
+      const { data } = await authhost.post<User[]>(
+        ApiEndPoints.User.ResetPassword,
+        value,
+      )
+      return {
+        data,
+        message: {
+          text: 'Пароль успешно сброшен!',
+          type: 'success',
+        },
+      }
+    } catch (error) {
+      if (axios.isAxiosError<ValidationError, Record<string, unknown>>(error)) {
+        return thunkAPI.rejectWithValue(
+          `Не удалось сбросить пароль: \n${
             error.response?.data.message ?? error.response?.data
           }`,
         )
