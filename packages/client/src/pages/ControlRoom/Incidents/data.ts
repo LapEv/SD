@@ -688,6 +688,8 @@ export const notificationINCLabel = [
   { label: '- Новый статус', name: 'changeStatus' },
   { label: '- Новый исполнитель', name: 'changeExecutor' },
   { label: '- Новый ответственный', name: 'changeResponsible' },
+  { label: '- Изменен инцидент', name: 'changeINC' },
+  { label: '- Добавление актов в инцидент', name: 'changeINCAddFiles' },
 ]
 
 export const notificationsDataINC = {
@@ -696,6 +698,8 @@ export const notificationsDataINC = {
   changeStatus: true,
   changeExecutor: true,
   changeResponsible: true,
+  changeINC: true,
+  changeINCAddFiles: false,
 }
 
 export const ModalTitles = {

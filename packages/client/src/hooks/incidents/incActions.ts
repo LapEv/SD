@@ -39,6 +39,7 @@ export interface INCActions {
   changeStatus: (data: ChangeStatus) => void
   changeStatusSocket: (data: ChangeStatus) => void
   changeINC: (data: ChangeINC) => void
+  changeINCSocket: (data: INC) => void
   changeINCAddFiles: (data: ChangeINCAddFiles) => void
   changeIncidentStatuses: (data: ChangeINCStatuses) => void
   changeStateIncidentStatuses: (data: INCStatuses[]) => void

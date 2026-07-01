@@ -9,12 +9,12 @@ export const userStatusRouter = (apiRouter: Router) => {
 
   router.post(
     '/setNewUserStatus',
-    roleMiddleware(['setNewUserStatus', 'SUPERADMIN']),
+    roleMiddleware(['setNewUserStatus', 'ADMIN', 'SUPERADMIN']),
     service.setNewUserStatus,
   )
   router.get(
     '/getUserStatus',
-    roleMiddleware(['getUserStatus', 'SUPERADMIN']),
+    roleMiddleware(['getUserStatus', 'ADMIN', 'SUPERADMIN']),
     service.getUserStatus,
   )
   router.post(

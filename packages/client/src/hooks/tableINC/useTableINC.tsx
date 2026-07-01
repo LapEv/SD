@@ -21,6 +21,7 @@ import {
   setFilterListOptions,
   setSearchValue,
   setModal,
+  setToCloud,
 } from 'store/slices/tableINC'
 
 export function useTableINC(): [TableINCState, TableINCActions] {
@@ -81,6 +82,9 @@ export function useTableINC(): [TableINCState, TableINCActions] {
       },
       setModal(data) {
         dispatch(setModal(data))
+      },
+      setToCloud(data) {
+        dispatch(setToCloud(data))
       },
     },
   ]

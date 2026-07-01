@@ -4,7 +4,7 @@ import { memo } from 'react'
 import { ThemeColor } from 'themes/themeConfig'
 
 export const Normal = memo(() => {
-  const [{ incidents }] = useIncidents()
+  const [{ filtered }] = useIncidents()
 
   const container = {
     width: '100%',
@@ -107,7 +107,7 @@ export const Normal = memo(() => {
   return (
     <Box sx={{ width: '100%', height: 'auto', p: 2, pt: 0 }}>
       <style>{`@media print {@page {size: portrait}`}</style>
-      {incidents.map(
+      {filtered.map(
         (
           {
             incident,

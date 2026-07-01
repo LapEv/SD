@@ -15,7 +15,8 @@ import { MuiDiv } from 'components/MUI'
 
 export const ClientsList = memo(({ client, legalName, id }: Clients) => {
   const [{ activeClient }, { setActiveClient, changeClient }] = useClients()
-  const [{ contracts }, { getContractsByClientID }] = useContracts()
+  const [{ contracts }, { getContractsByClientID, resetContracts }] =
+    useContracts()
   const [{ admin }] = useAuth()
   const modalRef = React.createRef()
   const [open, setOpen] = useState(false)
@@ -25,6 +26,7 @@ export const ClientsList = memo(({ client, legalName, id }: Clients) => {
 
   const handleClick = () => {
     setOpen(!open)
+    resetContracts()
     setActiveClient(id as string)
     getContractsByClientID(id as string)
   }

@@ -5,7 +5,11 @@ import { useAuth } from 'hooks/auth/useAuth'
 import { INCHeader } from './INCHeader'
 import { INCBody } from './INCBody'
 import { useTableINC } from 'hooks/tableINC/useTableINC'
-import { getInitialSettings, GetEndDate } from 'pages/ControlRoom/Incidents'
+import {
+  getInitialSettings,
+  GetEndDate,
+  GetStoredData,
+} from 'pages/ControlRoom/Incidents'
 import { MuiDiv } from 'components/MUI'
 import { io } from 'socket.io-client'
 import { baseURL } from 'api/config'
@@ -22,20 +26,45 @@ export const TableIncidents = memo(() => {
       changeExecutorSocket,
       changeResponsibleSocket,
       changeStatusSocket,
+      changeINCSocket,
       newINCSocket,
       newINCfromMailSocket,
     },
   ] = useIncidents()
-  const [{ dense }, { setSettings }] = useTableINC()
-  const [, { getFieldEngineers, getDispatchers }] = useAuth()
+  const [{ dense, toCloud }, { setSettings, setToCloud }] = useTableINC()
+  const [
+    { user },
+    { getFieldEngineers, getDispatchers, changeUserAppOptions },
+  ] = useAuth()
   const [, { setMessage }] = useMessage()
 
   useEffect(() => {
+    if (toCloud) {
+      const storedData = GetStoredData()
+      if (!storedData) return
+      const appOptions = {
+        ...user.appOptions,
+        dispatcherOptions: storedData,
+      }
+      changeUserAppOptions({ id: user.id as string, appOptions })
+      setToCloud(false)
+    }
+  }, [toCloud])
+
+  useEffect(() => {
+    // console.log('eslint')
+    // console.log('template для колонок и фильтров')
+
+    // console.log('Color Pickker убрать, посмотреть темный режим')
+    // console.log('sw посмотреть')
+
     getFieldEngineers()
     getDispatchers()
     getIncidentStatuses()
     getTypesCompletedWork()
-    const settingsStorage = getInitialSettings()
+    const settingsStorage = getInitialSettings(
+      user.appOptions?.dispatcherOptions,
+    )
     setSettings(settingsStorage)
     if (settingsStorage.timeInterval === 0) {
       getINC()
@@ -50,7 +79,9 @@ export const TableIncidents = memo(() => {
       if (localToken === token) return
 
       if (category === 'incidents') {
-        const { notificationsINC } = getInitialSettings()
+        const { notificationsINC } = getInitialSettings(
+          user.appOptions?.dispatcherOptions,
+        )
         if (action === 'changeExecutor') {
           changeExecutorSocket(data)
           if (notificationsINC.changeExecutor) {
@@ -92,6 +123,24 @@ export const TableIncidents = memo(() => {
           if (notificationsINC.newINCfromMail) {
             setMessage({
               text: `Зарегистрирован новый инцидент ${data.incident} с почтового сервера`,
+              type: 'info',
+            })
+          }
+        }
+        if (action === 'changeINC') {
+          changeINCSocket(data)
+          if (notificationsINC.changeINC) {
+            setMessage({
+              text: `Изменен инцидент ${data.incident}`,
+              type: 'info',
+            })
+          }
+        }
+        if (action === 'changeINCAddFiles') {
+          changeINCSocket(data)
+          if (notificationsINC.changeINCAddFiles) {
+            setMessage({
+              text: `Изменены акты для инцидента ${data.incident}`,
               type: 'info',
             })
           }

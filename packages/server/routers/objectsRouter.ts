@@ -9,17 +9,17 @@ export const objectsRouter = (apiRouter: Router) => {
 
   router.get(
     '/getObjects',
-    roleMiddleware(['getObjects', 'SUPERADMIN']),
+    roleMiddleware(['getObjects', 'ADMIN', 'SUPERADMIN']),
     service.getObjects,
   )
   router.get(
     '/getAllObjects',
-    roleMiddleware(['getAllObjects', 'SUPERADMIN']),
+    roleMiddleware(['getAllObjects', 'ADMIN', 'SUPERADMIN']),
     service.getAllObjects,
   )
   router.post(
     '/newObject',
-    roleMiddleware(['newObject', 'SUPERADMIN']),
+    roleMiddleware(['newObject', 'ADMIN', 'SUPERADMIN']),
     service.newObject,
   )
   router.post(
@@ -39,7 +39,7 @@ export const objectsRouter = (apiRouter: Router) => {
   )
   router.post(
     '/changeObject',
-    roleMiddleware(['changeObject', 'SUPERADMIN']),
+    roleMiddleware(['changeObject', 'ADMIN', 'SUPERADMIN']),
     service.changeObject,
   )
 

@@ -82,7 +82,7 @@ export const rolesStartData = [
   },
   {
     role: 'deleteDivision',
-    group: ['ADMIN'],
+    group: [],
     nameRole: 'Перемещение дивизиона в архив',
   },
   {
@@ -92,7 +92,7 @@ export const rolesStartData = [
   },
   {
     role: 'deleteDepartment',
-    group: ['ADMIN'],
+    group: [],
     nameRole: 'Перемещение отдела в архив',
   },
   {
@@ -190,7 +190,7 @@ export const rolesStartData = [
   },
   {
     role: 'deleteClientGroup',
-    group: ['ADMIN'],
+    group: [],
     nameRole: 'Удаление группы клиентов',
   },
   {
@@ -215,7 +215,7 @@ export const rolesStartData = [
   },
   {
     role: 'deleteObject',
-    group: ['ADMIN'],
+    group: [],
     nameRole: 'Перемещение объекта в архив',
   },
   {
@@ -250,7 +250,7 @@ export const rolesStartData = [
   },
   {
     role: 'deleteClient',
-    group: ['ADMIN'],
+    group: [],
     nameRole: 'Перемещение клиента в архив',
   },
   {
@@ -285,7 +285,7 @@ export const rolesStartData = [
   },
   {
     role: 'deleteAddress',
-    group: ['ADMIN'],
+    group: [],
     nameRole: 'Перемещение адреса в архив',
   },
   {
@@ -310,7 +310,7 @@ export const rolesStartData = [
   },
   {
     role: 'deleteRegion',
-    group: ['ADMIN'],
+    group: [],
     nameRole: 'Перемещение региона в архив',
   },
   {
@@ -335,7 +335,7 @@ export const rolesStartData = [
   },
   {
     role: 'deleteClassifierEquipment',
-    group: ['ADMIN'],
+    group: [],
     nameRole: 'Перемещение классификатора оборудования в архив',
   },
   {
@@ -365,7 +365,7 @@ export const rolesStartData = [
   },
   {
     role: 'deleteClassifierModel',
-    group: ['ADMIN'],
+    group: [],
     nameRole: 'Перемещение классификатора моделей в архив',
   },
   {
@@ -396,7 +396,7 @@ export const rolesStartData = [
   },
   {
     role: 'deleteTypicalMalfunction',
-    group: ['ADMIN'],
+    group: [],
     nameRole: 'Перемещение типовых неисправностей в архив',
   },
   {
@@ -421,7 +421,7 @@ export const rolesStartData = [
   },
   {
     role: 'deleteSLA',
-    group: ['ADMIN'],
+    group: [],
     nameRole: 'Перемещение SLA в архив',
   },
   {
@@ -441,7 +441,7 @@ export const rolesStartData = [
   },
   {
     role: 'deleteOLA',
-    group: ['ADMIN'],
+    group: [],
     nameRole: 'Перемещение OLA в архив',
   },
   {
@@ -466,12 +466,12 @@ export const rolesStartData = [
   },
   {
     role: 'newContractName',
-    group: ['ADMIN'],
+    group: [],
     nameRole: 'Изменение наименование контракта',
   },
   {
     role: 'deleteContract',
-    group: ['ADMIN'],
+    group: [],
     nameRole: 'Перемещение контракта в архив',
   },
   {
@@ -483,6 +483,11 @@ export const rolesStartData = [
     role: 'getINC',
     group: ['ADMIN', 'Dispatcher', 'AdministrationCCA'],
     nameRole: 'Получение списка активных инцидентов',
+  },
+  {
+    role: 'getINCsByDate',
+    group: ['ADMIN', 'Dispatcher', 'AdministrationCCA'],
+    nameRole: 'Получение списка активных инцидентов по дате',
   },
   {
     role: 'getFilter',
@@ -546,7 +551,7 @@ export const rolesStartData = [
   },
   {
     role: 'deleteTypesOfWork',
-    group: ['ADMIN'],
+    group: [],
     nameRole: 'Перемещение типа работ в архив',
   },
   {
@@ -566,7 +571,7 @@ export const rolesStartData = [
   },
   {
     role: 'deleteTypesCompletedWork',
-    group: ['ADMIN'],
+    group: [],
     nameRole: 'Перемещение типа выполненных работ в архив',
   },
   {

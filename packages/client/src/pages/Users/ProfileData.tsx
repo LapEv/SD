@@ -26,18 +26,21 @@ import { AvatarBox } from 'components/AvatarBox'
 import { useFiles } from 'hooks/files/useFiles'
 import { FilesData } from 'store/slices/files/interfaces'
 import { ITheme, ThemeMode } from 'themes/themeConfig'
+import { useMessage } from 'hooks/message/useMessage'
 
-export const ProfileData = memo((user: User) => {
+export const ProfileData = memo((_user: User) => {
   const modalRef = React.createRef()
   const theme = useTheme() as ITheme
   const [
-    { admin, userData, userInfo, avatar },
+    { admin, userData, userInfo, avatar, user },
     { updateUserData, deleteUser, updateUser },
   ] = useAuth()
   const [, { getAvatar }] = useFiles()
   const [{ rolesGroup }, { getRolesGroupNotRoles }] = useRoles()
+  const [, { setMessage }] = useMessage()
   const [open, setOpen] = useState(false)
   const [dataGroup, setDataGroup] = useState<DataList[]>([])
+  const [oldDataGroup, setOldDataGroup] = useState<DataList[]>([])
   const [errSelectedItems, setErrSelectedItems] = useState<boolean>(false)
   const [changeActive, setChangeActive] = useState<boolean>(false)
   const [modal, setModal] = useState<boolean>(false)
@@ -51,7 +54,7 @@ export const ProfileData = memo((user: User) => {
     defaultValues: {
       list: fieldsData.map(data => ({
         ...data,
-        value: user[data.name as keyof typeof user] as string,
+        value: _user[data.name as keyof typeof _user] as string,
       })),
     },
   })
@@ -66,6 +69,29 @@ export const ProfileData = memo((user: User) => {
   }
 
   const setNewRolesGroup = (checked: boolean, id: string) => {
+    const chechForSuperAdmin = rolesGroup.find(
+      item => item.groupName === 'SUPERADMIN',
+    )
+    if (
+      chechForSuperAdmin?.id === id &&
+      user.id_rolesGroup !== chechForSuperAdmin?.id
+    ) {
+      setMessage({
+        text: 'У вас нет прав назначения пользовтеля "SUPERADMIN"!',
+        type: 'error',
+      })
+      setOldDataGroup(dataGroup)
+      const data = rolesGroup.map(item => {
+        return {
+          name: item.groupName,
+          id: item.id,
+          initChecked: item.id === id ? true : false,
+        }
+      })
+
+      setDataGroup(data)
+      return
+    }
     if (!checked) {
       setErrSelectedItems(true)
       setChangeActive(true)
@@ -87,6 +113,10 @@ export const ProfileData = memo((user: User) => {
       id_rolesGroup: id,
     })
   }
+
+  useEffect(() => {
+    setDataGroup(oldDataGroup)
+  }, [oldDataGroup])
 
   const handleClick = () => {
     setOpen(!open)

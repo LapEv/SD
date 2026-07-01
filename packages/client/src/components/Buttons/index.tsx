@@ -1,11 +1,6 @@
 import MuiButton, { type ButtonProps } from '@mui/material/Button'
 import { useTheme } from '@mui/material'
-import {
-  ElementType,
-  ForwardRefExoticComponent,
-  RefAttributes,
-  memo,
-} from 'react'
+import { ForwardRefExoticComponent, RefAttributes, memo } from 'react'
 import { LinkProps } from 'react-router-dom'
 import { ITheme, ThemeMode } from 'themes/themeConfig'
 
@@ -14,9 +9,6 @@ type TButtonProps = Omit<ButtonProps, 'component'> & {
     | React.ForwardRefExoticComponent<
         LinkProps & React.RefAttributes<HTMLAnchorElement>
       >
-    /* eslint-disable @typescript-eslint/no-explicit-any */
-    | ElementType<any>
-    /* eslint-enable @typescript-eslint/no-explicit-any */
     | ForwardRefExoticComponent<LinkProps & RefAttributes<HTMLAnchorElement>>
 }
 

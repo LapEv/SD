@@ -350,6 +350,7 @@ export interface ChangeINC {
 export interface ChangeINCAddFiles {
   endDate: Date | number
   logs: ChangeLogsEditINC[]
+  id: string
 }
 
 export interface IINCLogs {

@@ -44,21 +44,9 @@ export const Item = memo(
       }
     }, [oneChecked])
 
-    // useEffect(() => {
-    //   console.log('initChecked = ', initChecked)
-    //   console.log('name = ', name)
-    //   setChecked(initChecked as boolean)
-    // }, [initChecked])
-
     useEffect(() => {
       setChecked(initChecked as boolean)
     }, [initChecked])
-
-    // useEffect(() => {
-    //   if (noEmpty) {
-    //     setChecked(false as boolean)
-    //   }
-    // }, [noEmpty])
 
     return (
       <>

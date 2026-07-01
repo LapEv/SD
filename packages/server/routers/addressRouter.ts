@@ -9,17 +9,17 @@ export const addressRouter = (apiRouter: Router) => {
 
   router.get(
     '/getAddresses',
-    roleMiddleware(['getAddresses', 'SUPERADMIN']),
+    roleMiddleware(['getAddresses', 'ADMIN', 'SUPERADMIN']),
     service.getAddresses,
   )
   router.get(
     '/getAllAddresses',
-    roleMiddleware(['getAllAddresses', 'SUPERADMIN']),
+    roleMiddleware(['getAllAddresses', 'ADMIN', 'SUPERADMIN']),
     service.getAllAddresses,
   )
   router.post(
     '/newAddress',
-    roleMiddleware(['newAddress', 'SUPERADMIN']),
+    roleMiddleware(['newAddress', 'ADMIN', 'SUPERADMIN']),
     service.newAddress,
   )
   router.post(
@@ -39,23 +39,23 @@ export const addressRouter = (apiRouter: Router) => {
   )
   router.post(
     '/changeAddress',
-    roleMiddleware(['changeAddress', 'SUPERADMIN']),
+    roleMiddleware(['changeAddress', 'ADMIN', 'SUPERADMIN']),
     service.changeAddress,
   )
   router.get(
     '/getRegions',
-    roleMiddleware(['getRegions', 'SUPERADMIN']),
+    roleMiddleware(['getRegions', 'ADMIN', 'SUPERADMIN']),
     service.getRegions,
   )
   router.get(
     '/getAllRegions',
-    roleMiddleware(['getAllRegions', 'SUPERADMIN']),
+    roleMiddleware(['getAllRegions', 'ADMIN', 'SUPERADMIN']),
     service.getAllRegions,
   )
 
   router.post(
     '/newRegion',
-    roleMiddleware(['newRegion', 'SUPERADMIN']),
+    roleMiddleware(['newRegion', 'ADMIN', 'SUPERADMIN']),
     service.newRegion,
   )
   router.post(
@@ -75,7 +75,7 @@ export const addressRouter = (apiRouter: Router) => {
   )
   router.post(
     '/changeRegion',
-    roleMiddleware(['changeRegion', 'SUPERADMIN']),
+    roleMiddleware(['changeRegion', 'ADMIN', 'SUPERADMIN']),
     service.changeRegion,
   )
 

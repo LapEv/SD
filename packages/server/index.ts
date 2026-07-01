@@ -19,6 +19,19 @@ async function init() {
   dotenv.config({ path: '../../.env' })
   const app: Express = express()
 
+  const systemOptions = (await SystemRepos.findAll({})) as ISystem[]
+  const { additional } = systemOptions[0]
+  const maxSizeFileUpload = additional.maxSizeFileUpload ?? 10
+  app.use(
+    fileUpload({
+      createParentPath: true,
+      limits: {
+        fileSize: maxSizeFileUpload * 1024 * 1024 * 1024, //20MB max file(s) size
+      },
+      tempFileDir: '/Files/',
+    }),
+  )
+
   app.use(express.json({ limit: '50mb' }))
   const corsOptions = {
     origin: [
@@ -68,19 +81,6 @@ async function init() {
   // setInterval(() => {
   //   getEmails()
   // }, 60000)
-
-  const systemOptions = (await SystemRepos.findAll({})) as ISystem[]
-  const { additional } = systemOptions[0]
-  const maxSizeFileUpload = additional.maxSizeFileUpload ?? 10
-  app.use(
-    fileUpload({
-      createParentPath: true,
-      limits: {
-        fileSize: maxSizeFileUpload * 1024 * 1024 * 1024, //20MB max file(s) size
-      },
-      tempFileDir: '/Files/',
-    }),
-  )
 
   app.get('/', (_, res) => {
     res.json('👋 Server ready ')

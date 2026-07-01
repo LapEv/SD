@@ -9,7 +9,7 @@ export const roleRouter = (apiRouter: Router) => {
 
   router.post(
     '/newRole',
-    roleMiddleware(['addNewRole', 'SUPERADMIN']),
+    roleMiddleware(['addNewRole', 'ADMIN', 'SUPERADMIN']),
     service.newRole,
   )
   router.post(
@@ -24,7 +24,7 @@ export const roleRouter = (apiRouter: Router) => {
   )
   router.post(
     '/newRolesGroup',
-    roleMiddleware(['addNewRolesGroup', 'SUPERADMIN']),
+    roleMiddleware(['addNewRolesGroup', 'ADMIN', 'SUPERADMIN']),
     service.newRolesGroup,
   )
   router.post(
@@ -39,17 +39,17 @@ export const roleRouter = (apiRouter: Router) => {
   )
   router.post(
     '/changeRolesGroup',
-    roleMiddleware(['changeRolesGroup', 'SUPERADMIN']),
+    roleMiddleware(['changeRolesGroup', 'ADMIN', 'SUPERADMIN']),
     service.changeRolesGroup,
   )
   router.post(
     '/changeNameRolesGroup',
-    roleMiddleware(['changeNameRolesGroup', 'SUPERADMIN']),
+    roleMiddleware(['changeNameRolesGroup', 'ADMIN', 'SUPERADMIN']),
     service.changeNameRolesGroup,
   )
   router.post(
     '/changeNameRole',
-    roleMiddleware(['changeNameRole', 'SUPERADMIN']),
+    roleMiddleware(['changeNameRole', 'ADMIN', 'SUPERADMIN']),
     service.changeNameRole,
   )
 
@@ -72,7 +72,7 @@ export const roleRouter = (apiRouter: Router) => {
   )
   router.post(
     '/getRolesGroupByID',
-    roleMiddleware(['getRolesGroupByID', 'SUPERADMIN']),
+    roleMiddleware(['getRolesGroupByID', 'ADMIN', 'SUPERADMIN']),
     service.getRolesGroupByID,
   )
 

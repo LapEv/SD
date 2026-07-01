@@ -46,6 +46,7 @@ export const AddActsModal = ({ inc, newINC, setNewINC }: IAddActsModal) => {
       changeINCAddFiles({
         endDate: timeInterval === 0 ? 0 : new Date(endDate),
         logs,
+        id: _newINC.id,
       })
       setAddAct({ status: false, id_incFiles: '' })
 

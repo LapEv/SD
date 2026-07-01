@@ -9,17 +9,17 @@ export const slaRouter = (apiRouter: Router) => {
 
   router.get(
     '/getSLA',
-    roleMiddleware(['getSLA', 'SUPERADMIN']),
+    roleMiddleware(['getSLA', 'ADMIN', 'SUPERADMIN']),
     service.getSLA,
   )
   router.get(
     '/getAllSLA',
-    roleMiddleware(['getAllSLA', 'SUPERADMIN']),
+    roleMiddleware(['getAllSLA', 'ADMIN', 'SUPERADMIN']),
     service.getAllSLA,
   )
   router.post(
     '/newSLA',
-    roleMiddleware(['newSLA', 'SUPERADMIN']),
+    roleMiddleware(['newSLA', 'ADMIN', 'SUPERADMIN']),
     service.newSLA,
   )
   router.post(
@@ -39,22 +39,22 @@ export const slaRouter = (apiRouter: Router) => {
   )
   router.post(
     '/changeSLA',
-    roleMiddleware(['changeSLA', 'SUPERADMIN']),
+    roleMiddleware(['changeSLA', 'ADMIN', 'SUPERADMIN']),
     service.changeSLA,
   )
   router.get(
     '/getOLA',
-    roleMiddleware(['getOLA', 'SUPERADMIN']),
+    roleMiddleware(['getOLA', 'ADMIN', 'SUPERADMIN']),
     service.getOLA,
   )
   router.get(
     '/getAllOLA',
-    roleMiddleware(['getAllOLA', 'SUPERADMIN']),
+    roleMiddleware(['getAllOLA', 'ADMIN', 'SUPERADMIN']),
     service.getAllOLA,
   )
   router.post(
     '/newOLA',
-    roleMiddleware(['newOLA', 'SUPERADMIN']),
+    roleMiddleware(['newOLA', 'ADMIN', 'SUPERADMIN']),
     service.newOLA,
   )
   router.post(
@@ -74,7 +74,7 @@ export const slaRouter = (apiRouter: Router) => {
   )
   router.post(
     '/changeOLA',
-    roleMiddleware(['changeOLA', 'SUPERADMIN']),
+    roleMiddleware(['changeOLA', 'ADMIN', 'SUPERADMIN']),
     service.changeOLA,
   )
 

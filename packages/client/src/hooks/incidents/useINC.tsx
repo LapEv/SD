@@ -36,6 +36,7 @@ import {
   changeResponsible,
   changeStatus,
   newINCSocket,
+  changeINCSocket,
 } from 'store/slices/incidents'
 
 export function useIncidents(): [INCState, INCActions] {
@@ -95,6 +96,9 @@ export function useIncidents(): [INCState, INCActions] {
       },
       changeINC(data) {
         dispatch(changeINC(data))
+      },
+      changeINCSocket(data) {
+        dispatch(changeINCSocket(data))
       },
       changeINCAddFiles(data) {
         dispatch(changeINCAddFiles(data))

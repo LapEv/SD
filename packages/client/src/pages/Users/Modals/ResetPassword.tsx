@@ -45,8 +45,6 @@ export const ResetPassword = memo(
       })
 
       const changeData = ({ list }: AddValuesProps) => {
-        console.log('list = ', list)
-        console.log('selectedUser = ', selectedUser)
         if (!selectedUser.length) {
           setErrSelectedItems('Не выбран пользователь!')
           return

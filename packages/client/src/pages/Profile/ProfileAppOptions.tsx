@@ -1,19 +1,13 @@
-import { Collapse, ListItemButton, ListItemText, Modal } from '@mui/material'
+import { Collapse, ListItemButton, ListItemText } from '@mui/material'
 import { RotateButton } from 'components/Buttons'
 import { memo, useState } from 'react'
 import { SwitchMUI } from 'components/Switch'
 import { useAuth } from 'hooks/auth/useAuth'
 import { ThemeMode } from 'storeAuth/interfaces'
-import { Button } from 'components/Buttons'
 import { MuiDiv } from 'components/MUI'
-// import { ProfileChangeTheme } from './ProfileChangeTheme'
 
 export const ProfileAppOptions = memo(() => {
-  const [modal, setModal] = useState<boolean>(false)
-  const [
-    { user /*colorTheme*/ },
-    { changeUserAppOptions /*changeColorTheme*/ },
-  ] = useAuth()
+  const [{ user }, { changeUserAppOptions }] = useAuth()
   const [open, setOpen] = useState<boolean>(false)
   const [theme, setTheme] = useState<boolean>(
     user.appOptions?.theme === 'light' ? false : true,
@@ -21,9 +15,6 @@ export const ProfileAppOptions = memo(() => {
   const [font, setFont] = useState<boolean>(
     user.appOptions?.font === 'large' ? false : true,
   )
-
-  // const [colorLight, setColorLight] = useState<string>(ThemeColor.light)
-  // const [colorDark, setColorDark] = useState<string>(ThemeColor.dark)
 
   const handleClick = () => {
     setOpen(!open)
@@ -46,13 +37,6 @@ export const ProfileAppOptions = memo(() => {
 
   return (
     <MuiDiv className={'profileAppOptionsContainer'}>
-      <Modal
-        open={modal}
-        onClose={() => setModal(false)}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description">
-        <>{/* <ProfileChangeTheme handleModal={setModal} /> */}</>
-      </Modal>
       <ListItemButton
         divider={open}
         className={'itemButtonCollapse'}
@@ -79,10 +63,6 @@ export const ProfileAppOptions = memo(() => {
           checked={font}
           value={font}
         />
-        <Button onClick={() => setModal(prev => !prev)}>
-          Сменить цвет темы
-        </Button>
-        ColorPicker here
       </Collapse>
     </MuiDiv>
   )

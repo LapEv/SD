@@ -175,6 +175,12 @@ export const incidentsSlise = createSlice({
       const newINC = createINCData([payload])
       state.incidents = [...state.incidents, ...newINC]
     },
+    changeINCSocket(state, { payload }) {
+      const changedINC = createINCData([payload])
+      state.incidents = state.incidents.map(item =>
+        item.id === changedINC[0].id ? changedINC[0] : item,
+      )
+    },
   },
   extraReducers: builder => {
     builder.addCase(getINC.fulfilled, (state, { payload }) => {
@@ -467,4 +473,5 @@ export const {
   changeResponsible,
   changeStatus,
   newINCSocket,
+  changeINCSocket,
 } = incidentsSlise.actions

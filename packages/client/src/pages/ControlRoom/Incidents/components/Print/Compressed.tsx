@@ -4,7 +4,7 @@ import { memo } from 'react'
 import { ThemeColor } from 'themes/themeConfig'
 
 export const Compressed = memo(() => {
-  const [{ incidents }] = useIncidents()
+  const [{ filtered }] = useIncidents()
 
   const container = {
     width: '100%',
@@ -115,7 +115,7 @@ export const Compressed = memo(() => {
         pt: 0,
       }}>
       <style>{`@media print {@page {size: landscape}`}</style>
-      {incidents.map(
+      {filtered.map(
         (
           {
             incident,

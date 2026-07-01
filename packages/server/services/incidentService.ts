@@ -1300,13 +1300,26 @@ export class incidentService {
         order: this.orderINC,
       })
 
+      const socketINC = (await IncidentRepos.findOne({
+        where: { id },
+        include: this.includes,
+        order: this.orderINC,
+      })) as IIncindent
+      const token = _req.header('Authorization')?.replace('Bearer ', '')
+      socket.getIO().emit('server_SBI', {
+        token,
+        category: 'incidents',
+        action: 'changeINC',
+        data: socketINC,
+      })
+
       res.status(200).json({ incs })
     } catch (err) {
       res.status(500).json({ error: ['db error', err as Error] })
     }
   }
   changeINCAddFiles = async (_req: Request, res: Response) => {
-    const { logs, endDate } = _req.body
+    const { logs, endDate, id } = _req.body
     try {
       if (logs.length > 0) {
         const log = { ...logs, time: new Date() }
@@ -1325,6 +1338,18 @@ export class incidentService {
         where: { createdAt: { [Op.gt]: endDate } },
         include: this.Includes,
         order: this.orderINC,
+      })
+      const socketINC = (await IncidentRepos.findOne({
+        where: { id },
+        include: this.includes,
+        order: this.orderINC,
+      })) as IIncindent
+      const token = _req.header('Authorization')?.replace('Bearer ', '')
+      socket.getIO().emit('server_SBI', {
+        token,
+        category: 'incidents',
+        action: 'changeINCAddFiles',
+        data: socketINC,
       })
 
       res.status(200).json({ incs, count: incs.length })

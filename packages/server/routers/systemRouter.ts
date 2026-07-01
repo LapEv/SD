@@ -7,7 +7,11 @@ export const systemRouter = (apiRouter: Router) => {
 
   const router: Router = Router()
 
-  router.get('/getSystem', roleMiddleware(['SUPERADMIN']), service.getSystem)
+  router.get(
+    '/getSystem',
+    roleMiddleware(['SUPERADMIN', 'ADMIN']),
+    service.getSystem,
+  )
   router.post('/setSystem', roleMiddleware(['SUPERADMIN']), service.setSystem)
   apiRouter.use('/system', router)
 }

@@ -9,17 +9,17 @@ export const divisionRouter = (apiRouter: Router) => {
 
   router.post(
     '/newDivision',
-    roleMiddleware(['newDivision', 'SUPERADMIN']),
+    roleMiddleware(['newDivision', 'ADMIN', 'SUPERADMIN']),
     service.newDivision,
   )
   router.get(
     '/getDivisions',
-    roleMiddleware(['getDivisions', 'SUPERADMIN']),
+    roleMiddleware(['getDivisions', 'ADMIN', 'SUPERADMIN']),
     service.getDivisions,
   )
   router.get(
     '/getAllDivisions',
-    roleMiddleware(['getAllDivisions', 'SUPERADMIN']),
+    roleMiddleware(['getAllDivisions', 'ADMIN', 'SUPERADMIN']),
     service.getAllDivisions,
   )
   router.post(
@@ -39,7 +39,7 @@ export const divisionRouter = (apiRouter: Router) => {
   )
   router.post(
     '/changeNameDivision',
-    roleMiddleware(['changeNameDivision', 'SUPERADMIN']),
+    roleMiddleware(['changeNameDivision', 'ADMIN', 'SUPERADMIN']),
     service.changeNameDivision,
   )
 

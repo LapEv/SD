@@ -21,6 +21,7 @@ export const ModalChangeName = memo(
           ref={ref}
           tabIndex={-1}
           component="form"
+          className={'modalMainContainer'}
           onSubmit={changeData}>
           <Typography
             variant={variant ? variant : 'h1'}

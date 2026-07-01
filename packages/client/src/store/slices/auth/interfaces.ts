@@ -1,5 +1,6 @@
 import { RolesGroup } from 'storeRoles/interfaces'
 import { FilesData } from '../files/interfaces'
+import { IDispatcherOptions } from '../tableINC/interfaces'
 
 export interface User {
   id?: string
@@ -30,6 +31,7 @@ export interface AppOptions {
   theme?: ThemeMode
   font?: string
   colorTheme?: IColorTheme
+  dispatcherOptions?: IDispatcherOptions
 }
 
 export interface IColorTheme {

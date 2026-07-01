@@ -5,7 +5,7 @@ import {
   Controller,
   useFormState,
 } from 'react-hook-form'
-import { ChangeEvent, memo, useState } from 'react'
+import { ChangeEvent, memo, useEffect, useState } from 'react'
 import { TextFieldFilled } from 'components/TextFields'
 import { ButtonsSection } from 'components/Buttons'
 import { deepEqual } from 'utils/deepEqual'
@@ -25,7 +25,7 @@ import {
 import { NumberField } from 'components/TextFields/NumberField'
 
 export const SystemData = memo(({ id }: ISystemData) => {
-  const [{ system }, { setSystem }] = useSystem()
+  const [{ system, error }, { setSystem }] = useSystem()
   const [btnDisabled, setbtnDisabled] = useState<boolean>(true)
   const [systemData, setSystemData] = useState<ISystem>(system)
 
@@ -80,6 +80,12 @@ export const SystemData = memo(({ id }: ISystemData) => {
       }),
     })
   }
+
+  useEffect(() => {
+    if (error) {
+      clearChange()
+    }
+  }, [error])
 
   return (
     <BoxModal

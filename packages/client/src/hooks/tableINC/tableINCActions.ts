@@ -28,4 +28,5 @@ export interface TableINCActions {
   setFilterListOptions: (data: IFilterListOptions[] | null) => void
   setSearchValue: (data: string) => void
   setModal: (data: IModalINC) => void
+  setToCloud: (data: boolean) => void
 }

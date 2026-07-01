@@ -37,6 +37,7 @@ export const Buttons = ({
       applicant: newINC.applicant ?? '',
       applicantContacts: newINC.applicantContacts ?? '',
       clientINC: newINC.clientINC ?? '',
+      comment: newINC.comment ?? '',
       commentClose: newINC.commentClose ?? '',
       commentCloseCheck: newINC.commentCloseCheck ?? '',
       contract: newINC.contract,

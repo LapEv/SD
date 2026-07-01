@@ -14,7 +14,7 @@ import { FilterElements } from './Filter/FilterElements'
 import { QuickFilter } from './QuickFilter/QuickFilter'
 
 export const CustomToolbar = () => {
-  const [{ admin }] = useAuth()
+  const [{ superAdmin }] = useAuth()
   const [, { setModal }] = useTableINC()
 
   const checkClickMenu = (image: string) => {
@@ -37,7 +37,7 @@ export const CustomToolbar = () => {
       <NewIncidentBar />
       <Divider orientation="vertical" variant="middle" flexItem />
       <TableSettings />
-      {admin && (
+      {superAdmin && (
         <>
           <Divider orientation="vertical" variant="middle" flexItem />
           <DropDownMenuToolTip

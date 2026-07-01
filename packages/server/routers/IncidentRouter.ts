@@ -9,17 +9,17 @@ export const incidentRouter = (apiRouter: Router) => {
 
   router.get(
     '/getIncidentStatuses',
-    roleMiddleware(['getIncidentStatuses', 'SUPERADMIN']),
+    roleMiddleware(['getIncidentStatuses', 'ADMIN', 'SUPERADMIN']),
     service.getIncidentStatuses,
   )
   router.get(
     '/getAllIncidentStatuses',
-    roleMiddleware(['getAllIncidentStatuses', 'SUPERADMIN']),
+    roleMiddleware(['getAllIncidentStatuses', 'ADMIN', 'SUPERADMIN']),
     service.getAllIncidentStatuses,
   )
   router.post(
     '/newIncidentStatuses',
-    roleMiddleware(['newIncidentStatuses', 'SUPERADMIN']),
+    roleMiddleware(['newIncidentStatuses', 'ADMIN', 'SUPERADMIN']),
     service.newIncidentStatuses,
   )
   router.post(
@@ -50,17 +50,17 @@ export const incidentRouter = (apiRouter: Router) => {
 
   router.get(
     '/getTypesOfWork',
-    roleMiddleware(['getTypesOfWork', 'SUPERADMIN']),
+    roleMiddleware(['getTypesOfWork', 'ADMIN', 'SUPERADMIN']),
     service.getTypesOfWork,
   )
   router.get(
     '/getAllTypesOfWork',
-    roleMiddleware(['getAllTypesOfWork', 'SUPERADMIN']),
+    roleMiddleware(['getAllTypesOfWork', 'ADMIN', 'SUPERADMIN']),
     service.getAllTypesOfWork,
   )
   router.post(
     '/newTypeOfWork',
-    roleMiddleware(['newTypeOfWork', 'SUPERADMIN']),
+    roleMiddleware(['newTypeOfWork', 'ADMIN', 'SUPERADMIN']),
     service.newTypeOfWork,
   )
   router.post(
@@ -80,23 +80,23 @@ export const incidentRouter = (apiRouter: Router) => {
   )
   router.post(
     '/changeTypesOfWork',
-    roleMiddleware(['changeTypesOfWork', 'SUPERADMIN']),
+    roleMiddleware(['changeTypesOfWork', 'ADMIN', 'SUPERADMIN']),
     service.changeTypesOfWork,
   )
 
   router.get(
     '/getTypesCompletedWork',
-    roleMiddleware(['getTypesCompletedWork', 'SUPERADMIN']),
+    roleMiddleware(['getTypesCompletedWork', 'ADMIN', 'SUPERADMIN']),
     service.getTypesCompletedWork,
   )
   router.get(
     '/getAllTypesCompletedWork',
-    roleMiddleware(['getAllTypesCompletedWork', 'SUPERADMIN']),
+    roleMiddleware(['getAllTypesCompletedWork', 'ADMIN', 'SUPERADMIN']),
     service.getAllTypesCompletedWork,
   )
   router.post(
     '/newTypeCompletedWork',
-    roleMiddleware(['newTypeCompletedWork', 'SUPERADMIN']),
+    roleMiddleware(['newTypeCompletedWork', 'ADMIN', 'SUPERADMIN']),
     service.newTypeCompletedWork,
   )
   router.post(
@@ -116,38 +116,38 @@ export const incidentRouter = (apiRouter: Router) => {
   )
   router.post(
     '/changeTypesCompletedWork',
-    roleMiddleware(['changeTypesCompletedWork', 'SUPERADMIN']),
+    roleMiddleware(['changeTypesCompletedWork', 'ADMIN', 'SUPERADMIN']),
     service.changeTypesCompletedWork,
   )
 
   router.get(
     '/getFilter',
-    roleMiddleware(['getFilter', 'SUPERADMIN', 'Dispatcher']),
+    roleMiddleware(['getFilter', 'SUPERADMIN', 'ADMIN', 'Dispatcher']),
     service.getFilter,
   )
   router.get(
     '/getINC',
-    roleMiddleware(['getINC', 'SUPERADMIN', 'Dispatcher']),
+    roleMiddleware(['getINC', 'SUPERADMIN', 'ADMIN', 'Dispatcher']),
     service.getINC,
   )
   router.get(
     '/getINCs',
-    roleMiddleware(['getINCs', 'SUPERADMIN', 'Dispatcher']),
+    roleMiddleware(['getINCs', 'SUPERADMIN', 'ADMIN', 'Dispatcher']),
     service.getINCs,
   )
   router.get(
     '/getINCsByDate',
-    roleMiddleware(['getINCsByDate', 'SUPERADMIN', 'Dispatcher']),
+    roleMiddleware(['getINCsByDate', 'SUPERADMIN', 'ADMIN', 'Dispatcher']),
     service.getINCsByDate,
   )
   router.get(
     '/getAllINC',
-    roleMiddleware(['getAllINC', 'SUPERADMIN', 'Dispatcher']),
+    roleMiddleware(['getAllINC', 'SUPERADMIN', 'ADMIN', 'Dispatcher']),
     service.getAllINC,
   )
   router.post(
     '/newINC',
-    roleMiddleware(['newINC', 'SUPERADMIN', 'Dispatcher']),
+    roleMiddleware(['newINC', 'SUPERADMIN', 'ADMIN', 'Dispatcher']),
     service.newINC,
   )
   router.post(
@@ -170,6 +170,7 @@ export const incidentRouter = (apiRouter: Router) => {
     roleMiddleware([
       'changeINC',
       'AdministrationCCA',
+      'ADMIN',
       'Dispatcher',
       'SUPERADMIN',
     ]),
@@ -180,6 +181,7 @@ export const incidentRouter = (apiRouter: Router) => {
     roleMiddleware([
       'changeINC',
       'AdministrationCCA',
+      'ADMIN',
       'Dispatcher',
       'SUPERADMIN',
     ]),
@@ -187,43 +189,48 @@ export const incidentRouter = (apiRouter: Router) => {
   )
   router.post(
     '/changeExecutor',
-    roleMiddleware(['changeExecutor', 'SUPERADMIN', 'Dispatcher']),
+    roleMiddleware(['changeExecutor', 'SUPERADMIN', 'ADMIN', 'Dispatcher']),
     service.changeExecutor,
   )
   router.post(
     '/changeResponsible',
-    roleMiddleware(['changeResponsible', 'SUPERADMIN', 'Dispatcher']),
+    roleMiddleware(['changeResponsible', 'SUPERADMIN', 'ADMIN', 'Dispatcher']),
     service.changeResponsible,
   )
   router.post(
     '/changeStatus',
-    roleMiddleware(['changeStatus', 'SUPERADMIN', 'Dispatcher']),
+    roleMiddleware(['changeStatus', 'SUPERADMIN', 'ADMIN', 'Dispatcher']),
     service.changeStatus,
   )
   router.post(
     '/changeUserClosingCheck',
-    roleMiddleware(['changeUserClosingCheck', 'SUPERADMIN', 'Dispatcher']),
+    roleMiddleware([
+      'changeUserClosingCheck',
+      'SUPERADMIN',
+      'ADMIN',
+      'Dispatcher',
+    ]),
     service.changeUserClosingCheck,
   )
   router.post(
     '/changeUserClosing',
-    roleMiddleware(['changeUserClosing', 'SUPERADMIN', 'Dispatcher']),
+    roleMiddleware(['changeUserClosing', 'SUPERADMIN', 'ADMIN', 'Dispatcher']),
     service.changeUserClosing,
   )
   router.post(
     '/changeComment',
-    roleMiddleware(['changeComment', 'SUPERADMIN', 'Dispatcher']),
+    roleMiddleware(['changeComment', 'SUPERADMIN', 'ADMIN', 'Dispatcher']),
     service.changeComment,
   )
 
   router.get(
     '/getINCLogs',
-    roleMiddleware(['getINCLogs', 'SUPERADMIN', 'Dispatcher']),
+    roleMiddleware(['getINCLogs', 'SUPERADMIN', 'ADMIN', 'Dispatcher']),
     service.getINCLogs,
   )
   router.get(
     '/getAllINCLogs',
-    roleMiddleware(['getAllINCLogs', 'SUPERADMIN', 'Dispatcher']),
+    roleMiddleware(['getAllINCLogs', 'SUPERADMIN', 'ADMIN', 'Dispatcher']),
     service.getAllINCLogs,
   )
 

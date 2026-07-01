@@ -133,6 +133,8 @@ export interface INotificationINCData {
   changeStatus: boolean
   changeExecutor: boolean
   changeResponsible: boolean
+  changeINC: boolean
+  changeINCAddFiles: boolean
 }
 export interface ICells {
   value: string

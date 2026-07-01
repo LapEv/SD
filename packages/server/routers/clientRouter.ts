@@ -9,17 +9,17 @@ export const clientRouter = (apiRouter: Router) => {
 
   router.get(
     '/getClientGroups',
-    roleMiddleware(['getClientGroups', 'SUPERADMIN']),
+    roleMiddleware(['getClientGroups', 'ADMIN', 'SUPERADMIN']),
     service.getClientGroups,
   )
   router.get(
     '/getAllClientGroups',
-    roleMiddleware(['getAllClientGroups', 'SUPERADMIN']),
+    roleMiddleware(['getAllClientGroups', 'ADMIN', 'SUPERADMIN']),
     service.getAllClientGroups,
   )
   router.post(
     '/newClientGroup',
-    roleMiddleware(['newClientGroup', 'SUPERADMIN']),
+    roleMiddleware(['newClientGroup', 'ADMIN', 'SUPERADMIN']),
     service.newClientGroup,
   )
   router.delete(
@@ -39,22 +39,22 @@ export const clientRouter = (apiRouter: Router) => {
   )
   router.post(
     '/changeClientGroup',
-    roleMiddleware(['changeClientGroup', 'SUPERADMIN']),
+    roleMiddleware(['changeClientGroup', 'ADMIN', 'SUPERADMIN']),
     service.changeClientGroup,
   )
   router.get(
     '/getAllClients',
-    roleMiddleware(['getAllClients', 'SUPERADMIN']),
+    roleMiddleware(['getAllClients', 'ADMIN', 'SUPERADMIN']),
     service.getAllClients,
   )
   router.get(
     '/getClients',
-    roleMiddleware(['getClients', 'SUPERADMIN']),
+    roleMiddleware(['getClients', 'ADMIN', 'SUPERADMIN']),
     service.getClients,
   )
   router.post(
     '/newClient',
-    roleMiddleware(['newClient', 'SUPERADMIN']),
+    roleMiddleware(['newClient', 'ADMIN', 'SUPERADMIN']),
     service.newClient,
   )
   router.delete(
@@ -69,7 +69,7 @@ export const clientRouter = (apiRouter: Router) => {
   )
   router.post(
     '/changeClient',
-    roleMiddleware(['changeClient', 'SUPERADMIN']),
+    roleMiddleware(['changeClient', 'ADMIN', 'SUPERADMIN']),
     service.changeClient,
   )
   router.post(

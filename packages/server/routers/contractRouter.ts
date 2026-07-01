@@ -9,27 +9,27 @@ export const contractRouter = (apiRouter: Router) => {
 
   router.get(
     '/getContracts',
-    roleMiddleware(['getContracts', 'SUPERADMIN']),
+    roleMiddleware(['getContracts', 'ADMIN', 'SUPERADMIN']),
     service.getContracts,
   )
   router.post(
     '/getContractsByClientID',
-    roleMiddleware(['getContractsByClientID', 'SUPERADMIN']),
+    roleMiddleware(['getContractsByClientID', 'ADMIN', 'SUPERADMIN']),
     service.getContractsByClientID,
   )
   router.get(
     '/getAllContracts',
-    roleMiddleware(['getAllContracts', 'SUPERADMIN']),
+    roleMiddleware(['getAllContracts', 'ADMIN', 'SUPERADMIN']),
     service.getAllContracts,
   )
   router.post(
     '/newContract',
-    roleMiddleware(['newContract', 'SUPERADMIN']),
+    roleMiddleware(['newContract', 'ADMIN', 'SUPERADMIN']),
     service.newContract,
   )
   router.post(
     '/newContractName',
-    roleMiddleware(['newContractName', 'SUPERADMIN']),
+    roleMiddleware(['newContractName', 'ADMIN', 'SUPERADMIN']),
     service.newContractName,
   )
   router.post(
@@ -49,7 +49,7 @@ export const contractRouter = (apiRouter: Router) => {
   )
   router.post(
     '/changeContract',
-    roleMiddleware(['changeContract', 'SUPERADMIN']),
+    roleMiddleware(['changeContract', 'ADMIN', 'SUPERADMIN']),
     service.changeContract,
   )
 

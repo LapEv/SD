@@ -9,8 +9,18 @@ export const userRouter = (apiRouter: Router) => {
   const service = new userService()
   const router: Router = Router()
 
-  router.post('/setUser', checkRegDataMiddleware, service.setUser)
-  router.post('/newUser', checkRegDataMiddleware, service.newUser)
+  router.post(
+    '/setUser',
+    checkRegDataMiddleware,
+    roleMiddleware(['ADMIN', 'SUPERADMIN']),
+    service.setUser,
+  )
+  router.post(
+    '/newUser',
+    checkRegDataMiddleware,
+    roleMiddleware(['ADMIN', 'SUPERADMIN']),
+    service.newUser,
+  )
 
   router.post('/login', service.login)
   router.post('/updateProfile', authMiddleware, service.updateProfile)
@@ -25,32 +35,32 @@ export const userRouter = (apiRouter: Router) => {
   router.get('/checkUser', authMiddleware, service.check)
   router.post(
     '/getUserInfo',
-    roleMiddleware(['getUsers', 'SUPERADMIN']),
+    roleMiddleware(['getUsers', 'ADMIN', 'SUPERADMIN']),
     service.getUserInfo,
   )
   router.post(
     '/getUsers',
-    roleMiddleware(['getUsers', 'SUPERADMIN']),
+    roleMiddleware(['getUsers', 'ADMIN', 'SUPERADMIN']),
     service.getUsers,
   )
   router.post(
     '/getActiveUsers',
-    roleMiddleware(['getUsers', 'SUPERADMIN']),
+    roleMiddleware(['getUsers', 'ADMIN', 'SUPERADMIN']),
     service.getActiveUsers,
   )
   router.post(
     '/getFieldEngineers',
-    roleMiddleware(['getFieldEngineers', 'SUPERADMIN']),
+    roleMiddleware(['getFieldEngineers', 'ADMIN', 'SUPERADMIN']),
     service.getFieldEngineers,
   )
   router.post(
     '/getDispatchers',
-    roleMiddleware(['getDispatchers', 'SUPERADMIN']),
+    roleMiddleware(['getDispatchers', 'ADMIN', 'SUPERADMIN']),
     service.getDispatchers,
   )
   router.post(
     '/deleteUser',
-    roleMiddleware(['SUPERADMIN', 'deleteUser']),
+    roleMiddleware(['SUPERADMIN', 'ADMIN', 'deleteUser']),
     service.deleteUser,
   )
   router.post(
@@ -67,12 +77,12 @@ export const userRouter = (apiRouter: Router) => {
 
   router.post(
     '/updateUser',
-    roleMiddleware(['SUPERADMIN', 'updateUser']),
+    roleMiddleware(['SUPERADMIN', 'ADMIN', 'updateUser']),
     service.updateUser,
   )
   router.post(
     '/changeUserAppOptions',
-    roleMiddleware(['SUPERADMIN', 'changeUserAppOptions']),
+    roleMiddleware(['SUPERADMIN', 'ADMIN', 'changeUserAppOptions']),
     service.changeUserAppOptions,
   )
 

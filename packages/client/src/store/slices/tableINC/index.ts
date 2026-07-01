@@ -44,11 +44,12 @@ const initialState: TableINCState = {
     incStatuses: [],
   },
   notificationsINC: notificationsDataINC,
+  toCloud: false,
 }
 
 const setLocalStorage = (state: TableINCState) => {
   /* eslint-disable @typescript-eslint/no-unused-vars */
-  const { columnX, searchValue, modal, ...newState } = state
+  const { columnX, searchValue, modal, toCloud, ...newState } = state
   /* eslint-enable @typescript-eslint/no-unused-vars */
   return newState
 }
@@ -123,6 +124,7 @@ export const tableINCSlise = createSlice({
         SETTINGS_STORAGE_KEY,
         JSON.stringify({ ...stateForLocalStorage, order: action.payload }),
       )
+      state.toCloud = true
     },
     setOrderBy(state, action) {
       state.orderBy = action.payload
@@ -131,6 +133,7 @@ export const tableINCSlise = createSlice({
         SETTINGS_STORAGE_KEY,
         JSON.stringify({ ...stateForLocalStorage, orderBy: action.payload }),
       )
+      state.toCloud = true
     },
     setPage(state, action) {
       state.page = action.payload
@@ -139,6 +142,7 @@ export const tableINCSlise = createSlice({
         SETTINGS_STORAGE_KEY,
         JSON.stringify({ ...stateForLocalStorage, page: action.payload }),
       )
+      state.toCloud = true
     },
     setRowsPerPage(state, action) {
       state.rowsPerPage = action.payload
@@ -150,6 +154,7 @@ export const tableINCSlise = createSlice({
           rowsPerPage: action.payload,
         }),
       )
+      state.toCloud = true
     },
     setDense(state, action) {
       state.dense = action.payload
@@ -158,6 +163,7 @@ export const tableINCSlise = createSlice({
         SETTINGS_STORAGE_KEY,
         JSON.stringify({ ...stateForLocalStorage, dense: action.payload }),
       )
+      state.toCloud = true
     },
     setColumnBorder(state, action) {
       state.showColumnBorders = action.payload
@@ -169,6 +175,7 @@ export const tableINCSlise = createSlice({
           showColumnBorders: action.payload,
         }),
       )
+      state.toCloud = true
     },
     setCellBorder(state, action) {
       state.showCellBorders = action.payload
@@ -180,6 +187,7 @@ export const tableINCSlise = createSlice({
           showCellBorders: action.payload,
         }),
       )
+      state.toCloud = true
     },
     setTimeInterval(state, action) {
       state.timeInterval = action.payload
@@ -191,6 +199,7 @@ export const tableINCSlise = createSlice({
           timeInterval: action.payload,
         }),
       )
+      state.toCloud = true
     },
     setNotificationsINC(state, action) {
       state.notificationsINC = action.payload
@@ -202,6 +211,7 @@ export const tableINCSlise = createSlice({
           notificationsINC: action.payload,
         }),
       )
+      state.toCloud = true
     },
     setSelected(state, action) {
       state.selected = action.payload
@@ -213,6 +223,7 @@ export const tableINCSlise = createSlice({
           selected: action.payload,
         }),
       )
+      state.toCloud = true
     },
     setColumnOptions(state, action) {
       state.columnOptions = action.payload
@@ -224,6 +235,7 @@ export const tableINCSlise = createSlice({
           columnOptions: action.payload,
         }),
       )
+      state.toCloud = true
     },
     setColumnX(state, action) {
       state.columnX = action.payload
@@ -247,11 +259,15 @@ export const tableINCSlise = createSlice({
           filterListOptions: _checkfirstElement,
         }),
       )
+      state.toCloud = true
     },
     setSearchValue(state, action) {
       state.searchValue = action.payload
     },
     setModal(state, action) {
+      state.modal = action.payload
+    },
+    setToCloud(state, action) {
       state.modal = action.payload
     },
   },
@@ -276,4 +292,5 @@ export const {
   setFilterListOptions,
   setSearchValue,
   setModal,
+  setToCloud,
 } = tableINCSlise.actions

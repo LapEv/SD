@@ -27,6 +27,22 @@ export interface TableINCState {
     incStatuses: INCStatuses[]
   }
   notificationsINC: INotificationINCData
+  toCloud: boolean
+}
+
+export interface IDispatcherOptions {
+  dense: boolean
+  order: Order
+  orderBy: keyof INC_Data
+  page: number
+  rowsPerPage: number
+  showCellBorders: boolean
+  showColumnBorders: boolean
+  timeInterval: number
+  selected: string[]
+  columnOptions: IColumnOptions[]
+  filterListOptions: IFilterListOptions[]
+  notificationsINC: INotificationINCData
 }
 
 export interface IColumnOptions {

@@ -1,13 +1,6 @@
 import { Box } from '@mui/material'
 import { IViewImage } from 'layouts/Main/interfaces'
-import {
-  MouseEvent,
-  SyntheticEvent,
-  useEffect,
-  useRef,
-  useState,
-  WheelEvent,
-} from 'react'
+import { SyntheticEvent, useEffect, useRef, useState, WheelEvent } from 'react'
 import { emptyImgPosition } from './emptyImgPosition'
 
 export const ViewImage = ({ file }: IViewImage) => {
@@ -27,7 +20,7 @@ export const ViewImage = ({ file }: IViewImage) => {
     setPosition(emptyImgPosition)
   }
 
-  const onMouseDown = (e: MouseEvent<HTMLDivElement>) => {
+  const onMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
     e.preventDefault()
     setPanning(true)
     setPosition({
@@ -64,9 +57,7 @@ export const ViewImage = ({ file }: IViewImage) => {
       setPanning(false)
     }
 
-    /* eslint-disable @typescript-eslint/no-explicit-any */
-    const mousemove = (event: any) => {
-      /* eslint-enable @typescript-eslint/no-explicit-any */
+    const mousemove = (event: MouseEvent) => {
       if (isPanning) {
         setPosition({
           ...position,

@@ -1,5 +1,6 @@
 export { TableIncidents } from './TableIncidents'
 export { getInitialSettings } from 'pages/ControlRoom/Incidents/Utils/GetInitialSettings'
+export { GetStoredData } from 'pages/ControlRoom/Incidents/Utils/GetStoredData'
 export { GetEndDate } from 'pages/ControlRoom/Incidents/Utils/GetEndDate'
 export { Indicator } from './components/Indicator/Indicator'
 export { Status } from './components/Status/Status'
