@@ -117,6 +117,26 @@ export const tableINCSlise = createSlice({
       state.notificationsINC =
         action.payload.notificationsINC ?? initialState.notificationsINC
     },
+    setSettingsFromTemplate(state, { payload }) {
+      const {
+        dense,
+        order,
+        orderBy,
+        rowsPerPage,
+        showCellBorders,
+        showColumnBorders,
+        timeInterval,
+        filterListOptions,
+      } = payload
+      state.dense = dense
+      state.order = order
+      state.orderBy = orderBy
+      state.rowsPerPage = rowsPerPage
+      state.showCellBorders = showCellBorders
+      state.showColumnBorders = showColumnBorders
+      state.timeInterval = timeInterval
+      state.filterListOptions = filterListOptions
+    },
     setOrder(state, action) {
       state.order = action.payload
       const stateForLocalStorage = setLocalStorage(state)
@@ -276,6 +296,7 @@ export const tableINCSlise = createSlice({
 export const tableINCReducer = tableINCSlise.reducer
 export const {
   setSettings,
+  setSettingsFromTemplate,
   setOrderBy,
   setOrder,
   setPage,

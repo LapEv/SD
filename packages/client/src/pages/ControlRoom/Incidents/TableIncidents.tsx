@@ -52,10 +52,11 @@ export const TableIncidents = memo(() => {
   }, [toCloud])
 
   useEffect(() => {
-    // console.log('eslint')
-    // console.log('template для колонок и фильтров')
-
-    // console.log('Color Pickker убрать, посмотреть темный режим')
+    // console.log('комментарий closeINC в зависмости от настройки')
+    // console.log('добавить user superadmin, он создается автоматом, не показывать его никому')
+    // console.log('убрать isSystem из логов')
+    // console.log('Время закрытия, кто закрыл и коммент не записывается')
+    // console.log('посмотреть темный режим')
     // console.log('sw посмотреть')
 
     getFieldEngineers()

@@ -50,6 +50,7 @@ export interface IEmailServerSystem {
 export interface IIncidentSystem {
   daysForClose: number
   emailTechnicalSupport: string
+  maxSavedTemplates: number
 }
 
 export interface AnswerGetSystem {

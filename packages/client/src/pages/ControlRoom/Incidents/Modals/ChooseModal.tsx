@@ -14,6 +14,7 @@ import { ChangeTypeOfWork } from './ChangeTypeOfWork'
 import { ChangeTypeCompletedWork } from './ChangeTypeCompletedWork'
 import { ChangeStateStatuses } from './ChangeStateStatuses'
 import { ChangeIncident } from './ChangeIncident'
+import { NewSavedTemplate } from './NewSavedTemplate'
 
 export const ChooseModal = memo(
   React.forwardRef<unknown, ChooseModalProps>(
@@ -116,6 +117,13 @@ export const ChooseModal = memo(
               options={options}
               handleModal={handleModal}
               title={`${ModalTitles.changeIncident} ${incident}`}
+            />
+          )}
+          {modalImage === 'newSavedTemplate' && (
+            <NewSavedTemplate
+              ref={ref}
+              handleModal={handleModal}
+              title={ModalTitles.newSavedTemplate}
             />
           )}
         </>

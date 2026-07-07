@@ -136,6 +136,14 @@ export const MapIncidentSystemInputFields = [
     type: 'text',
     required: true,
   },
+  {
+    name: 'maxSavedTemplates',
+    label: 'Максимальное количество сохраненных шаблонов',
+    validation: numberValidation,
+    value: '',
+    type: 'number',
+    required: true,
+  },
 ]
 
 export const MapAdditionalSystemInputFields = [

@@ -2,6 +2,7 @@ import {
   INC_HeadCell,
   INotificationINCData,
   Settings,
+  SettingsFromTemplate,
 } from 'pages/ControlRoom/Incidents/interfaces'
 import {
   IColumnOptions,
@@ -12,6 +13,7 @@ import {
 
 export interface TableINCActions {
   setSettings: (data: Settings) => void
+  setSettingsFromTemplate: (data: SettingsFromTemplate) => void
   setOrder: (data: string) => void
   setOrderBy: (data: string) => void
   setPage: (data: number) => void

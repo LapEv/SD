@@ -719,6 +719,7 @@ export const ModalTitles = {
   changeStateStatuses: 'Изменить порядок статусов инцидента',
   changeIncident: 'Изменить инцидент',
   addActs: 'Добавить акты',
+  newSavedTemplate: 'Введите название шаблона',
 }
 
 export const MapINCStatusInputFields = [
@@ -973,6 +974,16 @@ export const MapTypesOfWorkInputFields = [
   {
     name: 'typesOfWork',
     label: 'Введите новый тип работ',
+    validation: lightTextValidation,
+    type: 'text',
+    required: true,
+  },
+]
+
+export const MapSavedTemplateInputFields = [
+  {
+    name: 'savedTemplate',
+    label: 'Введите название шаблона',
     validation: lightTextValidation,
     type: 'text',
     required: true,

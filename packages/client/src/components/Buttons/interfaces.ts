@@ -1,4 +1,15 @@
 import { JSX, SyntheticEvent, type PropsWithChildren } from 'react'
+import { ForwardRefExoticComponent, RefAttributes } from 'react'
+import { LinkProps } from 'react-router-dom'
+import { type ButtonProps } from '@mui/material/Button'
+
+export type TButtonProps = Omit<ButtonProps, 'component'> & {
+  component?:
+    | React.ForwardRefExoticComponent<
+        LinkProps & React.RefAttributes<HTMLAnchorElement>
+      >
+    | ForwardRefExoticComponent<LinkProps & RefAttributes<HTMLAnchorElement>>
+}
 
 export type Handle = {
   closeModal: (state: boolean) => void

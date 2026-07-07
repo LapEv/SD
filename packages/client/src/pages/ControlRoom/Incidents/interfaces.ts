@@ -110,6 +110,17 @@ export interface Settings {
   notificationsINC: INotificationINCData
 }
 
+export interface SettingsFromTemplate {
+  dense: boolean
+  order: Order
+  orderBy: keyof INC_Data
+  rowsPerPage: number
+  showCellBorders: boolean
+  showColumnBorders: boolean
+  timeInterval: number
+  filterListOptions: IFilterListOptions[]
+}
+
 export interface IFilterTriggers {
   item: IFilterListOptions
   setFilterList: (data: IFilterListOptions[]) => void
@@ -396,5 +407,13 @@ export interface INotificationComponent {
 export interface ITimeIntervalComponent {
   label: string
   value: number
+  setSettingsMenuOpen: (data: boolean) => void
+}
+
+export interface ISavedButtonTemplate {
+  setSettingsMenuOpen: (data: boolean) => void
+}
+
+export interface ILoadSavedTemplates {
   setSettingsMenuOpen: (data: boolean) => void
 }

@@ -71,7 +71,9 @@ export const checkForCloseINC = async () => {
     }
     const isUpdate = await IncidentRepos.update(idINCs, {
       id_incStatus: statusClose.id,
+      timeClose: currentDate,
       status: statusClose.statusINC,
+      commentClose: AppConst.ActionComment.closeINC,
     })
     if (isUpdate[0] <= 0) {
       return { status: false, error: 'Error update close INC' }

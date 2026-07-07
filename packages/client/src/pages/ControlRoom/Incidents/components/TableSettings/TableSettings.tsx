@@ -18,6 +18,9 @@ import { useRef, useState } from 'react'
 import { Check, ExpandLess, ExpandMore, Settings } from '@mui/icons-material'
 import { NotificationsINC } from './NotificationsINC'
 import { TimeInterval } from './TimeInterval'
+import { MuiDiv } from 'components/MUI'
+import { SavedButtonTemplate } from './SavedButtonTemplate'
+import { LoadSavedTemplates } from './LoadSavedTemplates'
 
 export const TableSettings = () => {
   const [
@@ -28,6 +31,7 @@ export const TableSettings = () => {
   const settingsMenuTriggerRef = useRef<HTMLButtonElement>(null)
   const [openTimeInterval, setOpenTimeInterval] = useState<boolean>(false)
   const [openNotification, setOpenNotification] = useState<boolean>(false)
+  const [openSavedFilters, setOpenSavedFilters] = useState<boolean>(false)
 
   return (
     <>
@@ -120,6 +124,17 @@ export const TableSettings = () => {
               setSettingsMenuOpen={setSettingsMenuOpen}
             />
           ))}
+        </Collapse>
+        <Divider />
+        <MenuItem onClick={() => setOpenSavedFilters(!openSavedFilters)}>
+          <ListItemText>Сохраненные фильтры</ListItemText>
+          {openNotification ? <ExpandLess /> : <ExpandMore />}
+        </MenuItem>
+        <Collapse in={openSavedFilters} timeout="auto" unmountOnExit>
+          <MuiDiv className="savedTemplateBox">
+            <SavedButtonTemplate setSettingsMenuOpen={setSettingsMenuOpen} />
+          </MuiDiv>
+          <LoadSavedTemplates setSettingsMenuOpen={setSettingsMenuOpen} />
         </Collapse>
       </Menu>
     </>

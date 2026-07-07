@@ -45,6 +45,18 @@ export interface IDispatcherOptions {
   notificationsINC: INotificationINCData
 }
 
+export interface ISavedTemplates {
+  label: string
+  dense: boolean
+  order: Order
+  orderBy: keyof INC_Data
+  rowsPerPage: number
+  showCellBorders: boolean
+  showColumnBorders: boolean
+  timeInterval: number
+  filterListOptions: IFilterListOptions[]
+}
+
 export interface IColumnOptions {
   number: number
   id: string

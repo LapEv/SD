@@ -5,6 +5,7 @@ import { TableINCState } from 'store/slices/tableINC/interfaces'
 import { TableINCActions } from './tableINCActions'
 import {
   setSettings,
+  setSettingsFromTemplate,
   setOrder,
   setOrderBy,
   setPage,
@@ -34,7 +35,9 @@ export function useTableINC(): [TableINCState, TableINCActions] {
       setSettings(data) {
         dispatch(setSettings(data))
       },
-
+      setSettingsFromTemplate(data) {
+        dispatch(setSettingsFromTemplate(data))
+      },
       setOrder(data) {
         dispatch(setOrder(data))
       },

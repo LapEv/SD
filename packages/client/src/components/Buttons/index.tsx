@@ -1,16 +1,8 @@
-import MuiButton, { type ButtonProps } from '@mui/material/Button'
+import MuiButton from '@mui/material/Button'
 import { useTheme } from '@mui/material'
-import { ForwardRefExoticComponent, RefAttributes, memo } from 'react'
-import { LinkProps } from 'react-router-dom'
 import { ITheme, ThemeMode } from 'themes/themeConfig'
-
-type TButtonProps = Omit<ButtonProps, 'component'> & {
-  component?:
-    | React.ForwardRefExoticComponent<
-        LinkProps & React.RefAttributes<HTMLAnchorElement>
-      >
-    | ForwardRefExoticComponent<LinkProps & RefAttributes<HTMLAnchorElement>>
-}
+import { TButtonProps } from './interfaces'
+import { memo } from 'react'
 
 export const Button = memo((props: TButtonProps) => {
   const theme = useTheme() as ITheme
@@ -38,3 +30,4 @@ export { IconToolTipButton } from './IconToolTipButton'
 export { ClearButton } from './ClearButton'
 export { ClearSearchModalSection } from './ClearSearchModalSection'
 export { ButtonsFilterINCs } from './ButtonsFilterINCs'
+export { TextButton } from './TextButton'

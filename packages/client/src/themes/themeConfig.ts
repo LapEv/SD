@@ -1441,6 +1441,17 @@ export const ThemeConfig = ({
               position: 'relative',
               display: 'flex',
             },
+            '&.savedTemplateBox': {
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              justifyContent: 'center',
+            },
+            '&.savedTemplateNoElements': {
+              opacity: 0.5,
+              textAlign: 'center',
+              marginTop: 10,
+            },
           },
         },
       },

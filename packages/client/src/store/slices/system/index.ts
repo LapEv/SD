@@ -25,6 +25,7 @@ const initialState: SystemState = {
     incident: {
       daysForClose: 0,
       emailTechnicalSupport: '',
+      maxSavedTemplates: 5,
     },
   },
   isLoadingSystem: false,

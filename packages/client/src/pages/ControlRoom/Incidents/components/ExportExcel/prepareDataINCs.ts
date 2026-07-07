@@ -1,5 +1,6 @@
 import { INC } from 'store/slices/incidents/interfaces'
 import { labelsForExcel } from '../../data'
+import { convertTSToCurrentTZ } from 'utils/convertDate'
 
 export const prepareDataINCs = (filtered: INC[]) => {
   const data = filtered.map(
@@ -53,7 +54,7 @@ export const prepareDataINCs = (filtered: INC[]) => {
       status,
       sla,
       typeOfWork,
-      timeSLA,
+      convertTSToCurrentTZ(timeSLA),
       client,
       legalName,
       contract,
@@ -66,10 +67,10 @@ export const prepareDataINCs = (filtered: INC[]) => {
       typicalMalfunction,
       comment,
       description,
-      timeRegistration,
-      timeInWork,
-      timeCloseCheck,
-      timeClose,
+      convertTSToCurrentTZ(timeRegistration),
+      convertTSToCurrentTZ(timeInWork),
+      convertTSToCurrentTZ(timeCloseCheck),
+      convertTSToCurrentTZ(timeClose),
       executor,
       responsible,
       userAccepted,
@@ -80,8 +81,8 @@ export const prepareDataINCs = (filtered: INC[]) => {
       typeCompletedWork,
       commentCloseCheck,
       commentClose,
-      spaceParts,
-      act,
+      spaceParts && spaceParts.length > 0 ? spaceParts.join(', ') : spaceParts,
+      act && act.length > 0 ? act.join(', ') : act,
       overdue,
       rating,
       parentalIncident,
