@@ -4,7 +4,11 @@ import {
   numberValidation,
   nameValidationNoRequired,
   NoRequiredValidation,
+  passwordValidation,
+  passwordValidationNew,
+  passwordValidationConfrim,
 } from 'utils/validatorRules'
+import LockResetOutlinedIcon from '@mui/icons-material/LockResetOutlined'
 
 export const sections = [
   {
@@ -154,5 +158,41 @@ export const MapAdditionalSystemInputFields = [
     value: '',
     type: 'number',
     required: true,
+  },
+]
+
+export const ModalTitles = {
+  changePassword: 'Изменить пароль SuperAdmin',
+}
+
+export const MapPasswordInputFields = [
+  {
+    name: 'oldPassword',
+    label: 'Old Password',
+    validation: passwordValidation,
+    type: 'password',
+    required: true,
+  },
+  {
+    name: 'newPassword',
+    label: 'New Password',
+    validation: passwordValidationNew,
+    type: 'password',
+    required: true,
+  },
+  {
+    name: 'confirmPassword',
+    label: 'Confirm Password',
+    validation: passwordValidationConfrim,
+    type: 'password',
+    required: true,
+  },
+]
+
+export const menuData = [
+  {
+    name: 'changePassword',
+    title: 'Изменить пароль SuperUser',
+    icon: <LockResetOutlinedIcon fontSize="medium" />,
   },
 ]

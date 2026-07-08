@@ -1,7 +1,7 @@
 import { createAsyncThunk } from '@reduxjs/toolkit'
 import { authhost, ApiEndPoints } from './config'
 import axios from 'axios'
-import { ISystem } from 'store/slices/system/interfaces'
+import { ChangePasswordProps, ISystem } from 'store/slices/system/interfaces'
 
 interface ValidationError {
   message: string
@@ -49,6 +49,35 @@ export const setSystem = createAsyncThunk(
       if (axios.isAxiosError<ValidationError, Record<string, unknown>>(error)) {
         return thunkAPI.rejectWithValue(
           `Не удалось добавить новые параметры системы: \n${
+            error.response?.data.message ?? error.response?.data
+          }`,
+        )
+      } else {
+        console.error(error)
+      }
+    }
+  },
+)
+
+export const changePasswordSystem = createAsyncThunk(
+  'system/changePasswordSystem',
+  async (value: ChangePasswordProps, thunkAPI) => {
+    try {
+      const { data } = await authhost.post(
+        ApiEndPoints.System.changePasswordSystem,
+        value,
+      )
+      return {
+        data,
+        message: {
+          text: 'Пароль успешно изменен!',
+          type: 'success',
+        },
+      }
+    } catch (error) {
+      if (axios.isAxiosError<ValidationError, Record<string, unknown>>(error)) {
+        return thunkAPI.rejectWithValue(
+          `Не удалось изменить пароль: \n${
             error.response?.data.message ?? error.response?.data
           }`,
         )

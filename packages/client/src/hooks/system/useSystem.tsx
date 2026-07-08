@@ -3,7 +3,7 @@ import { SystemActions } from './systemActions'
 import { RootState } from 'store/index'
 import { useAppDispatch } from 'store/hooks'
 import { SystemState } from 'store/slices/system/interfaces'
-import { getSystem, setSystem } from 'api/system'
+import { changePasswordSystem, getSystem, setSystem } from 'api/system'
 
 export function useSystem(): [SystemState, SystemActions] {
   const system = useSelector((state: RootState) => state.system)
@@ -15,9 +15,11 @@ export function useSystem(): [SystemState, SystemActions] {
       setSystem(data) {
         dispatch(setSystem(data))
       },
-
       getSystem() {
         dispatch(getSystem())
+      },
+      changePasswordSystem(data) {
+        dispatch(changePasswordSystem(data))
       },
     },
   ]

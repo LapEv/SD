@@ -55,7 +55,7 @@ import { ITypesOfWork } from '/models/incidents'
 import { IAddresses, IRegions } from '/models/adresses'
 import { IDepartment } from '/models/departments'
 import { RolesGroup, IRoles } from '/models/roles'
-import { systemStartData, systemUser } from './system'
+import { systemStartData } from './system'
 
 export const firstStart = async () => {
   try {
@@ -417,7 +417,6 @@ export const firstStart = async () => {
 
     if (!system.length) {
       await SystemRepos.bulkCreate(systemStartData)
-      await userRepos.create(systemUser)
     }
   } catch (error) {
     console.error('Unable to connect to the database: ', error)

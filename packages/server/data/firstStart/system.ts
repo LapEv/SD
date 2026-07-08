@@ -1,7 +1,7 @@
 export const systemStartData = [
   {
     general: {
-      name: '',
+      name: 'SD_SBI',
       emailSystem: '',
     },
     auth: {
@@ -24,26 +24,3 @@ export const systemStartData = [
     },
   },
 ]
-
-export const systemUser = {
-  username: 'System',
-  password: '',
-  firstName: 'System',
-  lastName: '',
-  middleName: '',
-  shortName: 'System',
-  email: '',
-  phone: '',
-  rolesGroup: '',
-  post: '',
-  division: '',
-  chiefDivision: false,
-  department: '',
-  chiefDepartment: false,
-  id_division: '',
-  id_department: '',
-  id_rolesGroup: '',
-  status: 'system',
-  reasonOfDelete: '',
-  theme: '',
-}

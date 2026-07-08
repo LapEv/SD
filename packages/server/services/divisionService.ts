@@ -26,6 +26,7 @@ const include = [
           'email',
           'phone',
           'username',
+          'status',
         ],
       },
     ],

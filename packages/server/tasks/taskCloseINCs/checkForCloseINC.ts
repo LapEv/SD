@@ -2,7 +2,6 @@ import {
   IncidentLogsRepos,
   IncidentRepos,
   IncidentStatusesRepos,
-  roleGroupRepos,
   SystemRepos,
   userRepos,
 } from '../../db'
@@ -10,7 +9,6 @@ import { Op } from 'sequelize'
 import { IIncindentStatuses, Incindent } from '/models/incidents'
 import { AppConst } from '../../data/const'
 import { User } from '/models/users'
-import { RolesGroup } from '/models/roles'
 import { ISystem } from '/models/system'
 
 export const modifyINCsCloseToCheckClose = async () => {
@@ -69,28 +67,26 @@ export const checkForCloseINC = async () => {
     if (!idINCs.length) {
       return { status: true, error: 'No incidents for close.' }
     }
+    const superAdmin = (await userRepos.findOne({
+      where: { status: 'SUPERADMIN' },
+    })) as User
+
     const isUpdate = await IncidentRepos.update(idINCs, {
       id_incStatus: statusClose.id,
       timeClose: currentDate,
       status: statusClose.statusINC,
-      commentClose: AppConst.ActionComment.closeINC,
+      commentClose: `${AppConst.ActionComment.closeINC} : ${days} дней.`,
+      UserClosing: superAdmin.id,
     })
     if (isUpdate[0] <= 0) {
       return { status: false, error: 'Error update close INC' }
     }
-    const rolesGroup = (await roleGroupRepos.findOne({
-      where: { group: 'SUPERADMIN' },
-    })) as RolesGroup
-    const user = (await userRepos.findOne({
-      where: { id_rolesGroup: rolesGroup.id },
-    })) as User
     const logs = idINCs.map(id => {
       return {
         id_incLog: id,
         time: currentDate,
-        log: AppConst.ActionComment.closeINC,
-        id_incLogUser: user.id,
-        isSystem: true,
+        log: `${AppConst.ActionComment.closeINC} : ${days} дней.`,
+        id_incLogUser: superAdmin.id,
       }
     })
     await IncidentLogsRepos.bulkCreate(logs)

@@ -16,6 +16,7 @@ import { incidentService } from './incidentService'
 import { IUser } from '/models/users'
 import { IDepartment } from '/models/departments'
 import { divisionService } from './divisionService'
+import { Op } from 'sequelize'
 
 export const include = [
   {
@@ -249,7 +250,13 @@ export class userService {
     }
   }
   getActiveUsers = (_req: Request, res: Response) => {
-    const dataFind = { ..._req.body, active: true }
+    const dataFind = {
+      ..._req.body,
+      active: true,
+      status: {
+        [Op.not]: 'SUPERADMIN',
+      },
+    }
     userRepos
       .findAll({
         where: dataFind,
@@ -263,7 +270,12 @@ export class userService {
   getUsers = (_req: Request, res: Response) => {
     userRepos
       .findAll({
-        where: _req.body,
+        where: {
+          ..._req.body,
+          status: {
+            [Op.not]: 'SUPERADMIN',
+          },
+        },
         include,
       })
       .then(user => {
@@ -309,7 +321,12 @@ export class userService {
     const { id } = _req.body
     userRepos
       .findAll({
-        where: { id },
+        where: {
+          id,
+          status: {
+            [Op.not]: 'SUPERADMIN',
+          },
+        },
         include,
       })
       .then(user => {

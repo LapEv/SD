@@ -39,9 +39,12 @@ export const DepartmentData = memo(
           in={open}
           timeout="auto"
           unmountOnExit>
-          {Users?.map(value => (
-            <ListUsers {...value} key={value.id} />
-          ))}
+          {Users?.map(
+            value =>
+              value.status !== 'SUPERADMIN' && (
+                <ListUsers {...value} key={value.id} />
+              ),
+          )}
         </Collapse>
       </MuiDiv>
     )

@@ -88,7 +88,10 @@ export const newUser = createAsyncThunk(
   'user/newUser',
   async (newUserData: NewUser, thunkAPI) => {
     try {
-      const { data } = await host.post(ApiEndPoints.User.newUser, newUserData)
+      const { data } = await authhost.post(
+        ApiEndPoints.User.newUser,
+        newUserData,
+      )
       return {
         data,
         message: {

@@ -153,6 +153,7 @@ export const ApiEndPoints = {
   System: {
     getSystem: 'system/getSystem',
     setSystem: 'system/setSystem',
+    changePasswordSystem: 'system/changePasswordSystem',
   },
 }
 

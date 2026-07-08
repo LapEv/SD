@@ -60,3 +60,8 @@ export interface AnswerGetSystem {
     type: string
   }
 }
+
+export interface ChangePasswordProps {
+  oldPassword: string
+  newPassword: string
+}

@@ -127,7 +127,7 @@ export const MapProfileInputFieldsAdmin = [
   {
     name: 'post',
     label: 'Должность',
-    validation: textValidation,
+    validation: nameValidation,
     value: '',
     required: true,
   },
