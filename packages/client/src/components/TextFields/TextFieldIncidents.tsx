@@ -12,8 +12,8 @@ export const TextFieldIncidents = styled(MuiTextField)(({ theme, sx }) => ({
     fontWeight: 'normal',
     color:
       theme.palette.mode === ThemeMode.dark
-        ? (theme as ITheme).colorTheme.colorLight
-        : (theme as ITheme).colorTheme.colorDark,
+        ? (theme as ITheme).colorTheme.dark.lightPrimary
+        : (theme as ITheme).colorTheme.light.darkPrimary,
     '&.Mui-focused': {
       top: (theme as ITheme).fontSize === 'small' ? 0 : -1,
       fontWeight: 'bold',
@@ -22,32 +22,32 @@ export const TextFieldIncidents = styled(MuiTextField)(({ theme, sx }) => ({
       top: (theme as ITheme).fontSize === 'small' ? 0 : 0,
       color:
         theme.palette.mode === ThemeMode.dark
-          ? (theme as ITheme).colorTheme.colorLight
-          : (theme as ITheme).colorTheme.colorDark,
+          ? (theme as ITheme).colorTheme.dark.lightPrimary
+          : (theme as ITheme).colorTheme.light.darkPrimary,
     },
   },
   '.MuiOutlinedInput-root': {
     '& fieldset': {
       borderColor:
         theme.palette.mode === ThemeMode.dark
-          ? (theme as ITheme).colorTheme.colorLight
-          : (theme as ITheme).colorTheme.colorDark,
+          ? (theme as ITheme).colorTheme.dark.lightPrimary
+          : (theme as ITheme).colorTheme.light.darkPrimary,
       borderWidth: 1,
       borderStyle: 'solid',
     },
     '&:hover > fieldset': {
       borderColor:
         theme.palette.mode === ThemeMode.dark
-          ? (theme as ITheme).colorTheme.colorLight
-          : (theme as ITheme).colorTheme.colorDark,
+          ? (theme as ITheme).colorTheme.dark.lightPrimary
+          : (theme as ITheme).colorTheme.light.darkPrimary,
       borderWidth: 2,
       borderStyle: 'solid',
     },
     '&:focus > fieldset': {
       borderColor:
         theme.palette.mode === ThemeMode.dark
-          ? (theme as ITheme).colorTheme.colorLight
-          : (theme as ITheme).colorTheme.colorDark,
+          ? (theme as ITheme).colorTheme.dark.lightPrimary
+          : (theme as ITheme).colorTheme.light.darkPrimary,
       borderWidth: 2,
       borderStyle: 'solid',
     },
@@ -59,24 +59,42 @@ export const TextFieldIncidents = styled(MuiTextField)(({ theme, sx }) => ({
     fontWeight: 'bold',
     backgroundColor:
       theme.palette.mode === ThemeMode.dark
-        ? (theme as ITheme).colorTheme.colorDark
-        : (theme as ITheme).colorTheme.colorLight,
+        ? (theme as ITheme).colorTheme.dark.primary
+        : (theme as ITheme).colorTheme.light.primary,
     color:
       theme.palette.mode === ThemeMode.dark
-        ? (theme as ITheme).colorTheme.colorLight
-        : (theme as ITheme).colorTheme.colorDark,
+        ? (theme as ITheme).colorTheme.dark.lightPrimary
+        : (theme as ITheme).colorTheme.light.darkPrimary,
     ...sx,
     '&.Mui-focused': {
       '& fieldset': {
         border: `2px solid ${
           theme.palette.mode === ThemeMode.dark
-            ? (theme as ITheme).colorTheme.colorLight
-            : (theme as ITheme).colorTheme.colorDark
+            ? (theme as ITheme).colorTheme.dark.lightPrimary
+            : (theme as ITheme).colorTheme.light.darkPrimary
         }! important`,
       },
     },
   },
   '.MuiFormHelperText-root': {
     marginTop: 0,
+  },
+  '.MuiOutlinedInput-input:-webkit-autofill': {
+    padding: '0px 14px',
+    borderRadius: 0,
+    backgroundColor:
+      theme.palette.mode === ThemeMode.light
+        ? `${(theme as ITheme).colorTheme.light.darkPrimary}!important`
+        : `${(theme as ITheme).colorTheme.dark.lightPrimary}!important`,
+    WebkitBoxShadow: `0 0 0 100px ${
+      theme.palette.mode === ThemeMode.light
+        ? (theme as ITheme).colorTheme.light.primary
+        : (theme as ITheme).colorTheme.dark.primary
+    } inset`,
+
+    WebkitTextFillColor:
+      theme.palette.mode === ThemeMode.light
+        ? (theme as ITheme).colorTheme.light.darkPrimary
+        : (theme as ITheme).colorTheme.dark.lightPrimary,
   },
 }))

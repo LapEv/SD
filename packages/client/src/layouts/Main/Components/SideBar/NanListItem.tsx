@@ -7,27 +7,24 @@ import {
   ListItemIcon,
   ListItemText,
   Collapse,
-  useTheme,
   Divider,
 } from '@mui/material'
 import { controlRoomMenuData } from 'layouts/Main/drawerBarData'
 import { RotateButton } from 'components/Buttons'
-import { ITheme } from 'themes/themeConfig'
 import { NanListItemProps } from 'layouts/Main/interfaces'
 import { ControlRoomListItem } from 'layouts/Main/Components/SideBar/ControlRoomListItem'
 
 export const NanListItem = memo(
   ({ icon, text, to, isExpanded }: NanListItemProps) => {
     const [openControl, setOpenControl] = useState<boolean>(false)
-    const theme = useTheme() as ITheme
 
     return (
       <>
         {text === 'Диспетчерская' ? (
           <Box sx={{ display: 'block' }}>
             <ListItemButton
+              className="heightList"
               sx={{
-                height: theme.fontSize === 'small' ? 30 : 40,
                 justifyContent: isExpanded ? 'space-between' : 'center',
               }}
               onClick={() => setOpenControl(!openControl)}>
@@ -49,12 +46,7 @@ export const NanListItem = memo(
               )}
             </ListItemButton>
             <Collapse
-              sx={{
-                width: '100%',
-                display: 'flex',
-                flexDirection: 'column',
-                ml: -1,
-              }}
+              className="collapseCRoomList"
               in={openControl}
               timeout="auto"
               unmountOnExit>

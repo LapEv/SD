@@ -1,8 +1,9 @@
 import { useState, ChangeEvent, useEffect, memo } from 'react'
-import { Box, FormControlLabel, Checkbox } from '@mui/material'
+import { FormControlLabel, Checkbox } from '@mui/material'
 import { ListBoxGroup } from './ListBoxGroup'
 import { ICheckBoxGroup, ICheckBoxGroupItems } from './interface'
 import { isEqualArr } from 'utils/isEqualArr'
+import { BoxModal } from 'components/MUI'
 
 export const Group = memo(
   ({
@@ -15,7 +16,7 @@ export const Group = memo(
   }: ICheckBoxGroup) => {
     const [checked, setChecked] = useState<boolean>(data.checkedGroup)
     const [selectedGroup, setSelectedGroup] = useState<string>(
-      data.checkedGroup ? data.id : ''
+      data.checkedGroup ? data.id : '',
     )
     const [items, setItems] = useState<ICheckBoxGroupItems[]>(data.items)
     const [selectedItems, setSelectedItems] = useState<string[]>(
@@ -23,7 +24,7 @@ export const Group = memo(
         if (item.checkedItems) {
           return item.id as string
         }
-      }) as string[]
+      }) as string[],
     )
     const [checkedGroup, setCheckedGroup] = useState<boolean>(data.checkedGroup)
 
@@ -35,7 +36,7 @@ export const Group = memo(
         setItems(
           items.map(item => {
             return { ...item, checkedItems: false }
-          })
+          }),
         )
         setCheckedGroup(event.target.checked)
         onChooseGroup(event.target.checked, data.id)
@@ -47,13 +48,13 @@ export const Group = memo(
       setItems(
         items.map(item => {
           return { ...item, checkedItems: true }
-        })
+        }),
       )
       setCheckedGroup(event.target.checked)
       onChooseGroup(event.target.checked, data.id)
       onChooseItemsGroup(
         event.target.checked,
-        items.map(({ id }) => id)
+        items.map(({ id }) => id),
       )
     }
 
@@ -72,7 +73,7 @@ export const Group = memo(
               ...item,
               checkedItems: item.id === id ? false : item.checkedItems,
             }
-          })
+          }),
         )
         onChooseItems(checked, id)
         return
@@ -90,7 +91,7 @@ export const Group = memo(
               ...item,
               checkedItems: item.id === id ? true : item.checkedItems,
             }
-          })
+          }),
         )
         onChooseItems(checked, id)
       }
@@ -109,7 +110,7 @@ export const Group = memo(
             if (item.checkedItems) {
               return item.id as string
             }
-          }) as string[]
+          }) as string[],
         )
         setCheckedGroup(data.checkedGroup)
         onClearChanges?.(false)
@@ -117,16 +118,7 @@ export const Group = memo(
     }, [clearChanges])
 
     return (
-      <Box
-        component="main"
-        maxWidth="md"
-        sx={{
-          display: 'flex',
-          width: '100%',
-          flexDirection: 'row',
-          justifyContent: 'space-around',
-          alignItems: 'flex-start',
-        }}>
+      <BoxModal component="main" maxWidth="md" className="flexRow_J-S_A-FS">
         <>
           <FormControlLabel
             name={data.group}
@@ -143,7 +135,7 @@ export const Group = memo(
             onChooseItems={onItemsChange}
           />
         </>
-      </Box>
+      </BoxModal>
     )
-  }
+  },
 )

@@ -1,8 +1,6 @@
 import { useState, ChangeEvent, useEffect, memo } from 'react'
 import { Checkbox, FormControlLabel, ListItemText } from '@mui/material'
 import { IItem } from './interface'
-import { useTheme } from '@emotion/react'
-import { ITheme } from 'themes/themeConfig'
 
 export const Item = memo(
   ({
@@ -22,7 +20,6 @@ export const Item = memo(
     const [checked, setChecked] = useState<boolean>(
       (initChecked as boolean) ?? false,
     )
-    const theme = useTheme() as ITheme
     const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
       if (oneChecked && noEmpty && checked) {
         if (!event.target.checked) {
@@ -54,16 +51,8 @@ export const Item = memo(
           label={name}
           id={id}
           name={`${name}`}
-          sx={{
-            width: '100%',
-            display: 'flex',
-            alignItems: 'flex-start',
-            justifyContent: 'flex-start',
-            p: 1,
-            ml: theme.fontSize === 'small' ? 5 : 0,
-            ...props,
-          }}
-          className={`itemsContaimer ${className}`}
+          sx={{ ...props }}
+          className={`itemsContaimer  ${className}`}
           control={
             <Checkbox
               sx={{

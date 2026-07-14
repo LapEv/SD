@@ -12,8 +12,8 @@ export const TextFieldsFilter = styled(MuiTextField)(({ theme, sx }) => ({
     fontWeight: 'normal',
     color:
       theme.palette.mode === ThemeMode.dark
-        ? (theme as ITheme).colorTheme.colorLight
-        : (theme as ITheme).colorTheme.colorDark,
+        ? (theme as ITheme).colorTheme.dark.lightPrimary
+        : (theme as ITheme).colorTheme.light.darkPrimary,
     '&.Mui-focused': {
       top: (theme as ITheme).fontSize === 'small' ? 0 : -1,
       fontWeight: 'bold',
@@ -26,24 +26,24 @@ export const TextFieldsFilter = styled(MuiTextField)(({ theme, sx }) => ({
     '& fieldset': {
       borderColor:
         theme.palette.mode === ThemeMode.dark
-          ? (theme as ITheme).colorTheme.colorLight
-          : (theme as ITheme).colorTheme.colorDark,
+          ? (theme as ITheme).colorTheme.dark.lightPrimary
+          : (theme as ITheme).colorTheme.light.darkPrimary,
       borderWidth: 1,
       borderStyle: 'solid',
     },
     '&:hover > fieldset': {
       borderColor:
         theme.palette.mode === ThemeMode.dark
-          ? (theme as ITheme).colorTheme.colorLight
-          : (theme as ITheme).colorTheme.colorDark,
+          ? (theme as ITheme).colorTheme.dark.lightPrimary
+          : (theme as ITheme).colorTheme.light.darkPrimary,
       borderWidth: 2,
       borderStyle: 'solid',
     },
     '&:focus > fieldset': {
       borderColor:
         theme.palette.mode === ThemeMode.dark
-          ? (theme as ITheme).colorTheme.colorLight
-          : (theme as ITheme).colorTheme.colorDark,
+          ? (theme as ITheme).colorTheme.dark.lightPrimary
+          : (theme as ITheme).colorTheme.light.darkPrimary,
       borderWidth: 2,
       borderStyle: 'solid',
     },
@@ -56,18 +56,18 @@ export const TextFieldsFilter = styled(MuiTextField)(({ theme, sx }) => ({
     fontWeight: 'bold',
     backgroundColor:
       theme.palette.mode === ThemeMode.dark
-        ? (theme as ITheme).colorTheme.colorDark
-        : (theme as ITheme).colorTheme.colorLight,
+        ? (theme as ITheme).colorTheme.dark.primary
+        : (theme as ITheme).colorTheme.light.primary,
     color:
       theme.palette.mode === ThemeMode.dark
-        ? (theme as ITheme).colorTheme.colorLight
-        : (theme as ITheme).colorTheme.colorDark,
+        ? (theme as ITheme).colorTheme.dark.lightPrimary
+        : (theme as ITheme).colorTheme.light.darkPrimary,
     '&.Mui-focused': {
       '& fieldset': {
         border: `2px solid ${
           theme.palette.mode === ThemeMode.dark
-            ? (theme as ITheme).colorTheme.colorLight
-            : (theme as ITheme).colorTheme.colorDark
+            ? (theme as ITheme).colorTheme.dark.lightPrimary
+            : (theme as ITheme).colorTheme.light.darkPrimary
         }! important`,
       },
     },

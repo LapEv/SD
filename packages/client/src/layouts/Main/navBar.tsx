@@ -6,6 +6,7 @@ import { menuData } from './drawerBarData'
 import { Button } from '@mui/material'
 import { Link } from 'react-router-dom'
 import { memo } from 'react'
+import { ITheme, ThemeMode } from 'themes/themeConfig'
 
 const NavItem = memo(({ text, ...rest }: { text: string; to: string }) => {
   return (
@@ -25,7 +26,10 @@ const NavItem = memo(({ text, ...rest }: { text: string; to: string }) => {
 export const NavBar = memo(() => {
   const AppBar = styled(MuiAppBar)(({ theme }) => ({
     zIndex: theme.zIndex.drawer + 1,
-    backgroundColor: theme.palette.background.paper,
+    backgroundColor:
+      theme.palette.mode === ThemeMode.light
+        ? (theme as ITheme).colorTheme.light.primary
+        : (theme as ITheme).colorTheme.dark.primary,
     // height: 60,
     transition: theme.transitions.create(['width', 'margin'], {
       easing: theme.transitions.easing.sharp,
@@ -37,7 +41,7 @@ export const NavBar = memo(() => {
     <AppBar position="fixed" sx={{ zIndex: 1, display: 'none' }}>
       <Toolbar>
         <Typography variant="h6" component="div">
-          SD
+          SBI
         </Typography>
         {menuData.map(value => (
           <NavItem key={value.text} {...value} />

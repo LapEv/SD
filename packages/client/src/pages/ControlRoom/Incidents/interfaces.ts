@@ -91,6 +91,7 @@ export interface IIndicatorCell {
   status?: string
   inc?: string
   classContainer?: string
+  theme: 'light' | 'dark'
 }
 
 export interface ICustomToolbar {}

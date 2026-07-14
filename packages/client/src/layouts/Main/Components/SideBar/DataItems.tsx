@@ -50,6 +50,15 @@ export const DataItems = memo(({ user, open }: DataItemsProps) => {
       </>
     )
   }
+  if (user && user.status === 'SUPERADMIN') {
+    return (
+      <>
+        {menuData.map(value => (
+          <NanListItem key={value.text} {...value} isExpanded={open} />
+        ))}
+      </>
+    )
+  }
   if (user && user.status === 'client') {
     return (
       <>

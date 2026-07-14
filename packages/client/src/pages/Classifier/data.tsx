@@ -47,7 +47,7 @@ export const menuData = [
 export const ModalTitles = {
   newClassifierEquipment: 'Новый классификатор',
   newClassifierModel: 'Новая модель',
-  newTypicalMalfunction: 'Новая типовую неисправность',
+  newTypicalMalfunction: 'Новая типовая неисправность',
   deleteClassifierEquipment: 'Удалить классификатор',
   deleteClassifierModel: 'Удалить модель',
   deleteTypicalMalfunction: 'Удалить типовую неисправность',

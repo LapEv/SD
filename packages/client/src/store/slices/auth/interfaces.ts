@@ -36,8 +36,34 @@ export interface AppOptions {
 }
 
 export interface IColorTheme {
-  colorLight: string
-  colorDark: string
+  light: {
+    primary: string
+    secondary: string
+    darkPrimary: string
+    darkSecondary: string
+    switch_On: string
+    switch_Off: string
+    shadow: string
+    buttonShadow: string
+    buttonHover: string
+    borderPrimary: string
+    borderSecondary: string
+    text: string
+  }
+  dark: {
+    primary: string
+    secondary: string
+    lightPrimary: string
+    lightSecondary: string
+    switch_On: string
+    switch_Off: string
+    shadow: string
+    buttonShadow: string
+    buttonHover: string
+    borderPrimary: string
+    borderSecondary: string
+    text: string
+  }
 }
 
 export interface ICheckUser {

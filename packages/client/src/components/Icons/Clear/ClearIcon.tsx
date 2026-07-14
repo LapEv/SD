@@ -13,8 +13,8 @@ export const ClearIconElement = memo(({ size }: IClearIcon) => {
         fontSize: size,
         color:
           theme.palette.mode === ThemeMode.light
-            ? (theme as ITheme).colorTheme.colorLight
-            : (theme as ITheme).colorTheme.colorDark,
+            ? (theme as ITheme).colorTheme.light.primary
+            : (theme as ITheme).colorTheme.dark.primary,
       }}
     />
   )

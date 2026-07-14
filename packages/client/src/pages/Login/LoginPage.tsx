@@ -1,4 +1,4 @@
-import { Box, Container, Typography } from '@mui/material'
+import { Container, Typography } from '@mui/material'
 import {
   useForm,
   useFieldArray,
@@ -11,6 +11,7 @@ import { Button } from 'components/Buttons'
 import { TextField } from 'components/TextFields/'
 import { LoginValues } from './interfaces'
 import { memo } from 'react'
+import { BoxModal, MuiDiv } from 'components/MUI'
 
 export const LoginPageData = memo(() => {
   const [, { signin }] = useAuth()
@@ -36,31 +37,11 @@ export const LoginPageData = memo(() => {
 
   return (
     <Container component="main" maxWidth="sm">
-      <Box
-        sx={{
-          my: 10,
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-        }}>
-        <Box
+      <MuiDiv className="loginContainer">
+        <BoxModal
+          className={'loginPaper'}
           component="form"
-          onSubmit={handleSubmit(submitForm)}
-          bgcolor="background.paper"
-          sx={{
-            borderRadius: 2,
-            borderWidth: 2,
-            borderBlockColor: 'icon.default',
-            borderStyle: 'solid',
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            width: 540,
-            height: 350,
-            justifyContent: 'space-around',
-            boxShadow: 5,
-            p: 2,
-          }}>
+          onSubmit={handleSubmit(submitForm)}>
           <Typography sx={{ fontWeight: 700, fontSize: 32 }} color="green.64">
             Вход
           </Typography>
@@ -89,8 +70,8 @@ export const LoginPageData = memo(() => {
             )
           })}
           <Button type="submit">Авторизация</Button>
-        </Box>
-      </Box>
+        </BoxModal>
+      </MuiDiv>
     </Container>
   )
 })

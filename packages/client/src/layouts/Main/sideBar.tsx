@@ -30,10 +30,10 @@ export const SideBar = memo(({ open = false }: SideBarProps) => {
         {!open ? (
           <Link
             variant="h6"
-            sx={{ color: 'black' }}
+            className="mainLink"
             component={RouterLink}
             to={`/`}>
-            SD
+            SBI
           </Link>
         ) : (
           <></>

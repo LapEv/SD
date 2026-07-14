@@ -1,6 +1,6 @@
 import { memo, useEffect, useRef, useState } from 'react'
 import { styled, Theme, CSSObject } from '@mui/material/styles'
-import { Box, Divider, Drawer as MuiDrawer, useTheme } from '@mui/material'
+import { Divider, Drawer as MuiDrawer, useTheme } from '@mui/material'
 import { NavBar } from './navBar'
 import { SideBar } from './sideBar'
 import { drawerWidth, compressedWidth } from './drawerBarData'
@@ -8,11 +8,15 @@ import { DrawerHeader } from './drawerHeader'
 import { Outlet } from 'react-router-dom'
 import { useAuth } from 'hooks/auth/useAuth'
 import { useApp } from 'hooks/app/useApp'
-import { ITheme } from 'themes/themeConfig'
+import { ITheme, ThemeMode } from 'themes/themeConfig'
+import { MuiDiv } from 'components/MUI'
 
 const openedMixin = (theme: Theme): CSSObject => ({
   width: (theme as ITheme).fontSize === 'small' ? compressedWidth : drawerWidth,
-  backgroundColor: theme.palette.background.paper,
+  backgroundColor:
+    theme.palette.mode === ThemeMode.light
+      ? (theme as ITheme).colorTheme.light.primary
+      : (theme as ITheme).colorTheme.dark.primary,
   transition: theme.transitions.create('width', {
     easing: theme.transitions.easing.sharp,
     duration: theme.transitions.duration.complex,
@@ -21,7 +25,10 @@ const openedMixin = (theme: Theme): CSSObject => ({
 })
 
 const closedMixin = (theme: Theme): CSSObject => ({
-  backgroundColor: theme.palette.background.paper,
+  backgroundColor:
+    theme.palette.mode === ThemeMode.light
+      ? (theme as ITheme).colorTheme.light.primary
+      : (theme as ITheme).colorTheme.dark.primary,
   transition: theme.transitions.create('width', {
     easing: theme.transitions.easing.sharp,
     duration: theme.transitions.duration.complex,
@@ -82,44 +89,25 @@ export const MainLayout = memo(() => {
   return (
     <>
       {user && user.status ? (
-        <Box sx={{ display: 'flex', width: '100%' }}>
+        <MuiDiv className="dflex_w100">
           <NavBar />
           <Drawer sx={{ display: 'flex' }} variant="permanent" open={open}>
             <DrawerHeader
               open={open}
               toggleDrawer={toggleDrawer}
-              fontSize={(theme as ITheme).fontSize}
+              theme={theme as ITheme}
             />
             <Divider />
             <SideBar open={open} />
           </Drawer>
-          <Box
-            ref={boxRef}
-            sx={{
-              backgroundColor: theme.palette.background.paper,
-              width,
-              minHeight: '100vh',
-              height: '100vH',
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'flex-start',
-              p: 0,
-            }}>
+          <MuiDiv ref={boxRef} className="mainContainerOpen" sx={{ width }}>
             <Outlet />
-          </Box>
-        </Box>
+          </MuiDiv>
+        </MuiDiv>
       ) : (
-        <Box
-          ref={boxRef}
-          sx={{
-            display: 'flex',
-            width: '100%',
-            height: '100vH',
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}>
+        <MuiDiv ref={boxRef} className="mainContainerClose">
           <Outlet />
-        </Box>
+        </MuiDiv>
       )}
     </>
   )

@@ -29,10 +29,7 @@ const initialState: AuthState = {
   dispatchers: [],
   avatar: '',
   userByDepartment: [],
-  colorTheme: {
-    colorLight: ThemeColor.light,
-    colorDark: ThemeColor.dark,
-  },
+  colorTheme: ThemeColor,
   admin: false,
   superAdmin: false,
   isLoadingAuth: true,
@@ -61,6 +58,7 @@ export const authSlise = createSlice({
       state.avatar = action.payload
     },
     changeColorTheme(state, action) {
+      console.log('acttion = ', action)
       state.colorTheme = action.payload
     },
   },

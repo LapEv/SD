@@ -1,7 +1,7 @@
 import React, { ChangeEvent, memo } from 'react'
 import { ModalProps } from './interfaces'
 import { useState } from 'react'
-import { Box, Typography } from '@mui/material'
+import { Typography } from '@mui/material'
 import { ButtonsSectionNoSubmit } from 'components/Buttons'
 import { TextField } from 'components/TextFields'
 import { BoxModal, MuiDiv } from 'components/MUI'
@@ -30,7 +30,7 @@ export const DeleteUserModal = memo(
           <Typography variant={'h1'} sx={{ textAlign: 'center' }}>
             {title}
           </Typography>
-          <Box className={'container_mt2_pl3_w100'}>
+          <MuiDiv className={'container_mt2_pl3_w100'}>
             <TextField
               label="Причина удаления"
               variant="outlined"
@@ -42,10 +42,10 @@ export const DeleteUserModal = memo(
                 setReason(e.target.value ?? '')
               }
             />
-          </Box>
+          </MuiDiv>
           <MuiDiv className={'modalError'}>{errSelectedItems}</MuiDiv>
           <ButtonsSectionNoSubmit
-            btnSecondHandle={() => answerFromModal(false, reasonOfDelete)}
+            btnSecondHandle={() => handleModal(false)}
             btnHandle={changeData}
             btnName="Удалить"
             btnSecondName="Отмена"

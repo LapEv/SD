@@ -10,9 +10,9 @@ export const MultiTextFieldIncident = styled(MuiTextField)(({ theme, sx }) => ({
     marginTop: 0,
     fontWeight: 'normal',
     color:
-      theme.palette.mode === ThemeMode.dark
-        ? (theme as ITheme).colorTheme.colorLight
-        : (theme as ITheme).colorTheme.colorDark,
+      theme.palette.mode === ThemeMode.light
+        ? (theme as ITheme).colorTheme.light.primary
+        : (theme as ITheme).colorTheme.dark.primary,
     '&.Mui-focused': {
       top: (theme as ITheme).fontSize === 'small' ? 0 : -1,
       fontWeight: 'bold',
@@ -21,8 +21,8 @@ export const MultiTextFieldIncident = styled(MuiTextField)(({ theme, sx }) => ({
       top: (theme as ITheme).fontSize === 'small' ? 0 : 0,
       color:
         theme.palette.mode === ThemeMode.dark
-          ? (theme as ITheme).colorTheme.colorLight
-          : (theme as ITheme).colorTheme.colorDark,
+          ? (theme as ITheme).colorTheme.dark.lightPrimary
+          : (theme as ITheme).colorTheme.light.darkPrimary,
     },
   },
   '.MuiInputLabel-root.Mui-error': {
@@ -33,8 +33,8 @@ export const MultiTextFieldIncident = styled(MuiTextField)(({ theme, sx }) => ({
   '.MuiInputLabel-root.MuiInputLabel-shrink': {
     color:
       theme.palette.mode === ThemeMode.light
-        ? (theme as ITheme).colorTheme.colorDark
-        : (theme as ITheme).colorTheme.colorLight,
+        ? (theme as ITheme).colorTheme.light.darkPrimary
+        : (theme as ITheme).colorTheme.dark.lightPrimary,
   },
   '.MuiInputBase-root': {
     display: 'flex',
@@ -45,19 +45,19 @@ export const MultiTextFieldIncident = styled(MuiTextField)(({ theme, sx }) => ({
     padding: '5px 10px',
     backgroundColor:
       theme.palette.mode === ThemeMode.dark
-        ? (theme as ITheme).colorTheme.colorDark
-        : (theme as ITheme).colorTheme.colorLight,
+        ? (theme as ITheme).colorTheme.dark.primary
+        : (theme as ITheme).colorTheme.light.primary,
     color:
       theme.palette.mode === ThemeMode.dark
-        ? (theme as ITheme).colorTheme.colorLight
-        : (theme as ITheme).colorTheme.colorDark,
+        ? (theme as ITheme).colorTheme.dark.lightPrimary
+        : (theme as ITheme).colorTheme.light.darkPrimary,
     ...sx,
     '&.Mui-focused': {
       '& fieldset': {
         border: `2px solid ${
           theme.palette.mode === ThemeMode.dark
-            ? (theme as ITheme).colorTheme.colorLight
-            : (theme as ITheme).colorTheme.colorDark
+            ? (theme as ITheme).colorTheme.dark.lightPrimary
+            : (theme as ITheme).colorTheme.light.darkPrimary
         }! important`,
       },
     },
@@ -74,24 +74,24 @@ export const MultiTextFieldIncident = styled(MuiTextField)(({ theme, sx }) => ({
     '& fieldset': {
       borderColor:
         theme.palette.mode === ThemeMode.dark
-          ? (theme as ITheme).colorTheme.colorLight
-          : (theme as ITheme).colorTheme.colorDark,
+          ? (theme as ITheme).colorTheme.dark.lightPrimary
+          : (theme as ITheme).colorTheme.light.darkPrimary,
       borderWidth: 1,
       borderStyle: 'solid',
     },
     '&:hover > fieldset': {
       borderColor:
         theme.palette.mode === ThemeMode.dark
-          ? (theme as ITheme).colorTheme.colorLight
-          : (theme as ITheme).colorTheme.colorDark,
+          ? (theme as ITheme).colorTheme.dark.lightPrimary
+          : (theme as ITheme).colorTheme.light.darkPrimary,
       borderWidth: 2,
       borderStyle: 'solid',
     },
     '&:focus > fieldset': {
       borderColor:
         theme.palette.mode === ThemeMode.dark
-          ? (theme as ITheme).colorTheme.colorLight
-          : (theme as ITheme).colorTheme.colorDark,
+          ? (theme as ITheme).colorTheme.dark.lightPrimary
+          : (theme as ITheme).colorTheme.light.darkPrimary,
       borderWidth: 5,
       borderStyle: 'solid',
     },
@@ -99,20 +99,23 @@ export const MultiTextFieldIncident = styled(MuiTextField)(({ theme, sx }) => ({
   '& .MuiOutlinedInput-input.Mui-disabled': {
     backgroundColor:
       theme.palette.mode === ThemeMode.light
-        ? (theme as ITheme).colorTheme.colorLight
-        : (theme as ITheme).colorTheme.colorDark,
+        ? (theme as ITheme).colorTheme.light.primary
+        : (theme as ITheme).colorTheme.dark.primary,
     WebkitTextFillColor:
       theme.palette.mode === ThemeMode.light
-        ? 'rgba(0,0,0,1)'
-        : 'rgba(255,255,255,1)',
-    borderColor: theme.palette.mode === ThemeMode.light ? '#FFF' : '#000',
+        ? (theme as ITheme).colorTheme.light.darkSecondary
+        : (theme as ITheme).colorTheme.dark.lightSecondary,
+    borderColor:
+      theme.palette.mode === ThemeMode.light
+        ? (theme as ITheme).colorTheme.light.secondary
+        : (theme as ITheme).colorTheme.dark.secondary,
     cursor: 'text',
   },
   '& .MuiOutlinedInput-notchedOutline': {
     borderColor:
       theme.palette.mode === ThemeMode.dark
-        ? (theme as ITheme).colorTheme.colorLight
-        : (theme as ITheme).colorTheme.colorDark,
+        ? (theme as ITheme).colorTheme.dark.lightPrimary
+        : (theme as ITheme).colorTheme.light.darkPrimary,
     borderWidth: 2,
     borderStyle: 'solid',
   },
@@ -121,14 +124,17 @@ export const MultiTextFieldIncident = styled(MuiTextField)(({ theme, sx }) => ({
     borderRadius: 0,
     backgroundColor:
       theme.palette.mode === ThemeMode.light
-        ? `${(theme as ITheme).colorTheme.colorDark}!important`
-        : `${(theme as ITheme).colorTheme.colorLight}!important`,
+        ? `${(theme as ITheme).colorTheme.light.darkPrimary}!important`
+        : `${(theme as ITheme).colorTheme.dark.lightPrimary}!important`,
     WebkitBoxShadow: `0 0 0 100px ${
       theme.palette.mode === ThemeMode.light
-        ? (theme as ITheme).colorTheme.colorDark
-        : (theme as ITheme).colorTheme.colorLight
+        ? (theme as ITheme).colorTheme.light.darkPrimary
+        : (theme as ITheme).colorTheme.dark.primary
     } inset`,
+
     WebkitTextFillColor:
-      theme.palette.mode === ThemeMode.light ? '#FFFFFF' : '#000000',
+      theme.palette.mode === ThemeMode.light
+        ? (theme as ITheme).colorTheme.light.secondary
+        : (theme as ITheme).colorTheme.dark.secondary,
   },
 }))

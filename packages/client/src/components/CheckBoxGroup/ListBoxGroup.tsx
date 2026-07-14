@@ -38,15 +38,7 @@ export const ListBoxGroup = memo(
       <Box sx={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
         <ListItemButton
           divider={open}
-          sx={{
-            fontWeight: 'bold',
-            width: '100%',
-            display: 'flex',
-            flexDirection: 'row',
-            alignItems: 'space-between',
-            justifyContent: 'space-between',
-            padding: 0,
-          }}
+          className="listBoxGroup"
           onClick={handleClick}>
           <>
             <ListItemText primary={groupName} />

@@ -36,13 +36,13 @@ export const GlobalStyle = () => {
         'input:-webkit-autofill': {
           WebkitBoxShadow: `0 0 0 50px ${
             theme.palette.mode === ThemeMode.dark
-              ? theme.colorTheme.colorDark
-              : theme.colorTheme.colorLight
+              ? theme.colorTheme.dark.primary
+              : theme.colorTheme.light.primary
           } inset`,
           WebkitTextFillColor:
             theme.palette.mode === ThemeMode.light
-              ? theme.colorTheme.colorDark
-              : theme.colorTheme.colorLight,
+              ? (theme as ITheme).colorTheme.light.darkPrimary
+              : (theme as ITheme).colorTheme.dark.lightPrimary,
         },
         'input[type=number]::-webkit-inner-spin-button': {
           WebkitAppearance: 'none',

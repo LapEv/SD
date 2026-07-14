@@ -1,11 +1,12 @@
 import { JSX } from 'react'
 import { FilesData } from 'store/slices/files/interfaces'
 import { User } from 'storeAuth/interfaces'
+import { ITheme } from 'themes/themeConfig'
 
 export interface DrawerHeaderProps {
   open?: boolean
   toggleDrawer: (check: boolean) => void
-  fontSize: string
+  theme: ITheme
 }
 
 export interface SideBarProps {

@@ -155,8 +155,8 @@ export const ProfileAvatar = memo(
                     height: '100px',
                     bgcolor:
                       theme.palette.mode === ThemeMode.light
-                        ? (theme as ITheme).colorTheme.colorDark
-                        : (theme as ITheme).colorTheme.colorLight,
+                        ? (theme as ITheme).colorTheme.light.darkPrimary
+                        : (theme as ITheme).colorTheme.dark.lightPrimary,
                     cursor: 'pointer',
                   }}
                 />
@@ -182,8 +182,8 @@ export const ProfileAvatar = memo(
               width: 'auto',
               color:
                 theme.palette.mode === ThemeMode.light
-                  ? (theme as ITheme).colorTheme.colorLight
-                  : (theme as ITheme).colorTheme.colorDark,
+                  ? (theme as ITheme).colorTheme.light.primary
+                  : (theme as ITheme).colorTheme.dark.primary,
             }}
             margin="normal"
             value={selectedFile.info?.name || ''}
@@ -193,8 +193,8 @@ export const ProfileAvatar = memo(
                 mt: 1,
                 color:
                   theme.palette.mode === ThemeMode.light
-                    ? (theme as ITheme).colorTheme.colorDark
-                    : (theme as ITheme).colorTheme.colorLight,
+                    ? (theme as ITheme).colorTheme.light.darkPrimary
+                    : (theme as ITheme).colorTheme.dark.lightPrimary,
               },
             }}
           />

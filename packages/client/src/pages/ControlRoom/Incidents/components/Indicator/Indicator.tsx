@@ -1,7 +1,9 @@
 import { LinearProgressWithLabel } from 'components/LinearProgress/LinearProgress'
 import { IIndicatorCell } from '../../interfaces'
+import { GetIndicatorData } from 'pages/ControlRoom/Incidents'
 import { MuiDiv } from 'components/MUI'
-import { GetIndicatorData } from '../../Utils/GetIndicatorData'
+import { useTheme } from '@mui/material'
+import { ITheme } from 'themes/themeConfig'
 
 export const Indicator = ({
   timeSLA,
@@ -11,12 +13,14 @@ export const Indicator = ({
   status,
   classContainer,
 }: IIndicatorCell) => {
+  const theme = useTheme() as ITheme
   const { percent, indicator, value } = GetIndicatorData({
     timeSLA,
     timeReg,
     timeCloseCheck,
     inc,
     status,
+    theme: theme.palette.mode,
   })
 
   return (

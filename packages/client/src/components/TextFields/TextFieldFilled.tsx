@@ -14,24 +14,24 @@ export const TextFieldFilled = styled(MuiTextField)(({ theme, sx }) => ({
     fontWeight: 'normal',
     backgroundColor:
       theme.palette.mode === ThemeMode.dark
-        ? (theme as ITheme).colorTheme.colorDark
-        : (theme as ITheme).colorTheme.colorLight,
+        ? (theme as ITheme).colorTheme.dark.primary
+        : (theme as ITheme).colorTheme.light.primary,
     color:
       theme.palette.mode === ThemeMode.dark
-        ? (theme as ITheme).colorTheme.colorLight
-        : (theme as ITheme).colorTheme.colorDark,
+        ? (theme as ITheme).colorTheme.dark.lightPrimary
+        : (theme as ITheme).colorTheme.light.darkPrimary,
     '&.Mui-focused': {
       backgroundColor: `${
         theme.palette.mode === ThemeMode.dark
-          ? (theme as ITheme).colorTheme.colorDark
-          : (theme as ITheme).colorTheme.colorLight
+          ? (theme as ITheme).colorTheme.dark.primary
+          : (theme as ITheme).colorTheme.light.primary
       }!important`,
     },
     '&:hover': {
       backgroundColor: `${
         theme.palette.mode === ThemeMode.dark
-          ? (theme as ITheme).colorTheme.colorDark
-          : (theme as ITheme).colorTheme.colorLight
+          ? (theme as ITheme).colorTheme.dark.primary
+          : (theme as ITheme).colorTheme.light.primary
       }!important`,
     },
     ...sx,
@@ -48,5 +48,23 @@ export const TextFieldFilled = styled(MuiTextField)(({ theme, sx }) => ({
     position: 'absolute',
     bottom: -15,
     width: 320,
+  },
+  '.MuiFilledInput-input:-webkit-autofill': {
+    padding: '0px 14px',
+    borderRadius: 0,
+    backgroundColor:
+      theme.palette.mode === ThemeMode.light
+        ? `${(theme as ITheme).colorTheme.light.darkPrimary}!important`
+        : `${(theme as ITheme).colorTheme.dark.lightPrimary}!important`,
+    WebkitBoxShadow: `0 0 0 100px ${
+      theme.palette.mode === ThemeMode.light
+        ? (theme as ITheme).colorTheme.light.primary
+        : (theme as ITheme).colorTheme.dark.primary
+    } inset`,
+
+    WebkitTextFillColor:
+      theme.palette.mode === ThemeMode.light
+        ? (theme as ITheme).colorTheme.light.darkPrimary
+        : (theme as ITheme).colorTheme.dark.lightPrimary,
   },
 }))

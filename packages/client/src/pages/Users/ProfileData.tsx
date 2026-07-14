@@ -177,8 +177,8 @@ export const ProfileData = memo((_user: User) => {
             height: '100px',
             bgcolor:
               theme.palette.mode === ThemeMode.light
-                ? (theme as ITheme).colorTheme.colorDark
-                : (theme as ITheme).colorTheme.colorLight,
+                ? (theme as ITheme).colorTheme.light.darkPrimary
+                : (theme as ITheme).colorTheme.dark.lightPrimary,
             cursor: 'pointer',
             mb: 3,
             mt: -1,
@@ -239,7 +239,10 @@ export const ProfileData = memo((_user: User) => {
           </Modal>
           <ListItemButton
             sx={{
-              color: theme.palette.text.primary,
+              color:
+                theme.palette.mode === ThemeMode.light
+                  ? (theme as ITheme).colorTheme.light.text
+                  : (theme as ITheme).colorTheme.dark.text,
               width: '88%',
               height: theme.fontSize === 'small' ? 40 : 50,
             }}

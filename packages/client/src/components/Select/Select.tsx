@@ -14,35 +14,41 @@ const CustomSelect = styled(Select)(({ theme }) => ({
   borderWidth: 2,
   color:
     theme.palette.mode === ThemeMode.dark
-      ? (theme as ITheme).colorTheme.colorLight
-      : (theme as ITheme).colorTheme.colorDark,
+      ? (theme as ITheme).colorTheme.dark.lightPrimary
+      : (theme as ITheme).colorTheme.light.darkPrimary,
   borderColor:
     theme.palette.mode === ThemeMode.dark
-      ? (theme as ITheme).colorTheme.colorLight
-      : (theme as ITheme).colorTheme.colorDark,
+      ? (theme as ITheme).colorTheme.dark.lightPrimary
+      : (theme as ITheme).colorTheme.light.darkPrimary,
   '&.MuiOutlinedInput-root': {
     '& fieldset': {
       color:
         theme.palette.mode === ThemeMode.dark
-          ? (theme as ITheme).colorTheme.colorLight
-          : (theme as ITheme).colorTheme.colorDark,
+          ? (theme as ITheme).colorTheme.dark.lightPrimary
+          : (theme as ITheme).colorTheme.light.darkPrimary,
       borderColor:
         theme.palette.mode === ThemeMode.dark
-          ? (theme as ITheme).colorTheme.colorLight
-          : (theme as ITheme).colorTheme.colorDark,
+          ? (theme as ITheme).colorTheme.dark.lightPrimary
+          : (theme as ITheme).colorTheme.light.darkPrimary,
     },
     '&:hover fieldset': {
       borderColor:
         theme.palette.mode === ThemeMode.dark
-          ? (theme as ITheme).colorTheme.colorLight
-          : (theme as ITheme).colorTheme.colorDark,
+          ? (theme as ITheme).colorTheme.dark.lightPrimary
+          : (theme as ITheme).colorTheme.light.darkPrimary,
       borderWidth: 2,
     },
     '&.Mui-focused fieldset': {
       borderColor:
         theme.palette.mode === ThemeMode.dark
-          ? (theme as ITheme).colorTheme.colorLight
-          : (theme as ITheme).colorTheme.colorDark,
+          ? (theme as ITheme).colorTheme.dark.lightPrimary
+          : (theme as ITheme).colorTheme.light.darkPrimary,
+    },
+    '& > svg': {
+      fill:
+        theme.palette.mode === ThemeMode.dark
+          ? (theme as ITheme).colorTheme.dark.lightPrimary
+          : (theme as ITheme).colorTheme.light.darkPrimary,
     },
   },
 }))
@@ -51,46 +57,49 @@ const CustomFormControl = styled(FormControl)(({ theme }) => ({
   '.MuiFormLabel-root': {
     color:
       theme.palette.mode === ThemeMode.dark
-        ? (theme as ITheme).colorTheme.colorLight
-        : (theme as ITheme).colorTheme.colorDark,
+        ? (theme as ITheme).colorTheme.dark.lightPrimary
+        : (theme as ITheme).colorTheme.light.darkPrimary,
   },
   '&:hover .MuiFormLabel-root': {
     color:
       theme.palette.mode === ThemeMode.dark
-        ? (theme as ITheme).colorTheme.colorLight
-        : (theme as ITheme).colorTheme.colorDark,
+        ? (theme as ITheme).colorTheme.dark.lightPrimary
+        : (theme as ITheme).colorTheme.light.darkPrimary,
     fontWeight: 'bold',
   },
   '&:hover .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline': {
     color:
       theme.palette.mode === ThemeMode.dark
-        ? (theme as ITheme).colorTheme.colorLight
-        : (theme as ITheme).colorTheme.colorDark,
+        ? (theme as ITheme).colorTheme.dark.lightPrimary
+        : (theme as ITheme).colorTheme.light.darkPrimary,
   },
   '& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-input': {
     color:
       theme.palette.mode === ThemeMode.dark
-        ? (theme as ITheme).colorTheme.colorLight
-        : (theme as ITheme).colorTheme.colorDark,
+        ? (theme as ITheme).colorTheme.dark.lightPrimary
+        : (theme as ITheme).colorTheme.light.darkPrimary,
     fontWeight: 'bold',
   },
   '& .MuiFormLabel-root.Mui-focused': {
     color:
       theme.palette.mode === ThemeMode.dark
-        ? (theme as ITheme).colorTheme.colorLight
-        : (theme as ITheme).colorTheme.colorDark,
+        ? (theme as ITheme).colorTheme.dark.lightPrimary
+        : (theme as ITheme).colorTheme.light.darkPrimary,
     fontWeight: 'bold',
   },
   '& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline': {
     borderColor:
       theme.palette.mode === ThemeMode.dark
-        ? (theme as ITheme).colorTheme.colorLight
-        : (theme as ITheme).colorTheme.colorDark,
+        ? (theme as ITheme).colorTheme.dark.lightPrimary
+        : (theme as ITheme).colorTheme.light.darkPrimary,
   },
 }))
 
 const CustomMenuItem = styled(MenuItem)(({ theme }) => ({
-  color: theme.palette.mode === ThemeMode.light ? '#000000' : '#FFFFFF',
+  color:
+    theme.palette.mode === ThemeMode.light
+      ? (theme as ITheme).colorTheme.light.darkSecondary
+      : (theme as ITheme).colorTheme.dark.lightSecondary,
 
   '&.Mui-selected': {
     fontWeight: 'bold',
@@ -100,8 +109,8 @@ const CustomMenuItem = styled(MenuItem)(({ theme }) => ({
         : 'rgba(0, 0, 0, 0.08)',
     color:
       theme.palette.mode === ThemeMode.dark
-        ? (theme as ITheme).colorTheme.colorLight
-        : (theme as ITheme).colorTheme.colorDark,
+        ? (theme as ITheme).colorTheme.dark.lightPrimary
+        : (theme as ITheme).colorTheme.light.darkPrimary,
   },
   '&.Mui-focusVisible': {
     backgroundColor:
@@ -118,8 +127,8 @@ const CustomMenuItem = styled(MenuItem)(({ theme }) => ({
   '&.MuiButtonBase-root': {
     color:
       theme.palette.mode === ThemeMode.dark
-        ? (theme as ITheme).colorTheme.colorLight
-        : (theme as ITheme).colorTheme.colorDark,
+        ? (theme as ITheme).colorTheme.dark.lightPrimary
+        : (theme as ITheme).colorTheme.light.darkPrimary,
     fontWeight: 'normal',
     '&.Mui-selected': {
       fontWeight: 'bold',

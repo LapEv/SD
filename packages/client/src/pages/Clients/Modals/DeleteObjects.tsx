@@ -104,7 +104,7 @@ export const DeleteObjects = memo(
             ))}
           </MuiDiv>
           <MuiDiv className={'modalError'}>
-            {errSelectedItems && 'Не выбран ни один адрес!'}
+            {errSelectedItems && 'Не выбран ни один объект!'}
           </MuiDiv>
           <ButtonsModalSection
             closeModal={() => handleModal(false)}

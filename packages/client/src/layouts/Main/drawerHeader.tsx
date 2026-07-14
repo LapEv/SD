@@ -5,9 +5,10 @@ import { LeftArrow, RightArrow } from 'components/SVGIcons'
 import { DrawerHeaderProps } from './interfaces'
 import { MuiDiv } from 'components/MUI'
 import { Link as RouterLink } from 'react-router-dom'
+import { ITheme, ThemeMode } from 'themes/themeConfig'
 
 export const DrawerHeader: FC<DrawerHeaderProps> = memo(
-  ({ open, toggleDrawer, fontSize }) => {
+  ({ open, toggleDrawer, theme }) => {
     const DrawerHeader = styled('div')(({ theme }) => ({
       minWidth: '100%',
       marginTop: 0,
@@ -18,7 +19,10 @@ export const DrawerHeader: FC<DrawerHeaderProps> = memo(
       justifyContent: 'space-between',
       alignItems: 'center',
       paddingRight: 2,
-      backgroundColor: theme.palette.background.paper,
+      backgroundColor:
+        theme.palette.mode === ThemeMode.light
+          ? (theme as ITheme).colorTheme.light.primary
+          : (theme as ITheme).colorTheme.dark.primary,
       transition: theme.transitions.create(['width', 'margin'], {
         easing: theme.transitions.easing.sharp,
         duration: theme.transitions.duration.leavingScreen,
@@ -30,16 +34,16 @@ export const DrawerHeader: FC<DrawerHeaderProps> = memo(
       <DrawerHeader
         sx={{
           pl: open ? 3 : 0,
-          minHeight: `${fontSize === 'small' ? '40px!important' : '55px!important'}`,
+          minHeight: `${theme.fontSize === 'small' ? '40px!important' : '55px!important'}`,
         }}>
         <MuiDiv className="logo_arrow">
           {open && (
             <Link
               variant="h6"
-              sx={{ color: 'black' }}
+              className="mainLink"
               component={RouterLink}
               to={`/`}>
-              SD
+              SBI
             </Link>
           )}
         </MuiDiv>

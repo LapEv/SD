@@ -25,20 +25,23 @@ export const BoxModal = styled(
     maxHeight: '95%',
     minWidth: 520,
     transform: 'translate(-50%, -50%)',
-    borderColor: theme.palette.mode === ThemeMode.dark ? '#FFF' : '#000',
+    borderColor:
+      theme.palette.mode === ThemeMode.dark
+        ? (theme as ITheme).colorTheme.dark.lightSecondary
+        : (theme as ITheme).colorTheme.light.darkSecondary,
     border: '2px solid',
     borderRadius: 10,
     boxShadow:
       theme.palette.mode === ThemeMode.light
-        ? `0px 0px 13px 5px rgba(0, 0, 0, 0.5)`
-        : `0px 0px 13px 5px rgba(255, 255, 255, 0.5)`,
+        ? (theme as ITheme).colorTheme.light.shadow
+        : (theme as ITheme).colorTheme.dark.shadow,
     padding: '32px',
     overflowY: 'auto',
     overflowX: 'hidden',
     backgroundColor:
       theme.palette.mode === ThemeMode.light
-        ? (theme as ITheme).colorTheme.colorLight
-        : (theme as ITheme).colorTheme.colorDark,
+        ? (theme as ITheme).colorTheme.light.primary
+        : (theme as ITheme).colorTheme.dark.primary,
   },
   '&.modalMainContainerMH8': {
     minWidth: 560,

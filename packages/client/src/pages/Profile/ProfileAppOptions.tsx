@@ -52,13 +52,13 @@ export const ProfileAppOptions = memo(() => {
         timeout="auto"
         unmountOnExit>
         <SwitchMUI
-          label={`Тема ${theme ? 'тёмная' : 'светлая'}`}
+          label={`Тема тёмная `}
           onChange={handleChangeTheme}
           checked={theme}
           value={theme}
         />
         <SwitchMUI
-          label={`Значки ${font ? 'маленькие' : 'большие'}`}
+          label={`Значки маленькие `}
           onChange={handleChangeFont}
           checked={font}
           value={font}

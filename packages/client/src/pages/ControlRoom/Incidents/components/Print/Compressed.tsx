@@ -1,7 +1,7 @@
 import { Box, Typography } from '@mui/material'
+import { MuiDiv } from 'components/MUI'
 import { useIncidents } from 'hooks/incidents/useINC'
 import { memo } from 'react'
-import { ThemeColor } from 'themes/themeConfig'
 
 export const Compressed = memo(() => {
   const [{ filtered }] = useIncidents()
@@ -104,16 +104,7 @@ export const Compressed = memo(() => {
   }
 
   return (
-    <Box
-      sx={{
-        width: '100%',
-        height: 'auto',
-        display: 'flex',
-        flexDirection: 'row',
-        flexWrap: 'wrap',
-        p: 2,
-        pt: 0,
-      }}>
+    <MuiDiv className="printContainer">
       <style>{`@media print {@page {size: landscape}`}</style>
       {filtered.map(
         (
@@ -138,7 +129,8 @@ export const Compressed = memo(() => {
           index,
         ) => {
           return (
-            <Box
+            <MuiDiv
+              className="printBox"
               sx={{
                 p: 1,
                 pt:
@@ -147,9 +139,6 @@ export const Compressed = memo(() => {
                     : 0,
                 pl: index % 2 === 0 ? 1 : 0.5,
                 pr: index % 2 === 0 ? 0.5 : 1,
-                color: ThemeColor.dark,
-                width: '50%',
-                display: 'flex',
               }}
               key={`normal${incident}`}>
               <Box sx={container}>
@@ -222,10 +211,10 @@ export const Compressed = memo(() => {
                   <Box sx={dataComments}>{comment}</Box>
                 </Box>
               </Box>
-            </Box>
+            </MuiDiv>
           )
         },
       )}
-    </Box>
+    </MuiDiv>
   )
 })

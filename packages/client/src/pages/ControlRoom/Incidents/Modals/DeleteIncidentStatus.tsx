@@ -93,7 +93,7 @@ export const DeleteIncidentStatus = memo(
             ))}
           </MuiDiv>
           <MuiDiv className={'modalError'}>
-            {errSelectedItems && 'Не выбран ни один адрес!'}
+            {errSelectedItems && 'Не выбран ни один статус!'}
           </MuiDiv>
           <ButtonsModalSection
             closeModal={() => handleModal(false)}

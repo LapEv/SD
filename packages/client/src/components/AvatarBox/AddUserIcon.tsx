@@ -14,8 +14,8 @@ export const AddUserIcon = memo((props: SvgIconProps) => {
         d={D}
         fill={
           theme.palette.mode === ThemeMode.light
-            ? (theme as ITheme).colorTheme.colorDark
-            : (theme as ITheme).colorTheme.colorLight
+            ? (theme as ITheme).colorTheme.light.darkPrimary
+            : (theme as ITheme).colorTheme.dark.lightPrimary
         }
       />
     </SvgIcon>

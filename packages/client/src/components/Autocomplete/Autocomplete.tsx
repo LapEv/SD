@@ -9,23 +9,23 @@ export const Autocomplete = styled(MuiAutocomplete)(({ theme }) => ({
     maxHeight: 225,
     backgroundColor:
       theme.palette.mode === ThemeMode.light
-        ? (theme as ITheme).colorTheme.colorDark
-        : (theme as ITheme).colorTheme.colorLight,
+        ? (theme as ITheme).colorTheme.light.darkPrimary
+        : (theme as ITheme).colorTheme.dark.lightPrimary,
   },
   option: {
     color:
       theme.palette.mode === ThemeMode.light
-        ? (theme as ITheme).colorTheme.colorLight
-        : (theme as ITheme).colorTheme.colorDark,
+        ? (theme as ITheme).colorTheme.light.primary
+        : (theme as ITheme).colorTheme.dark.primary,
     borderColor:
       theme.palette.mode === ThemeMode.light
-        ? (theme as ITheme).colorTheme.colorLight
-        : (theme as ITheme).colorTheme.colorDark,
+        ? (theme as ITheme).colorTheme.light.primary
+        : (theme as ITheme).colorTheme.dark.primary,
     '& :hover': {
       color:
         theme.palette.mode === ThemeMode.light
-          ? (theme as ITheme).colorTheme.colorLight
-          : (theme as ITheme).colorTheme.colorDark,
+          ? (theme as ITheme).colorTheme.light.primary
+          : (theme as ITheme).colorTheme.dark.primary,
       fontWeight: 'bold',
     },
   },
@@ -38,8 +38,8 @@ export const Autocomplete = styled(MuiAutocomplete)(({ theme }) => ({
   '.MuiAutocomplete-clearIndicator': {
     color:
       theme.palette.mode === ThemeMode.light
-        ? (theme as ITheme).colorTheme.colorLight
-        : (theme as ITheme).colorTheme.colorDark,
+        ? (theme as ITheme).colorTheme.light.primary
+        : (theme as ITheme).colorTheme.dark.primary,
     '& .MuiSvgIcon-root': {
       width: 25,
       height: 25,
@@ -48,8 +48,8 @@ export const Autocomplete = styled(MuiAutocomplete)(({ theme }) => ({
   '.MuiAutocomplete-popupIndicator': {
     color:
       theme.palette.mode === ThemeMode.light
-        ? (theme as ITheme).colorTheme.colorLight
-        : (theme as ITheme).colorTheme.colorDark,
+        ? (theme as ITheme).colorTheme.light.primary
+        : (theme as ITheme).colorTheme.dark.primary,
     '.MuiSvgIcon-root': {
       width: 40,
       height: 40,
@@ -58,8 +58,8 @@ export const Autocomplete = styled(MuiAutocomplete)(({ theme }) => ({
   '.MuiChip-label': {
     color:
       theme.palette.mode === ThemeMode.light
-        ? (theme as ITheme).colorTheme.colorLight
-        : (theme as ITheme).colorTheme.colorDark,
+        ? (theme as ITheme).colorTheme.light.primary
+        : (theme as ITheme).colorTheme.dark.primary,
   },
   '.MuiChip-deleteIcon': {
     width: 20,
@@ -67,7 +67,7 @@ export const Autocomplete = styled(MuiAutocomplete)(({ theme }) => ({
     margin: 2,
     color:
       theme.palette.mode === ThemeMode.light
-        ? (theme as ITheme).colorTheme.colorLight
-        : (theme as ITheme).colorTheme.colorDark,
+        ? (theme as ITheme).colorTheme.light.primary
+        : (theme as ITheme).colorTheme.dark.primary,
   },
 }))

@@ -7,6 +7,7 @@ export const GetIndicatorData = ({
   timeReg,
   timeCloseCheck,
   status,
+  theme,
 }: IIndicatorCell): AnswerIndicatorData => {
   const now = Date.parse(new Date().toISOString())
   const sla = Date.parse(timeSLA)
@@ -20,7 +21,9 @@ export const GetIndicatorData = ({
       value: 100,
       percent: percent > 999 ? 999 : percent,
       indicator:
-        percent >= 100 ? colorIndicator.expired : colorIndicator.notExpired,
+        percent >= 100
+          ? colorIndicator.expired[theme]
+          : colorIndicator.notExpired[theme],
     }
   }
   const diffReg = sla - reg
@@ -33,7 +36,7 @@ export const GetIndicatorData = ({
     return {
       value: 100,
       percent: percent > 999 ? 999 : percent,
-      indicator: colorIndicator.expired,
+      indicator: colorIndicator.expired[theme],
       timeleft,
     }
   }
@@ -42,12 +45,12 @@ export const GetIndicatorData = ({
     percent,
     indicator:
       percent >= 95
-        ? colorIndicator.inProgress.more95
+        ? colorIndicator.inProgress.more95[theme]
         : percent >= 75
-          ? colorIndicator.inProgress.more75
+          ? colorIndicator.inProgress.more75[theme]
           : percent >= 50
-            ? colorIndicator.inProgress.more50
-            : colorIndicator.notExpired,
+            ? colorIndicator.inProgress.more50[theme]
+            : colorIndicator.notExpired[theme],
     timeleft,
   }
 }

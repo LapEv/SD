@@ -133,7 +133,7 @@ export const Normal = memo(() => {
             <Box
               sx={{
                 p: 0.5,
-                color: ThemeColor.dark,
+                color: ThemeColor.light.darkPrimary,
                 pt: index % 4 === 0 ? 2 : 0,
               }}
               key={`normal${incident}`}>

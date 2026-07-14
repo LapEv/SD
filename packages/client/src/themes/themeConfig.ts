@@ -10,10 +10,34 @@ export const ThemeMode = {
 }
 
 export const ThemeColor = {
-  light: '#C1EEE1',
-  lightBack: '#C1EEE1',
-  dark: '#1E515D',
-  darkBack: '#212121',
+  light: {
+    primary: '#C1EEE1',
+    secondary: '#FFFFFF',
+    darkPrimary: '#1E515D',
+    darkSecondary: '#000000',
+    switch_Off: '#7fa99d',
+    switch_On: '#033f17',
+    shadow: `0px 3px 5px -1px rgba(0, 0, 0, 0.2), 0px 5px 8px 0px rgba(0, 0, 0, 0.14), 0px 1px 14px 0px rgba(0, 0, 0, 0.12)`,
+    buttonShadow: `0px 0px 7px 4px rgba(0, 0, 0, 0.2)`,
+    buttonHover: 'rgba(30,81,93,0.2)',
+    borderPrimary: '#C1EEE1',
+    borderSecondary: '#1E515D',
+    text: '#000000',
+  },
+  dark: {
+    primary: '#2e3047',
+    secondary: '#000000',
+    lightPrimary: '#3bba9c',
+    lightSecondary: '#3bba9c',
+    switch_Off: '#9ed3c4',
+    switch_On: '#179b75',
+    shadow: `0px 3px 5px -1px rgba(135, 135, 135, 0.2), 0px 5px 8px 0px rgba(135, 135, 135, 0.14), 0px 1px 14px 0px rgba(135, 135, 135, 0.12)`,
+    buttonShadow: `0px 0px 7px 4px rgba(135, 135, 135, 0.2)`,
+    buttonHover: 'rgba(193,238,225,0.2)',
+    borderPrimary: '#000000',
+    borderSecondary: '#1b6956',
+    text: '#d5d5d5',
+  },
   error: red[400],
 }
 
@@ -104,7 +128,7 @@ export const ThemeConfig = ({
       subtitle1: {
         fontSize,
         fontWeight: 'bold',
-        color: mode === ThemeMode.light ? colorTheme.colorLight : '#FFFFFF',
+        color: mode === ThemeMode.light ? colorTheme.light.primary : '#FFFFFF',
       },
       subtitle2: {
         fontFamily: 'Raleway',
@@ -119,27 +143,27 @@ export const ThemeConfig = ({
         ? {
             text: {
               primary: '#000000',
-              secondary: colorTheme.colorDark,
+              secondary: ThemeColor.light.darkPrimary,
             },
             green: {
-              [64]: colorTheme.colorDark,
+              [64]: ThemeColor.light.darkPrimary,
               dark: '#7AB3A2',
             },
             icon: {
-              default: colorTheme.colorLight,
+              default: ThemeColor.light.primary,
               secondary: '#def0eb',
             },
             background: {
-              default: colorTheme.colorLight,
-              paper: colorTheme.colorLight,
+              default: ThemeColor.light.primary,
+              paper: ThemeColor.light.primary,
               btn: '#7AB3A2',
             },
             primary: {
-              main: colorTheme.colorLight,
-              contrastText: colorTheme.colorDark,
+              main: ThemeColor.light.primary,
+              contrastText: ThemeColor.light.darkPrimary,
             },
             secondary: {
-              main: colorTheme.colorLight,
+              main: ThemeColor.light.primary,
               light: 'rgba(33,127,100,0.5)',
             },
             error: {
@@ -147,7 +171,7 @@ export const ThemeConfig = ({
               height: 20,
             },
             input: {
-              main: colorTheme.colorLight,
+              main: ThemeColor.light.primary,
             },
             border: {
               default: '#000000',
@@ -158,28 +182,28 @@ export const ThemeConfig = ({
           }
         : {
             text: {
-              primary: '#E0E0E0',
-              secondary: colorTheme.colorLight,
+              primary: '#d5d5d5',
+              secondary: '#d5d5d5',
             },
             green: {
-              [64]: colorTheme.colorLight,
+              [64]: ThemeColor.dark.lightPrimary,
               dark: '#7AB3A2',
             },
             icon: {
-              default: colorTheme.colorDark,
+              default: ThemeColor.dark.primary,
               secondary: '#def0eb',
             },
             background: {
-              default: colorTheme.colorDark,
-              paper: colorTheme.colorDark,
+              default: ThemeColor.dark.primary,
+              paper: ThemeColor.dark.primary,
               btn: '#7AB3A2',
             },
             primary: {
-              main: colorTheme.colorDark,
-              contrastText: colorTheme.colorLight,
+              main: ThemeColor.dark.primary,
+              contrastText: ThemeColor.dark.lightPrimary,
             },
             secondary: {
-              main: colorTheme.colorDark,
+              main: ThemeColor.dark.primary,
               light: 'rgba(33,127,100,0.5)',
             },
             error: {
@@ -187,7 +211,7 @@ export const ThemeConfig = ({
               height: 20,
             },
             input: {
-              main: colorTheme.colorDark,
+              main: ThemeColor.dark.primary,
             },
             border: {
               default: '#E0E0E0',
@@ -255,6 +279,29 @@ export const ThemeConfig = ({
           },
         },
       },
+      MuiButton: {
+        styleOverrides: {
+          root: {
+            '&.baseButton': {
+              fontWeight: 700,
+              color:
+                mode === ThemeMode.light
+                  ? colorTheme.light.darkSecondary
+                  : colorTheme.dark.lightSecondary,
+              boxShadow:
+                mode === ThemeMode.light
+                  ? colorTheme.light.buttonShadow
+                  : colorTheme.dark.buttonShadow,
+            },
+            '&.textButton': {
+              color:
+                mode === ThemeMode.light
+                  ? colorTheme.light.darkPrimary
+                  : colorTheme.dark.lightPrimary,
+            },
+          },
+        },
+      },
       MuiInputBase: {
         styleOverrides: {
           root: {
@@ -266,8 +313,8 @@ export const ThemeConfig = ({
               maxHeight: 200,
               color:
                 mode === ThemeMode.light
-                  ? colorTheme.colorLight
-                  : colorTheme.colorDark,
+                  ? colorTheme.light.primary
+                  : colorTheme.dark.primary,
               overflowY: 'hidden',
               display: 'flex',
               flexWrap: 'wrap',
@@ -292,7 +339,10 @@ export const ThemeConfig = ({
               overflowX: 'hidden',
               width: '90%',
               padding: '24px',
-              borderColor: 'border.default',
+              borderColor:
+                mode === ThemeMode.light
+                  ? colorTheme.light.borderSecondary
+                  : colorTheme.dark.borderSecondary,
               maxWidth: '1200px',
             },
           },
@@ -360,6 +410,49 @@ export const ThemeConfig = ({
             '&.height': {
               height: fontSize === 'small' ? 40 : 50,
             },
+            '&.heightList': {
+              height: fontSize === 'small' ? 30 : 40,
+            },
+            '&.listBoxGroup': {
+              fontWeight: 'bold',
+              width: '100%',
+              display: 'flex',
+              flexDirection: 'row',
+              alignItems: 'space-between',
+              justifyContent: 'space-between',
+              padding: 0,
+            },
+          },
+        },
+      },
+      MuiListItemIcon: {
+        styleOverrides: {
+          root: {
+            '&.dropDownMenuItem': {
+              color: mode
+                ? colorTheme.light.darkPrimary
+                : colorTheme.dark.lightPrimary,
+            },
+          },
+        },
+      },
+      MuiListItemText: {
+        styleOverrides: {
+          root: {
+            '&.controlRoomlistText': {
+              minHeight: fontSize === 'small' ? 18 : 25,
+            },
+            '&.listItemsTextContainer': {
+              margin: 0,
+              marginLeft: fontSize === 'small' ? '80px' : '40px',
+            },
+            '&.quickFilterText': {
+              '& > span': {
+                fontSize: fontSize === 'small' ? 10 : 14,
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
+              },
+            },
           },
         },
       },
@@ -398,6 +491,12 @@ export const ThemeConfig = ({
             '&.collapseQuickFilter': {
               width: 400,
             },
+            '&.collapseCRoomList': {
+              width: '100%',
+              display: 'flex',
+              flexDirection: 'column',
+              marginLeft: '-8px',
+            },
           },
         },
       },
@@ -434,8 +533,8 @@ export const ThemeConfig = ({
             '.MuiSvgIcon-root': {
               color:
                 mode === ThemeMode.light
-                  ? colorTheme.colorDark
-                  : colorTheme.colorLight,
+                  ? colorTheme.light.darkPrimary
+                  : colorTheme.dark.lightPrimary,
             },
           },
         },
@@ -468,8 +567,8 @@ export const ThemeConfig = ({
               borderBottomWidth: 2,
               borderColor:
                 mode === ThemeMode.light
-                  ? colorTheme.colorDark
-                  : colorTheme.colorLight,
+                  ? colorTheme.light.borderSecondary
+                  : colorTheme.dark.borderSecondary,
               backgroundColor: mode === ThemeMode.dark ? '#1d4751' : '#9ed3c4',
             },
             '& .MuiTableCell-body': {
@@ -481,8 +580,8 @@ export const ThemeConfig = ({
               borderRightWidth: settings.showColumnBorders ? 1 : 0,
               borderColor:
                 mode === ThemeMode.light
-                  ? colorTheme.colorDark
-                  : colorTheme.colorLight,
+                  ? colorTheme.light.borderSecondary
+                  : colorTheme.dark.borderSecondary,
               height:
                 fontSize === 'small'
                   ? settings.dense
@@ -501,25 +600,73 @@ export const ThemeConfig = ({
                     : '2px 10px',
             },
             '& .MuiTableRow-root:nth-of-type(even)': {
-              backgroundColor: mode === ThemeMode.dark ? '#5e8d8b' : '#b0e1d3',
+              backgroundColor: mode === ThemeMode.dark ? '#21392d' : '#b0e1d3',
+              '& > .MuiTableCell-root': {
+                backgroundColor:
+                  mode === ThemeMode.dark ? '#21392d' : '#b0e1d3',
+                '& > .MuiAutocomplete-root': {
+                  backgroundColor:
+                    mode === ThemeMode.dark ? '#21392d' : '#b0e1d3',
+                  '& > .MuiFormControl-root': {
+                    backgroundColor:
+                      mode === ThemeMode.dark ? '#21392d' : '#b0e1d3',
+                    '& > .MuiInputBase-root': {
+                      backgroundColor:
+                        mode === ThemeMode.dark ? '#21392d' : '#b0e1d3',
+                    },
+                  },
+                },
+              },
             },
             '& .MuiTableRow-root:hover': {
-              backgroundColor: mode === ThemeMode.dark ? '#5e8d8b' : '#9ed3c4',
+              backgroundColor: mode === ThemeMode.dark ? '#181c1a' : '#80c5b1',
+              '& > .MuiTableCell-root': {
+                backgroundColor:
+                  mode === ThemeMode.dark ? '#181c1a' : '#80c5b1',
+                '& > .MuiAutocomplete-root': {
+                  backgroundColor:
+                    mode === ThemeMode.dark ? '#181c1a' : '#80c5b1',
+                  '& > .MuiFormControl-root': {
+                    backgroundColor:
+                      mode === ThemeMode.dark ? '#181c1a' : '#80c5b1',
+                    '& > .MuiInputBase-root': {
+                      backgroundColor:
+                        mode === ThemeMode.dark ? '#181c1a' : '#80c5b1',
+                    },
+                  },
+                },
+              },
             },
             '& .MuiTableRow-root.Mui-selected': {
-              backgroundColor: mode === ThemeMode.dark ? '#5e8d8b' : '#8fc4b8',
+              backgroundColor: mode === ThemeMode.dark ? '#181c1a' : '#80c5b1',
               borderBottomStyle: 'solid',
               borderBottomWidth: 1,
               borderBottomColor:
                 mode === ThemeMode.light
-                  ? colorTheme.colorDark
-                  : colorTheme.colorLight,
+                  ? colorTheme.light.darkPrimary
+                  : colorTheme.dark.lightPrimary,
               borderTopStyle: 'solid',
               borderTopWidth: 1,
               borderTopColor:
                 mode === ThemeMode.light
-                  ? colorTheme.colorDark
-                  : colorTheme.colorLight,
+                  ? colorTheme.light.darkPrimary
+                  : colorTheme.dark.lightPrimary,
+              '& > .MuiTableCell-root': {
+                backgroundColor:
+                  mode === ThemeMode.dark ? '#181c1a' : '#80c5b1',
+                '& > .MuiAutocomplete-root': {
+                  backgroundColor:
+                    mode === ThemeMode.dark ? '#181c1a' : '#80c5b1',
+                  '& > .MuiFormControl-root': {
+                    backgroundColor:
+                      mode === ThemeMode.dark ? '#181c1a' : '#80c5b1',
+                    '& > .MuiInputBase-root': {
+                      backgroundColor:
+                        mode === ThemeMode.dark ? '#181c1a' : '#80c5b1',
+                    },
+                  },
+                },
+              },
             },
           },
         },
@@ -567,8 +714,8 @@ export const ThemeConfig = ({
                 fontSize === 'small' ? '35px!important' : '45px!important',
               borderColor:
                 mode === ThemeMode.light
-                  ? colorTheme.colorDark
-                  : colorTheme.colorLight,
+                  ? colorTheme.light.borderSecondary
+                  : colorTheme.dark.borderSecondary,
               borderStyle: 'solid',
               borderWidth: 2,
               borderTopLeftRadius: 5,
@@ -596,6 +743,10 @@ export const ThemeConfig = ({
             '& > .headLabelBox': {
               overflow: 'hidden',
               textOverflow: 'ellipsis',
+              color:
+                mode === ThemeMode.light
+                  ? colorTheme.light.text
+                  : colorTheme.dark.text,
             },
             '&.editBox': {
               width: fontSize === 'small' ? 25 : 30,
@@ -615,9 +766,35 @@ export const ThemeConfig = ({
             display: 'flex',
             justifyContent: 'flex-end',
             alignItems: 'center',
+            color:
+              mode === ThemeMode.light
+                ? colorTheme.light.text
+                : colorTheme.dark.text,
             '.MuiTablePagination-toolbar': {
               minHeight: fontSize === 'small' ? 30 : 40,
+              color:
+                mode === ThemeMode.light
+                  ? colorTheme.light.text
+                  : colorTheme.dark.text,
+              '&.MuiTablePagination-selectLabel': {
+                color:
+                  mode === ThemeMode.light
+                    ? colorTheme.light.text
+                    : colorTheme.dark.text,
+              },
             },
+          },
+          selectLabel: {
+            color:
+              mode === ThemeMode.light
+                ? colorTheme.light.text
+                : colorTheme.dark.text,
+          },
+          displayedRows: {
+            color:
+              mode === ThemeMode.light
+                ? colorTheme.light.text
+                : colorTheme.dark.text,
           },
         },
       },
@@ -628,8 +805,8 @@ export const ThemeConfig = ({
               width: 2,
               backgroundColor:
                 mode === ThemeMode.light
-                  ? colorTheme.colorDark
-                  : colorTheme.colorLight,
+                  ? colorTheme.light.darkPrimary
+                  : colorTheme.dark.lightPrimary,
             },
             '&.editINC': {
               width: '100%',
@@ -660,16 +837,16 @@ export const ThemeConfig = ({
                 borderBottomWidth: 1,
                 borderBottomColor:
                   mode === ThemeMode.light
-                    ? colorTheme.colorDark
-                    : colorTheme.colorLight,
+                    ? colorTheme.light.darkPrimary
+                    : colorTheme.dark.lightPrimary,
                 '& > input': {
                   paddingTop: fontSize === 'small' ? 5 : 10,
                   paddingLeft: '5px',
                   paddingRight: '5px',
                   color:
                     mode === ThemeMode.light
-                      ? colorTheme.colorDark
-                      : colorTheme.colorLight,
+                      ? colorTheme.light.darkPrimary
+                      : colorTheme.dark.lightPrimary,
                 },
               },
             },
@@ -733,7 +910,10 @@ export const ThemeConfig = ({
               overflowX: 'hidden',
               width: '90%',
               padding: '24px',
-              borderColor: 'border.default',
+              borderColor:
+                mode === ThemeMode.light
+                  ? colorTheme.light.borderSecondary
+                  : colorTheme.dark.borderSecondary,
               maxWidth: 1200,
               height: '100%',
             },
@@ -758,12 +938,73 @@ export const ThemeConfig = ({
               alignItems: 'center',
               padding: 24,
             },
+            '&.loginPaper': {
+              borderRadius: 5,
+              borderWidth: 2,
+              backgroundColor:
+                mode === ThemeMode.light
+                  ? colorTheme.light.primary
+                  : colorTheme.dark.primary,
+              borderColor:
+                mode === ThemeMode.light
+                  ? colorTheme.light.borderSecondary
+                  : colorTheme.dark.borderSecondary,
+              borderStyle: 'solid',
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              width: 540,
+              height: 350,
+              justifyContent: 'space-around',
+              boxShadow:
+                mode === ThemeMode.light
+                  ? colorTheme.light.shadow
+                  : colorTheme.dark.shadow,
+              padding: 16,
+            },
+            '&.flexRow_J-S_A-FS': {
+              display: 'flex',
+              flexDirection: 'row',
+              alignItems: 'flex-start',
+              justifyContent: 'space-around',
+              width: '100%',
+            },
           },
         },
       },
       MuiDiv: {
         styleOverrides: {
           root: {
+            '&.printContainer': {
+              width: '100%',
+              height: 'auto',
+              display: 'flex',
+              flexDirection: 'row',
+              flexWrap: 'wrap',
+              padding: '16px',
+              paddingTop: 0,
+            },
+            '&.printBox': {
+              color: colorTheme.light.darkPrimary,
+              width: '50%',
+              display: 'flex',
+            },
+            '&.dflex_w100': {
+              display: 'flex',
+              width: '100%',
+            },
+            '&.boxMenuButton': {
+              display: 'flex',
+              alignItems: 'center',
+              textAlign: 'center',
+            },
+            '&.loginContainer': {
+              marginTop: '80px',
+              marginBottom: '80px',
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+            },
             '&.logo_arrow': {
               display: 'flex',
               flexDirection: 'column',
@@ -783,8 +1024,8 @@ export const ThemeConfig = ({
             '&.avatarBox': {
               background:
                 mode === ThemeMode.light
-                  ? colorTheme.colorDark
-                  : colorTheme.colorLight,
+                  ? colorTheme.light.darkPrimary
+                  : colorTheme.dark.lightPrimary,
               borderRadius: '50px',
               display: 'flex',
               justifyContent: 'center',
@@ -811,7 +1052,7 @@ export const ThemeConfig = ({
               boxShadow:
                 mode === ThemeMode.light
                   ? `0px 3px 5px -1px rgba(0, 0, 0, 0.2), 0px 5px 8px 0px rgba(0, 0, 0, 0.14), 0px 1px 14px 0px rgba(0, 0, 0, 0.12)`
-                  : `0px 3px 5px -1px rgba(255, 255, 255, 0.2), 0px 5px 8px 0px rgba(255, 255, 255, 0.14), 0px 1px 14px 0px rgba(255, 255, 255, 0.12)`,
+                  : `0px 3px 5px -1px rgba(135, 135, 135, 0.2), 0px 5px 8px 0px rgba(135, 135, 135, 0.14), 0px 1px 14px 0px rgba(135, 135, 135, 0.12)`,
             },
             '&.boxElementMainPage': {
               display: 'block',
@@ -845,13 +1086,13 @@ export const ThemeConfig = ({
               borderWidth: 2,
               borderColor:
                 mode === ThemeMode.light
-                  ? colorTheme.colorLight
-                  : colorTheme.colorDark,
+                  ? colorTheme.light.borderPrimary
+                  : colorTheme.dark.borderPrimary,
               borderStyle: 'solid',
               boxShadow:
                 mode === ThemeMode.light
                   ? `0px 3px 5px -1px rgba(0, 0, 0, 0.2), 0px 5px 8px 0px rgba(0, 0, 0, 0.14), 0px 1px 14px 0px rgba(0, 0, 0, 0.12)`
-                  : `0px 3px 5px -1px rgba(255, 255, 255, 0.2), 0px 5px 8px 0px rgba(255, 255, 255, 0.14), 0px 1px 14px 0px rgba(255, 255, 255, 0.12)`,
+                  : `0px 3px 5px -1px rgba(135, 135, 135, 0.2), 0px 5px 8px 0px rgba(135, 135, 135, 0.14), 0px 1px 14px 0px rgba(135, 135, 135, 0.12)`,
               padding: '4px',
               '& > div': {
                 height: fontSize === 'small' ? 35 : 60,
@@ -874,8 +1115,8 @@ export const ThemeConfig = ({
               borderWidth: 2,
               borderColor:
                 mode === ThemeMode.light
-                  ? colorTheme.colorDark
-                  : colorTheme.colorLight,
+                  ? colorTheme.light.borderSecondary
+                  : colorTheme.dark.borderSecondary,
               height: '85%',
               flex: 1,
             },
@@ -892,8 +1133,8 @@ export const ThemeConfig = ({
               width: '100%',
               borderColor:
                 mode === ThemeMode.light
-                  ? colorTheme.colorDark
-                  : colorTheme.colorLight,
+                  ? colorTheme.light.borderSecondary
+                  : colorTheme.dark.borderSecondary,
               height: fontSize === 'small' ? 35 : 40,
               minHeight: fontSize === 'small' ? 35 : 40,
             },
@@ -978,9 +1219,15 @@ export const ThemeConfig = ({
               height: 'auto',
               maxHeight: '95%',
               transform: 'translate(-50%, -50%)',
-              bgcolor: 'background.default',
+              backgroundColor:
+                mode === ThemeMode.light
+                  ? colorTheme.light.primary
+                  : colorTheme.dark.primary,
               borderWidth: 2,
-              borderColor: 'border.default',
+              borderColor:
+                mode === ThemeMode.light
+                  ? colorTheme.light.borderSecondary
+                  : colorTheme.dark.borderSecondary,
               borderStyle: 'solid',
               borderRadius: 3,
               boxShadow: 24,
@@ -1012,9 +1259,15 @@ export const ThemeConfig = ({
               height: 'auto',
               maxHeight: '95%',
               transform: 'translate(-50%, -50%)',
-              bgcolor: 'background.default',
+              bgcolor:
+                mode === ThemeMode.light
+                  ? colorTheme.light.primary
+                  : colorTheme.dark.primary,
               borderWidth: 2,
-              borderColor: 'border.default',
+              borderColor:
+                mode === ThemeMode.light
+                  ? colorTheme.light.borderSecondary
+                  : colorTheme.dark.borderSecondary,
               borderStyle: 'solid',
               borderRadius: 3,
               boxShadow: 24,
@@ -1038,15 +1291,21 @@ export const ThemeConfig = ({
               width: '100%',
               borderRadius: 5,
               fontWeight: 'normal',
-              color: mode === ThemeMode.light ? '#FFFFFFFF' : '#00000000',
+              color:
+                mode === ThemeMode.light
+                  ? colorTheme.light.secondary
+                  : colorTheme.dark.secondary,
               cursor: 'pointer',
               backgroundColor:
                 mode === ThemeMode.light
-                  ? colorTheme.colorDark
-                  : colorTheme.colorLight,
+                  ? colorTheme.light.darkPrimary
+                  : colorTheme.dark.lightPrimary,
             },
             '&.noDraggingINCStatuses': {
-              color: mode === ThemeMode.light ? '#FFFFFF82' : '#00000082',
+              color:
+                mode === ThemeMode.light
+                  ? colorTheme.dark.text
+                  : colorTheme.dark.primary,
               cursor: 'default',
             },
             '&.boxDataModal': {
@@ -1183,6 +1442,10 @@ export const ThemeConfig = ({
                 '& > .MuiChip-root': {
                   height: fontSize === 'small' ? '22px' : '24px',
                   fontSize: fontSize === 'small' ? 8 : 12,
+                  color:
+                    mode === ThemeMode.light
+                      ? colorTheme.light.darkSecondary
+                      : colorTheme.dark.lightSecondary,
                 },
               },
             },
@@ -1208,15 +1471,15 @@ export const ThemeConfig = ({
               borderBottomWidth: 2,
               borderColor:
                 mode === ThemeMode.light
-                  ? colorTheme.colorDark
-                  : colorTheme.colorLight,
+                  ? colorTheme.light.borderSecondary
+                  : colorTheme.dark.borderSecondary,
               padding: fontSize === 'small' ? '3px' : '5px',
 
               paddingLeft: fontSize === 'small' ? '8px' : '16px',
               color:
                 mode === ThemeMode.light
-                  ? colorTheme.colorDark
-                  : colorTheme.colorLight,
+                  ? colorTheme.light.darkPrimary
+                  : colorTheme.dark.lightPrimary,
             },
             '&.editDataContainer': {
               width: '100%',
@@ -1235,8 +1498,8 @@ export const ThemeConfig = ({
               borderWidth: 1,
               borderColor:
                 mode === ThemeMode.light
-                  ? colorTheme.colorDark
-                  : colorTheme.colorLight,
+                  ? colorTheme.light.borderSecondary
+                  : colorTheme.dark.borderSecondary,
               borderRadius: 5,
               padding: fontSize === 'small' ? '6px' : '10px',
               overflowY: 'auto',
@@ -1275,8 +1538,8 @@ export const ThemeConfig = ({
               flexDirection: 'row',
               color:
                 mode === ThemeMode.dark
-                  ? colorTheme.colorLight
-                  : colorTheme.colorDark,
+                  ? colorTheme.dark.lightPrimary
+                  : colorTheme.light.darkPrimary,
               width: '100%',
               margin: '3px',
             },
@@ -1335,8 +1598,8 @@ export const ThemeConfig = ({
               alignItems: 'center',
               color:
                 mode === ThemeMode.light
-                  ? colorTheme.colorLight
-                  : colorTheme.colorDark,
+                  ? colorTheme.light.primary
+                  : colorTheme.dark.primary,
               // '& > img': {
               //   maxWidth: '100%',
               // },
@@ -1355,8 +1618,8 @@ export const ThemeConfig = ({
               borderWidth: 2,
               borderColor:
                 mode === ThemeMode.light
-                  ? colorTheme.colorDark
-                  : colorTheme.colorLight,
+                  ? colorTheme.light.borderSecondary
+                  : colorTheme.dark.borderSecondary,
               borderStyle: 'solid',
               marginTop: fontSize === 'small' ? '12px' : '16px',
               width: '90%',
@@ -1376,8 +1639,8 @@ export const ThemeConfig = ({
                 zIndex: 3,
                 color:
                   mode === ThemeMode.dark
-                    ? colorTheme.colorLight
-                    : colorTheme.colorDark,
+                    ? colorTheme.dark.lightPrimary
+                    : colorTheme.light.darkPrimary,
               },
               '&.noActs': {
                 display: 'flex',
@@ -1394,8 +1657,8 @@ export const ThemeConfig = ({
               flexDirection: 'column',
               color:
                 mode === ThemeMode.dark
-                  ? colorTheme.colorLight
-                  : colorTheme.colorDark,
+                  ? colorTheme.dark.lightPrimary
+                  : colorTheme.light.darkPrimary,
               fontSize: fontSize === 'small' ? '12px' : '16px',
             },
             '&.addActBoxBackground': {
@@ -1412,8 +1675,8 @@ export const ThemeConfig = ({
               zIndex: 2,
               color:
                 mode === ThemeMode.dark
-                  ? colorTheme.colorLight
-                  : colorTheme.colorDark,
+                  ? colorTheme.dark.lightPrimary
+                  : colorTheme.light.darkPrimary,
               fontSize: fontSize === 'small' ? '12px' : '16px',
             },
             '&.opacity005': {
@@ -1452,6 +1715,25 @@ export const ThemeConfig = ({
               textAlign: 'center',
               marginTop: 10,
             },
+            '&.mainContainerOpen': {
+              backgroundColor:
+                mode === ThemeMode.light
+                  ? colorTheme.light.primary
+                  : colorTheme.dark.primary,
+              minHeight: '100vh',
+              height: '100vH',
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'flex-start',
+              padding: 0,
+            },
+            '&.mainContainerClose': {
+              display: 'flex',
+              width: '100%',
+              height: '100vH',
+              justifyContent: 'center',
+              alignItems: 'center',
+            },
           },
         },
       },
@@ -1470,8 +1752,8 @@ export const ThemeConfig = ({
               fontSize: fontSize === 'small' ? '11px' : '14px',
               color:
                 mode === ThemeMode.dark
-                  ? colorTheme.colorLight
-                  : colorTheme.colorDark,
+                  ? colorTheme.dark.lightPrimary
+                  : colorTheme.light.darkPrimary,
             },
             '&.modalError': {
               color: ThemeColor.error,
@@ -1488,7 +1770,10 @@ export const ThemeConfig = ({
               top: 5,
               left: 15,
               backgroundColor: 'rgba(0,0,0,1)',
-              color: colorTheme.colorLight,
+              color:
+                mode === ThemeMode.light
+                  ? colorTheme.light.primary
+                  : colorTheme.dark.primary,
               fontSize: fontSize === 'small' ? 14 : 18,
             },
             '&.viewInfoPanel': {
@@ -1496,7 +1781,10 @@ export const ThemeConfig = ({
               bottom: 10,
               left: 15,
               backgroundColor: 'rgba(0,0,0,1)',
-              color: colorTheme.colorLight,
+              color:
+                mode === ThemeMode.light
+                  ? colorTheme.light.primary
+                  : colorTheme.dark.primary,
               fontSize: fontSize === 'small' ? 12 : 16,
             },
           },
@@ -1508,8 +1796,8 @@ export const ThemeConfig = ({
             '&.dropdown_li': {
               color:
                 mode === ThemeMode.light
-                  ? colorTheme.colorDark
-                  : colorTheme.colorLight,
+                  ? colorTheme.light.darkPrimary
+                  : colorTheme.dark.lightPrimary,
               fontWeight: 'normal',
               fontSize: fontSize === 'small' ? 12 : 16,
               padding: fontSize === 'small' ? 4 : 4,
@@ -1537,12 +1825,12 @@ export const ThemeConfig = ({
             '&.dropdown_li_dark': {
               color:
                 mode === ThemeMode.light
-                  ? colorTheme.colorLight
-                  : colorTheme.colorDark,
+                  ? colorTheme.light.primary
+                  : colorTheme.dark.primary,
               backgroundColor:
                 mode === ThemeMode.light
-                  ? colorTheme.colorDark
-                  : colorTheme.colorLight,
+                  ? colorTheme.light.darkPrimary
+                  : colorTheme.dark.lightPrimary,
               fontWeight: 'normal',
               fontSize: fontSize === 'small' ? 12 : 16,
               padding: fontSize === 'small' ? 4 : 4,
@@ -1568,6 +1856,11 @@ export const ThemeConfig = ({
       MuiTypography: {
         styleOverrides: {
           root: {
+            color:
+              mode === ThemeMode.light
+                ? colorTheme.light.darkPrimary
+                : colorTheme.dark.lightPrimary,
+
             '&.selectedTextStyle': {
               paddingLeft: 10,
               fontWeight: 'bold',
@@ -1588,6 +1881,14 @@ export const ThemeConfig = ({
               fontSize: fontSize === 'small' ? 9 : 13,
               marginTop: 10,
             },
+            '&.popoverTypography': {
+              padding: '8px',
+              fontSize: fontSize === 'small' ? 10 : 12,
+              color:
+                mode === ThemeMode.light
+                  ? colorTheme.light.darkPrimary
+                  : colorTheme.dark.lightPrimary,
+            },
           },
         },
       },
@@ -1597,11 +1898,15 @@ export const ThemeConfig = ({
             fontWeight: 'bold',
             color:
               mode === ThemeMode.light
-                ? colorTheme.colorDark
-                : colorTheme.colorLight,
+                ? colorTheme.light.darkPrimary
+                : colorTheme.dark.lightPrimary,
             '& > div': {
               fontWeight: 'bold',
-              color: mode === ThemeMode.light ? '#000000' : '#FFFFFF',
+              // color: mode === ThemeMode.light ? '#000000' : '#FFFFFF',
+              color:
+                mode === ThemeMode.light
+                  ? colorTheme.light.darkPrimary
+                  : colorTheme.dark.lightPrimary,
             },
           },
           icon: {
@@ -1615,8 +1920,8 @@ export const ThemeConfig = ({
             '&.MuiAlert-standard': {
               backgroundColor:
                 mode === ThemeMode.light
-                  ? colorTheme.colorLight
-                  : colorTheme.colorDark,
+                  ? colorTheme.light.primary
+                  : colorTheme.dark.primary,
             },
           },
         },
@@ -1646,14 +1951,14 @@ export const ThemeConfig = ({
               filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
               backgroundColor:
                 mode === ThemeMode.light
-                  ? colorTheme.colorLight
-                  : colorTheme.colorDark,
+                  ? colorTheme.light.primary
+                  : colorTheme.dark.primary,
               marginTop: fontSize === 'small' ? '29px' : '40px',
               '&.DropDownPaperDark': {
                 backgroundColor:
                   mode === ThemeMode.light
-                    ? colorTheme.colorDark
-                    : colorTheme.colorLight,
+                    ? colorTheme.light.darkPrimary
+                    : colorTheme.dark.lightPrimary,
               },
               '& .MuiAvatar-root': {
                 width: 32,
@@ -1671,8 +1976,44 @@ export const ThemeConfig = ({
                 height: 10,
                 backgroundColor:
                   mode === ThemeMode.light
-                    ? colorTheme.colorLight
-                    : colorTheme.colorDark,
+                    ? colorTheme.light.primary
+                    : colorTheme.dark.primary,
+                transform: 'translateY(-50%) rotate(45deg)',
+                zIndex: 0,
+              },
+            },
+            '&.DropDownPaperMain': {
+              overflow: 'visible',
+              filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
+              backgroundColor:
+                mode === ThemeMode.light
+                  ? colorTheme.light.primary
+                  : colorTheme.dark.primary,
+              marginTop: '10px',
+              '&.DropDownPaperDark': {
+                backgroundColor:
+                  mode === ThemeMode.light
+                    ? colorTheme.light.darkPrimary
+                    : colorTheme.dark.lightPrimary,
+              },
+              '& .MuiAvatar-root': {
+                width: 32,
+                height: 32,
+                ml: -0.5,
+                mr: 1,
+              },
+              '&:before': {
+                content: '""',
+                display: 'block',
+                position: 'absolute',
+                top: 0,
+                right: 14,
+                width: 10,
+                height: 10,
+                backgroundColor:
+                  mode === ThemeMode.light
+                    ? colorTheme.light.primary
+                    : colorTheme.dark.primary,
                 transform: 'translateY(-50%) rotate(45deg)',
                 zIndex: 0,
               },
@@ -1682,8 +2023,8 @@ export const ThemeConfig = ({
                 '& button': {
                   color:
                     mode === ThemeMode.light
-                      ? colorTheme.colorDark
-                      : colorTheme.colorLight,
+                      ? colorTheme.light.darkPrimary
+                      : colorTheme.dark.lightPrimary,
                 },
               },
             },
@@ -1694,8 +2035,8 @@ export const ThemeConfig = ({
               textOverflow: 'ellipsis',
               backgroundColor:
                 mode === ThemeMode.light
-                  ? colorTheme.colorLight
-                  : colorTheme.colorDark,
+                  ? colorTheme.light.primary
+                  : colorTheme.dark.primary,
               '& > ul': {
                 display: 'flex',
                 flexDirection: 'column',
@@ -1714,8 +2055,8 @@ export const ThemeConfig = ({
               textOverflow: 'ellipsis',
               backgroundColor:
                 mode === ThemeMode.light
-                  ? colorTheme.colorDark
-                  : colorTheme.colorLight,
+                  ? colorTheme.light.darkPrimary
+                  : colorTheme.dark.lightPrimary,
               '& > ul': {
                 display: 'flex',
                 flexDirection: 'column',
@@ -1734,8 +2075,8 @@ export const ThemeConfig = ({
               textOverflow: 'ellipsis',
               backgroundColor:
                 mode === ThemeMode.light
-                  ? colorTheme.colorLight
-                  : colorTheme.colorDark,
+                  ? colorTheme.light.primary
+                  : colorTheme.dark.primary,
               '& > ul': {
                 display: 'flex',
                 flexDirection: 'column',
@@ -1755,13 +2096,13 @@ export const ThemeConfig = ({
               borderStyle: 'solid',
               borderColor:
                 mode === ThemeMode.light
-                  ? colorTheme.colorDark
-                  : colorTheme.colorLight,
+                  ? colorTheme.light.borderSecondary
+                  : colorTheme.dark.borderSecondary,
               borderRadius: 7,
               backgroundColor:
                 mode === ThemeMode.light
-                  ? colorTheme.colorLight
-                  : colorTheme.colorDark,
+                  ? colorTheme.light.primary
+                  : colorTheme.dark.primary,
             },
           },
         },
@@ -1790,8 +2131,8 @@ export const ThemeConfig = ({
           root: {
             boxShadow:
               mode === ThemeMode.light
-                ? `0px 0px 13px 5px rgba(0, 0, 0, 0.5)`
-                : `0px 0px 13px 5px rgba(255, 255, 255, 0.5)`,
+                ? colorTheme.light.buttonShadow
+                : colorTheme.dark.buttonShadow,
             '&.MuiTooltip-popper': {
               boxShadow: 'none',
             },
@@ -1825,14 +2166,26 @@ export const ThemeConfig = ({
             '&.dropDownMenuItem': {
               color:
                 mode === ThemeMode.light
-                  ? colorTheme.colorDark
-                  : colorTheme.colorLight,
+                  ? colorTheme.light.darkPrimary
+                  : colorTheme.dark.lightPrimary,
             },
             '&:hover': {
               backgroundColor:
                 mode === ThemeMode.light
                   ? 'rgba(30,81,93,0.2)'
                   : 'rgba(205, 219, 223, 0.2)',
+            },
+            '&.dropDownMenuItem2': {
+              color:
+                mode === ThemeMode.light
+                  ? colorTheme.light.darkPrimary
+                  : colorTheme.dark.lightPrimary,
+              '&:hover': {
+                backgroundColor:
+                  mode === ThemeMode.light
+                    ? colorTheme.light.buttonHover
+                    : colorTheme.dark.buttonHover,
+              },
             },
           },
         },
@@ -1900,12 +2253,29 @@ export const ThemeConfig = ({
               marginLeft: '10px',
               color:
                 mode === ThemeMode.light
-                  ? colorTheme.colorDark
-                  : colorTheme.colorLight,
+                  ? colorTheme.light.darkPrimary
+                  : colorTheme.dark.lightPrimary,
               backgroundColor:
                 mode === ThemeMode.light
-                  ? colorTheme.colorLight
-                  : colorTheme.colorDark,
+                  ? colorTheme.light.primary
+                  : colorTheme.dark.primary,
+            },
+            '&.menuIconButton': {
+              width: fontSize === 'small' ? 30 : 40,
+              height: fontSize === 'small' ? 30 : 40,
+              borderRadius: '20%',
+              color:
+                mode === ThemeMode.light
+                  ? colorTheme.light.darkPrimary
+                  : colorTheme.dark.lightPrimary,
+              backgroundColor:
+                mode === ThemeMode.light
+                  ? colorTheme.light.primary
+                  : colorTheme.dark.primary,
+              boxShadow:
+                mode === ThemeMode.light
+                  ? colorTheme.light.shadow
+                  : colorTheme.dark.shadow,
             },
             '&.addIconButton': {
               marginTop: '8px',
@@ -1914,16 +2284,16 @@ export const ThemeConfig = ({
               borderRadius: '20%',
               color:
                 mode === ThemeMode.light
-                  ? colorTheme.colorDark
-                  : colorTheme.colorLight,
+                  ? colorTheme.light.darkPrimary
+                  : colorTheme.dark.lightPrimary,
               backgroundColor:
                 mode === ThemeMode.light
-                  ? colorTheme.colorLight
-                  : colorTheme.colorDark,
+                  ? colorTheme.light.primary
+                  : colorTheme.dark.primary,
               boxShadow:
                 mode === ThemeMode.light
-                  ? `0px 0px 8px 1px rgba(0, 0, 0, 0.5)`
-                  : `0px 0px 8px 1px rgba(255, 255, 255, 0.5)`,
+                  ? colorTheme.light.buttonShadow
+                  : colorTheme.dark.buttonShadow,
               marginLeft: '40px',
               marginBottom: '8px',
             },
@@ -1933,16 +2303,16 @@ export const ThemeConfig = ({
               borderRadius: '15%',
               color:
                 mode === ThemeMode.light
-                  ? colorTheme.colorDark
-                  : colorTheme.colorLight,
+                  ? colorTheme.light.darkPrimary
+                  : colorTheme.dark.lightPrimary,
               backgroundColor:
                 mode === ThemeMode.light
-                  ? colorTheme.colorLight
-                  : colorTheme.colorDark,
+                  ? colorTheme.light.primary
+                  : colorTheme.dark.primary,
               boxShadow:
                 mode === ThemeMode.light
-                  ? `0px 0px 8px 1px rgba(0, 0, 0, 0.5)`
-                  : `0px 0px 8px 1px rgba(255, 255, 255, 0.5)`,
+                  ? colorTheme.light.buttonShadow
+                  : colorTheme.dark.buttonShadow,
               marginLeft: '5px',
             },
             '&.arrowIconButton': {
@@ -1951,13 +2321,29 @@ export const ThemeConfig = ({
               borderRadius: 0,
               color:
                 mode === ThemeMode.light
-                  ? colorTheme.colorLight
-                  : colorTheme.colorDark,
+                  ? colorTheme.light.primary
+                  : colorTheme.dark.primary,
             },
             '&.viewActButtons': {
               width: fontSize === 'small' ? 40 : 45,
               height: fontSize === 'small' ? 40 : 45,
-              color: colorTheme.colorLight,
+              color: colorTheme.dark.lightPrimary,
+            },
+            '&.iconTooltipButton': {
+              margin: '8px',
+              marginTop: '12px',
+              width: fontSize === 'small' ? 30 : 35,
+              height: fontSize === 'small' ? 30 : 35,
+              borderRadius: '20%',
+              boxShadow: 5,
+              color:
+                mode === ThemeMode.light
+                  ? colorTheme.light.darkPrimary
+                  : colorTheme.dark.lightPrimary,
+              backgroundColor:
+                mode === ThemeMode.light
+                  ? colorTheme.light.primary
+                  : colorTheme.dark.primary,
             },
           },
         },
@@ -1965,6 +2351,11 @@ export const ThemeConfig = ({
       MuiSvgIcon: {
         styleOverrides: {
           root: {
+            color:
+              mode === ThemeMode.light
+                ? colorTheme.light.darkPrimary
+                : colorTheme.dark.lightPrimary,
+
             '&.viewColumnsIcon': {
               width: fontSize === 'small' ? 18 : 20,
               height: fontSize === 'small' ? 18 : 20,
@@ -2020,15 +2411,15 @@ export const ThemeConfig = ({
             '&.colorForIconDark': {
               color:
                 mode === ThemeMode.light
-                  ? `${colorTheme.colorDark}!important`
-                  : `${colorTheme.colorLight}!important`,
+                  ? `${colorTheme.light.darkPrimary}!important`
+                  : `${colorTheme.dark.lightPrimary}!important`,
               margin: 0,
             },
             '&.colorForIconLight': {
               color:
                 mode === ThemeMode.light
-                  ? colorTheme.colorLight
-                  : colorTheme.colorDark,
+                  ? colorTheme.light.primary
+                  : colorTheme.dark.primary,
             },
             '&.viewActIcon': {
               width: fontSize === 'small' ? 16 : 18,
@@ -2122,7 +2513,7 @@ export const ThemeConfig = ({
                 '& > input': {
                   fontSize: fontSize === 'small' ? 12 : 15,
                   fontWeight: 'normal',
-                  color: mode === ThemeMode.light ? '#000000' : '#FFFFFF',
+                  color: mode === ThemeMode.light ? '#000000' : '#d5d5d5',
                 },
               },
             },
@@ -2138,8 +2529,8 @@ export const ThemeConfig = ({
                   '& fieldset': {
                     border: `0px solid ${
                       mode === ThemeMode.dark
-                        ? colorTheme.colorLight
-                        : colorTheme.colorDark
+                        ? colorTheme.dark.lightPrimary
+                        : colorTheme.light.darkPrimary
                     }! important`,
                     borderBottomWidth: '1px!important',
                   },
@@ -2149,8 +2540,8 @@ export const ThemeConfig = ({
                   fontWeight: 'bold',
                   color:
                     mode === ThemeMode.light
-                      ? colorTheme.colorDark
-                      : colorTheme.colorLight,
+                      ? colorTheme.light.darkPrimary
+                      : colorTheme.dark.lightPrimary,
                   padding: '6.5px 0px 7.5px 0px !important',
                 },
                 '& > .MuiAutocomplete-endAdornment': {
@@ -2161,8 +2552,8 @@ export const ThemeConfig = ({
                   borderRadius: 0,
                   borderColor:
                     mode === ThemeMode.dark
-                      ? colorTheme.colorLight
-                      : colorTheme.colorDark,
+                      ? colorTheme.dark.borderPrimary
+                      : colorTheme.light.borderPrimary,
                   borderBottomWidth: 1,
                   borderStyle: 'solid',
                 },
@@ -2170,8 +2561,8 @@ export const ThemeConfig = ({
                   borderRadius: 0,
                   borderColor:
                     mode === ThemeMode.dark
-                      ? colorTheme.colorLight
-                      : colorTheme.colorDark,
+                      ? colorTheme.dark.borderPrimary
+                      : colorTheme.light.borderPrimary,
                   borderWidth: 0,
                   borderBottomWidth: 2,
                   borderStyle: 'solid',
@@ -2180,8 +2571,8 @@ export const ThemeConfig = ({
                   borderRadius: 0,
                   borderColor:
                     mode === ThemeMode.dark
-                      ? colorTheme.colorLight
-                      : colorTheme.colorDark,
+                      ? colorTheme.dark.borderPrimary
+                      : colorTheme.light.borderPrimary,
                   borderWidth: '0!important',
                   borderBottomWidth: '1px!important',
                   borderStyle: 'solid',
@@ -2200,19 +2591,19 @@ export const ThemeConfig = ({
               '& label': {
                 color:
                   mode === ThemeMode.light
-                    ? colorTheme.colorDark
-                    : colorTheme.colorLight,
+                    ? colorTheme.light.darkPrimary
+                    : colorTheme.dark.lightPrimary,
               },
               '& > .MuiPickersInputBase-root': {
                 color:
                   mode === ThemeMode.light
-                    ? colorTheme.colorDark
-                    : colorTheme.colorLight,
+                    ? colorTheme.light.darkPrimary
+                    : colorTheme.dark.lightPrimary,
                 '& fieldset': {
                   borderColor:
                     mode === ThemeMode.light
-                      ? `${colorTheme.colorDark}!important`
-                      : `${colorTheme.colorLight}!important`,
+                      ? `${colorTheme.light.borderSecondary}!important`
+                      : `${colorTheme.dark.borderSecondary}!important`,
                   borderWidth: 1,
                   borderStyle: 'solid',
                 },
@@ -2225,8 +2616,8 @@ export const ThemeConfig = ({
                   '& fieldset': {
                     borderColor:
                       mode === ThemeMode.light
-                        ? colorTheme.colorDark
-                        : colorTheme.colorLight,
+                        ? colorTheme.light.borderSecondary
+                        : colorTheme.dark.borderSecondary,
                     borderStyle: 'solid',
                     borderWidth: 2,
                   },
@@ -2236,8 +2627,8 @@ export const ThemeConfig = ({
                     '& > .MuiSvgIcon-root': {
                       color:
                         mode === ThemeMode.light
-                          ? colorTheme.colorDark
-                          : colorTheme.colorLight,
+                          ? colorTheme.light.darkPrimary
+                          : colorTheme.dark.lightPrimary,
                     },
                   },
                 },
@@ -2251,22 +2642,22 @@ export const ThemeConfig = ({
                 fontSize: fontSize === 'small' ? 11 : 14,
                 color:
                   mode === ThemeMode.light
-                    ? colorTheme.colorDark
-                    : colorTheme.colorLight,
+                    ? colorTheme.light.darkPrimary
+                    : colorTheme.dark.lightPrimary,
               },
               '& > .MuiPickersInputBase-root': {
                 fontSize: fontSize === 'small' ? 11 : 14,
                 height: fontSize === 'small' ? 20 : 24,
                 color:
                   mode === ThemeMode.light
-                    ? colorTheme.colorDark
-                    : colorTheme.colorLight,
+                    ? colorTheme.light.darkPrimary
+                    : colorTheme.dark.lightPrimary,
                 padding: 0,
                 '& fieldset': {
                   borderColor:
                     mode === ThemeMode.light
-                      ? `${colorTheme.colorDark}!important`
-                      : `${colorTheme.colorLight}!important`,
+                      ? `${colorTheme.light.borderSecondary}!important`
+                      : `${colorTheme.dark.borderSecondary}!important`,
                   borderWidth: 0,
                   borderStyle: 'solid',
                   borderRadius: 0,
@@ -2281,8 +2672,8 @@ export const ThemeConfig = ({
                   '& fieldset': {
                     borderColor:
                       mode === ThemeMode.light
-                        ? colorTheme.colorDark
-                        : colorTheme.colorLight,
+                        ? colorTheme.light.borderSecondary
+                        : colorTheme.dark.borderSecondary,
                     borderStyle: 'solid',
                     borderBottomWidth: 2,
                   },
@@ -2297,8 +2688,8 @@ export const ThemeConfig = ({
                     '& > .MuiSvgIcon-root': {
                       color:
                         mode === ThemeMode.light
-                          ? colorTheme.colorDark
-                          : colorTheme.colorLight,
+                          ? colorTheme.light.darkPrimary
+                          : colorTheme.dark.lightPrimary,
                       width: fontSize === 'small' ? 18 : 22,
                       height: fontSize === 'small' ? 18 : 22,
                     },
@@ -2313,19 +2704,19 @@ export const ThemeConfig = ({
               '& label': {
                 color:
                   mode === ThemeMode.light
-                    ? colorTheme.colorDark
-                    : colorTheme.colorLight,
+                    ? colorTheme.light.darkPrimary
+                    : colorTheme.dark.lightPrimary,
                 top: '-7px',
               },
               '& > .MuiPickersInputBase-root': {
                 color:
                   mode === ThemeMode.dark
-                    ? colorTheme.colorDark
-                    : colorTheme.colorLight,
+                    ? colorTheme.dark.primary
+                    : colorTheme.light.primary,
                 backgroundColor:
                   mode === ThemeMode.light
-                    ? colorTheme.colorDark
-                    : colorTheme.colorLight,
+                    ? colorTheme.light.darkPrimary
+                    : colorTheme.dark.lightPrimary,
                 '& fieldset': {
                   borderWidth: 0,
                 },
@@ -2344,8 +2735,8 @@ export const ThemeConfig = ({
                     '& > .MuiSvgIcon-root': {
                       color:
                         mode === ThemeMode.dark
-                          ? colorTheme.colorDark
-                          : colorTheme.colorLight,
+                          ? colorTheme.dark.primary
+                          : colorTheme.light.primary,
                     },
                   },
                 },
@@ -2402,7 +2793,7 @@ export const ThemeConfig = ({
               alignItems: 'flex-start',
               justifyContent: 'flex-start',
               padding: '8px',
-              marginLeft: fontSize === 'small' ? '0px' : '0px',
+              marginLeft: 0,
             },
             '&.checkBoxContainer': {
               width: '85%',
@@ -2421,23 +2812,6 @@ export const ThemeConfig = ({
           },
         },
       },
-      MuiListItemText: {
-        styleOverrides: {
-          root: {
-            '&.listItemsTextContainer': {
-              margin: 0,
-              marginLeft: fontSize === 'small' ? '80px' : '40px',
-            },
-            '&.quickFilterText': {
-              '& > span': {
-                fontSize: fontSize === 'small' ? 10 : 14,
-                overflow: 'hidden',
-                textOverflow: 'ellipsis',
-              },
-            },
-          },
-        },
-      },
       MuiPickersInputBase: {
         styleOverrides: {
           root: {
@@ -2452,8 +2826,8 @@ export const ThemeConfig = ({
               '& button': {
                 color:
                   mode === ThemeMode.light
-                    ? colorTheme.colorDark
-                    : colorTheme.colorLight,
+                    ? colorTheme.light.darkPrimary
+                    : colorTheme.dark.lightPrimary,
               },
             },
           },
@@ -2489,8 +2863,8 @@ export const ThemeConfig = ({
             '& > button': {
               color:
                 mode === ThemeMode.light
-                  ? colorTheme.colorDark
-                  : colorTheme.colorLight,
+                  ? colorTheme.light.darkPrimary
+                  : colorTheme.dark.lightPrimary,
               fontWeight: 'normal',
               '&.Mui-selected': {
                 fontWeight: 'bold',
@@ -2505,8 +2879,8 @@ export const ThemeConfig = ({
             '& > button': {
               color:
                 mode === ThemeMode.light
-                  ? colorTheme.colorDark
-                  : colorTheme.colorLight,
+                  ? colorTheme.light.darkPrimary
+                  : colorTheme.dark.lightPrimary,
               fontWeight: 'normal',
               '&.Mui-selected': {
                 fontWeight: 'bold',
@@ -2531,6 +2905,47 @@ export const ThemeConfig = ({
             },
             '&.MuiLinearProgress-bar': {},
           },
+        },
+      },
+      MuiFab: {
+        styleOverrides: {
+          root: {
+            '&.fullscreen': {
+              position: 'fixed',
+              bottom: 8,
+              left: fontSize === 'small' ? 6 : 16,
+              borderRadius: '20%',
+              zIndex: 1300,
+              width: fontSize === 'small' ? 30 : 40,
+              height: fontSize === 'small' ? 30 : 40,
+              minHeight: fontSize === 'small' ? 30 : 40,
+              color:
+                mode === ThemeMode.light
+                  ? colorTheme.light.darkPrimary
+                  : colorTheme.dark.lightPrimary,
+              backgroundColor:
+                mode === ThemeMode.light
+                  ? colorTheme.light.primary
+                  : colorTheme.dark.primary,
+            },
+          },
+        },
+      },
+      MuiLink: {
+        styleOverrides: {
+          root: {
+            '&.mainLink': {
+              color:
+                mode === ThemeMode.light
+                  ? colorTheme.light.darkSecondary
+                  : colorTheme.dark.lightSecondary,
+            },
+          },
+        },
+      },
+      MuiAvatar: {
+        styleOverrides: {
+          root: {},
         },
       },
     },

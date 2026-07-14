@@ -8,13 +8,23 @@ import {
 import { INC_HeadCell, IOperator, methodsReuqest, Settings } from './interfaces'
 import { IColumnOptions } from 'store/slices/tableINC/interfaces'
 
+// export const colorIndicator = {
+//   expired: '#f44336',
+//   notExpired: '#088208a3',
+//   inProgress: {
+//     more95: '#f44336',
+//     more75: '#ffa806a3',
+//     more50: '#daf105',
+//   },
+// }
+
 export const colorIndicator = {
-  expired: '#f44336',
-  notExpired: '#088208a3',
+  expired: { light: '#f44336', dark: '#bb4940' },
+  notExpired: { light: '#088208a3', dark: '#088208a3' },
   inProgress: {
-    more95: '#f44336',
-    more75: '#efbb5aa3',
-    more50: '#daf105',
+    more95: { light: '#f44336', dark: '#bb4940' },
+    more75: { light: '#ffa806a3', dark: '#efbb5aa3' },
+    more50: { light: '#daf105', dark: '#b1bb50' },
   },
 }
 

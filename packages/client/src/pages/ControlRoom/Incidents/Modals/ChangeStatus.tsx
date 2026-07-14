@@ -1,6 +1,6 @@
 import React, { useState, ChangeEvent, DragEvent, memo, useRef } from 'react'
 import { AddValuesProps, CloseINCProps } from '../interfaces'
-import { Typography, Chip } from '@mui/material'
+import { Typography, Chip, useTheme } from '@mui/material'
 import { ButtonsModalSection } from 'components/Buttons'
 import {
   useForm,
@@ -21,6 +21,7 @@ import { BoxModal, MuiDiv } from 'components/MUI'
 import { LinearProgressWithLabel } from 'components/LinearProgress/LinearProgress'
 import { useUploadProgress } from 'api/useUploadProgress'
 import CloudUploadOutlinedIcon from '@mui/icons-material/CloudUploadOutlined'
+import { ITheme } from 'themes/themeConfig'
 
 export const ChangeStatus = memo(
   React.forwardRef<unknown, CloseINCProps>(
@@ -41,6 +42,7 @@ export const ChangeStatus = memo(
         id_incFiles,
       })
       const refInputFile = useRef<HTMLInputElement>(null)
+      const theme = (useTheme() as ITheme).palette.mode
 
       const handleDragOver = (event: DragEvent<HTMLDivElement>) => {
         event.preventDefault()
@@ -279,10 +281,10 @@ export const ChangeStatus = memo(
             <Typography className="progressTitle">Загрузка актов</Typography>
             <LinearProgressWithLabel
               variant="determinate"
-              sx={{ backgroundColor: colorIndicator.notExpired }}
+              sx={{ backgroundColor: colorIndicator.notExpired[theme] }}
               classNameBox="progressBox"
               classNameContent="progressContent"
-              indicator={colorIndicator.notExpired}
+              indicator={colorIndicator.notExpired[theme]}
               percent={progress}
               value={progress}
             />

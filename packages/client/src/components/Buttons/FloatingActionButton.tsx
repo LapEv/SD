@@ -1,13 +1,11 @@
 import { useState, MouseEvent, memo } from 'react'
 import MuiFab from '@mui/material/Fab'
-import { Popover, useTheme } from '@mui/material'
+import { Popover } from '@mui/material'
 import { FabProps } from './interfaces'
 import { PopoverTypography } from 'components/Popover/PopoverTypography'
-import { ITheme } from 'themes/themeConfig'
 
-export const Fab = memo(({ order = 0, title, active, ...props }: FabProps) => {
+export const Fab = memo(({ title, ...props }: FabProps) => {
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null)
-  const theme = useTheme() as ITheme
 
   const handlePopoverOpen = (event: MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget)
@@ -24,25 +22,15 @@ export const Fab = memo(({ order = 0, title, active, ...props }: FabProps) => {
       <MuiFab
         onMouseEnter={handlePopoverOpen}
         onMouseLeave={handlePopoverClose}
-        color={active ? 'secondary' : 'primary'}
         size="small"
-        sx={{
-          position: 'fixed',
-          bottom: 8 + order * 49,
-          left: theme.fontSize === 'small' ? 6 : 16,
-          borderRadius: '20%',
-          zIndex: 1300,
-          width: theme.fontSize === 'small' ? 30 : 40,
-          height: theme.fontSize === 'small' ? 30 : 40,
-          minHeight: theme.fontSize === 'small' ? 30 : 40,
-          color: '#000000',
-        }}
+        className="fullscreen"
         {...props}
       />
       <Popover
         sx={{
           pointerEvents: 'none',
           background: 'none',
+          mt: 1,
         }}
         open={open}
         anchorEl={anchorEl}

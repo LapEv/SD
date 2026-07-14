@@ -30,10 +30,6 @@ export interface ProfileChangePasswordProps {
   userId: string
 }
 
-export interface IProfileChangeTheme {
-  handleModal: (state: boolean) => void
-}
-
 export interface ProfileChangePasswordValues {
   list: {
     label: string
