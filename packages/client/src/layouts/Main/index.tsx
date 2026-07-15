@@ -1,109 +1,17 @@
-import { memo, useEffect, useRef, useState } from 'react'
-import { styled, Theme, CSSObject } from '@mui/material/styles'
-import { Divider, Drawer as MuiDrawer, useTheme } from '@mui/material'
-import { NavBar } from './navBar'
-import { SideBar } from './sideBar'
-import { drawerWidth, compressedWidth } from './drawerBarData'
-import { DrawerHeader } from './drawerHeader'
-import { Outlet } from 'react-router-dom'
+import { memo, useRef } from 'react'
 import { useAuth } from 'hooks/auth/useAuth'
-import { useApp } from 'hooks/app/useApp'
-import { ITheme, ThemeMode } from 'themes/themeConfig'
 import { MuiDiv } from 'components/MUI'
-
-const openedMixin = (theme: Theme): CSSObject => ({
-  width: (theme as ITheme).fontSize === 'small' ? compressedWidth : drawerWidth,
-  backgroundColor:
-    theme.palette.mode === ThemeMode.light
-      ? (theme as ITheme).colorTheme.light.primary
-      : (theme as ITheme).colorTheme.dark.primary,
-  transition: theme.transitions.create('width', {
-    easing: theme.transitions.easing.sharp,
-    duration: theme.transitions.duration.complex,
-  }),
-  overflowX: 'hidden',
-})
-
-const closedMixin = (theme: Theme): CSSObject => ({
-  backgroundColor:
-    theme.palette.mode === ThemeMode.light
-      ? (theme as ITheme).colorTheme.light.primary
-      : (theme as ITheme).colorTheme.dark.primary,
-  transition: theme.transitions.create('width', {
-    easing: theme.transitions.easing.sharp,
-    duration: theme.transitions.duration.complex,
-  }),
-  overflowX: 'hidden',
-  width: `calc(${theme.spacing(9)}${(theme as ITheme).fontSize !== 'small' ? ' - 10' : ' + 10'}px)`,
-  [theme.breakpoints.up('sm')]: {
-    width: `calc(${theme.spacing(10)}${(theme as ITheme).fontSize !== 'small' ? ' - 10' : ' + 10'}px)`,
-  },
-})
-
-const Drawer = styled(MuiDrawer, {
-  shouldForwardProp: prop => prop !== 'open',
-})(({ theme, open }) => ({
-  width: (theme as ITheme).fontSize === 'small' ? compressedWidth : drawerWidth,
-  flexShrink: 0,
-  whiteSpace: 'nowrap',
-  boxSizing: 'border-box',
-  ...(open && {
-    ...openedMixin(theme),
-    '& .MuiDrawer-paper': openedMixin(theme),
-  }),
-  ...(!open && {
-    ...closedMixin(theme),
-    '& .MuiDrawer-paper': closedMixin(theme),
-  }),
-}))
+import { MainContainer } from './Components/MainContainer/MainContainer'
+import { Outlet } from 'react-router-dom'
 
 export const MainLayout = memo(() => {
-  const boxRef = useRef<HTMLDivElement>(null)
-  const [, { setDataWidth }] = useApp()
-  const theme = useTheme()
-  const [open, setOpen] = useState<boolean>(true)
-  const adaptiveDrawerWidth =
-    (theme as ITheme).fontSize === 'small' ? compressedWidth : drawerWidth
-  const [width, setWidth] = useState<string>(
-    `calc(100% - ${adaptiveDrawerWidth}px)`,
-  )
-  const toggleDrawer = (check: boolean) => {
-    setOpen(prev => !prev)
-    const widthCheck = check
-      ? `calc(100% - ${adaptiveDrawerWidth}px)`
-      : `calc(100% - ${theme.spacing(9)} - ${(theme as ITheme).fontSize === 'large' ? '6px' : '14px'})`
-    setWidth(widthCheck)
-    setTimeout(() => {
-      setDataWidth(boxRef?.current?.clientWidth as number)
-    }, 1000)
-  }
   const [{ user }] = useAuth()
-
-  useEffect(() => {
-    setWidth(`calc(100% - ${adaptiveDrawerWidth}px)`)
-    setTimeout(() => {
-      setDataWidth(boxRef?.current?.offsetWidth as number)
-    }, 1000)
-  }, [(theme as ITheme).fontSize])
+  const boxRef = useRef<HTMLDivElement>(null)
 
   return (
     <>
       {user && user.status ? (
-        <MuiDiv className="dflex_w100">
-          <NavBar />
-          <Drawer sx={{ display: 'flex' }} variant="permanent" open={open}>
-            <DrawerHeader
-              open={open}
-              toggleDrawer={toggleDrawer}
-              theme={theme as ITheme}
-            />
-            <Divider />
-            <SideBar open={open} />
-          </Drawer>
-          <MuiDiv ref={boxRef} className="mainContainerOpen" sx={{ width }}>
-            <Outlet />
-          </MuiDiv>
-        </MuiDiv>
+        <MainContainer boxRef={boxRef} />
       ) : (
         <MuiDiv ref={boxRef} className="mainContainerClose">
           <Outlet />

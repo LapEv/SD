@@ -4,8 +4,13 @@ import { Box, ListItemButton, ListItemIcon, ListItemText } from '@mui/material'
 import { NanListItemProps } from 'layouts/Main/interfaces'
 
 export const ControlRoomListItem = memo(
-  ({ icon, text, to, isExpanded }: NanListItemProps) => {
+  ({ icon, text, to, isExpanded, closeMobileMenu }: NanListItemProps) => {
     const [openControl, setOpenControl] = useState<boolean>(false)
+
+    const click = () => {
+      setOpenControl(!openControl)
+      closeMobileMenu()
+    }
 
     return (
       <Box sx={{ display: 'block', ml: isExpanded ? 2 : 1 }}>
@@ -16,7 +21,7 @@ export const ControlRoomListItem = memo(
           }}
           component={Link}
           to={to}
-          onClick={() => setOpenControl(!openControl)}>
+          onClick={click}>
           <ListItemIcon
             sx={{
               minWidth: 0,

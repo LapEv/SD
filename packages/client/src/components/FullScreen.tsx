@@ -5,6 +5,7 @@ import { Fab } from './Buttons/FloatingActionButton'
 import ZoomInMap from '@mui/icons-material/ZoomInMap'
 import ZoomOutMap from '@mui/icons-material/ZoomInMap'
 import { memo, type PropsWithChildren } from 'react'
+import { useApp } from 'hooks/app/useApp'
 
 const Screen = styled(Box)(() => ({
   '&::backdrop': {
@@ -14,15 +15,18 @@ const Screen = styled(Box)(() => ({
 
 export const FullScreen = memo(({ children }: PropsWithChildren) => {
   const [screenRef, fullScreen, toggleFullScreen] = useFullScreen()
+  const [{ device }] = useApp()
+
   return (
     <Screen ref={screenRef}>
       {children}
-      <Fab
-        title={fullScreen ? 'Обычный режим' : 'Полноэкранный режим'}
-        onClick={toggleFullScreen}
-        active={fullScreen}>
-        {fullScreen ? <ZoomInMap /> : <ZoomOutMap />}
-      </Fab>
+      {device === 'desktop' && (
+        <Fab
+          title={fullScreen ? 'Обычный режим' : 'Полноэкранный режим'}
+          onClick={toggleFullScreen}>
+          {fullScreen ? <ZoomInMap /> : <ZoomOutMap />}
+        </Fab>
+      )}
     </Screen>
   )
 })

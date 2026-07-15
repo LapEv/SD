@@ -2,7 +2,7 @@ import { useSelector } from 'react-redux'
 import { RootState } from 'store/index'
 import { useAppDispatch } from 'store/hooks'
 import { AppState } from 'store/slices/app/interfaces'
-import { setDataWidth } from 'store/slices/app'
+import { setDataWidth, setDevice } from 'store/slices/app'
 import { AppActions } from './appActions'
 
 export function useApp(): [AppState, AppActions] {
@@ -14,6 +14,9 @@ export function useApp(): [AppState, AppActions] {
     {
       setDataWidth(dataWidth) {
         dispatch(setDataWidth(dataWidth))
+      },
+      setDevice(device) {
+        dispatch(setDevice(device))
       },
     },
   ]

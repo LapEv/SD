@@ -15,7 +15,7 @@ import { NanListItemProps } from 'layouts/Main/interfaces'
 import { ControlRoomListItem } from 'layouts/Main/Components/SideBar/ControlRoomListItem'
 
 export const NanListItem = memo(
-  ({ icon, text, to, isExpanded }: NanListItemProps) => {
+  ({ icon, text, to, isExpanded, closeMobileMenu }: NanListItemProps) => {
     const [openControl, setOpenControl] = useState<boolean>(false)
 
     return (
@@ -55,6 +55,7 @@ export const NanListItem = memo(
                   key={value.text}
                   {...value}
                   isExpanded={isExpanded}
+                  closeMobileMenu={closeMobileMenu}
                 />
               ))}
             </Collapse>
@@ -67,7 +68,8 @@ export const NanListItem = memo(
                 justifyContent: isExpanded ? 'initial' : 'center',
               }}
               component={Link}
-              to={to}>
+              to={to}
+              onClick={closeMobileMenu}>
               <ListItemIcon
                 sx={{
                   minWidth: 0,

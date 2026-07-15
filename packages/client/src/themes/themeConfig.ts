@@ -46,6 +46,7 @@ interface ThemeModeProps {
   fontSize: string
   colorTheme: IColorTheme
   settings: TableINCState
+  device: 'mobile' | 'desktop'
 }
 
 export interface ITheme extends Theme {
@@ -58,6 +59,7 @@ export const ThemeConfig = ({
   fontSize,
   colorTheme,
   settings,
+  device,
 }: ThemeModeProps) =>
   ({
     fontSize,
@@ -91,7 +93,7 @@ export const ThemeConfig = ({
       },
       h6: {
         fontFamily: 'Raleway',
-        fontSize: fontSize === 'small' ? 22 : 30,
+        fontSize: device === 'mobile' ? 20 : fontSize === 'small' ? 22 : 30,
         fontWeight: 'bold',
         color: mode === ThemeMode.light ? '#000000' : '#FFFFFF',
       },
@@ -298,6 +300,12 @@ export const ThemeConfig = ({
                 mode === ThemeMode.light
                   ? colorTheme.light.darkPrimary
                   : colorTheme.dark.lightPrimary,
+            },
+            '&.mobileButtonMenu': {
+              display: { xs: 'flex', sm: 'none' },
+              position: 'absolute',
+              top: 0,
+              left: 0,
             },
           },
         },
@@ -953,8 +961,11 @@ export const ThemeConfig = ({
               display: 'flex',
               flexDirection: 'column',
               alignItems: 'center',
-              width: 540,
-              height: 350,
+              maxWidth: 540,
+              maxHeight: 350,
+              minWidth: 320,
+              minHeight: 350,
+              width: '90%',
               justifyContent: 'space-around',
               boxShadow:
                 mode === ThemeMode.light
@@ -1042,7 +1053,8 @@ export const ThemeConfig = ({
               marginTop: 0,
             },
             '&.headerForPages': {
-              minHeight: fontSize === 'small' ? 40 : 55,
+              minHeight:
+                device === 'mobile' ? 40 : fontSize === 'small' ? 40 : 55,
               width: '100%',
               display: 'flex',
               justifyContent: 'space-between',
@@ -1053,11 +1065,14 @@ export const ThemeConfig = ({
                 mode === ThemeMode.light
                   ? `0px 3px 5px -1px rgba(0, 0, 0, 0.2), 0px 5px 8px 0px rgba(0, 0, 0, 0.14), 0px 1px 14px 0px rgba(0, 0, 0, 0.12)`
                   : `0px 3px 5px -1px rgba(135, 135, 135, 0.2), 0px 5px 8px 0px rgba(135, 135, 135, 0.14), 0px 1px 14px 0px rgba(135, 135, 135, 0.12)`,
+              '& > .MuiTypography-root': {
+                marginLeft: device === 'mobile' ? 40 : 0,
+              },
             },
             '&.boxElementMainPage': {
               display: 'block',
               boxShadow: '0px 0px 9px 2px #1E515D',
-              borderRadius: 2,
+              borderRadius: 5,
               width: 170,
               height: 170,
               margin: 20,
@@ -1933,6 +1948,19 @@ export const ThemeConfig = ({
           },
         },
       },
+      MuiDrawer: {
+        styleOverrides: {
+          root: {
+            '&.mobileMainMenu': {
+              display: { xs: 'inherit', sm: 'none' },
+              '& .MuiDrawer-paper': {
+                height: '100%',
+                width: '80%',
+              },
+            },
+          },
+        },
+      },
       MuiPaper: {
         styleOverrides: {
           root: {
@@ -2261,8 +2289,8 @@ export const ThemeConfig = ({
                   : colorTheme.dark.primary,
             },
             '&.menuIconButton': {
-              width: fontSize === 'small' ? 30 : 40,
-              height: fontSize === 'small' ? 30 : 40,
+              width: device === 'mobile' ? 30 : fontSize === 'small' ? 30 : 40,
+              height: device === 'mobile' ? 30 : fontSize === 'small' ? 30 : 40,
               borderRadius: '20%',
               color:
                 mode === ThemeMode.light

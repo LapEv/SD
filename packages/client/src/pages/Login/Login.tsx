@@ -8,7 +8,6 @@ import { MainPage } from 'pages/Main'
 
 export const LoginPage = memo(() => {
   const [{ user, isLoadingAuth }] = useAuth()
-
   const { state } = useLocation()
   return !isEmptyObjField(user) || (isLoadingAuth && isEmptyObjField(user)) ? (
     isLoadingAuth && isEmptyObjField(user) ? (

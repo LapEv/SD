@@ -5,11 +5,13 @@ import App from '../App'
 import { useAuth } from 'hooks/auth/useAuth'
 import { useTableINC } from 'hooks/tableINC/useTableINC'
 import { GlobalStyle } from './GlobalStyle'
+import { useApp } from 'hooks/app/useApp'
 
 export default function ToggleColorMode() {
   const [mode, setMode] = useState<'light' | 'dark'>('light')
   const [fontSize, setFontSize] = useState<string>('large')
   const [settings] = useTableINC()
+  const [{ device }] = useApp()
 
   const [{ user, colorTheme }] = useAuth()
 
@@ -26,8 +28,11 @@ export default function ToggleColorMode() {
   // }, [user.appOptions?.colorTheme])
 
   const theme = useMemo(
-    () => createTheme(ThemeConfig({ mode, fontSize, colorTheme, settings })),
-    [mode, fontSize, colorTheme, settings],
+    () =>
+      createTheme(
+        ThemeConfig({ mode, fontSize, colorTheme, settings, device }),
+      ),
+    [mode, fontSize, colorTheme, settings, device],
   )
 
   return (

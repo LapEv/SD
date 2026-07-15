@@ -19,6 +19,7 @@ export interface NanListItemProps {
   to: string
   isExpanded: boolean
   id?: string
+  closeMobileMenu: () => void
 }
 
 export interface ListItemStateProps {
@@ -31,6 +32,7 @@ export interface ListItemStateProps {
 export interface DataItemsProps {
   user: User
   open: boolean
+  closeMobileMenu?: () => void
 }
 
 export interface IViewImage {

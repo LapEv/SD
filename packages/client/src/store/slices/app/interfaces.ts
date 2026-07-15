@@ -5,4 +5,5 @@ export interface AppState {
   appOptions: AppOptions
   timeZone: number
   UTCDateTS: number
+  device: 'mobile' | 'desktop'
 }
