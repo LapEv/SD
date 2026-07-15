@@ -1,4 +1,4 @@
-import { TableCell } from '@mui/material'
+import { TableCell, useTheme } from '@mui/material'
 import { ICells } from '../interfaces'
 import { Indicator } from './Indicator/Indicator'
 import { convertTSToCurrentTZ } from 'utils/convertDate'
@@ -6,6 +6,7 @@ import { Status } from './Status/Status'
 import { Executor } from './Executor/Executor'
 import { Responsible } from './Responsible/Responsible'
 import { EditINC } from './Edit/EditINC'
+import { ITheme } from 'themes/themeConfig'
 
 export const Cells = ({
   value,
@@ -16,6 +17,8 @@ export const Cells = ({
   type,
   row,
 }: ICells) => {
+  const theme = useTheme() as ITheme
+
   if (id === 'indicator')
     return (
       <TableCell component="th" id={labelId} scope="row" padding="normal">
@@ -25,6 +28,7 @@ export const Cells = ({
           timeCloseCheck={row.timeCloseCheck}
           status={row.status}
           inc={row.incident}
+          theme={theme.palette.mode}
         />
       </TableCell>
     )
