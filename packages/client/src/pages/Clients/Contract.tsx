@@ -95,6 +95,7 @@ export const ContractPage = memo(
         model: selectedModels,
         objects: objectID,
         incStatusses: incStatussesID,
+        id_client,
       })
       const newSLA = {
         contract,
@@ -295,7 +296,7 @@ export const ContractPage = memo(
                         type={type}
                         required={required}
                         variant="outlined"
-                        sx={{ width: '48%' }}
+                        className="textContractList"
                         margin="normal"
                         onChange={(event: ChangeEvent<HTMLInputElement>) => (
                           field.onChange(event),

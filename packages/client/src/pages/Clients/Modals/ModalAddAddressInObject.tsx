@@ -18,7 +18,7 @@ import { BoxModal, MuiDiv } from 'components/MUI'
 export const ModalAddAddressInObject = memo(
   React.forwardRef<unknown, IModalAddAddressInObject>(
     ({ handleModal, question, address }: IModalAddAddressInObject, ref) => {
-      const [{ regions }, { getRegions, newAddress }] = useAddresses()
+      const [{ regions }, { getRegions, newAddressForObject }] = useAddresses()
 
       MapNewAddressModalInputFields[0].value = address
       const [region, setRegion] = useState<Options>(emptyOptionsDD)
@@ -36,7 +36,7 @@ export const ModalAddAddressInObject = memo(
       })
 
       const AddAddress = ({ list2 }: AddValuesPropsTwoForms) => {
-        newAddress({
+        newAddressForObject({
           address: list2[0].value,
           coordinates: list2[1].value,
           id_region: region.id,

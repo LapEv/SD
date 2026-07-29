@@ -6,10 +6,12 @@ import { menuData, Equipments } from './'
 import { ChooseModal } from './Modals/ChooseModal'
 import { useClassifier } from 'hooks/classifier/useClassifier'
 import { MuiDiv } from 'components/MUI'
+import { useApp } from 'hooks/app/useApp'
 
 export const ClassifierPage = memo(() => {
   const modalClientRef = React.createRef()
   const [{ admin }] = useAuth()
+  const [{ device }] = useApp()
   const [{ equipments }, { getClassifierEquipments, setActiveEquipment }] =
     useClassifier()
   const [modal, setModal] = useState<boolean>(false)
@@ -48,7 +50,7 @@ export const ClassifierPage = memo(() => {
         <Typography variant="h6">Классификатор</Typography>
         {admin && (
           <DropDownMenu
-            popover={'Добавить/Удалить'}
+            popover={device === 'desktop' ? 'Добавить/Удалить' : ''}
             data={menuData}
             divider={[3, 6]}
             onClick={checkClickMenu}

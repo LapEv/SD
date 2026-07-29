@@ -14,7 +14,7 @@ export const divisionRouter = (apiRouter: Router) => {
   )
   router.get(
     '/getDivisions',
-    roleMiddleware(['getDivisions', 'ADMIN', 'SUPERADMIN']),
+    roleMiddleware(['getDivisions', 'ALL']),
     service.getDivisions,
   )
   router.get(

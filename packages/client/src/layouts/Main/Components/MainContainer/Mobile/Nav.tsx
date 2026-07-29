@@ -7,9 +7,11 @@ import { useAuth } from 'hooks/auth/useAuth'
 import { MuiDiv } from 'components/MUI'
 import { LinkButton } from 'components/LinkButton'
 import { Routes } from 'utils/routes'
+import { useLocation } from 'react-router-dom'
 
 export const Nav = () => {
   const [{ user }, { signout }] = useAuth()
+  const { pathname } = useLocation()
   const [open, setOpen] = useState(false)
   const toggleDrawer = (newOpen: boolean) => () => {
     setOpen(newOpen)
@@ -20,7 +22,7 @@ export const Nav = () => {
       <Button
         variant="text"
         onClick={toggleDrawer(true)}
-        className="mobileButtonMenu">
+        className={`mobileButtonMenu ${pathname.includes(Routes.Incidents) ? 'mobileMenuIncidents' : ''} `}>
         <MenuIcon />
       </Button>
       <Drawer
@@ -50,7 +52,7 @@ export const Nav = () => {
         </Box>
         <Divider />
         <Stack
-          overflow="auto"
+          overflow="hidden"
           direction={{ xs: 'column', sm: 'row' }}
           gap={1.4}
           width={{ xs: '100%', sm: 'initial' }}

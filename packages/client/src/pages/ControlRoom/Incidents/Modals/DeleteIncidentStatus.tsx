@@ -82,15 +82,23 @@ export const DeleteIncidentStatus = memo(
             }}
           />
           <MuiDiv className={'boxDataModal h35Vh'}>
-            {filteredIncStatuses.map(({ statusINC, id }) => (
-              <Item
-                name={statusINC}
-                id={`${id}`}
-                groupChecked={false}
-                onChooseItems={onChooseItems}
-                key={`${statusINC}_${id}`}
-              />
-            ))}
+            {filteredIncStatuses &&
+            filterText &&
+            !filteredIncStatuses.length ? (
+              <MuiDiv className="noMatchesListContractPage" sx={{ ml: 1 }}>
+                Нет совпадений
+              </MuiDiv>
+            ) : (
+              filteredIncStatuses.map(({ statusINC, id }) => (
+                <Item
+                  name={statusINC}
+                  id={`${id}`}
+                  groupChecked={false}
+                  onChooseItems={onChooseItems}
+                  key={`${statusINC}_${id}`}
+                />
+              ))
+            )}
           </MuiDiv>
           <MuiDiv className={'modalError'}>
             {errSelectedItems && 'Не выбран ни один статус!'}

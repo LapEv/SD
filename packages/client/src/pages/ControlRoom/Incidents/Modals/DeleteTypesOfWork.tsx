@@ -82,15 +82,23 @@ export const DeleteTypesOfWork = memo(
             }}
           />
           <MuiDiv className={'boxDataModal h35Vh'}>
-            {filteredTypesOfWork.map(({ typeOfWork, id }) => (
-              <Item
-                name={typeOfWork}
-                id={`${id}`}
-                groupChecked={false}
-                onChooseItems={onChooseItems}
-                key={`${typeOfWork}_${id}`}
-              />
-            ))}
+            {filteredTypesOfWork &&
+            filterText &&
+            !filteredTypesOfWork.length ? (
+              <MuiDiv className="noMatchesListContractPage" sx={{ ml: 1 }}>
+                Нет совпадений
+              </MuiDiv>
+            ) : (
+              filteredTypesOfWork.map(({ typeOfWork, id }) => (
+                <Item
+                  name={typeOfWork}
+                  id={`${id}`}
+                  groupChecked={false}
+                  onChooseItems={onChooseItems}
+                  key={`${typeOfWork}_${id}`}
+                />
+              ))
+            )}
           </MuiDiv>
           <MuiDiv className={'modalError'}>
             {errSelectedItems && 'Не выбран ни один тип!'}

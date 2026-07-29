@@ -7,10 +7,12 @@ import { Divisions } from './'
 import { useAuth } from 'hooks/auth/useAuth'
 import { menuData } from './menuData'
 import { MuiDiv } from 'components/MUI'
+import { useApp } from 'hooks/app/useApp'
 
 export const UsersPage = memo(() => {
   const modalRef = React.createRef()
   const [{ admin }] = useAuth()
+  const [{ device }] = useApp()
   const [{ divisions }, { getDivisions }] = useStructure()
   const [modal, setModal] = useState<boolean>(false)
   const [modalImage, setModalImage] = useState<string>('')
@@ -47,9 +49,9 @@ export const UsersPage = memo(() => {
         <Typography variant="h6">Пользователи</Typography>
         {admin && (
           <DropDownMenu
-            popover={'Добавить/Удалить'}
+            popover={device === 'desktop' ? 'Добавить/Удалить' : ''}
             data={menuData}
-            divider={[5, 10]}
+            divider={[5, 11]}
             onClick={checkClickMenu}
           />
         )}

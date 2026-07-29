@@ -5,18 +5,22 @@ import { useMessage } from 'hooks/message/useMessage'
 import { IFilter } from '../../interfaces'
 import { useTableINC } from 'hooks/tableINC/useTableINC'
 import { operators, SETTINGS_DEFAULT } from '../../data'
+import {
+  GetActiveColumnOptions,
+  CheckOperators,
+} from 'pages/ControlRoom/Incidents'
 import { ButtonsFilterINCs } from 'components/Buttons'
 import {
   ILogicOperator,
   ILogicOperatorLabel,
 } from 'store/slices/tableINC/interfaces'
-import { GetActiveColumnOptions } from '../../Utils/GetActiveColumnOptions'
-import { CheckOperators } from '../../Utils/CheckOperators'
+import { useApp } from 'hooks/app/useApp'
 
 export const FilterPaper = memo(({ handleCloseFilterPanel }: IFilter) => {
   const [{ filterListOptions, columnOptions }, { setFilterListOptions }] =
     useTableINC()
   const [, { setMessage }] = useMessage()
+  const [{ device }] = useApp()
   const [filterList, setFilterList] = useState(filterListOptions)
 
   const removeAllFilters = () => {
@@ -60,7 +64,9 @@ export const FilterPaper = memo(({ handleCloseFilterPanel }: IFilter) => {
 
   return (
     <ClickAwayListener onClickAway={ClickAway}>
-      <Paper className={'paperFilterMenu'} elevation={8}>
+      <Paper
+        className={`${device === 'mobile' ? 'paperFilterMenuMobile' : 'paperFilterMenu'}`}
+        elevation={8}>
         {filterList.map((item, index) => (
           <FilterTriggers
             key={`filter_${item.columnLabel}_${index}`}

@@ -39,7 +39,7 @@ export interface IDispatcherOptions {
   showCellBorders: boolean
   showColumnBorders: boolean
   timeInterval: number
-  selected: string[]
+  selected?: string[]
   columnOptions: IColumnOptions[]
   filterListOptions: IFilterListOptions[]
   notificationsINC: INotificationINCData

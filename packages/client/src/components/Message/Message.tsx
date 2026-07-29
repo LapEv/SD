@@ -33,7 +33,7 @@ export const Message = memo(() => {
       )}>
       <Alert
         severity={(type as AlertColor) ?? 'success'}
-        className="paperMessageAlert">
+        className={`paperMessageAlert ${type === 'error' ? 'error' : type === 'warning' ? 'warning' : type === 'info' ? 'info' : type === 'success' ? 'success' : ''}`}>
         <AlertTitle>
           {type === 'error'
             ? 'Ошибка'

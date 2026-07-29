@@ -12,21 +12,21 @@ import {
 export const MapPasswordInputFields = [
   {
     name: 'oldPassword',
-    label: 'Old Password',
+    label: 'Старый пароль',
     validation: passwordValidation,
     type: 'password',
     required: true,
   },
   {
     name: 'newPassword',
-    label: 'New Password',
+    label: 'Новый пароль',
     validation: passwordValidationNew,
     type: 'password',
     required: true,
   },
   {
     name: 'confirmPassword',
-    label: 'Confirm Password',
+    label: 'Подтвердите пароль',
     validation: passwordValidationConfrim,
     type: 'password',
     required: true,

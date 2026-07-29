@@ -9,9 +9,11 @@ import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined'
 import { useRef, useState } from 'react'
 import { useTableINC } from 'hooks/tableINC/useTableINC'
 import { ClearButton } from 'components/Buttons'
+import { useApp } from 'hooks/app/useApp'
 
 export const QuickSearch = () => {
   const [{ searchValue }, { setSearchValue }] = useTableINC()
+  const [{ device }] = useApp()
   const [openSearch, setOpenSearch] = useState(false)
   const textFiledRef = useRef<HTMLInputElement>(null)
 
@@ -33,7 +35,7 @@ export const QuickSearch = () => {
           variant="standard"
           className={'searchFilter'}
           sx={{
-            width: openSearch ? 180 : 0,
+            width: openSearch ? (device === 'mobile' ? 120 : 180) : 0,
             marginLeft: openSearch ? '5px' : 0,
           }}
           value={searchValue ?? ''}

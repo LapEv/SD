@@ -23,9 +23,13 @@ export default function ToggleColorMode() {
     setFontSize(user.appOptions?.font ?? 'large')
   }, [user.appOptions?.font])
 
-  // useEffect(() => {
-  //   setColorTheme(user.appOptions?.colorTheme ?? {colorLight: '#1E515D', colorDark: '#C1EEE1'})
-  // }, [user.appOptions?.colorTheme])
+  useEffect(() => {
+    if (device === 'mobile') {
+      setFontSize('large')
+      return
+    }
+    setFontSize(user.appOptions?.font ?? 'large')
+  }, [device])
 
   const theme = useMemo(
     () =>

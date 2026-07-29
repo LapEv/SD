@@ -7,11 +7,13 @@ import { ChooseModal } from './Modals/ChooseModal'
 import { useClients } from 'hooks/clients/useClients'
 import { ClientsList } from './ClientsList'
 import { MuiDiv } from 'components/MUI'
+import { useApp } from 'hooks/app/useApp'
 
 export const ClientsPage = memo(() => {
   const modalClientRef = React.createRef()
   const [{ admin }] = useAuth()
   const [{ clients }, { getClients }] = useClients()
+  const [{ device }] = useApp()
 
   const [modal, setModal] = useState<boolean>(false)
   const [modalImage, setModalImage] = useState<string>('')
@@ -49,7 +51,7 @@ export const ClientsPage = memo(() => {
         <Typography variant="h6">Клиенты</Typography>
         {admin && (
           <DropDownMenu
-            popover={'Добавить/Удалить'}
+            popover={device === 'desktop' ? 'Добавить/Удалить' : ''}
             data={menuData}
             divider={[5, 8]}
             onClick={checkClickMenu}

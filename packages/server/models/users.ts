@@ -52,6 +52,18 @@ export interface User {
   appOptions: object
 }
 
+export interface UserFiles extends User {
+  Files: FilesForUser[]
+}
+
+export interface FilesForUser {
+  id: string
+  name: string
+  path: string
+  size: string
+  mimetype: string
+}
+
 export const users: ModelAttributes<Model, User> = {
   id: {
     type: DataType.STRING,

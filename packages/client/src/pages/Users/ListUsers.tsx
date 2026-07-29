@@ -5,9 +5,15 @@ import { User } from 'storeAuth/interfaces'
 import { RotateButton } from 'components/Buttons'
 import { ProfileData } from './'
 import { useAuth } from 'hooks/auth/useAuth'
+import { MuiDiv } from 'components/MUI'
+import { useFiles } from 'hooks/files/useFiles'
 
 export const ListUsers = memo((user: User) => {
-  const [{ activeUserInfo }, { getUserInfo, setActiveUserInfo }] = useAuth()
+  const [
+    { activeUserInfo },
+    { getUserInfo, clearUserInfo, setActiveUserInfo, clearAvatar },
+  ] = useAuth()
+  const [, { getAvatarListUser }] = useFiles()
   const [open, setOpen] = useState(false)
 
   const handleClick = () => {
@@ -16,7 +22,10 @@ export const ListUsers = memo((user: User) => {
     }
 
     setOpen(!open)
+    clearUserInfo()
     getUserInfo(user.id as string)
+    clearAvatar()
+    getAvatarListUser(user.id_avatarFiles as string)
   }
 
   useEffect(() => {
@@ -31,17 +40,16 @@ export const ListUsers = memo((user: User) => {
         divider={open}
         className={'itemButtonCollapse'}
         onClick={handleClick}>
-        <Box>
+        <MuiDiv className="textUsers">
           <ListItemText
             primary={`${user.lastName} ${user.firstName} ${user.middleName}`}
-            sx={{ ml: 8 }}
           />
-          <ListItemText primary={`${user.post}`} sx={{ ml: 10 }} />
-        </Box>
+          <ListItemText primary={`${user.post}`} sx={{ ml: 1.5 }} />
+        </MuiDiv>
         <RotateButton open={open} handleClick={handleClick} />
       </ListItemButton>
       <Collapse
-        sx={{ width: '90%', mt: 4, ml: 10, height: 'auto' }}
+        className="collapseList_UserData"
         in={open}
         timeout="auto"
         unmountOnExit>

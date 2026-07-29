@@ -92,20 +92,28 @@ export const DeleteDepartment = memo(
             }}
           />
           <MuiDiv className={'boxDataModal'}>
-            {filteredDepartments.map(
-              ({ departmentName, id, division, department }) => (
-                <Item
-                  name={departmentName}
-                  comment={department}
-                  comment2={`Дивизион: ${division}`}
-                  id={`${id}`}
-                  groupChecked={false}
-                  onChooseItems={onChooseItems}
-                  key={`${departmentName}_${id}`}
-                  className={'listItemsChangeRolesGr'}
-                  classItemText={'listItemsTextContainer'}
-                />
-              ),
+            {filteredDepartments &&
+            filterText &&
+            !filteredDepartments.length ? (
+              <MuiDiv className="noMatchesListContractPage" sx={{ ml: 1 }}>
+                Нет совпадений
+              </MuiDiv>
+            ) : (
+              filteredDepartments.map(
+                ({ departmentName, id, division, department }) => (
+                  <Item
+                    name={departmentName}
+                    comment={department}
+                    comment2={`Дивизион: ${division}`}
+                    id={`${id}`}
+                    groupChecked={false}
+                    onChooseItems={onChooseItems}
+                    key={`${departmentName}_${id}`}
+                    className={'listItemsChangeRolesGr'}
+                    classItemText={'listItemsTextContainer'}
+                  />
+                ),
+              )
             )}
           </MuiDiv>
           <MuiDiv className={'modalError'}>

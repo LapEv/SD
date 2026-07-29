@@ -90,16 +90,24 @@ export const DeleteOLA = memo(
             }}
           />
           <MuiDiv className={'boxDataModal'}>
-            {filteredOLA.map(({ ola, id, TypesOfWork }) => (
-              <Item
-                name={ola}
-                comment={TypesOfWork.typeOfWork}
-                id={`${id}`}
-                groupChecked={false}
-                onChooseItems={onChooseItems}
-                key={id as string}
-              />
-            ))}
+            {filteredOLA && filterText && !filteredOLA.length ? (
+              <MuiDiv className="noMatchesListContractPage" sx={{ ml: 1 }}>
+                Нет совпадений
+              </MuiDiv>
+            ) : (
+              filteredOLA.map(({ ola, id, TypesOfWork }) => (
+                <Item
+                  name={ola}
+                  comment={TypesOfWork.typeOfWork}
+                  id={`${id}`}
+                  groupChecked={false}
+                  onChooseItems={onChooseItems}
+                  key={id as string}
+                  className={'listItemsChangeRolesGr'}
+                  classItemText={'listItemsTextContainer'}
+                />
+              ))
+            )}
           </MuiDiv>
           <MuiDiv className={'modalError'}>
             {errSelectedItems && 'Не выбран ни один OLA!'}

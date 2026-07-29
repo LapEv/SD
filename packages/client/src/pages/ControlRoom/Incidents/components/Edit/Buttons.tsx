@@ -8,6 +8,7 @@ import { timeIntervalData } from '../../data'
 import { useIncidents } from 'hooks/incidents/useINC'
 import { useAuth } from 'hooks/auth/useAuth'
 import { createLogs } from './createLogs'
+import { useApp } from 'hooks/app/useApp'
 
 export const Buttons = ({
   inc,
@@ -19,6 +20,7 @@ export const Buttons = ({
   const [{ timeInterval }] = useTableINC()
   const [, { changeINC }] = useIncidents()
   const [{ user }] = useAuth()
+  const [{ device }] = useApp()
 
   const [error, setError] = useState('')
 
@@ -79,8 +81,32 @@ export const Buttons = ({
   }
 
   useEffect(() => {
-    setError('')
+    // setError('')
   }, [newINC])
+
+  if (device === 'mobile') {
+    return (
+      <MuiDiv className="editDataButtonBox">
+        <MuiSpan className="modalError">{error}</MuiSpan>
+        <MuiDiv className="editButtonMobileContainer">
+          <Button
+          // onClick={() =>
+          //   newTask({ id: values.id, incident: values.incident })
+          // }
+          >
+            Создать запрос
+          </Button>
+          <Button onClick={() => setNewINC(inc)}>Отменить изменения</Button>
+          <Button onClick={() => handleModal(false)} sx={{ ml: 5 }}>
+            Закрыть
+          </Button>
+          <Button onClick={saveData} disabled={disabled} sx={{ ml: 5 }}>
+            Сохранить
+          </Button>
+        </MuiDiv>
+      </MuiDiv>
+    )
+  }
 
   return (
     <MuiDiv className="editDataButtonBox">

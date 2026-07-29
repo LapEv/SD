@@ -52,6 +52,7 @@ interface ThemeModeProps {
 export interface ITheme extends Theme {
   fontSize: string
   colorTheme: IColorTheme
+  device: 'mobile' | 'desktop'
 }
 
 export const ThemeConfig = ({
@@ -64,6 +65,7 @@ export const ThemeConfig = ({
   ({
     fontSize,
     colorTheme,
+    device,
     typography: {
       fontFamily: 'Raleway',
       fontSize: fontSize === 'small' ? 12 : 16,
@@ -123,7 +125,7 @@ export const ThemeConfig = ({
       },
       h1: {
         fontFamily: 'Raleway',
-        fontSize: fontSize === 'small' ? 12 : 20,
+        fontSize: device === 'mobile' ? 18 : fontSize === 'small' ? 12 : 20,
         fontWeight: 'bold',
         color: mode === ThemeMode.light ? '#000000' : '#FFFFFF',
       },
@@ -226,6 +228,9 @@ export const ThemeConfig = ({
     components: {
       MuiAutocomplete: {
         styleOverrides: {
+          listbox: {
+            paddingTop: 0,
+          },
           root: {
             '&.dropdown': {
               width: '90%',
@@ -234,6 +239,11 @@ export const ThemeConfig = ({
             '&.dropdownINC': {
               width: 305,
               height: fontSize === 'small' ? 30 : 40,
+            },
+            '&.dropdownINCMobile': {
+              width: '100%',
+              height: fontSize === 'small' ? 30 : 40,
+              marginTop: 10,
             },
             '&.dropdownINConTable': {
               width: '100%',
@@ -273,10 +283,16 @@ export const ThemeConfig = ({
               // minHeight: fontSize === 'small' ? 30 : 40,
             },
             '&.dropdownCellsNewINC': {
-              width: '90%',
+              width: device === 'mobile' ? '94%' : '90%',
               margin: '16px',
               marginTop: fontSize === 'small' ? '8px' : '16px',
               marginLeft: fontSize === 'small' ? '8px' : '8px',
+              marginRight: fontSize === 'small' ? '8px' : '8px',
+            },
+            '&.dropdownSLAlist': {
+              width: device === 'mobile' ? '100%' : '48%',
+              marginTop: fontSize === 'small' ? '8px' : '16px',
+              minWidth: 220,
             },
           },
         },
@@ -295,6 +311,9 @@ export const ThemeConfig = ({
                   ? colorTheme.light.buttonShadow
                   : colorTheme.dark.buttonShadow,
             },
+            '&.passwordChangeButton': {
+              width: device === 'mobile' ? '50%' : '47.5%',
+            },
             '&.textButton': {
               color:
                 mode === ThemeMode.light
@@ -306,6 +325,17 @@ export const ThemeConfig = ({
               position: 'absolute',
               top: 0,
               left: 0,
+              zIndex: 99,
+            },
+            '&.mobileMenuIncidents': {
+              top: 10,
+              left: 5,
+            },
+            '&.Mui-disabled': {
+              color:
+                mode === ThemeMode.light
+                  ? 'rgba(0, 0, 0, 0.3)!important'
+                  : 'rgba(255, 255, 255, 0.3)!important',
             },
           },
         },
@@ -329,9 +359,26 @@ export const ThemeConfig = ({
               justifyContent: 'flex-start',
               alignItems: 'flex-start',
             },
+            '&.OFYscroll': {
+              overflowY: 'scroll',
+            },
             '&.textMultiCellsNewINC': {
               height: 90,
               padding: 10,
+            },
+            '&.addAvatarInput': {
+              // height: 1,
+              mt: 1,
+              color:
+                mode === ThemeMode.light
+                  ? colorTheme.light.darkPrimary
+                  : colorTheme.dark.lightPrimary,
+              '&:before': {
+                borderBottomWidth: 0,
+              },
+            },
+            '&.MuiTablePagination-select': {
+              marginRight: device === 'mobile' ? 12 : 32,
             },
           },
         },
@@ -345,13 +392,12 @@ export const ThemeConfig = ({
               justifyContent: 'flex-start',
               alignItems: 'center',
               overflowX: 'hidden',
-              width: '90%',
-              padding: '24px',
+              width: '100%',
+              padding: device === 'mobile' ? '8px' : '24px',
               borderColor:
                 mode === ThemeMode.light
                   ? colorTheme.light.borderSecondary
                   : colorTheme.dark.borderSecondary,
-              maxWidth: '1200px',
             },
           },
         },
@@ -375,26 +421,31 @@ export const ThemeConfig = ({
                 width: '100%',
                 height: 'auto',
                 '& > svg': {
-                  width: 100,
-                  height: 100,
+                  width: device === 'mobile' ? '70%' : 100,
+                  height: device === 'mobile' ? '70%' : 100,
                 },
               },
               '& > .MuiListItemText-root': {
                 display: 'flex',
                 justifyContent: 'center',
                 alignItems: 'center',
+                '& > span': {
+                  fontSize: device === 'mobile' ? 14 : 16,
+                },
               },
             },
             '&.itemContainerLabel': {
               fontWeight: 'bold',
               fontSize: '1rem',
-              width: '95%',
+              width: device === 'mobile' ? '100%' : '95%',
               height: fontSize === 'small' ? 30 : 40,
               display: 'flex',
               flexDirection: 'row',
               alignItems: 'space-between',
               justifyContent: 'space-between',
               marginTop: '16px',
+              paddingLeft: device === 'mobile' ? '0px' : '16px',
+              paddingRight: device === 'mobile' ? '0px' : '16px',
             },
             '&.itemButtonCollapse': {
               fontWeight: 'bold',
@@ -405,6 +456,9 @@ export const ThemeConfig = ({
               alignItems: 'space-between',
               justifyContent: 'space-between',
               padding: 0,
+              '& > .textDepartment': {
+                marginLeft: device === 'mobile' ? '6px' : '24px',
+              },
             },
             '&.itemButtonCollapse1': {
               fontWeight: 'bold',
@@ -414,6 +468,8 @@ export const ThemeConfig = ({
               flexDirection: 'row',
               alignItems: 'space-between',
               justifyContent: 'space-between',
+              paddingLeft: device === 'mobile' ? '4px' : '16px',
+              paddingRight: 0,
             },
             '&.height': {
               height: fontSize === 'small' ? 40 : 50,
@@ -459,6 +515,15 @@ export const ThemeConfig = ({
                 fontSize: fontSize === 'small' ? 10 : 14,
                 overflow: 'hidden',
                 textOverflow: 'ellipsis',
+                whiteSpace: 'nowrap',
+              },
+            },
+            '&.menuListText': {
+              '& > span': {
+                fontSize: fontSize === 'small' ? 10 : 14,
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
+                whiteSpace: 'nowrap',
               },
             },
           },
@@ -479,6 +544,11 @@ export const ThemeConfig = ({
               overflowY: 'auto',
               maxHeight: 250,
             },
+            '&.collapseContainerAddContract': {
+              overflow: 'hidden',
+              minHeight: '250px!important',
+              marginTop: 10,
+            },
             '&.profileAppOptionsContainer': {
               width: '100%',
               display: 'flex',
@@ -493,11 +563,22 @@ export const ThemeConfig = ({
             },
             '&.collapseList_p': {
               padding: '16px',
-              paddingLeft: '40px',
-              paddingRight: '40px',
+              paddingLeft: device === 'mobile' ? '8px' : '40px',
+              paddingRight: device === 'mobile' ? '8px' : '40px',
+            },
+            '&.collapseList_UserData': {
+              width: '100%',
+              paddingTop: '32px',
+              paddingLeft: device === 'mobile' ? '32px' : '80px',
+              paddingRight: device === 'mobile' ? '32px' : '80px',
+              height: 'auto',
+              maxWidth: '600px',
             },
             '&.collapseQuickFilter': {
-              width: 400,
+              width: '400px',
+            },
+            '&.collapseQuickFilterMobile': {
+              width: '100%',
             },
             '&.collapseCRoomList': {
               width: '100%',
@@ -524,7 +605,15 @@ export const ThemeConfig = ({
               flexDirection: 'column',
               justifyContent: 'flex-start',
               alignItems: 'center',
+              overflow: 'auto',
+            },
+            '&.mainHeaderForMainPages': {
+              height: '100%',
+              width: '100%',
+              overflow: 'auto',
               overflowX: 'hidden',
+              paddingTop: 30,
+              paddingBottom: 30,
             },
             '&.mainPage': {
               height: '100%',
@@ -734,6 +823,22 @@ export const ThemeConfig = ({
               paddingLeft: 0,
               paddingRight: '10px',
             },
+            '&.tableHeadToolbarMobile': {
+              minHeight: '85px!important',
+              borderColor: 'black',
+              borderStyle: 'solid',
+              borderWidth: 2,
+              borderTopLeftRadius: 5,
+              borderTopRightRadius: 5,
+              borderBottomWidth: 0,
+              display: 'flex',
+              justifyContent: 'flex-end',
+              paddingLeft: 0,
+              paddingRight: 0,
+              width: '100%',
+              flexDirection: 'column',
+              height: '85px !important',
+            },
           },
         },
       },
@@ -804,6 +909,9 @@ export const ThemeConfig = ({
                 ? colorTheme.light.text
                 : colorTheme.dark.text,
           },
+          actions: {
+            marginLeft: device === 'mobile' ? 6 : 20,
+          },
         },
       },
       MuiDivider: {
@@ -824,6 +932,17 @@ export const ThemeConfig = ({
             '&.editINCbox': {
               width: '100%',
               marginTop: fontSize === 'small' ? 4 : 8,
+            },
+            '&.mobileFilterSeparator': {
+              width: '90%',
+              height: 3,
+              margin: '0 auto',
+              borderRadius: 15,
+              opacity: 0.5,
+              backgroundColor:
+                mode === ThemeMode.light
+                  ? colorTheme.light.darkPrimary
+                  : colorTheme.dark.lightPrimary,
             },
           },
         },
@@ -874,13 +993,13 @@ export const ThemeConfig = ({
               height: 'auto',
             },
             '&.textCellsNewINC': {
-              width: '90%',
+              width: device === 'mobile' ? '94%' : '90%',
               margin: '16px',
               marginTop: fontSize === 'small' ? '8px' : '16px',
               marginLeft: '8px',
             },
             '&.textMultiCellsNewINC': {
-              width: '90%',
+              width: device === 'mobile' ? '94%' : '90%',
               margin: '8px',
               marginTop: fontSize === 'small' ? '8px' : '16px',
               height: 90,
@@ -904,6 +1023,18 @@ export const ThemeConfig = ({
                 fontSize: fontSize === 'small' ? 11 : 14,
               },
             },
+            '&.textContractList': {
+              width: device === 'mobile' ? '100%' : '48%',
+              minWidth: 220,
+            },
+            '&.textSLAList': {
+              width: device === 'mobile' ? '100%' : '48%',
+              minWidth: 220,
+            },
+            '&.textProfileList': {
+              width: device === 'mobile' ? '100%' : '48%',
+              minWidth: 220,
+            },
           },
         },
       },
@@ -917,7 +1048,7 @@ export const ThemeConfig = ({
               alignItems: 'flex-start',
               overflowX: 'hidden',
               width: '90%',
-              padding: '24px',
+              padding: device === 'mobile' ? 0 : '24px',
               borderColor:
                 mode === ThemeMode.light
                   ? colorTheme.light.borderSecondary
@@ -927,24 +1058,35 @@ export const ThemeConfig = ({
             },
             '&.newINC': {
               minHeight: 500,
-              width: '50%',
+              width: device === 'mobile' ? '95%' : '50%',
               justifyContent: 'flex-start',
               alignItems: 'flex-start',
+              maxWidth: device === 'mobile' ? 520 : '100%',
             },
             '&.editINC': {
               minHeight: 500,
               maxWidth: 1250,
-              width: '90%',
+              width: device === 'mobile' ? '98%' : '90%',
               paddingTop: fontSize === 'small' ? 0 : 1,
-              paddingLeft: fontSize === 'small' ? '8px' : '16px',
-              paddingRight: fontSize === 'small' ? '8px' : '16px',
+              paddingLeft:
+                device === 'mobile'
+                  ? '2px!important'
+                  : fontSize === 'small'
+                    ? '8px'
+                    : '16px',
+              paddingRight:
+                device === 'mobile'
+                  ? '2px!important'
+                  : fontSize === 'small'
+                    ? '8px'
+                    : '16px',
               overflow: 'hidden',
             },
             '&.systemSectionContainer': {
               display: 'flex',
               flexDirection: 'column',
               alignItems: 'center',
-              padding: 24,
+              padding: device === 'mobile' ? '8px' : '24px',
             },
             '&.loginPaper': {
               borderRadius: 5,
@@ -980,12 +1122,34 @@ export const ThemeConfig = ({
               justifyContent: 'space-around',
               width: '100%',
             },
+            '&.extensive': {
+              maxHeight: 'max-content',
+              overflowY: 'scroll',
+              height: '100%',
+            },
           },
         },
       },
       MuiDiv: {
         styleOverrides: {
           root: {
+            '&.textUsers': {
+              marginLeft: device === 'mobile' ? '8px' : '42px',
+            },
+            '&.buttonsSectionBox': {
+              display: 'flex',
+              justifyContent: 'space-around',
+              width: device === 'mobile' ? '100%' : '85%',
+              marginTop: '16px',
+              marginBottom: '16px',
+              '& > button': {
+                width: device === 'mobile' ? '45%' : '40%',
+                fontWeight: 'bold',
+                padding: device === 'mobile' ? '6px 6px' : '6px 16px',
+                fontSize:
+                  device === 'mobile' ? 11 : fontSize === 'small' ? 11 : 15,
+              },
+            },
             '&.printContainer': {
               width: '100%',
               height: 'auto',
@@ -1070,12 +1234,17 @@ export const ThemeConfig = ({
               },
             },
             '&.boxElementMainPage': {
-              display: 'block',
               boxShadow: '0px 0px 9px 2px #1E515D',
               borderRadius: 5,
-              width: 170,
-              height: 170,
-              margin: 20,
+              width: 150,
+              height: 150,
+              minWidth: 130,
+              minHeight: 130,
+              maxWidth: 170,
+              maxHeight: 170,
+              margin: device === 'mobile' ? 15 : 20,
+              'flex-basis': '40%',
+              boxSizing: 'border-box',
             },
             '&.mainTableStyle': {
               width: '100%',
@@ -1096,6 +1265,7 @@ export const ThemeConfig = ({
               flexDirection: 'column',
               alignItems: 'flex-start',
               justifyContent: 'space-around',
+              maxWidth: 900,
               width: '100%',
               marginTop: '16px',
               borderWidth: 2,
@@ -1132,12 +1302,17 @@ export const ThemeConfig = ({
                 mode === ThemeMode.light
                   ? colorTheme.light.borderSecondary
                   : colorTheme.dark.borderSecondary,
-              height: '85%',
+              height:
+                device === 'mobile'
+                  ? 'calc(100vH - 85px - 60px - 8px)'
+                  : fontSize === 'small'
+                    ? 'calc(100vH - 85px - 35px - 8px)'
+                    : 'calc(100vH - 85px - 40px - 8px)',
               flex: 1,
             },
             '&.selectedBoxStyle': {
               display: 'flex',
-              flexDirection: 'row',
+              flexDirection: device === 'mobile' ? 'column' : 'row',
               justifyContent: 'space-around',
               alignItems: 'center',
               borderStyle: 'solid',
@@ -1150,8 +1325,12 @@ export const ThemeConfig = ({
                 mode === ThemeMode.light
                   ? colorTheme.light.borderSecondary
                   : colorTheme.dark.borderSecondary,
-              height: fontSize === 'small' ? 35 : 40,
-              minHeight: fontSize === 'small' ? 35 : 40,
+              height: device === 'mobile' ? 60 : fontSize === 'small' ? 35 : 40,
+              minHeight:
+                device === 'mobile' ? 60 : fontSize === 'small' ? 35 : 40,
+            },
+            '&.h60': {
+              height: 60,
             },
             '&.tableHeaderCell': {
               display: 'flex',
@@ -1205,9 +1384,18 @@ export const ThemeConfig = ({
               display: 'flex',
               justifyContent: 'space-between',
               margin: 0,
+              marginTop: device === 'mobile' ? 10 : 0,
+              padding: device === 'mobile' ? 5 : 0,
               '& > button': {
                 width: '27%',
                 fontWeight: 'bold',
+                fontSize:
+                  device === 'mobile'
+                    ? 13
+                    : fontSize === 'small'
+                      ? '12px'
+                      : '15px',
+                padding: device === 'mobile' ? '6px 6px' : '6px 16px',
               },
             },
             '&.searchFilterBox': {
@@ -1248,7 +1436,10 @@ export const ThemeConfig = ({
               boxShadow: 24,
               padding:
                 fontSize === 'small' ? '20px!important' : '32px!important',
-              paddingLeft: '25px',
+              paddingLeft:
+                device === 'mobile' ? '10px!important' : '25px!important',
+              paddingRight:
+                device === 'mobile' ? '10px!important' : '25px!important',
               overflowY: 'auto',
               overflowX: 'hidden',
             },
@@ -1470,12 +1661,20 @@ export const ThemeConfig = ({
               justifyContent: 'flex-end',
               alignItems: 'center',
             },
+            '&.stackFilterBoxMobile': {
+              width: '100%',
+              display: 'flex',
+              justifyContent: 'flex-start',
+              alignItems: 'flex-start',
+              flexDirection: 'column',
+            },
             '&.editContainer': {
               display: 'flex',
               flexDirection: 'column',
               alignItems: 'flex-start',
               justifyContent: 'flex-start',
               width: '100%',
+              overflow: 'auto',
             },
             '&.editTitle': {
               width: '100%',
@@ -1495,16 +1694,17 @@ export const ThemeConfig = ({
                 mode === ThemeMode.light
                   ? colorTheme.light.darkPrimary
                   : colorTheme.dark.lightPrimary,
+              position: 'relative',
             },
             '&.editDataContainer': {
               width: '100%',
               display: 'flex',
-              flexDirection: 'row',
+              flexDirection: device === 'mobile' ? 'column' : 'row',
               justifyContent: 'flex-start',
               paddingTop: 7,
             },
             '&.editLogsContainer': {
-              width: '99.5%',
+              width: device === 'mobile' ? '97.5%' : '99.5%',
               display: 'flex',
               flexDirection: 'column',
               justifyContent: 'flex-start',
@@ -1519,6 +1719,7 @@ export const ThemeConfig = ({
               padding: fontSize === 'small' ? '6px' : '10px',
               overflowY: 'auto',
               maxHeight: 140,
+              minHeight: 140,
               marginTop: fontSize === 'small' ? '6px' : '10px',
               marginLeft: 5,
             },
@@ -1527,6 +1728,7 @@ export const ThemeConfig = ({
               display: 'flex',
               flexDirection: 'row',
               justifyContent: 'space-between',
+              padding: 10,
               paddingLeft: 20,
               paddingRight: 20,
               marginTop: 10,
@@ -1537,10 +1739,27 @@ export const ThemeConfig = ({
                 },
               },
             },
+            '&.editButtonMobileContainer': {
+              width: '100%',
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              paddingLeft: 20,
+              paddingRight: 20,
+              margin: 0,
+              marginTop: 10,
+              '& > .MuiButtonBase-root': {
+                width: 210,
+                minWidth: 210,
+                margin: 0,
+                marginBottom: 15,
+              },
+            },
 
             '&.editDataBox': {
-              width: '33.3333%',
-              minWidth: '33.3333%',
+              width: device === 'mobile' ? '100%' : '33.3333%',
+              minWidth: device === 'mobile' ? '100%' : '33.3333%',
               paddingLeft: fontSize === 'small' ? '2px' : '5px',
               paddingRight: fontSize === 'small' ? '2px' : '5px',
             },
@@ -1675,6 +1894,7 @@ export const ThemeConfig = ({
                   ? colorTheme.dark.lightPrimary
                   : colorTheme.light.darkPrimary,
               fontSize: fontSize === 'small' ? '12px' : '16px',
+              textAlign: 'center',
             },
             '&.addActBoxBackground': {
               display: 'flex',
@@ -1693,6 +1913,7 @@ export const ThemeConfig = ({
                   ? colorTheme.dark.lightPrimary
                   : colorTheme.light.darkPrimary,
               fontSize: fontSize === 'small' ? '12px' : '16px',
+              textAlign: 'center',
             },
             '&.opacity005': {
               opacity: 0.05,
@@ -1706,6 +1927,9 @@ export const ThemeConfig = ({
               alignItems: 'flex-end',
               height: 30,
               marginTop: fontSize === 'small' ? '5px' : '15px',
+            },
+            '&.systemContainer': {
+              width: '100%',
             },
             '&.arrowUpDownContainer': {
               position: 'absolute',
@@ -1743,11 +1967,55 @@ export const ThemeConfig = ({
               padding: 0,
             },
             '&.mainContainerClose': {
+              backgroundColor:
+                mode === ThemeMode.light
+                  ? colorTheme.light.primary
+                  : colorTheme.dark.primary,
               display: 'flex',
               width: '100%',
               height: '100vH',
               justifyContent: 'center',
               alignItems: 'center',
+            },
+            '&.noMatchesListContractPage': {
+              marginLeft: '10px',
+              color:
+                mode === ThemeMode.light
+                  ? colorTheme.light.darkPrimary
+                  : colorTheme.dark.lightPrimary,
+            },
+            '&.slaListBoxButtons': {
+              marginTop: fontSize === 'small' ? '16px' : '24px',
+              marginBottom: 0,
+            },
+            '&.systemBoxData': {
+              width: device === 'mobile' ? '40%' : '30%',
+              display: 'flex',
+              justifyContent: 'flex-end',
+            },
+            '&.toolbarBoxMobile1': {
+              display: 'flex',
+              flexDirection: 'row',
+              width: 300,
+              justifyContent: 'space-between',
+              height: 40,
+              overflowX: 'auto',
+              overflowY: 'hidden',
+              marginLeft: 'auto',
+              marginRight: '5px',
+            },
+            '&.toolbarBoxMobile2': {
+              display: 'flex',
+              flexDirection: 'row',
+              width: '100%',
+              justifyContent: 'flex-end',
+              height: 45,
+            },
+            '&.boxForToolbarMobile': {
+              width: '100%',
+              display: 'flex',
+              justifyContent: 'space-between',
+              position: 'relative',
             },
           },
         },
@@ -1862,7 +2130,7 @@ export const ThemeConfig = ({
               '& > div': {
                 textOverflow: 'ellipsis',
                 overflow: 'hidden',
-                whiteSpace: 'nowrap',
+                whiteSpace: 'normal',
               },
             },
           },
@@ -1875,14 +2143,16 @@ export const ThemeConfig = ({
               mode === ThemeMode.light
                 ? colorTheme.light.darkPrimary
                 : colorTheme.dark.lightPrimary,
-
+            // textOverflow: 'ellipsis',
+            // whiteSpace: 'nowrap',
+            // overflow: 'hidden',
             '&.selectedTextStyle': {
               paddingLeft: 10,
               fontWeight: 'bold',
               fontFamily: 'Raleway',
               fontSize: fontSize === 'small' ? 12 : 15,
               lineHeight: 1.43,
-              width: 300,
+              width: device === 'mobile' ? 'auto' : 300,
             },
             '&.newINC': {
               margin: '0 auto',
@@ -1903,6 +2173,9 @@ export const ThemeConfig = ({
                 mode === ThemeMode.light
                   ? colorTheme.light.darkPrimary
                   : colorTheme.dark.lightPrimary,
+            },
+            '&.systemBoxLabel': {
+              width: device === 'mobile' ? '60%' : '70%',
             },
           },
         },
@@ -1930,6 +2203,12 @@ export const ThemeConfig = ({
             alignItems: 'center',
             justifyContent: 'center',
             fontSize: 30,
+            '&.warning': {
+              color: '#ed6c02',
+              '& > svg': {
+                color: '#ed6c02',
+              },
+            },
           },
           root: {
             '&.MuiAlert-standard': {
@@ -1964,6 +2243,7 @@ export const ThemeConfig = ({
       MuiPaper: {
         styleOverrides: {
           root: {
+            backgroundImage: 'none',
             boxShadow: '0px 0px 9px 2px #1E515D',
             '&.paperFilterMenu': {
               display: 'flex',
@@ -1973,6 +2253,14 @@ export const ThemeConfig = ({
               padding: 20,
               paddingLeft: 10,
               paddingRight: 10,
+            },
+            '&.paperFilterMenuMobile': {
+              display: 'flex',
+              flexDirection: 'column',
+              gap: 5,
+              width: '100%',
+              padding: 5,
+              borderRadius: 5,
             },
             '&.DropDownPaper': {
               overflow: 'visible',
@@ -2018,6 +2306,7 @@ export const ThemeConfig = ({
                   ? colorTheme.light.primary
                   : colorTheme.dark.primary,
               marginTop: '10px',
+              maxHeight: '100%',
               '&.DropDownPaperDark': {
                 backgroundColor:
                   mode === ThemeMode.light
@@ -2094,6 +2383,10 @@ export const ThemeConfig = ({
               },
               '& > .MuiAutocomplete-noOptions': {
                 fontWeight: 'normal',
+                color:
+                  mode === ThemeMode.light
+                    ? colorTheme.light.primary
+                    : colorTheme.dark.primary,
               },
             },
             '&.dropdownINC_': {
@@ -2131,6 +2424,38 @@ export const ThemeConfig = ({
                 mode === ThemeMode.light
                   ? colorTheme.light.primary
                   : colorTheme.dark.primary,
+              '&.error': {
+                '& > .MuiAlert-icon': {
+                  color: '#d32f2f',
+                  '& > svg': {
+                    color: '#d32f2f',
+                  },
+                },
+              },
+              '&.warning': {
+                '& > .MuiAlert-icon': {
+                  color: '#ed6c02',
+                  '& > svg': {
+                    color: '#ed6c02',
+                  },
+                },
+              },
+              '&.info': {
+                '& > .MuiAlert-icon': {
+                  color: '#0288d1',
+                  '& > svg': {
+                    color: '#0288d1',
+                  },
+                },
+              },
+              '&.success': {
+                '& > .MuiAlert-icon': {
+                  color: '#2e7d32',
+                  '& > svg': {
+                    color: '#2e7d32',
+                  },
+                },
+              },
             },
           },
         },
@@ -2172,6 +2497,14 @@ export const ThemeConfig = ({
               zIndex: 99,
               borderRadius: 15,
             },
+            '&.poperFilterMenuMobile': {
+              zIndex: 99,
+              borderRadius: 5,
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'flex-start',
+              width: '100%',
+            },
             '&.viewFileTooltip': {
               backgroundColor: 'rgba(97, 97, 97, 0.92)',
               color: '#FFF',
@@ -2183,8 +2516,8 @@ export const ThemeConfig = ({
         styleOverrides: {
           root: {
             '&.quickFilterpaper': {
-              minWidth: '350px',
-              width: '400px',
+              minWidth: '320px',
+              width: device === 'mobile' ? '100%' : '400px',
               '& > .MuiListItemText-root': {
                 '& > span': {
                   fontSize: fontSize === 'small' ? 11 : 15,
@@ -2246,6 +2579,12 @@ export const ThemeConfig = ({
               height: fontSize === 'small' ? 29 : 35,
               margin: 0,
             },
+            '&.clearFilterMobileIconButton': {
+              width: fontSize === 'small' ? 29 : 40,
+              height: fontSize === 'small' ? 29 : 40,
+              margin: 0,
+              marginTop: 10,
+            },
             '&.editIconButton': {
               width: fontSize === 'small' ? 23 : 30,
               height: fontSize === 'small' ? 23 : 30,
@@ -2256,7 +2595,8 @@ export const ThemeConfig = ({
               height: fontSize === 'small' ? 24 : 30,
               margin: 0,
               position: 'absolute',
-              right: 15,
+              right: device === 'mobile' ? 15 : 35,
+              top: 2,
             },
             '&.searchIconButton': {
               width: fontSize === 'small' ? 29 : 35,
@@ -2273,6 +2613,7 @@ export const ThemeConfig = ({
             '&.newIncidentIconButton': {
               width: fontSize === 'small' ? 29 : 35,
               height: fontSize === 'small' ? 29 : 35,
+              margin: 0,
             },
             '&.menuINCIconButton': {
               width: fontSize === 'small' ? 23 : 30,
@@ -2385,28 +2726,32 @@ export const ThemeConfig = ({
                 : colorTheme.dark.lightPrimary,
 
             '&.viewColumnsIcon': {
-              width: fontSize === 'small' ? 18 : 20,
-              height: fontSize === 'small' ? 18 : 20,
+              width: device === 'mobile' ? 25 : fontSize === 'small' ? 18 : 20,
+              height: device === 'mobile' ? 25 : fontSize === 'small' ? 18 : 20,
             },
             '&.settingsIcon': {
-              width: fontSize === 'small' ? 18 : 20,
-              height: fontSize === 'small' ? 18 : 20,
+              width: device === 'mobile' ? 25 : fontSize === 'small' ? 18 : 20,
+              height: device === 'mobile' ? 25 : fontSize === 'small' ? 18 : 20,
             },
             '&.quickIcon': {
-              width: fontSize === 'small' ? 18 : 20,
-              height: fontSize === 'small' ? 18 : 20,
+              width: device === 'mobile' ? 25 : fontSize === 'small' ? 18 : 20,
+              height: device === 'mobile' ? 25 : fontSize === 'small' ? 18 : 20,
             },
             '&.filterIcon': {
-              width: fontSize === 'small' ? 18 : 20,
-              height: fontSize === 'small' ? 18 : 20,
+              width: device === 'mobile' ? 25 : fontSize === 'small' ? 18 : 20,
+              height: device === 'mobile' ? 25 : fontSize === 'small' ? 18 : 20,
             },
             '&.exportExcelIcon': {
-              width: fontSize === 'small' ? 18 : 20,
-              height: fontSize === 'small' ? 18 : 20,
+              width: device === 'mobile' ? 25 : fontSize === 'small' ? 18 : 20,
+              height: device === 'mobile' ? 25 : fontSize === 'small' ? 18 : 20,
             },
             '&.clearFilterIcon': {
               width: fontSize === 'small' ? 18 : 20,
               height: fontSize === 'small' ? 18 : 20,
+            },
+            '&.clearFilterMobileIcon': {
+              width: fontSize === 'small' ? 18 : 35,
+              height: fontSize === 'small' ? 18 : 35,
             },
             '&.editINCIcon': {
               width: fontSize === 'small' ? 22 : 27,
@@ -2417,24 +2762,24 @@ export const ThemeConfig = ({
               height: fontSize === 'small' ? 25 : 30,
             },
             '&.searchIcon': {
-              width: fontSize === 'small' ? 18 : 20,
-              height: fontSize === 'small' ? 18 : 20,
+              width: device === 'mobile' ? 25 : fontSize === 'small' ? 18 : 20,
+              height: device === 'mobile' ? 25 : fontSize === 'small' ? 18 : 20,
             },
             '&.attachIcon': {
               width: fontSize === 'small' ? 18 : 20,
               height: fontSize === 'small' ? 18 : 20,
             },
             '&.printIcon': {
-              width: fontSize === 'small' ? 18 : 20,
-              height: fontSize === 'small' ? 18 : 20,
+              width: device === 'mobile' ? 25 : fontSize === 'small' ? 18 : 20,
+              height: device === 'mobile' ? 25 : fontSize === 'small' ? 18 : 20,
             },
             '&.newIncidentIcon': {
-              width: fontSize === 'small' ? 18 : 20,
-              height: fontSize === 'small' ? 18 : 20,
+              width: device === 'mobile' ? 25 : fontSize === 'small' ? 18 : 20,
+              height: device === 'mobile' ? 25 : fontSize === 'small' ? 18 : 20,
             },
             '&.menuINCIcon': {
-              width: fontSize === 'small' ? 23 : 25,
-              height: fontSize === 'small' ? 23 : 25,
+              width: device === 'mobile' ? 25 : fontSize === 'small' ? 23 : 25,
+              height: device === 'mobile' ? 25 : fontSize === 'small' ? 23 : 25,
             },
             '&.colorForIconDark': {
               color:
@@ -2474,19 +2819,27 @@ export const ThemeConfig = ({
               width: '100%',
             },
             '&.newINC': {
-              flexWrap: 'wrap',
-              height: fontSize === 'small' ? 440 : 550,
-              width: '52%',
+              flexWrap: device === 'mobile' ? 'none' : 'wrap',
+              height:
+                device === 'mobile' ? 'auto' : fontSize === 'small' ? 440 : 550,
+              width: device === 'mobile' ? '100%' : '52%',
               marginTop: '8px',
               justifyContent: 'flex-start',
               alignItems: 'flex-start',
             },
             '&.mainPageListBox': {
-              flexWrap: 'wrap',
               width: '100%',
-              height: '75%',
+              height: '100%',
               justifyContent: 'center',
               alignItems: 'center',
+              'align-content': device === 'mobile' ? 'none' : 'center',
+              flexWrap: 'wrap',
+              maxHeight: '100%',
+              maxWidth: '100%',
+              flexDirection: 'row',
+            },
+            '&.mt10': {
+              marginTop: 10,
             },
           },
         },
@@ -2497,6 +2850,10 @@ export const ThemeConfig = ({
             '&.selectFilterTrigger': {
               height: fontSize === 'small' ? 30 : 40,
               width: 205,
+            },
+            '&.selectFilterTriggerMobile': {
+              height: fontSize === 'small' ? 30 : 40,
+              width: '100%',
             },
             '&.selectLogicFilterTrigger': {
               height: fontSize === 'small' ? 30 : 40,
@@ -2512,16 +2869,32 @@ export const ThemeConfig = ({
               width: 210,
               margin: 0,
             },
+            '&.formControlFilterTriggerMobile': {
+              width: '100%',
+              margin: 0,
+              marginTop: 10,
+            },
             '&.formControlLogicFilterTrigger': {
               width: 105,
               margin: 0,
               minWidth: 100,
+            },
+            '&.mt10': {
+              marginTop: 10,
             },
             '&.textContainerFilterTrigger': {
               margin: '0!important',
               width: 305,
               '& > div': {
                 width: 305,
+              },
+            },
+            '&.textContainerFilterTriggerMobile': {
+              margin: '0!important',
+              marginTop: '10px!important',
+              width: '100%',
+              '& > div': {
+                width: '100%',
               },
             },
             '&.textContainerINC': {
@@ -2580,7 +2953,7 @@ export const ThemeConfig = ({
                   borderRadius: 0,
                   borderColor:
                     mode === ThemeMode.dark
-                      ? colorTheme.dark.borderPrimary
+                      ? colorTheme.dark.borderSecondary
                       : colorTheme.light.borderPrimary,
                   borderBottomWidth: 1,
                   borderStyle: 'solid',
@@ -2589,7 +2962,7 @@ export const ThemeConfig = ({
                   borderRadius: 0,
                   borderColor:
                     mode === ThemeMode.dark
-                      ? colorTheme.dark.borderPrimary
+                      ? colorTheme.dark.borderSecondary
                       : colorTheme.light.borderPrimary,
                   borderWidth: 0,
                   borderBottomWidth: 2,
@@ -2599,7 +2972,7 @@ export const ThemeConfig = ({
                   borderRadius: 0,
                   borderColor:
                     mode === ThemeMode.dark
-                      ? colorTheme.dark.borderPrimary
+                      ? colorTheme.dark.borderSecondary
                       : colorTheme.light.borderPrimary,
                   borderWidth: '0!important',
                   borderBottomWidth: '1px!important',
@@ -2613,8 +2986,9 @@ export const ThemeConfig = ({
             },
 
             '&.datePickerFilter': {
-              width: 305,
+              width: device === 'mobile' ? '100%  ' : 305,
               margin: '0!important',
+              marginTop: device === 'mobile' ? '10px !important' : 0,
               height: fontSize === 'small' ? 30 : 40,
               '& label': {
                 color:
@@ -2631,7 +3005,7 @@ export const ThemeConfig = ({
                   borderColor:
                     mode === ThemeMode.light
                       ? `${colorTheme.light.borderSecondary}!important`
-                      : `${colorTheme.dark.borderSecondary}!important`,
+                      : `${colorTheme.dark.lightSecondary}!important`,
                   borderWidth: 1,
                   borderStyle: 'solid',
                 },
@@ -2645,7 +3019,7 @@ export const ThemeConfig = ({
                     borderColor:
                       mode === ThemeMode.light
                         ? colorTheme.light.borderSecondary
-                        : colorTheme.dark.borderSecondary,
+                        : colorTheme.dark.lightSecondary,
                     borderStyle: 'solid',
                     borderWidth: 2,
                   },
@@ -2771,7 +3145,7 @@ export const ThemeConfig = ({
               },
             },
             '&.newINC': {
-              width: '90%',
+              width: device === 'mobile' ? '94%' : '90%',
               margin:
                 fontSize === 'small' ? '16px!important' : '16px!important',
               marginTop:

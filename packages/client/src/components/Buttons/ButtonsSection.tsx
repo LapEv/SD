@@ -1,15 +1,7 @@
-import { Box } from '@mui/material'
 import { Button } from 'components/Buttons'
 import { memo } from 'react'
 import { HandleSection } from './interfaces'
-
-const props = {
-  display: 'flex',
-  justifyContent: 'space-around',
-  width: '85%',
-  mt: 2,
-  mb: 2,
-}
+import { MuiDiv } from 'components/MUI'
 
 export const ButtonsSection = memo(
   ({
@@ -20,9 +12,10 @@ export const ButtonsSection = memo(
     btnSecondDisabled,
     onClick,
     sx,
+    className,
   }: HandleSection) => {
     return (
-      <Box sx={{ ...props, ...sx }}>
+      <MuiDiv className={`buttonsSectionBox ${className}`} sx={sx}>
         <Button
           type="submit"
           onClick={onClick}
@@ -36,7 +29,7 @@ export const ButtonsSection = memo(
           disabled={btnSecondDisabled ?? true}>
           {btnSecondName ?? ''}
         </Button>
-      </Box>
+      </MuiDiv>
     )
   },
 )

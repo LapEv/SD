@@ -95,18 +95,24 @@ export const DeleteAddress = memo(
             }}
           />
           <MuiDiv className={'boxDataModal'}>
-            {filteredAddresses.map(({ address, id, id_region }) => (
-              <Item
-                name={address}
-                comment={getRegionName(id_region as string)}
-                id={`${id}`}
-                groupChecked={false}
-                onChooseItems={onChooseItems}
-                key={`${address}_${id}`}
-                className={'listItems'}
-                classItemText={'listItemsTextContainer'}
-              />
-            ))}
+            {filteredAddresses && filterText && !filteredAddresses.length ? (
+              <MuiDiv className="noMatchesListContractPage" sx={{ ml: 1 }}>
+                Нет совпадений
+              </MuiDiv>
+            ) : (
+              filteredAddresses.map(({ address, id, id_region }) => (
+                <Item
+                  name={address}
+                  comment={getRegionName(id_region as string)}
+                  id={`${id}`}
+                  groupChecked={false}
+                  onChooseItems={onChooseItems}
+                  key={`${address}_${id}`}
+                  className={'listItems'}
+                  classItemText={'listItemsTextContainer'}
+                />
+              ))
+            )}
           </MuiDiv>
           <MuiDiv className={'modalError'}>
             {errSelectedItems && 'Не выбран ни один адрес!'}

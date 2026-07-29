@@ -14,6 +14,21 @@ export class addressService {
     }
   }
 
+  newAddressForObject = async (_req: Request, res: Response) => {
+    try {
+      const newAddr = await AddressesRepos.create({
+        ..._req.body,
+        active: true,
+      })
+      console.log('newAddr = ', newAddr)
+      res.status(200).json(newAddr)
+    } catch (err) {
+      res
+        .status(500)
+        .json({ error: ['db error: unable to set new address', err as Error] })
+    }
+  }
+
   getAllAddresses = (_req: Request, res: Response) => {
     AddressesRepos.findAll({
       include: {

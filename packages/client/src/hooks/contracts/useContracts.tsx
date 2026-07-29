@@ -29,8 +29,8 @@ export function useContracts(): [ContractsState, ContractsActions] {
       newContract(data) {
         dispatch(newContract(data))
       },
-      newContractName({ contract, id }) {
-        dispatch(newContractName({ contract, id }))
+      newContractName({ contract, id, id_client }) {
+        dispatch(newContractName({ contract, id, id_client }))
       },
       deleteContract(data) {
         dispatch(deleteContract(data))

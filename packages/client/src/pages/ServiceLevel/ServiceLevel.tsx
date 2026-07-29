@@ -6,10 +6,12 @@ import { ServiceList, menuData } from '.'
 import { ChooseModal } from './Modals/ChooseModal'
 import { ServiceDataList } from './data'
 import { MuiDiv } from 'components/MUI'
+import { useApp } from 'hooks/app/useApp'
 
 export const ServiceLevelPage = memo(() => {
   const modalClientRef = React.createRef()
   const [{ admin }] = useAuth()
+  const [{ device }] = useApp()
   const [modal, setModal] = useState<boolean>(false)
   const [modalImage, setModalImage] = useState<string>('')
 
@@ -41,7 +43,7 @@ export const ServiceLevelPage = memo(() => {
         <Typography variant="h6">Уровни сервиса</Typography>
         {admin && (
           <DropDownMenu
-            popover={'Добавить/Удалить'}
+            popover={device === 'desktop' ? 'Добавить/Удалить' : ''}
             data={menuData}
             divider={[2, 4]}
             onClick={checkClickMenu}

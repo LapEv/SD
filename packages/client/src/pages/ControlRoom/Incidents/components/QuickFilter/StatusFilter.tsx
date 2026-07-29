@@ -15,8 +15,10 @@ import {
   ILogicOperatorLabel,
 } from 'store/slices/tableINC/interfaces'
 import { useMessage } from 'hooks/message/useMessage'
+import { useApp } from 'hooks/app/useApp'
 
 export const StatusFilter = () => {
+  const [{ device }] = useApp()
   const [, { setMessage }] = useMessage()
   const [{ filterListOptions }, { setFilterListOptions }] = useTableINC()
   const [{ incStatuses }] = useIncidents()
@@ -99,7 +101,7 @@ export const StatusFilter = () => {
         in={openStatusINCs}
         timeout="auto"
         unmountOnExit
-        className="collapseQuickFilter">
+        className={`${device === 'mobile' ? 'collapseQuickFilterMobile' : 'collapseQuickFilter'}`}>
         {_incStatuses.map(({ statusINC, idFilter, filterStatus, id }) => (
           <MenuItem
             key={`${id}`}

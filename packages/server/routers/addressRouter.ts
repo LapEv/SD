@@ -23,6 +23,16 @@ export const addressRouter = (apiRouter: Router) => {
     service.newAddress,
   )
   router.post(
+    '/newAddressForObject',
+    roleMiddleware([
+      'newAddressForObject',
+      'ADMIN',
+      'SUPERADMIN',
+      'AdministrationCCA',
+    ]),
+    service.newAddressForObject,
+  )
+  router.post(
     '/deleteAddress',
     roleMiddleware(['deleteAddress', 'SUPERADMIN']),
     service.deleteAddress,

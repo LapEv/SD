@@ -9,11 +9,13 @@ import {
   newRegion,
   deleteRegion,
   changeRegion,
+  newAddressForObject,
 } from 'api/address'
 
 const initialState: AddressesState = {
   addresses: [],
   regions: [],
+  newIDaddress: '',
   isLoadingAddress: false,
 }
 
@@ -23,6 +25,9 @@ export const addressesSlise = createSlice({
   reducers: {
     addAddress(state, action) {
       state.addresses.push(action.payload)
+    },
+    clearNewIDAddress(state) {
+      state.newIDaddress = ''
     },
   },
   extraReducers: builder => {
@@ -47,6 +52,19 @@ export const addressesSlise = createSlice({
       state.isLoadingAddress = true
     })
     builder.addCase(newAddress.rejected, (state, { payload }) => {
+      state.isLoadingAddress = false
+      state.error = payload as string
+    })
+    builder.addCase(newAddressForObject.fulfilled, (state, { payload }) => {
+      state.isLoadingAddress = false
+      state.error = ''
+      state.addresses = [...state.addresses, payload?.data] as Addresses[]
+      state.newIDaddress = payload?.data.id
+    })
+    builder.addCase(newAddressForObject.pending, state => {
+      state.isLoadingAddress = true
+    })
+    builder.addCase(newAddressForObject.rejected, (state, { payload }) => {
       state.isLoadingAddress = false
       state.error = payload as string
     })
@@ -126,4 +144,4 @@ export const addressesSlise = createSlice({
 })
 
 export const addressesReducer = addressesSlise.reducer
-export const { addAddress } = addressesSlise.actions
+export const { addAddress, clearNewIDAddress } = addressesSlise.actions

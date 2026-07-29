@@ -101,17 +101,27 @@ export const DeleteTypicalMalfunction = memo(
             }}
           />
           <MuiDiv className={'boxDataModal'}>
-            {filteredTypicalMalfunctions.map(
-              ({ typicalMalfunction, id, id_equipment }) => (
-                <Item
-                  name={typicalMalfunction}
-                  comment={getEquipmentName(id_equipment as string)}
-                  id={`${id}`}
-                  groupChecked={false}
-                  onChooseItems={onChooseItems}
-                  key={id as string}
-                />
-              ),
+            {filteredTypicalMalfunctions &&
+            filterText &&
+            !filteredTypicalMalfunctions.length ? (
+              <MuiDiv className="noMatchesListContractPage" sx={{ ml: 1 }}>
+                Нет совпадений
+              </MuiDiv>
+            ) : (
+              filteredTypicalMalfunctions.map(
+                ({ typicalMalfunction, id, id_equipment }) => (
+                  <Item
+                    name={typicalMalfunction}
+                    comment={getEquipmentName(id_equipment as string)}
+                    id={`${id}`}
+                    groupChecked={false}
+                    onChooseItems={onChooseItems}
+                    key={id as string}
+                    className={'listItemsChangeRolesGr'}
+                    classItemText={'listItemsTextContainer'}
+                  />
+                ),
+              )
             )}
           </MuiDiv>
           <MuiDiv className={'modalError'}>

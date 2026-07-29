@@ -18,12 +18,13 @@ export const BoxModal = styled(
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'space-between',
-    width: '35%',
+    width: '90%',
     top: '50%',
     left: '50%',
     height: 'auto',
     maxHeight: '95%',
-    minWidth: 520,
+    minWidth: 320,
+    maxWidth: 520,
     transform: 'translate(-50%, -50%)',
     borderColor:
       theme.palette.mode === ThemeMode.dark
@@ -36,6 +37,14 @@ export const BoxModal = styled(
         ? (theme as ITheme).colorTheme.light.shadow
         : (theme as ITheme).colorTheme.dark.shadow,
     padding: '32px',
+    paddingLeft:
+      (theme as ITheme).device === 'mobile'
+        ? '10px!important'
+        : '25px!important',
+    paddingRight:
+      (theme as ITheme).device === 'mobile'
+        ? '10px!important'
+        : '25px!important',
     overflowY: 'auto',
     overflowX: 'hidden',
     backgroundColor:
@@ -44,6 +53,6 @@ export const BoxModal = styled(
         : (theme as ITheme).colorTheme.dark.primary,
   },
   '&.modalMainContainerMH8': {
-    minWidth: 560,
+    minWidth: 320,
   },
 }))

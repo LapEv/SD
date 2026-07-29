@@ -28,6 +28,7 @@ export type HandleSection = {
   btnSecondDisabled?: boolean
   onClick?: () => void
   sx?: Record<string, unknown>
+  className?: string
 }
 
 export type HandleNoSubmit = {

@@ -83,18 +83,24 @@ export const DeleteDivision = memo(
             }}
           />
           <MuiDiv className={'boxDataModal'}>
-            {filteredDivisions.map(({ divisionName, division, id }) => (
-              <Item
-                name={divisionName}
-                comment={division}
-                id={`${id}`}
-                groupChecked={false}
-                onChooseItems={onChooseItems}
-                key={`${divisionName}_${id}`}
-                className={'listItemsChangeRolesGr'}
-                classItemText={'listItemsTextContainer'}
-              />
-            ))}
+            {filteredDivisions && filterText && !filteredDivisions.length ? (
+              <MuiDiv className="noMatchesListContractPage" sx={{ ml: 1 }}>
+                Нет совпадений
+              </MuiDiv>
+            ) : (
+              filteredDivisions.map(({ divisionName, division, id }) => (
+                <Item
+                  name={divisionName}
+                  comment={division}
+                  id={`${id}`}
+                  groupChecked={false}
+                  onChooseItems={onChooseItems}
+                  key={`${divisionName}_${id}`}
+                  className={'listItemsChangeRolesGr'}
+                  classItemText={'listItemsTextContainer'}
+                />
+              ))
+            )}
           </MuiDiv>
           <MuiDiv className={'modalError'}>
             {errSelectedItems && 'Не выбран ни один дивизион!'}

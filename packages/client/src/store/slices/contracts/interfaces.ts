@@ -66,10 +66,12 @@ export interface ChangeContract {
   model?: string[]
   objects?: string[]
   incStatusses?: string[]
+  id_client: string
 }
 export interface NewContractName {
   contract: string
   id: string
+  id_client: string
 }
 
 export interface ContractsForINC {

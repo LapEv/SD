@@ -24,7 +24,7 @@ module.exports = function (roles: []) {
       }
       const verifycode = jwt.verify(token, SECRET_KEY as Secret)
       const { rolesGroup } = verifycode as JwtPayload
-      let hasRole = false
+      let hasRole = roles.includes('ALL' as never) ? true : false
       if (roles.includes(rolesGroup as never)) {
         hasRole = true
       }

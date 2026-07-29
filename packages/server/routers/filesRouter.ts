@@ -24,8 +24,13 @@ export const filesRouter = (apiRouter: Router) => {
   )
   router.post(
     '/getAvatar',
-    roleMiddleware(['getAvatar', 'SUPERADMIN', 'ADMIN', 'Dispatcher']),
+    roleMiddleware(['getAvatar', 'ALL']),
     service.getAvatar,
+  )
+  router.post(
+    '/getAvatarListUser',
+    roleMiddleware(['getAvatarListUser', 'ALL']),
+    service.getAvatarListUser,
   )
   router.post(
     '/uploadFiles',
@@ -34,12 +39,12 @@ export const filesRouter = (apiRouter: Router) => {
   )
   router.post(
     '/uploadAvatars',
-    roleMiddleware(['uploadAvatars', 'SUPERADMIN', 'ADMIN', 'Dispatcher']),
+    roleMiddleware(['uploadAvatars', 'ALL']),
     service.uploadAvatars,
   )
   router.post(
     '/deleteAvatar',
-    roleMiddleware(['deleteAvatar', 'SUPERADMIN', 'ADMIN', 'Dispatcher']),
+    roleMiddleware(['deleteAvatar', 'ALL']),
     service.deleteAvatar,
   )
 

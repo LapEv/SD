@@ -141,7 +141,7 @@ export const ProfileAvatar = memo(
           value={selectedFile.info?.name || ''}
           InputProps={{
             fullWidth: true,
-            sx: { p: 0, width: 100, height: 100 },
+            sx: { p: 0, width: '100%', height: 100 },
             startAdornment: (
               <IconButton component="label" sx={{ p: 0 }}>
                 <AvatarBox
@@ -163,7 +163,7 @@ export const ProfileAvatar = memo(
                 <input
                   type="file"
                   ref={inputFileRef}
-                  accept="image/jpeg,application/pdf"
+                  accept="image/*"
                   hidden
                   onChange={handleFileChange}
                   name="file"
@@ -174,12 +174,14 @@ export const ProfileAvatar = memo(
             ),
           }}
         />
-        <Box sx={{ ml: 2 }}>
+        <Box sx={{ ml: 4 }}>
           <TextField
             variant="standard"
             type={'text'}
             sx={{
-              width: 'auto',
+              width: '100%',
+              margin: 0,
+              height: '20px',
               color:
                 theme.palette.mode === ThemeMode.light
                   ? (theme as ITheme).colorTheme.light.primary
@@ -188,32 +190,27 @@ export const ProfileAvatar = memo(
             margin="normal"
             value={selectedFile.info?.name || ''}
             InputProps={{
-              sx: {
-                height: 30,
-                mt: 1,
-                color:
-                  theme.palette.mode === ThemeMode.light
-                    ? (theme as ITheme).colorTheme.light.darkPrimary
-                    : (theme as ITheme).colorTheme.dark.lightPrimary,
-              },
+              className: 'addAvatarInput',
             }}
           />
           <Box
             sx={{
               display: 'flex',
               justifyContent: 'space-between',
-              width: 210,
+              flexDirection: 'column',
+              alignItems: 'flex-start',
+              width: '100%',
             }}>
             <Button
               onClick={btnDisabled ? chooseFile : saveAvatar}
-              sx={{ width: 100, fontWeight: 'bold' }}>
+              sx={{ width: '100%', fontWeight: 'bold', marginTop: 1 }}>
               {btnDisabled ? (avatar ? 'Изменить' : 'Загрузить') : 'Сохранить'}
             </Button>
             <Button
               onClick={
                 btnDisabled ? (avatar ? deleteFile : clearAvatar) : clearAvatar
               }
-              sx={{ width: 100, fontWeight: 'bold' }}
+              sx={{ width: '100%', fontWeight: 'bold', marginTop: 1 }}
               // disabled={btnDisabled ?? true}
             >
               {btnDisabled ? (avatar ? 'Удалить' : 'Очистить') : 'Очистить'}

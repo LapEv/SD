@@ -2,14 +2,16 @@ import { memo, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { Box, ListItemButton, ListItemIcon, ListItemText } from '@mui/material'
 import { NanListItemProps } from 'layouts/Main/interfaces'
+import { useApp } from 'hooks/app/useApp'
 
 export const ControlRoomListItem = memo(
   ({ icon, text, to, isExpanded, closeMobileMenu }: NanListItemProps) => {
     const [openControl, setOpenControl] = useState<boolean>(false)
+    const [{ device }] = useApp()
 
     const click = () => {
       setOpenControl(!openControl)
-      closeMobileMenu()
+      device === 'mobile' ? closeMobileMenu() : null
     }
 
     return (

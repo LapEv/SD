@@ -5,6 +5,7 @@ import { ControllerRenderProps, FieldErrors } from 'react-hook-form'
 import { ISystemValues } from 'store/slices/system/interfaces'
 import KeyboardArrowUpOutlinedIcon from '@mui/icons-material/KeyboardArrowUpOutlined'
 import KeyboardArrowDownOutlinedIcon from '@mui/icons-material/KeyboardArrowDownOutlined'
+import { SxProps } from '@mui/material'
 
 export interface INumberField {
   field: ControllerRenderProps<ISystemValues, `list.${number}.value`>
@@ -14,6 +15,7 @@ export interface INumberField {
   index: number
   errors: FieldErrors<ISystemValues>
   checkForChange: (newData: Record<never, never>) => void
+  sx: SxProps
 }
 
 export const NumberField = ({
@@ -24,6 +26,7 @@ export const NumberField = ({
   index,
   errors,
   checkForChange,
+  sx,
 }: INumberField) => {
   const [value, setValue] = useState(field.value)
 
@@ -54,6 +57,7 @@ export const NumberField = ({
         error={!!(errors?.list ?? [])[index]?.value?.message}
         helperText={(errors?.list ?? [])[index]?.value?.message}
         value={value}
+        sx={sx}
       />
       <MuiDiv className="arrowUpDownContainer">
         <KeyboardArrowUpOutlinedIcon

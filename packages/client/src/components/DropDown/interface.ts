@@ -66,6 +66,7 @@ export interface DataDropDownMultiple {
   onBlur?: (value: string) => void
   error?: boolean
   className?: string
+  classNameLi?: string
 }
 
 export interface Data {

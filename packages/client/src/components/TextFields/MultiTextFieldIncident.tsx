@@ -10,9 +10,9 @@ export const MultiTextFieldIncident = styled(MuiTextField)(({ theme, sx }) => ({
     marginTop: 0,
     fontWeight: 'normal',
     color:
-      theme.palette.mode === ThemeMode.light
-        ? (theme as ITheme).colorTheme.light.primary
-        : (theme as ITheme).colorTheme.dark.primary,
+      theme.palette.mode === ThemeMode.dark
+        ? (theme as ITheme).colorTheme.dark.lightPrimary
+        : (theme as ITheme).colorTheme.light.darkPrimary,
     '&.Mui-focused': {
       top: (theme as ITheme).fontSize === 'small' ? 0 : -1,
       fontWeight: 'bold',

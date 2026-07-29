@@ -24,6 +24,7 @@ export interface User {
   RolesGroup?: RolesGroup
   Files?: FilesData[]
   appOptions?: AppOptions
+  id_avatarFiles?: string
 }
 
 export type ThemeMode = 'light' | 'dark'
@@ -166,6 +167,7 @@ export type AuthState = {
   users: User[]
   userStatus: UserStatus[]
   avatar: string
+  avatarListUser: string
   fieldEngineers: User[]
   dispatchers: User[]
   userByDepartment: User[]

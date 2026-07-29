@@ -5,9 +5,11 @@ import { SwitchMUI } from 'components/Switch'
 import { useAuth } from 'hooks/auth/useAuth'
 import { ThemeMode } from 'storeAuth/interfaces'
 import { MuiDiv } from 'components/MUI'
+import { useApp } from 'hooks/app/useApp'
 
 export const ProfileAppOptions = memo(() => {
   const [{ user }, { changeUserAppOptions }] = useAuth()
+  const [{ device }] = useApp()
   const [open, setOpen] = useState<boolean>(false)
   const [theme, setTheme] = useState<boolean>(
     user.appOptions?.theme === 'light' ? false : true,
@@ -57,12 +59,14 @@ export const ProfileAppOptions = memo(() => {
           checked={theme}
           value={theme}
         />
-        <SwitchMUI
-          label={`Значки маленькие `}
-          onChange={handleChangeFont}
-          checked={font}
-          value={font}
-        />
+        {device !== 'mobile' && (
+          <SwitchMUI
+            label={`Значки маленькие `}
+            onChange={handleChangeFont}
+            checked={font}
+            value={font}
+          />
+        )}
       </Collapse>
     </MuiDiv>
   )

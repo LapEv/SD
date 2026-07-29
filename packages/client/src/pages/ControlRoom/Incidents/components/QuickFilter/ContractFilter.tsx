@@ -15,8 +15,10 @@ import {
 } from 'store/slices/tableINC/interfaces'
 import { useMessage } from 'hooks/message/useMessage'
 import { useContracts } from 'hooks/contracts/useContracts'
+import { useApp } from 'hooks/app/useApp'
 
 export const ContractFilter = () => {
+  const [{ device }] = useApp()
   const [, { setMessage }] = useMessage()
   const [{ filterListOptions }, { setFilterListOptions }] = useTableINC()
   const [{ contracts }, { getContracts }] = useContracts()
@@ -109,11 +111,11 @@ export const ContractFilter = () => {
         in={openContractINCs}
         timeout="auto"
         unmountOnExit
-        className="collapseQuickFilter">
+        className={`${device === 'mobile' ? 'collapseQuickFilterMobile' : 'collapseQuickFilter'}`}>
         {_incContracts.map(({ contract, idFilter, filterStatus, id }) => (
           <MenuItem
             key={`${id}`}
-            sx={{ pl: 4 }}
+            sx={{ pl: device === 'mobile' ? 1 : 4 }}
             onClick={() =>
               setINCContractFilter({ idFilter, filterStatus, contract, id })
             }>

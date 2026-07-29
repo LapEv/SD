@@ -90,18 +90,24 @@ export const DeleteObjects = memo(
             }}
           />
           <MuiDiv className={'boxDataModal'}>
-            {filteredObjects.map(({ object, id, Client }) => (
-              <Item
-                name={object}
-                comment={Client?.client as string}
-                id={`${id}`}
-                groupChecked={false}
-                onChooseItems={onChooseItems}
-                key={`${object}_${id}`}
-                className={'listItems'}
-                classItemText={'listItemsTextContainer'}
-              />
-            ))}
+            {filteredObjects && filterText && !filteredObjects.length ? (
+              <MuiDiv className="noMatchesListContractPage" sx={{ ml: 1 }}>
+                Нет совпадений
+              </MuiDiv>
+            ) : (
+              filteredObjects.map(({ object, id, Client }) => (
+                <Item
+                  name={object}
+                  comment={Client?.client as string}
+                  id={`${id}`}
+                  groupChecked={false}
+                  onChooseItems={onChooseItems}
+                  key={`${object}_${id}`}
+                  className={'listItems'}
+                  classItemText={'listItemsTextContainer'}
+                />
+              ))
+            )}
           </MuiDiv>
           <MuiDiv className={'modalError'}>
             {errSelectedItems && 'Не выбран ни один объект!'}

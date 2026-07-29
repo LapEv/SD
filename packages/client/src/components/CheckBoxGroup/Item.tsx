@@ -68,13 +68,13 @@ export const Item = memo(
           <ListItemText
             secondary={comment}
             className={classItemText}
-            sx={props}
+            sx={{ ...props, opacity: 0.8 }}
           />
         )}
         {comment2?.length && (
           <ListItemText
             secondary={comment2}
-            sx={props}
+            sx={{ ...props, opacity: 0.8 }}
             className={classItemText}
           />
         )}

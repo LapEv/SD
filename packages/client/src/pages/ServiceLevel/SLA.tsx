@@ -218,7 +218,7 @@ export const SLAPage = memo(
                           type={type}
                           required={required ?? true}
                           variant="outlined"
-                          sx={{ width: '48%' }}
+                          className="textSLAList"
                           margin="normal"
                           onChange={(event: ChangeEvent<HTMLInputElement>) => (
                             field.onChange(
@@ -245,7 +245,7 @@ export const SLAPage = memo(
                       ) : (
                         <DropDown
                           data={listTypes}
-                          props={{ width: '48%', mt: 1 }}
+                          className="dropdownSLAlist"
                           onChange={data => changeSelectedTypes(data)}
                           value={selectedType.label || ''}
                           label="Выберите тип работ"
@@ -265,6 +265,8 @@ export const SLAPage = memo(
           btnDisabled={btnDisabled}
           btnSecondDisabled={btnDisabled}
           btnSecondName="Отменить изменения"
+          className="slaListBoxButtons"
+          sx={{ mt: 3, mb: 0 }}
         />
       </Box>
     )

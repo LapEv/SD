@@ -7,13 +7,14 @@ import {
   getAddresses,
   getRegions,
   newAddress,
+  newAddressForObject,
   newRegion,
   deleteAddress,
   deleteRegion,
   changeAddress,
   changeRegion,
 } from 'api/address'
-import { addAddress } from 'store/slices/addresses'
+import { addAddress, clearNewIDAddress } from 'store/slices/addresses'
 
 export function useAddresses(): [AddressesState, AddressesActions] {
   const addresses = useSelector((state: RootState) => state.addresses)
@@ -30,6 +31,9 @@ export function useAddresses(): [AddressesState, AddressesActions] {
       },
       newAddress(data) {
         dispatch(newAddress(data))
+      },
+      newAddressForObject(data) {
+        dispatch(newAddressForObject(data))
       },
       newRegion(data) {
         dispatch(newRegion(data))
@@ -48,6 +52,9 @@ export function useAddresses(): [AddressesState, AddressesActions] {
       },
       addAddress(address) {
         dispatch(addAddress(address))
+      },
+      clearNewIDAddress() {
+        dispatch(clearNewIDAddress())
       },
     },
   ]

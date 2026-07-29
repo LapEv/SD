@@ -85,17 +85,21 @@ export const DeleteRegion = memo(
             }}
           />
           <MuiDiv className={'boxDataModal'}>
-            {filteredRegions.map(({ region, id }) => (
-              <Item
-                name={region}
-                id={`${id}`}
-                groupChecked={false}
-                onChooseItems={onChooseItems}
-                key={`${region}_${id}`}
-                className={'listItems'}
-                classItemText={'listItemsTextContainer'}
-              />
-            ))}
+            {filteredRegions && filterText && !filteredRegions.length ? (
+              <MuiDiv className="noMatchesListContractPage" sx={{ ml: 1 }}>
+                Нет совпадений
+              </MuiDiv>
+            ) : (
+              filteredRegions.map(({ region, id }) => (
+                <Item
+                  name={region}
+                  id={`${id}`}
+                  groupChecked={false}
+                  onChooseItems={onChooseItems}
+                  key={`${region}_${id}`}
+                />
+              ))
+            )}
           </MuiDiv>
           <MuiDiv className={'modalError'}>
             {errSelectedItems && 'Не выбран ни один регион!'}

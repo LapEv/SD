@@ -26,7 +26,7 @@ export const LoadSavedTemplates = ({
         key={`${item.label}_${item.timeInterval}`}
         sx={{ pl: 4 }}
         onClick={() => _loadSavedTemplates(item)}>
-        <ListItemText primary={item.label} />
+        <ListItemText className={'menuListText'} primary={item.label} />
       </MenuItem>
     ))
   }

@@ -61,6 +61,32 @@ export const newAddress = createAsyncThunk(
   },
 )
 
+export const newAddressForObject = createAsyncThunk(
+  'addresses/newAddressForObject',
+  async (address: Addresses, thunkAPI) => {
+    try {
+      const { data } = await authhost.post(
+        ApiEndPoints.Addresses.newAddressForObject,
+        address,
+      )
+      return {
+        data,
+        message: { text: 'Новый адрес добавлен', type: 'success' },
+      }
+    } catch (error) {
+      if (axios.isAxiosError<ValidationError, Record<string, unknown>>(error)) {
+        return thunkAPI.rejectWithValue(
+          `Не удалось создать новый адрес: \n${
+            error.response?.data.message ?? error.response?.data
+          }`,
+        )
+      } else {
+        console.error(error)
+      }
+    }
+  },
+)
+
 export const deleteAddress = createAsyncThunk(
   'addresses/deleteAddress',
   async (selectedAddresses: string[], thunkAPI) => {

@@ -17,8 +17,10 @@ import {
 } from 'store/slices/tableINC/interfaces'
 import { useMessage } from 'hooks/message/useMessage'
 import { useAuth } from 'hooks/auth/useAuth'
+import { useApp } from 'hooks/app/useApp'
 
 export const ExecutorFilter = () => {
+  const [{ device }] = useApp()
   const [, { setMessage }] = useMessage()
   const [{ filterListOptions }, { setFilterListOptions }] = useTableINC()
   const [{ fieldEngineers, dispatchers }] = useAuth()
@@ -127,7 +129,7 @@ export const ExecutorFilter = () => {
         in={openStatusINCs}
         timeout="auto"
         unmountOnExit
-        className="collapseQuickFilter">
+        className={`${device === 'mobile' ? 'collapseQuickFilterMobile' : 'collapseQuickFilter'}`}>
         {_executors.map(({ shortName, idFilter, filterStatus, id }) => (
           <MenuItem
             key={`${id}`}

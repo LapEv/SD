@@ -126,6 +126,11 @@ export const ContractIncStatussesList = memo(
               />
             ))}
           </MuiDiv>
+          {filteredData && !filteredData.length && (
+            <MuiDiv className="noMatchesListContractPage" sx={{ ml: 1 }}>
+              Нет совпадений
+            </MuiDiv>
+          )}
         </Collapse>
       </MuiDiv>
     )

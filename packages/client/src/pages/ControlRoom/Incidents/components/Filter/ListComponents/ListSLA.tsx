@@ -1,13 +1,15 @@
-import { DropDownINCFilter } from 'components/DropDown'
+import { DropDownINCFilter, DropDownINCFilterMobile } from 'components/DropDown'
 import { empty_INClist } from 'pages/ControlRoom/Incidents/data'
 import { IListFilter } from 'pages/ControlRoom/Incidents/interfaces'
 import { memo, useEffect, useState } from 'react'
 import { IListFilterComponents } from './interfaces'
 import { useSLA } from 'hooks/sla/useSLA'
+import { useApp } from 'hooks/app/useApp'
 
 export const ListSLA = memo(
   ({ item, filterList, onFilter, disabled }: IListFilterComponents) => {
     const [{ sla }, { getSLA }] = useSLA()
+    const [{ device }] = useApp()
     const [list, setList] = useState<IListFilter[]>(empty_INClist)
 
     useEffect(() => {
@@ -36,6 +38,24 @@ export const ListSLA = memo(
         getSLA()
       }
     }, [])
+
+    if (device === 'mobile') {
+      return (
+        <DropDownINCFilterMobile
+          data={list.map(({ label, id }) => {
+            return {
+              ['label']: label as string,
+              ['id']: id as string,
+            }
+          })}
+          onChange={({ label }) => onFilter(label)}
+          value={(item.value as string) ?? ''}
+          label="Значение"
+          disableClearable={false}
+          disabled={disabled}
+        />
+      )
+    }
 
     return (
       <DropDownINCFilter

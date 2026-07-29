@@ -35,7 +35,7 @@ export const userRouter = (apiRouter: Router) => {
   router.get('/checkUser', authMiddleware, service.check)
   router.post(
     '/getUserInfo',
-    roleMiddleware(['getUsers', 'ADMIN', 'SUPERADMIN']),
+    roleMiddleware(['getUsers', 'ALL']),
     service.getUserInfo,
   )
   router.post(
@@ -82,7 +82,7 @@ export const userRouter = (apiRouter: Router) => {
   )
   router.post(
     '/changeUserAppOptions',
-    roleMiddleware(['SUPERADMIN', 'ADMIN', 'changeUserAppOptions']),
+    roleMiddleware(['SUPERADMIN', 'ALL']),
     service.changeUserAppOptions,
   )
 

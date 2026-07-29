@@ -106,35 +106,45 @@ export const SystemData = memo(({ id }: ISystemData) => {
                 name={`list.${index}.value`}
                 rules={validation}
                 render={({ field }) => (
-                  <MuiDiv className="filledContainer">
-                    <Typography variant={'subtitle2'}>{label}</Typography>
-                    {type === 'number' ? (
-                      <NumberField
-                        field={field}
-                        name={name}
-                        type={type}
-                        required={required}
-                        index={index}
-                        errors={errors}
-                        checkForChange={checkForChange}
-                      />
-                    ) : (
-                      <TextFieldFilled
-                        {...field}
-                        inputRef={field.ref}
-                        type={type}
-                        required={required ?? false}
-                        variant="filled"
-                        onChange={(event: ChangeEvent<HTMLInputElement>) => (
-                          field.onChange(event.target.value),
-                          checkForChange({
-                            [name]: event.target.value,
-                          })
-                        )}
-                        error={!!(errors?.list ?? [])[index]?.value?.message}
-                        helperText={(errors?.list ?? [])[index]?.value?.message}
-                      />
-                    )}
+                  <MuiDiv className="filledContainer systemContainer">
+                    <Typography
+                      className="systemBoxLabel"
+                      variant={'subtitle2'}>
+                      {label}
+                    </Typography>
+                    <MuiDiv className="systemBoxData">
+                      {type === 'number' ? (
+                        <NumberField
+                          field={field}
+                          name={name}
+                          type={type}
+                          sx={{ width: '100%' }}
+                          required={required}
+                          index={index}
+                          errors={errors}
+                          checkForChange={checkForChange}
+                        />
+                      ) : (
+                        <TextFieldFilled
+                          {...field}
+                          inputRef={field.ref}
+                          type={type}
+                          required={required ?? false}
+                          variant="filled"
+                          sx={{ width: '100%' }}
+                          onChange={(event: ChangeEvent<HTMLInputElement>) => (
+                            field.onChange(event.target.value),
+                            checkForChange({
+                              [name]: event.target.value,
+                            })
+                          )}
+                          error={!!(errors?.list ?? [])[index]?.value?.message}
+                          helperText={
+                            (errors?.list ?? [])[index]?.value?.message
+                          }
+                        />
+                      )}
+                    </MuiDiv>
                   </MuiDiv>
                 )}
               />

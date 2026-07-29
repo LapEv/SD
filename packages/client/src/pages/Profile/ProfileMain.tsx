@@ -18,7 +18,7 @@ import { BoxModal } from 'components/MUI'
 
 export const ProfileMain = memo(({ setModal, dataUser }: ProfileMainProps) => {
   const [
-    { userData, avatar },
+    { userData, avatar, user },
     { updateUserData, deleteAvatar, changeAvatar, setAvatar },
   ] = useAuth()
   const [, { getAvatar }] = useFiles()
@@ -39,7 +39,7 @@ export const ProfileMain = memo(({ setModal, dataUser }: ProfileMainProps) => {
   })
 
   useEffect(() => {
-    const file = userData?.Files as FilesData[]
+    const file = user.Files as FilesData[]
     if (!file.length) return
     const pathfile = file[0].path
     getAvatar(pathfile)
@@ -54,6 +54,10 @@ export const ProfileMain = memo(({ setModal, dataUser }: ProfileMainProps) => {
         setAvatar={setAvatar}
         avatar={avatar.length ? JSON.parse(avatar) : ''}
       />
+      <Button onClick={setModal} sx={{ width: '90%', maxWidth: 311 }}>
+        Изменить пароль
+      </Button>
+
       <Box
         sx={{
           display: 'flex',
@@ -83,7 +87,7 @@ export const ProfileMain = memo(({ setModal, dataUser }: ProfileMainProps) => {
                     type={type}
                     variant="outlined"
                     disabled={true}
-                    sx={{ width: '48%' }}
+                    className="textProfileList"
                     margin="normal"
                     onChange={(event: ChangeEvent<HTMLInputElement>) => (
                       field.onChange(event),
@@ -101,9 +105,6 @@ export const ProfileMain = memo(({ setModal, dataUser }: ProfileMainProps) => {
           })}
         </Stack>
       </Box>
-      <Button onClick={setModal} sx={{ width: '30%' }}>
-        Изменить пароль
-      </Button>
       <ProfileAppOptions />
     </BoxModal>
   )

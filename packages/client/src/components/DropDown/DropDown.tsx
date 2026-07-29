@@ -30,8 +30,8 @@ export const DropDown = memo(
         forcePopupIcon={true}
         clearOnEscape
         autoSelect={false}
-        className={`dropdown ${className}`}
         sx={props}
+        className={`dropdown ${className}`}
         options={data}
         noOptionsText={'Нет данных'}
         filterOptions={FilterOptions}
@@ -50,15 +50,18 @@ export const DropDown = memo(
             : (onChange?.(emptyOptionsDD as Options), setErrors(true))
         }
         value={value ?? ''}
-        renderOption={(props, option) => (
-          <ListDropDown
-            value={value}
-            props={props}
-            key={`${props.id}_`}
-            option={option as Options}
-            classNameLi={'dropdown_li_dark'}
-          />
-        )}
+        renderOption={(props, option) => {
+          const { key, ...newprops } = props
+          return (
+            <ListDropDown
+              value={value}
+              props={newprops}
+              key={`${(option as Options).id}_${key}`}
+              option={option as Options}
+              classNameLi={'dropdown_li_dark'}
+            />
+          )
+        }}
         slotProps={{
           paper: {
             className: 'dropdownDark',

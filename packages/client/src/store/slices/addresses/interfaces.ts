@@ -28,6 +28,7 @@ export interface AnswerRegions {
 export type AddressesState = {
   addresses: Addresses[]
   regions: Regions[]
+  newIDaddress: string
   isLoadingAddress: boolean
   error?: string
 }

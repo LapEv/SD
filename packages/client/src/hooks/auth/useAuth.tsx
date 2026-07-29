@@ -25,6 +25,8 @@ import {
   updateUserData,
   setAvatar,
   changeColorTheme,
+  clearAvatar,
+  clearUserInfo,
 } from 'store/slices/auth'
 import { AuthActions } from './authActions'
 import { AuthState } from 'storeAuth/interfaces'
@@ -104,6 +106,12 @@ export function useAuth(): [AuthState, AuthActions] {
       },
       changeColorTheme(data) {
         dispatch(changeColorTheme(data))
+      },
+      clearAvatar() {
+        dispatch(clearAvatar())
+      },
+      clearUserInfo() {
+        dispatch(clearUserInfo())
       },
     },
   ]

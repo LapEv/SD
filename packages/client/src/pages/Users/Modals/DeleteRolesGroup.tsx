@@ -83,18 +83,26 @@ export const DeleteRolesGroup = memo(
             }}
           />
           <MuiDiv className={'boxDataModal'}>
-            {filteredRolesGroups.map(({ groupName, group, id }) => (
-              <Item
-                name={groupName}
-                comment={group}
-                id={`${id}`}
-                groupChecked={false}
-                onChooseItems={onChooseItems}
-                key={`${groupName}_${id}`}
-                className={'listItemsChangeRolesGr'}
-                classItemText={'listItemsTextContainer'}
-              />
-            ))}
+            {filteredRolesGroups &&
+            filterText &&
+            !filteredRolesGroups.length ? (
+              <MuiDiv className="noMatchesListContractPage" sx={{ ml: 1 }}>
+                Нет совпадений
+              </MuiDiv>
+            ) : (
+              filteredRolesGroups.map(({ groupName, group, id }) => (
+                <Item
+                  name={groupName}
+                  comment={group}
+                  id={`${id}`}
+                  groupChecked={false}
+                  onChooseItems={onChooseItems}
+                  key={`${groupName}_${id}`}
+                  className={'listItemsChangeRolesGr'}
+                  classItemText={'listItemsTextContainer'}
+                />
+              ))
+            )}
           </MuiDiv>
           <MuiDiv className={'modalError'}>
             {errSelectedItems && 'Не выбрана ни одна роль или группа ролей!'}

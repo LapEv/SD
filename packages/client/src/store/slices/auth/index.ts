@@ -15,7 +15,7 @@ import {
 } from 'api/user'
 import { signin, signup } from 'api/user'
 import { AuthState, ICheckUser, User, UserStatus } from './interfaces'
-import { getAvatar } from 'api/files'
+import { getAvatar, getAvatarListUser } from 'api/files'
 import { ThemeColor } from 'themes/themeConfig'
 
 const initialState: AuthState = {
@@ -28,6 +28,7 @@ const initialState: AuthState = {
   fieldEngineers: [],
   dispatchers: [],
   avatar: '',
+  avatarListUser: '',
   userByDepartment: [],
   colorTheme: ThemeColor,
   admin: false,
@@ -50,6 +51,9 @@ export const authSlise = createSlice({
       state.error = ''
       state.user = {}
       state.userData = {}
+      state.userInfo = {}
+      state.avatarListUser = ''
+      state.avatar = ''
     },
     setActiveUserInfo(state, action) {
       state.activeUserInfo = action.payload
@@ -58,8 +62,13 @@ export const authSlise = createSlice({
       state.avatar = action.payload
     },
     changeColorTheme(state, action) {
-      console.log('acttion = ', action)
       state.colorTheme = action.payload
+    },
+    clearAvatar(state) {
+      state.avatarListUser = ''
+    },
+    clearUserInfo(state) {
+      state.userInfo = {}
     },
   },
   extraReducers: builder => {
@@ -267,6 +276,18 @@ export const authSlise = createSlice({
       state.isLoadingAuth = false
       state.error = payload as string
     })
+    builder.addCase(getAvatarListUser.fulfilled, (state, { payload }) => {
+      state.isLoadingAuth = false
+      state.error = ''
+      state.avatarListUser = payload as string
+    })
+    builder.addCase(getAvatarListUser.pending, state => {
+      state.isLoadingAuth = true
+    })
+    builder.addCase(getAvatarListUser.rejected, (state, { payload }) => {
+      state.isLoadingAuth = false
+      state.error = payload as string
+    })
   },
 })
 
@@ -278,4 +299,6 @@ export const {
   setActiveUserInfo,
   setAvatar,
   changeColorTheme,
+  clearAvatar,
+  clearUserInfo,
 } = authSlise.actions

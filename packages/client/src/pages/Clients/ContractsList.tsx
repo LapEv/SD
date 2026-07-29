@@ -48,6 +48,7 @@ export const ContractsList = memo(
       newContractName({
         contract: text,
         id: id as string,
+        id_client,
       })
     }
 

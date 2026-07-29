@@ -20,7 +20,7 @@ export const NotificationsINC = ({
   return (
     <MenuItem sx={{ pl: 4 }} onClick={changeNotificationINCData}>
       <ListItemIcon>{value && <Check fontSize="small" />}</ListItemIcon>
-      <ListItemText primary={label} />
+      <ListItemText className={'menuListText'} primary={label} />
     </MenuItem>
   )
 }

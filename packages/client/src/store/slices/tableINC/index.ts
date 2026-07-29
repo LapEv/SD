@@ -49,7 +49,7 @@ const initialState: TableINCState = {
 
 const setLocalStorage = (state: TableINCState) => {
   /* eslint-disable @typescript-eslint/no-unused-vars */
-  const { columnX, searchValue, modal, toCloud, ...newState } = state
+  const { columnX, searchValue, modal, toCloud, selected, ...newState } = state
   /* eslint-enable @typescript-eslint/no-unused-vars */
   return newState
 }
@@ -108,7 +108,7 @@ export const tableINCSlise = createSlice({
         action.payload.showColumnBorders ?? initialState.showColumnBorders
       state.timeInterval =
         action.payload.timeInterval ?? initialState.timeInterval
-      state.selected = action.payload.selected ?? initialState.selected
+      // state.selected = action.payload.selected ?? initialState.selected
       state.columnOptions =
         action.payload.columnOptions ?? initialState.columnOptions
       state.columnX = action.payload.columnX ?? initialState.columnX
@@ -235,15 +235,15 @@ export const tableINCSlise = createSlice({
     },
     setSelected(state, action) {
       state.selected = action.payload
-      const stateForLocalStorage = setLocalStorage(state)
-      localStorage.setItem(
-        SETTINGS_STORAGE_KEY,
-        JSON.stringify({
-          ...stateForLocalStorage,
-          selected: action.payload,
-        }),
-      )
-      state.toCloud = true
+      // const stateForLocalStorage = setLocalStorage(state)
+      // localStorage.setItem(
+      //   SETTINGS_STORAGE_KEY,
+      //   JSON.stringify({
+      //     ...stateForLocalStorage,
+      //     selected: action.payload,
+      //   }),
+      // )
+      // state.toCloud = true
     },
     setColumnOptions(state, action) {
       state.columnOptions = action.payload

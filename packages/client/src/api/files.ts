@@ -134,6 +134,37 @@ export const getAvatar = createAsyncThunk(
   },
 )
 
+export const getAvatarListUser = createAsyncThunk(
+  'files/getAvatarListUser',
+  async (id_avatarFiles: string, thunkAPI) => {
+    try {
+      const { data } = await authhost.post<File>(
+        ApiEndPoints.Files.getAvatarListUser,
+        {
+          id_avatarFiles,
+        },
+        {
+          responseType: 'blob',
+        },
+      )
+      return JSON.stringify({
+        data: URL.createObjectURL(new Blob([data])),
+        info: data,
+      }) as string
+    } catch (error) {
+      if (axios.isAxiosError<ValidationError, Record<string, unknown>>(error)) {
+        return thunkAPI.rejectWithValue(
+          `Не удалось получить данные по аватару: \n${
+            error.response?.data.message ?? error.response?.data
+          }`,
+        )
+      } else {
+        console.error(error)
+      }
+    }
+  },
+)
+
 export const uploadFiles = createAsyncThunk(
   'files/uploadFiles',
   async ({ files, incident, id_incFiles }: UploadFiles, thunkAPI) => {

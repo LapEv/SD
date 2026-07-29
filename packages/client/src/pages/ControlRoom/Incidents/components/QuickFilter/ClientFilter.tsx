@@ -15,8 +15,10 @@ import {
 } from 'store/slices/tableINC/interfaces'
 import { useMessage } from 'hooks/message/useMessage'
 import { useClients } from 'hooks/clients/useClients'
+import { useApp } from 'hooks/app/useApp'
 
 export const ClientFilter = () => {
+  const [{ device }] = useApp()
   const [, { setMessage }] = useMessage()
   const [{ filterListOptions }, { setFilterListOptions }] = useTableINC()
   const [{ clients }, { getClients }] = useClients()
@@ -109,7 +111,7 @@ export const ClientFilter = () => {
         in={openClientINCs}
         timeout="auto"
         unmountOnExit
-        className="collapseQuickFilter">
+        className={`${device === 'mobile' ? 'collapseQuickFilterMobile' : 'collapseQuickFilter'}`}>
         {_incClients.map(({ client, idFilter, filterStatus, id }) => (
           <MenuItem
             key={`${id}`}

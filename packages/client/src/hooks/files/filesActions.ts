@@ -10,6 +10,7 @@ export interface FilesActions {
   getFile: (pathfile: string) => void
   getViewFile: (data: IGetViewFile) => void
   getAvatar: (pathfile: string) => void
+  getAvatarListUser: (id_avatarFiles: string) => void
   uploadFiles: (data: UploadFiles) => void
   resetUploadFiles: () => void
   setViewFiles: (data: IViewFiles) => void

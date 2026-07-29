@@ -1,22 +1,18 @@
 import type { Request, Response } from 'express'
 import { Department, DivisionRepos, Users } from '../db'
-import { getOrder } from '../utils/getOrder'
+import { Order } from 'sequelize'
 
-const orderDepartment = getOrder('departmentName', 'ASC')
-const orderUsers = getOrder('lastName', 'ASC')
 const include = [
   {
     model: Department,
     attributes: ['id', 'department', 'departmentName'],
     where: { active: true },
-    order: orderDepartment,
     required: false,
     include: [
       {
         model: Users,
         required: false,
         where: { active: true },
-        order: orderUsers,
         attributes: [
           'id',
           'lastName',
@@ -27,12 +23,19 @@ const include = [
           'phone',
           'username',
           'status',
+          'id_avatarFiles',
+          'shortName',
         ],
       },
     ],
   },
 ]
-const order = getOrder('divisionName', 'ASC')
+
+const order = [
+  ['divisionName', 'ASC'],
+  [{ model: Department }, 'departmentName', 'ASC'],
+  [{ model: Department }, { model: Users }, 'shortName', 'ASC'],
+] as Order
 const attributes = ['id', 'division', 'divisionName', 'active']
 
 export class divisionService {

@@ -28,8 +28,10 @@ export const AddObject = memo(
     ({ handleModal, title }: ChooseModalProps, ref) => {
       const [, { setMessage }] = useMessage()
       const [{ clients }, { getClients }] = useClients()
-      const [{ regions, addresses }, { getRegions, getAddresses, addAddress }] =
-        useAddresses()
+      const [
+        { regions, addresses, newIDaddress },
+        { getRegions, getAddresses, clearNewIDAddress },
+      ] = useAddresses()
       const [{ objects }, { getObjects, newObject }] = useObjects()
       const [client, setClient] = useState<Options>(emptyOptionsDD)
       const [region, setRegion] = useState<Options>(emptyOptionsDD)
@@ -114,36 +116,26 @@ export const AddObject = memo(
         state,
         region,
         address,
-        coordinates,
       }: answerModalAddAddressInObject) => {
         if (state) {
           setRegion(region)
           setErrRegion(false)
           setAddress(address)
           setErrAddress(false)
-          addAddress({
-            address: address.label,
-            id_region: region.id,
-            coordinates,
-          })
         }
         getAddresses()
         setModal(false)
       }
 
       useEffect(() => {
-        if (!address.id && address.label) {
-          const isAddress = addresses.find(
-            item => item.address === address.label,
-          )
-          if (isAddress) {
-            setAddress({
-              label: address.label,
-              id: isAddress.id as string,
-            })
-          }
+        if (!address.id && newIDaddress) {
+          setAddress({
+            label: address.label,
+            id: newIDaddress,
+          })
+          clearNewIDAddress()
         }
-      }, [addresses])
+      }, [newIDaddress])
 
       return (
         <BoxModal ref={ref} tabIndex={-1}>

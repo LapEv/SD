@@ -16,6 +16,7 @@ export const DropDownMultiple = memo(
     errorLabel,
     error,
     className,
+    classNameLi,
   }: DataDropDownMultiple) => {
     const [errors, setErrors] = useState<boolean>(error as boolean)
 
@@ -25,7 +26,7 @@ export const DropDownMultiple = memo(
 
     return (
       <Autocomplete
-        multiple
+        multiple={true}
         disableCloseOnSelect
         className={`dropdown ${className}`}
         sx={props}
@@ -42,13 +43,18 @@ export const DropDownMultiple = memo(
             : (onChange?.(textValue as Options[]), setErrors(true))
         }
         value={value ?? emptyOptionsDD}
-        renderOption={(props, option) => (
-          <ListDropDown
-            value={value}
-            props={props}
-            option={option as Options}
-          />
-        )}
+        renderOption={(props, option) => {
+          const { key, ...newprops } = props
+          return (
+            <ListDropDown
+              key={`${(option as Options).id}_${key}`}
+              value={value}
+              props={newprops}
+              option={option as Options}
+              classNameLi={classNameLi}
+            />
+          )
+        }}
         renderInput={params => (
           <TextField
             {...params}
@@ -64,7 +70,7 @@ export const DropDownMultiple = memo(
             slotProps={{
               input: {
                 ...params.InputProps,
-                className: 'dropdownMultiple',
+                className: 'dropdownMultiple OFYscroll',
               },
             }}
           />

@@ -1,14 +1,16 @@
-import { DropDownINCFilter } from 'components/DropDown'
+import { DropDownINCFilter, DropDownINCFilterMobile } from 'components/DropDown'
 import { empty_INClist } from 'pages/ControlRoom/Incidents/data'
 import { IListFilter } from 'pages/ControlRoom/Incidents/interfaces'
 import { memo, useEffect, useState } from 'react'
 import { IListFilterComponents } from './interfaces'
 import { useAuth } from 'hooks/auth/useAuth'
 import { useIncidents } from 'hooks/incidents/useINC'
+import { useApp } from 'hooks/app/useApp'
 
 export const ListUserExecutor = memo(
   ({ item, filterList, onFilter, disabled }: IListFilterComponents) => {
     const [{ fieldEngineers, dispatchers }] = useAuth()
+    const [{ device }] = useApp()
     const [{ incidents }] = useIncidents()
     const [list, setList] = useState<IListFilter[]>(empty_INClist)
 
@@ -41,6 +43,24 @@ export const ListUserExecutor = memo(
           .sort((arr1, arr2) => (arr1['label'] > arr2['label'] ? 1 : -1)),
       )
     }, [fieldEngineers, dispatchers, filterList])
+
+    if (device === 'mobile') {
+      return (
+        <DropDownINCFilterMobile
+          data={list.map(({ label, id }) => {
+            return {
+              ['label']: label as string,
+              ['id']: id as string,
+            }
+          })}
+          onChange={({ label }) => onFilter(label)}
+          value={(item.value as string) ?? ''}
+          label="Значение"
+          disableClearable={false}
+          disabled={disabled}
+        />
+      )
+    }
 
     return (
       <DropDownINCFilter

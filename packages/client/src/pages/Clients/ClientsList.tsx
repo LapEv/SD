@@ -62,6 +62,8 @@ export const ClientsList = memo(({ client, legalName, id }: Clients) => {
     setModalImage('newContract')
   }
 
+  const id_client = id as string
+
   return (
     <MuiDiv className={'containerCollapse'}>
       <Modal
@@ -121,7 +123,7 @@ export const ClientsList = memo(({ client, legalName, id }: Clients) => {
               ClassifierModels={ClassifierModels}
               Objects={Objects}
               IncindentStatuses={IncindentStatuses}
-              id_client={id as string}
+              id_client={id_client}
               key={id}
             />
           ),

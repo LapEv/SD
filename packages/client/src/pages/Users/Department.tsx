@@ -31,7 +31,7 @@ export const DepartmentData = memo(
           divider={open}
           className={'itemButtonCollapse'}
           onClick={handleClick}>
-          <ListItemText primary={departmentName} sx={{ ml: 2 }} />
+          <ListItemText primary={departmentName} className="textDepartment" />
           <RotateButton open={open} />
         </ListItemButton>
         <Collapse

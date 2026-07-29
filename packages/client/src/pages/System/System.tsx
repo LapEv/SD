@@ -7,10 +7,12 @@ import { useSystem } from 'hooks/system/useSystem'
 import { useAuth } from 'hooks/auth/useAuth'
 import { DropDownMenu } from 'components/DropDownButtonMenu'
 import { ChooseModal } from './Modals/ChooseModal'
+import { useApp } from 'hooks/app/useApp'
 
 export const SystemPage = memo(() => {
   const [, { getSystem }] = useSystem()
   const [{ superAdmin }] = useAuth()
+  const [{ device }] = useApp()
 
   const [modal, setModal] = useState<boolean>(false)
   const [modalImage, setModalImage] = useState<string>('')
@@ -49,7 +51,7 @@ export const SystemPage = memo(() => {
         <Typography variant="h6">Настройки системы</Typography>
         {superAdmin && (
           <DropDownMenu
-            popover={'Меню'}
+            popover={device === 'desktop' ? 'Меню' : ''}
             data={menuData}
             onClick={checkClickMenu}
           />

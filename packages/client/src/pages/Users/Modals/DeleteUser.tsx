@@ -86,20 +86,26 @@ export const DeleteUser = memo(
             }}
           />
           <MuiDiv className={'boxDataModal'}>
-            {filteredusers.map(
-              ({ lastName, firstName, middleName, post, id }) => (
-                <Item
-                  name={`${lastName} ${firstName} ${middleName}`}
-                  comment={post as string}
-                  id={`${id}`}
-                  groupChecked={false}
-                  onChooseItems={onChooseItems}
-                  oneChecked={selectedUser === id ? true : false}
-                  key={`${lastName}_${firstName}_${id}`}
-                  className={'listItemsChangeRolesGr'}
-                  classItemText={'listItemsTextContainer'}
-                />
-              ),
+            {filteredusers && filterText && !filteredusers.length ? (
+              <MuiDiv className="noMatchesListContractPage" sx={{ ml: 1 }}>
+                Нет совпадений
+              </MuiDiv>
+            ) : (
+              filteredusers.map(
+                ({ lastName, firstName, middleName, post, id }) => (
+                  <Item
+                    name={`${lastName} ${firstName} ${middleName}`}
+                    comment={post as string}
+                    id={`${id}`}
+                    groupChecked={false}
+                    onChooseItems={onChooseItems}
+                    oneChecked={selectedUser === id ? true : false}
+                    key={`${lastName}_${firstName}_${id}`}
+                    className={'listItemsChangeRolesGr'}
+                    classItemText={'listItemsTextContainer'}
+                  />
+                ),
+              )
             )}
           </MuiDiv>
           <TextField

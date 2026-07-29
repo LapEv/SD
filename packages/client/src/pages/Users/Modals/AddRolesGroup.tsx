@@ -131,14 +131,20 @@ export const AddRolesGroup = memo(
             }}
           />
           <MuiDiv className={'boxDataModal'}>
-            {filteredObjects.map(({ nameRole, id }) => (
-              <Item
-                name={nameRole}
-                id={`${id}`}
-                onChooseItems={setRoles}
-                key={`${nameRole}_${id}`}
-              />
-            ))}
+            {filteredObjects && filterText && !filteredObjects.length ? (
+              <MuiDiv className="noMatchesListContractPage" sx={{ ml: 1 }}>
+                Нет совпадений
+              </MuiDiv>
+            ) : (
+              filteredObjects.map(({ nameRole, id }) => (
+                <Item
+                  name={nameRole}
+                  id={`${id}`}
+                  onChooseItems={setRoles}
+                  key={`${nameRole}_${id}`}
+                />
+              ))
+            )}
           </MuiDiv>
           <MuiDiv className={'modalError'}>
             {errSelectedItems && 'Не выбрана ни одна роль!'}

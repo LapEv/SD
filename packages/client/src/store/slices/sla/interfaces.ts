@@ -145,6 +145,7 @@ export interface AddValuesAddContract {
     validation: object
     type: string
     required?: boolean
+    id_client: string
   }[]
 }
 

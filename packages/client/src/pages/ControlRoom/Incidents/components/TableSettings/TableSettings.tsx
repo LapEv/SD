@@ -71,7 +71,7 @@ export const TableSettings = () => {
             <ListItemIcon>
               {dense === value && <Check fontSize="small" />}
             </ListItemIcon>
-            <ListItemText>{label}</ListItemText>
+            <ListItemText className={'menuListText'}>{label}</ListItemText>
           </MenuItem>
         ))}
         <Divider />
@@ -83,7 +83,9 @@ export const TableSettings = () => {
           <ListItemIcon>
             {showColumnBorders && <Check fontSize="small" />}
           </ListItemIcon>
-          <ListItemText>Показывать границы столбцов</ListItemText>
+          <ListItemText className={'menuListText'}>
+            Показывать границы столбцов
+          </ListItemText>
         </MenuItem>
         <MenuItem
           onClick={() => (
@@ -93,11 +95,15 @@ export const TableSettings = () => {
           <ListItemIcon>
             {showCellBorders && <Check fontSize="small" />}
           </ListItemIcon>
-          <ListItemText>Показывать границы ячеек</ListItemText>
+          <ListItemText className={'menuListText'}>
+            Показывать границы ячеек
+          </ListItemText>
         </MenuItem>
         <Divider />
         <MenuItem onClick={() => setOpenTimeInterval(!openTimeInterval)}>
-          <ListItemText>Временной интервал загрузки инцидентов</ListItemText>
+          <ListItemText className={'menuListText'}>
+            Временной интервал загрузки инцидентов
+          </ListItemText>
           {openTimeInterval ? <ExpandLess /> : <ExpandMore />}
         </MenuItem>
         <Collapse in={openTimeInterval} timeout="auto" unmountOnExit>
@@ -112,7 +118,9 @@ export const TableSettings = () => {
         </Collapse>
         <Divider />
         <MenuItem onClick={() => setOpenNotification(!openNotification)}>
-          <ListItemText>Уведомления о новых событиях</ListItemText>
+          <ListItemText className={'menuListText'}>
+            Уведомления о новых событиях
+          </ListItemText>
           {openNotification ? <ExpandLess /> : <ExpandMore />}
         </MenuItem>
         <Collapse in={openNotification} timeout="auto" unmountOnExit>
@@ -127,7 +135,9 @@ export const TableSettings = () => {
         </Collapse>
         <Divider />
         <MenuItem onClick={() => setOpenSavedFilters(!openSavedFilters)}>
-          <ListItemText>Сохраненные фильтры</ListItemText>
+          <ListItemText className={'menuListText'}>
+            Сохраненные фильтры
+          </ListItemText>
           {openNotification ? <ExpandLess /> : <ExpandMore />}
         </MenuItem>
         <Collapse in={openSavedFilters} timeout="auto" unmountOnExit>

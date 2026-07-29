@@ -1,6 +1,6 @@
 import { memo } from 'react'
-import { Stack } from '@mui/material'
-import { ClearButton } from 'components/Buttons'
+import { Divider, Stack } from '@mui/material'
+import { ClearButton, ClearButtonMobile } from 'components/Buttons'
 import { SelectMUI } from 'components/Select'
 import { IFilterTriggers, INC_HeadCell, IOperator } from '../../interfaces'
 import {
@@ -10,6 +10,7 @@ import {
   SETTINGS_DEFAULT,
 } from '../../data'
 import { useTableINC } from 'hooks/tableINC/useTableINC'
+import { CheckOperators } from 'pages/ControlRoom/Incidents'
 import { Dayjs } from 'dayjs'
 import {
   IFilterListOptions,
@@ -19,11 +20,12 @@ import {
 } from 'store/slices/tableINC/interfaces'
 import { FilterValue } from './FilterValue'
 import { MuiDiv } from 'components/MUI'
-import { CheckOperators } from '../../Utils/CheckOperators'
+import { useApp } from 'hooks/app/useApp'
 
 export const FilterTriggers = memo(
   ({ item, filterList, setFilterList }: IFilterTriggers) => {
     const [{ columnOptions }] = useTableINC()
+    const [{ device }] = useApp()
 
     const onFilter = (value: string | Dayjs | boolean) => {
       if (item.columnType === 'dateTime') {
@@ -94,6 +96,69 @@ export const FilterTriggers = memo(
           : filter,
       )
       setFilterList(newFilter)
+    }
+
+    if (device === 'mobile') {
+      return (
+        <Stack spacing={3} direction="column" className={'stackFilterTrigger'}>
+          <MuiDiv className="stackFilterBoxMobile">
+            {item.id > 1 && (
+              <SelectMUI
+                label="Логика"
+                data={logicOperators.map(
+                  ({ logicOperatorLabel }) => logicOperatorLabel,
+                )}
+                onChange={setLogic}
+                classNameSelect={'selectLogicFilterTrigger'}
+                classNameFormContorl={'formControlLogicFilterTrigger mt10'}
+                value={item.logicOperatorLabel}
+              />
+            )}
+            <SelectMUI
+              label="Столбец"
+              data={columnOptions
+                .filter(({ type }) => type !== 'system' && type !== 'custom')
+                .map(({ label }) => label)}
+              onChange={setColumn}
+              classNameSelect={'selectFilterTriggerMobile'}
+              classNameFormContorl={'formControlFilterTriggerMobile'}
+              value={item.columnLabel}
+            />
+            <SelectMUI
+              disabled={item.columnType !== 'boolean' ? false : true}
+              label="Оператор"
+              data={CheckOperators(item.columnType, operators).map(
+                (item: IOperator) => item.operatorLabel,
+              )}
+              onChange={setOperator}
+              classNameSelect={'selectFilterTriggerMobile'}
+              classNameFormContorl={'formControlFilterTriggerMobile'}
+              value={item.operatorLabel}
+            />
+            <FilterValue
+              item={item}
+              onFilter={onFilter}
+              filterList={filterList}
+              disabled={
+                item.operator === 'isEmpty' || item.operator === 'isNotEmpty'
+                  ? true
+                  : false
+              }
+            />
+          </MuiDiv>
+          <ClearButtonMobile
+            handleClick={clearFilter}
+            length={1}
+            className="colorForIcon"
+          />
+          <Divider
+            orientation="vertical"
+            variant="middle"
+            flexItem
+            className="mobileFilterSeparator"
+          />
+        </Stack>
+      )
     }
 
     return (

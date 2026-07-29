@@ -1,4 +1,4 @@
-import React, { memo, useEffect, useState } from 'react'
+import React, { ChangeEvent, memo, useEffect, useState } from 'react'
 import {
   Typography,
   ListItemButton,
@@ -15,7 +15,11 @@ import {
 import { TextField } from 'components/TextFields'
 import { ChooseModalProps, AddValuesProps } from './interfaces'
 import { MapNewContractInputFields } from '../data'
-import { ButtonsModalSection, RotateButton } from 'components/Buttons'
+import {
+  ButtonsModalSection,
+  ClearSearchModalSection,
+  RotateButton,
+} from 'components/Buttons'
 import { useMessage } from 'hooks/message/useMessage'
 import { useContracts } from 'hooks/contracts/useContracts'
 import { DateField } from 'components/DatePicker'
@@ -32,7 +36,8 @@ import {
   ICheckBoxGroupData,
 } from 'components/CheckBoxGroup/interface'
 import { CheckBoxGroups, Item } from 'components/CheckBoxGroup'
-import { BoxModal } from 'components/MUI'
+import { BoxModal, MuiDiv } from 'components/MUI'
+import { useFilteredData } from 'hooks/useFilteredData'
 
 export const AddContract = memo(
   React.forwardRef<unknown, ChooseModalProps>(
@@ -56,6 +61,12 @@ export const AddContract = memo(
       const [selectedModels, setSelectedModels] = useState<string[]>([])
       const [errSLA, setErrSLA] = useState<boolean>(false)
       const [dateValue, setDateValue] = useState<string | Dayjs>(dayjs())
+      const [filterText, setFilterText] = useState<string>('')
+      const filteredObjects = useFilteredData<DataList>(
+        objectList,
+        filterText,
+        ['name'],
+      )
       const { handleSubmit, control } = useForm<AddValuesProps>({
         mode: 'onBlur',
         defaultValues: {
@@ -148,7 +159,7 @@ export const AddContract = memo(
         <BoxModal
           ref={ref}
           tabIndex={-1}
-          className={'modalMainContainer'}
+          className={'modalMainContainer extensive'}
           component="form"
           onSubmit={handleSubmit(changeData)}>
           <Typography variant={'h1'}>{title}</Typography>
@@ -197,6 +208,7 @@ export const AddContract = memo(
           />
           <DropDownMultiple
             className={'dropdown dropdown_mt4 multiline'}
+            classNameLi="dropdown_li_dark"
             data={sla.map(item => {
               return {
                 ['label']: item.sla as string,
@@ -218,7 +230,7 @@ export const AddContract = memo(
             <RotateButton open={openList} />
           </ListItemButton>
           <Collapse
-            className={'collapseContainer'}
+            className={'collapseContainer collapseContainerAddContract'}
             in={openList}
             timeout="auto"
             unmountOnExit>
@@ -247,21 +259,51 @@ export const AddContract = memo(
             <RotateButton open={openListObjects} />
           </ListItemButton>
           <Collapse
-            className={'collapseContainer width95'}
+            className={'collapseContainer width95 collapseContainerAddContract'}
             in={openListObjects}
             timeout="auto"
             unmountOnExit>
-            {objectList?.map(({ name, id, initChecked, comment }) => (
-              <Item
-                name={name}
-                id={`${id}`}
-                comment={comment}
-                groupChecked={null}
-                onChooseItems={onChooseObjects}
-                initChecked={initChecked}
-                key={`${name}_${id}`}
+            <MuiDiv className={'boxList_flexSC'}>
+              <TextField
+                variant="outlined"
+                className={'textContainer_w90_mt2'}
+                label="Введите фильтр"
+                margin="normal"
+                value={filterText || ''}
+                onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                  setFilterText(e.target.value ?? '')
+                }
+                slotProps={{
+                  input: {
+                    endAdornment: (
+                      <ClearSearchModalSection
+                        length={filterText.length}
+                        handleClick={() => setFilterText('')}
+                      />
+                    ),
+                  },
+                }}
               />
-            ))}
+            </MuiDiv>
+            <MuiDiv className={'listViewColumn'}>
+              {filteredObjects?.map(({ name, id, initChecked, comment }) => (
+                <Item
+                  name={name}
+                  props={{ ml: 2 }}
+                  id={`${id}`}
+                  comment={comment}
+                  groupChecked={null}
+                  onChooseItems={onChooseObjects}
+                  initChecked={initChecked}
+                  key={id as string}
+                />
+              ))}
+            </MuiDiv>
+            {filteredObjects && !filteredObjects.length && (
+              <MuiDiv className="noMatchesListContractPage" sx={{ ml: 1 }}>
+                Нет совпадений
+              </MuiDiv>
+            )}
           </Collapse>
           <Divider
             orientation="horizontal"

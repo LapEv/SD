@@ -8,6 +8,7 @@ import {
   uploadFiles,
   getFile,
   getAvatar,
+  getAvatarListUser,
   getViewFile,
 } from 'api/files'
 import {
@@ -35,6 +36,9 @@ export function useFiles(): [FilesState, FilesActions] {
       },
       getAvatar(pathfile) {
         dispatch(getAvatar(pathfile))
+      },
+      getAvatarListUser(id_avatarFiles) {
+        dispatch(getAvatarListUser(id_avatarFiles))
       },
       uploadFiles(data) {
         dispatch(uploadFiles(data))

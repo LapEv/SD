@@ -4,7 +4,7 @@ import * as fs from 'fs'
 import * as path from 'path'
 import dotenv from 'dotenv'
 import { FileArray, UploadedFile } from 'express-fileupload'
-import { IUser } from '/models/users'
+import { IUser, UserFiles, FilesForUser } from '../models/users'
 import { include } from './userService'
 import { AppConst } from '../data/const'
 dotenv.config({ path: '../../../.env' })
@@ -161,6 +161,30 @@ export class filesService {
   getAvatar = async (_req: Request, res: Response) => {
     const { pathfile } = _req.body
     try {
+      const pathFileServer =
+        process.env.NODE_ENV === 'development'
+          ? path.join(__dirname, `../Files/${pathfile}`)
+          : `${process.env.FILE_PATH}/${pathfile}`
+      res.status(200).download(pathFileServer)
+    } catch (err) {
+      res.status(500).json({ error: ['db error: ', err as Error] })
+    }
+  }
+  getAvatarListUser = async (_req: Request, res: Response) => {
+    try {
+      const { id_avatarFiles } = _req.body
+      if (!id_avatarFiles) {
+        res.status(200).json(null)
+      }
+      const user = (await userRepos.findOne({
+        where: { id_avatarFiles },
+        include,
+      })) as UserFiles
+      const _user = user.Files.find(item =>
+        item.path.includes('Avatar'),
+      ) as FilesForUser
+      const pathfile = _user.path
+
       const pathFileServer =
         process.env.NODE_ENV === 'development'
           ? path.join(__dirname, `../Files/${pathfile}`)

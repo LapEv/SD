@@ -23,8 +23,6 @@ import { deepEqual } from 'utils/deepEqual'
 import { DeleteUserModal } from './Modals/DeleteUserModal'
 import { User } from 'storeAuth/interfaces'
 import { AvatarBox } from 'components/AvatarBox'
-import { useFiles } from 'hooks/files/useFiles'
-import { FilesData } from 'store/slices/files/interfaces'
 import { ITheme, ThemeMode } from 'themes/themeConfig'
 import { useMessage } from 'hooks/message/useMessage'
 
@@ -32,10 +30,9 @@ export const ProfileData = memo((_user: User) => {
   const modalRef = React.createRef()
   const theme = useTheme() as ITheme
   const [
-    { admin, userData, userInfo, avatar, user },
+    { admin, userData, userInfo, avatarListUser, user },
     { updateUserData, deleteUser, updateUser },
   ] = useAuth()
-  const [, { getAvatar }] = useFiles()
   const [{ rolesGroup }, { getRolesGroupNotRoles }] = useRoles()
   const [, { setMessage }] = useMessage()
   const [open, setOpen] = useState(false)
@@ -159,19 +156,13 @@ export const ProfileData = memo((_user: User) => {
     }
   }, [userInfo])
 
-  useEffect(() => {
-    if (avatar.length) return
-    const file = userData?.Files as FilesData[]
-    if (!file.length) return
-    const pathfile = file[0].path
-    getAvatar(pathfile)
-  }, [])
-
   return (
     <Box component="form" onSubmit={handleSubmit(changeData)}>
-      {userData?.Files?.length ? (
+      {avatarListUser && avatarListUser.length ? (
         <AvatarBox
-          src={`${avatar.length ? JSON.parse(avatar).data : ''}` as string}
+          src={
+            `${avatarListUser.length ? JSON.parse(avatarListUser).data : ''}` as string
+          }
           sx={{
             width: '100px',
             height: '100px',
@@ -204,7 +195,7 @@ export const ProfileData = memo((_user: User) => {
                 disabled={!admin}
                 variant="outlined"
                 sx={{
-                  width: '88%',
+                  width: '100%',
                   mt: 2,
                   height: theme.fontSize === 'small' ? 40 : 50,
                 }}

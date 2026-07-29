@@ -90,16 +90,24 @@ export const DeleteSLA = memo(
             }}
           />
           <MuiDiv className={'boxDataModal'}>
-            {filteredSLA.map(({ sla, id, TypesOfWork }) => (
-              <Item
-                name={sla}
-                comment={TypesOfWork.typeOfWork}
-                id={`${id}`}
-                groupChecked={false}
-                onChooseItems={onChooseItems}
-                key={id as string}
-              />
-            ))}
+            {filteredSLA && filterText && !filteredSLA.length ? (
+              <MuiDiv className="noMatchesListContractPage" sx={{ ml: 1 }}>
+                Нет совпадений
+              </MuiDiv>
+            ) : (
+              filteredSLA.map(({ sla, id, TypesOfWork }) => (
+                <Item
+                  name={sla}
+                  comment={TypesOfWork.typeOfWork}
+                  id={`${id}`}
+                  groupChecked={false}
+                  onChooseItems={onChooseItems}
+                  key={id as string}
+                  className={'listItemsChangeRolesGr'}
+                  classItemText={'listItemsTextContainer'}
+                />
+              ))
+            )}
           </MuiDiv>
           <MuiDiv className={'modalError'}>
             {errSelectedItems && 'Не выбран ни один SLA!'}

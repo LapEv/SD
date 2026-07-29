@@ -98,16 +98,24 @@ export const DeleteClassifierModel = memo(
             }}
           />
           <MuiDiv className={'boxDataModal'}>
-            {filteredModels.map(({ model, id, id_equipment }) => (
-              <Item
-                name={model}
-                comment={getEquipmentName(id_equipment as string)}
-                id={`${id}`}
-                groupChecked={false}
-                onChooseItems={onChooseItems}
-                key={id as string}
-              />
-            ))}
+            {filteredModels && filterText && !filteredModels.length ? (
+              <MuiDiv className="noMatchesListContractPage" sx={{ ml: 1 }}>
+                Нет совпадений
+              </MuiDiv>
+            ) : (
+              filteredModels.map(({ model, id, id_equipment }) => (
+                <Item
+                  name={model}
+                  comment={getEquipmentName(id_equipment as string)}
+                  id={`${id}`}
+                  groupChecked={false}
+                  onChooseItems={onChooseItems}
+                  key={id as string}
+                  className={'listItemsChangeRolesGr'}
+                  classItemText={'listItemsTextContainer'}
+                />
+              ))
+            )}
           </MuiDiv>
           <MuiDiv className={'modalError'}>
             {errSelectedItems && 'Не выбран ни одна модель!'}

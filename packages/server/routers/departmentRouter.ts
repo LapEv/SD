@@ -18,7 +18,7 @@ export const departmentRouter = (apiRouter: Router) => {
   )
   router.get(
     '/getDepartments',
-    roleMiddleware(['getDepartments', 'ADMIN', 'SUPERADMIN']),
+    roleMiddleware(['getDepartments', 'ALL']),
     service.getDepartments,
   )
   router.get(

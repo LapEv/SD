@@ -157,8 +157,9 @@ export class contractService {
       })
       await ThroughContractsObjectsRepos.bulkCreate(newThroughContractObject)
 
+      const { id_client } = data
       const contracts = await ContractsRepos.findAll({
-        where: { active: true },
+        where: { active: true, id_client },
         order,
         include: includes,
       })
@@ -169,13 +170,13 @@ export class contractService {
   }
 
   newContractName = async (_req: Request, res: Response) => {
-    const { contract, id } = _req.body
+    const { contract, id, id_client } = _req.body
     try {
       await ContractsRepos.update(id, {
         contract,
       })
       const contracts = await ContractsRepos.findAll({
-        where: { active: true },
+        where: { active: true, id_client },
         order,
         include: includes,
       })
@@ -273,6 +274,7 @@ export class contractService {
       objects,
       incStatusses,
       notificationEmail,
+      id_client,
     } = _req.body
     try {
       await ContractsRepos.update(id, { number, date, notificationEmail })
@@ -347,7 +349,7 @@ export class contractService {
       }
 
       const contracts = await ContractsRepos.findAll({
-        where: { active: true },
+        where: { active: true, id_client },
         order,
         include: includes,
       })

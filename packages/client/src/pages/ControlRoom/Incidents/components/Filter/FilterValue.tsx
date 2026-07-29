@@ -6,6 +6,7 @@ import { SelectMUI } from 'components/Select'
 import { DateTimePickerField } from 'components/DatePicker'
 import { ListComponents } from './ListComponents/ListComponents'
 import { ClearButton } from 'components/Buttons'
+import { useApp } from 'hooks/app/useApp'
 
 export const FilterValue = ({
   item,
@@ -13,6 +14,8 @@ export const FilterValue = ({
   onFilter,
   disabled,
 }: IFilterValue) => {
+  const [{ device }] = useApp()
+
   const setValue = (value: string) => {
     if (value === overdueLabel.false) {
       onFilter(false)
@@ -38,8 +41,8 @@ export const FilterValue = ({
         label="Значение"
         data={[overdueLabel.true, overdueLabel.false]}
         onChange={setValue}
-        classNameSelect={'selectFilterTrigger'}
-        classNameFormContorl={'textContainerFilterTrigger'}
+        classNameSelect={`${device === 'mobile' ? 'selectFilterTriggerMobile' : 'selectFilterTrigger'}`}
+        classNameFormContorl={`${device === 'mobile' ? 'textContainerFilterTriggerMobile' : 'textContainerFilterTrigger'}`}
         value={item.value ? overdueLabel.true : overdueLabel.false}
       />
     )
@@ -60,7 +63,7 @@ export const FilterValue = ({
       label="Значение"
       type="text"
       variant="outlined"
-      className={'textContainerFilterTrigger'}
+      className={`${device === 'mobile' ? 'textContainerFilterTriggerMobile' : 'textContainerFilterTrigger'}`}
       required
       value={disabled ? '' : item.value}
       onChange={(e: ChangeEvent<HTMLInputElement>) => onFilter(e.target.value)}

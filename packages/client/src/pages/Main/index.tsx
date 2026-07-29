@@ -7,14 +7,11 @@ export const MainPage = memo(() => {
   const [{ user }] = useAuth()
 
   return (
-    <Container component="main" className="mainPage">
-      <Stack
-        direction={{ xs: 'column', sm: 'row' }}
-        spacing={{ xs: 10, sm: 2 }}
-        padding={8}
-        className="mainPageListBox">
-        {<MenuData user={user} />}
-      </Stack>
+    <Container
+      component="main"
+      maxWidth="md"
+      className={'mainHeaderForMainPages'}>
+      <Stack className="mainPageListBox">{<MenuData user={user} />}</Stack>
     </Container>
   )
 })

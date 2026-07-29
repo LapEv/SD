@@ -2,8 +2,10 @@ import { IconButton, Popper, Tooltip } from '@mui/material'
 import { useRef, useState } from 'react'
 import { FilterPaper } from './FilterPaper'
 import FilterListOutlinedIcon from '@mui/icons-material/FilterListOutlined'
+import { useApp } from 'hooks/app/useApp'
 
 export const TableFilter = () => {
+  const [{ device }] = useApp()
   const [filterPanelOpen, setFilterPanelOpen] = useState<boolean>(false)
   const filterPanelTriggerRef = useRef<HTMLButtonElement>(null)
 
@@ -35,18 +37,18 @@ export const TableFilter = () => {
       <Popper
         open={filterPanelOpen}
         anchorEl={filterPanelTriggerRef.current}
-        placement="bottom-end"
+        placement="bottom-start"
         modifiers={[
           {
             name: 'offset',
             options: {
-              offset: [150, 4],
+              offset: [220, 4],
             },
           },
         ]}
         id="filter-menu-trigger"
         onKeyDown={handleKeyDownFilterPanel}
-        className={'poperFilterMenu'}>
+        className={`${device === 'mobile' ? 'poperFilterMenuMobile' : 'poperFilterMenu'}`}>
         <FilterPaper handleCloseFilterPanel={handleCloseFilterPanel} />
       </Popper>
     </>

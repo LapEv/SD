@@ -32,4 +32,6 @@ export interface AuthActions {
   deleteAvatar: (id: string) => void
   setAvatar: (data: string) => void
   changeColorTheme: (data: IColorTheme) => void
+  clearAvatar: () => void
+  clearUserInfo: () => void
 }
