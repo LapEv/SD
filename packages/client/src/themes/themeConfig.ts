@@ -1823,6 +1823,7 @@ export const ThemeConfig = ({
               display: 'flex',
               justifyContent: 'space-between',
               alignItems: 'center',
+              overflow: 'hidden',
             },
             '&.viewActBox': {
               width: 'calc(100% - 140px)',
@@ -2016,6 +2017,12 @@ export const ThemeConfig = ({
               display: 'flex',
               justifyContent: 'space-between',
               position: 'relative',
+            },
+            '&.tableSettingTemplateBox': {
+              display: 'flex',
+              justifyContent: 'space-between',
+              paddingLeft: 16,
+              paddingRight: 2,
             },
           },
         },

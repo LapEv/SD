@@ -418,3 +418,11 @@ export interface ISavedButtonTemplate {
 export interface ILoadSavedTemplates {
   setSettingsMenuOpen: (data: boolean) => void
 }
+
+export interface ModalAnswerProps {
+  title: string
+  label: string
+  handleModal: (state: boolean) => void
+  type: string
+  answerFromModal: (type: string, label: string, answer: boolean) => void
+}

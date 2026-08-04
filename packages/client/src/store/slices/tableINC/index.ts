@@ -288,7 +288,7 @@ export const tableINCSlise = createSlice({
       state.modal = action.payload
     },
     setToCloud(state, action) {
-      state.modal = action.payload
+      state.toCloud = action.payload
     },
   },
 })

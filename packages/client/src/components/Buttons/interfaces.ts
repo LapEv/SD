@@ -54,6 +54,24 @@ export interface IEditButton {
   size?: string
 }
 
+export interface IDeleteButton {
+  handleClick?: (event: SyntheticEvent<EventTarget>) => void
+  size?: string
+  id?: number | string
+  className?: string
+  length?: number
+  classNameBox?: string
+}
+
+export interface ISaveButton {
+  handleClick?: (event: SyntheticEvent<EventTarget>) => void
+  size?: string
+  id?: number | string
+  className?: string
+  length?: number
+  classNameBox?: string
+}
+
 export interface IClearButton {
   handleClick?: (event: SyntheticEvent<EventTarget>) => void
   size?: string
