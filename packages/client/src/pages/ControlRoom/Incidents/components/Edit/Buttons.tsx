@@ -66,6 +66,7 @@ export const Buttons = ({
       parentalIncident: newINC.parentalIncident ?? '',
       spaceParts: newINC.spaceParts ?? [''],
       timeClose: newINC.timeClose ? new Date(newINC.timeClose) : null,
+      timeDone: newINC.timeDone ? new Date(newINC.timeDone) : null,
       timeCloseCheck: newINC.timeCloseCheck
         ? new Date(newINC.timeCloseCheck)
         : null,
@@ -73,6 +74,8 @@ export const Buttons = ({
       timeSLA: new Date(newINC.timeSLA),
       userClosing: newINC.userClosing ?? '',
       id_incClosing: newINC.id_incClosing,
+      userDone: newINC.userDone ?? '',
+      id_incDone: newINC.id_incDone,
       userClosingCheck: newINC.userClosingCheck ?? '',
       id_incClosingCheck: newINC.id_incClosingCheck,
     }
@@ -86,7 +89,7 @@ export const Buttons = ({
 
   if (device === 'mobile') {
     return (
-      <MuiDiv className="editDataButtonBox">
+      <MuiDiv className="editDataButtonMobileBox">
         <MuiSpan className="modalError">{error}</MuiSpan>
         <MuiDiv className="editButtonMobileContainer">
           <Button
@@ -112,24 +115,22 @@ export const Buttons = ({
     <MuiDiv className="editDataButtonBox">
       <MuiSpan className="modalError">{error}</MuiSpan>
       <MuiDiv className="editButtonContainer">
-        <MuiDiv>
-          <Button
-          // onClick={() =>
-          //   newTask({ id: values.id, incident: values.incident })
-          // }
-          >
-            Создать запрос
-          </Button>
-        </MuiDiv>
-        <MuiDiv>
-          <Button onClick={() => setNewINC(inc)}>Отменить изменения</Button>
-          <Button onClick={() => handleModal(false)} sx={{ ml: 5 }}>
-            Закрыть
-          </Button>
-          <Button onClick={saveData} disabled={disabled} sx={{ ml: 5 }}>
-            Сохранить
-          </Button>
-        </MuiDiv>
+        {/* <MuiDiv> */}
+        <Button
+        // onClick={() =>
+        //   newTask({ id: values.id, incident: values.incident })
+        // }
+        >
+          Создать запрос
+        </Button>
+        {/* </MuiDiv> */}
+        {/* <MuiDiv> */}
+        <Button onClick={() => setNewINC(inc)}>Отменить изменения</Button>
+        <Button onClick={() => handleModal(false)}>Закрыть</Button>
+        <Button onClick={saveData} disabled={disabled}>
+          Сохранить
+        </Button>
+        {/* </MuiDiv> */}
       </MuiDiv>
     </MuiDiv>
   )

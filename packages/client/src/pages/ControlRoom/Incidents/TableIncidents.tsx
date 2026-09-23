@@ -98,7 +98,7 @@ export const TableIncidents = memo(() => {
           changeStatusSocket(data)
           if (notificationsINC.changeStatus) {
             setMessage({
-              text: `Для инцидента ${data._incident} изменен статус ${data.status}`,
+              text: `Для инцидента ${data._incident ?? data.incident} изменен статус ${data.status}`,
               type: 'info',
             })
           }

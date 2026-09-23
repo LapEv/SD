@@ -157,6 +157,12 @@ export const ApiEndPoints = {
     setSystem: 'system/setSystem',
     changePasswordSystem: 'system/changePasswordSystem',
   },
+  Engineer: {
+    getINCsByFieldEngineer: 'engineer/getINCsByFieldEngineer',
+    getINCbyID: 'engineer/getINCbyID',
+    changeINCAddEngineerFiles: 'engineer/changeINCAddEngineerFiles',
+    changeStatusDone: 'engineer/changeStatusDone',
+  },
 }
 
 export const baseURL = __BASE_URL__.includes('https')

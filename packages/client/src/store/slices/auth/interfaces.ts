@@ -1,6 +1,7 @@
 import { RolesGroup } from 'storeRoles/interfaces'
 import { FilesData } from '../files/interfaces'
 import { IDispatcherOptions, ISavedTemplates } from '../tableINC/interfaces'
+import { IEngineerOptions } from 'pages/EngineerRoom/interfaces'
 
 export interface User {
   id?: string
@@ -33,6 +34,7 @@ export interface AppOptions {
   font?: string
   colorTheme?: IColorTheme
   dispatcherOptions?: IDispatcherOptions
+  engineerOptions?: IEngineerOptions
   savedTemplates?: ISavedTemplates[]
 }
 

@@ -19,6 +19,7 @@ export interface AuthActions {
   changePassword: (data: ChangePasswordProps) => void
   resetPassword: (data: ResetPasswordProps) => void
   changeUserAppOptions: (options: ChangeAppProps) => void
+  changeUserAppOptionsNoMessage: (options: ChangeAppProps) => void
   getUserInfo: (id: string) => void
   getFieldEngineers: () => void
   getDispatchers: () => void

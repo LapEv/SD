@@ -31,6 +31,7 @@ export interface IIncindent {
   timeRegistration: string
   timeInWork: string
   timeSLA: string
+  timeDone: string
   timeCloseCheck: string
   timeClose: string
   typeCompletedWork: string
@@ -64,6 +65,7 @@ export interface IIncindent {
   UserResponsible: IUser
   SLA: ISLA
   id_incResponsible: string
+  id_incDone: string
   id_incClosingCheck: string
   id_typeCompletedWork: string
   id_incClosing: string
@@ -77,6 +79,7 @@ export interface Incindent {
   timeRegistration: string
   timeInWork: string
   timeSLA: string
+  timeDone: string
   timeCloseCheck: string
   timeClose: string
   description: string
@@ -130,6 +133,10 @@ export const incident: ModelAttributes<Model, Incindent> = {
     allowNull: true,
   },
   timeSLA: {
+    type: 'timestamp without time zone',
+    allowNull: true,
+  },
+  timeDone: {
     type: 'timestamp without time zone',
     allowNull: true,
   },

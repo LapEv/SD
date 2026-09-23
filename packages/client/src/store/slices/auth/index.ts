@@ -12,6 +12,7 @@ import {
   deleteUser,
   deleteAvatar,
   changeUserAppOptions,
+  changeUserAppOptionsNoMessage,
 } from 'api/user'
 import { signin, signup } from 'api/user'
 import { AuthState, ICheckUser, User, UserStatus } from './interfaces'
@@ -227,6 +228,24 @@ export const authSlise = createSlice({
       state.isLoadingAuth = false
       state.error = payload as string
     })
+    builder.addCase(
+      changeUserAppOptionsNoMessage.fulfilled,
+      (state, { payload }) => {
+        state.isLoadingAuth = false
+        state.error = ''
+        state.user = payload?.data as User
+      },
+    )
+    builder.addCase(changeUserAppOptionsNoMessage.pending, state => {
+      state.isLoadingAuth = false
+    })
+    builder.addCase(
+      changeUserAppOptionsNoMessage.rejected,
+      (state, { payload }) => {
+        state.isLoadingAuth = false
+        state.error = payload as string
+      },
+    )
     builder.addCase(getUserStatus.fulfilled, (state, { payload }) => {
       state.isLoadingAuth = false
       state.error = ''

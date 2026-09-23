@@ -7,11 +7,33 @@ import { useMessage } from 'hooks/message/useMessage'
 import { Modal } from '@mui/material'
 import { ModalTitles, logs } from '../../data'
 import { ChangeStatus } from '../../Modals/ChangeStatus'
-import { IStatus, IModalStatus, DataCloseINC } from '../../interfaces'
+import {
+  IStatus,
+  IModalStatus,
+  DataCloseINC,
+  DataCommentWaitINC,
+} from '../../interfaces'
 import { INCStatuses } from 'store/slices/incidents/interfaces'
+import { CommentWaitINC } from './CommentWaitINC'
+import { CommentReturnINC } from './CommentReturnINC'
+import { convertTSToCurrentTZ } from 'utils/convertDate'
 
 export const Status = memo(
-  ({ value, id, incident, timeSLA, executor, responsible }: IStatus) => {
+  ({
+    value,
+    id,
+    incident,
+    timeSLA,
+    executor,
+    id_incExecutor,
+    responsible,
+    comment,
+    typeCompletedWork,
+    commentCloseCheck,
+    act,
+    spaceParts,
+    Files,
+  }: IStatus) => {
     const [, { setMessage }] = useMessage()
     const modalClientRef = React.createRef()
     const [modal, setModal] = useState<IModalStatus>({
@@ -58,6 +80,8 @@ export const Status = memo(
           userAccepted: user.shortName,
           timeRegistration: currentDate,
           log,
+          executor,
+          id_incExecutor,
         })
       }
       if (oldStatus.statusINC === 'Зарегистрирован') {
@@ -99,6 +123,8 @@ export const Status = memo(
           timeInWork: currentDate,
           timeSLA,
           log,
+          executor,
+          id_incExecutor,
         })
       }
       if (oldStatus.statusINC === 'В работе') {
@@ -114,14 +140,14 @@ export const Status = memo(
           return
         }
         if (newStatus.statusINC === 'Ожидание ЗИП/оборудования') {
-          changeStatus({
-            id,
-            _incident: incident,
-            id_incStatus: newStatus.id,
-            status: newStatus.statusINC,
-            timeSLA,
-            log,
+          setModal({
+            status: true,
+            data,
+            modalName: 'commentWaitINC',
+            incident,
+            id_incFiles: id,
           })
+          return
         }
         if (newStatus.statusINC === 'Решён') {
           if (executor === '') {
@@ -152,6 +178,50 @@ export const Status = memo(
           }
         }
       }
+      if (oldStatus.statusINC === 'Выполнено') {
+        if (
+          newStatus.statusINC !== 'Решён' &&
+          newStatus.statusINC !== 'В работе' &&
+          newStatus.statusINC !== 'Ожидание ЗИП/оборудования'
+        ) {
+          setMessage({
+            text: `Нельзя назначить статус "${newStatus.statusINC}"! `,
+            type: 'warning',
+          })
+          return
+        }
+        if (newStatus.statusINC === 'Ожидание ЗИП/оборудования') {
+          setModal({
+            status: true,
+            data,
+            modalName: 'commentWaitINC',
+            incident,
+            id_incFiles: id,
+          })
+          return
+        }
+        if (newStatus.statusINC === 'Решён') {
+          setModal({
+            status: true,
+            data,
+            modalName: 'closeINC',
+            incident,
+            id_incFiles: id,
+          })
+          return
+        }
+        if (newStatus.statusINC === 'В работе') {
+          setModal({
+            status: true,
+            data,
+            modalName: 'commentReturnINC',
+            incident,
+            id_incFiles: id,
+          })
+          return
+        }
+      }
+
       if (oldStatus.statusINC === 'Ожидание ЗИП/оборудования') {
         if (newStatus.statusINC !== 'В работе') {
           setMessage({
@@ -168,6 +238,8 @@ export const Status = memo(
             status: newStatus.statusINC,
             timeSLA,
             log,
+            executor,
+            id_incExecutor,
           })
         }
       }
@@ -187,20 +259,20 @@ export const Status = memo(
           return
         }
         if (newStatus.statusINC === 'В работе') {
-          changeStatus({
-            id,
-            _incident: incident,
-            id_incStatus: newStatus.id,
-            status: newStatus.statusINC,
-            timeSLA,
-            log,
+          setModal({
+            status: true,
+            data,
+            modalName: 'commentReturnINC',
+            incident,
+            id_incFiles: id,
           })
+          return
         }
       }
       setStatus(data)
     }
 
-    const handleModal = ({
+    const handleModalCloseINC = ({
       state,
       typeCompletedWork,
       commentCloseCheck,
@@ -223,11 +295,10 @@ export const Status = memo(
         log: {
           id_incLog: id,
           time: currentDate,
-          log: `${logs.actionComment.changeStatus.first}${incident}${logs.actionComment.changeStatus.second}${data.label}`,
+          log: `${logs.actionComment.changeStatus.first}${incident}${logs.actionComment.changeStatus.second}${data.label}. Тип решения: ${typeCompletedWork?.label ?? ''}. Комментарий: ${commentCloseCheck ?? ''}. ЗИП: ${spaceParts ?? ''}`,
           id_incLogUser: user.id!,
         },
       }
-
       if (files?.length) {
         changeStatus({
           id,
@@ -238,13 +309,15 @@ export const Status = memo(
           id_typeCompletedWork: typeCompletedWork?.id,
           commentCloseCheck,
           spaceParts,
-          files,
+          files: files,
           Files: files,
           act,
           timeCloseCheck: currentDate,
           id_incClosingCheck: user.id!,
           userClosingCheck: user.shortName,
           log,
+          executor,
+          id_incExecutor,
         })
         setStatus(data)
         setModal({
@@ -268,9 +341,61 @@ export const Status = memo(
         id_incClosingCheck: user.id!,
         userClosingCheck: user.shortName,
         log,
+        executor,
+        id_incExecutor,
       })
-
       setStatus(data)
+      setModal({
+        status: false,
+        modalName: '',
+        data: emptyOptionsDD,
+      })
+    }
+
+    const handleModalWaitReturnINC = ({
+      state,
+      data,
+      newComment,
+    }: DataCommentWaitINC) => {
+      if (state === false) {
+        setModal({
+          status: false,
+          modalName: '',
+          data: emptyOptionsDD,
+        })
+        return
+      }
+      const currentDate = new Date().toISOString()
+      const log = {
+        User: { id: user.id!, shortName: user.shortName! },
+        log: {
+          id_incLog: id,
+          time: currentDate,
+          log: `${logs.actionComment.changeStatus.first}${incident}${logs.actionComment.changeStatus.second}${data.label}. Комментарий: ${newComment ?? ''}`,
+          id_incLogUser: user.id!,
+        },
+      }
+      changeStatus({
+        id,
+        _incident: incident,
+        id_incStatus: data.id,
+        status: data.label,
+        comment: comment
+          ? `${comment} \n${convertTSToCurrentTZ(currentDate)}: ${user.shortName}: ${newComment}`
+          : newComment,
+        log,
+        executor,
+        id_incExecutor,
+        typeCompletedWork: '',
+        id_typeCompletedWork: null,
+        commentCloseCheck: '',
+        timeDone: null,
+        timeCloseCheck: null,
+        id_incDone: null,
+        userDone: '',
+        id_incClosingCheck: null,
+        userClosingCheck: '',
+      })
       setModal({
         status: false,
         modalName: '',
@@ -297,11 +422,34 @@ export const Status = memo(
           {modal.modalName === 'closeINC' ? (
             <ChangeStatus
               ref={modalClientRef}
-              handleModal={handleModal}
+              handleModal={handleModalCloseINC}
               title={ModalTitles.closeINC}
               data={modal.data}
               incident={modal.incident as string}
               id_incFiles={modal.id_incFiles as string}
+              typeCompletedWork={typeCompletedWork}
+              commentCloseCheck={commentCloseCheck}
+              act={act as string}
+              spaceParts={spaceParts as string}
+              id={id}
+              Files={Files}
+              status={status}
+            />
+          ) : modal.modalName === 'commentWaitINC' ? (
+            <CommentWaitINC
+              ref={modalClientRef}
+              handleModal={handleModalWaitReturnINC}
+              title={ModalTitles.commentWaitINC}
+              data={modal.data}
+              incident={modal.incident as string}
+            />
+          ) : modal.modalName === 'commentReturnINC' ? (
+            <CommentReturnINC
+              ref={modalClientRef}
+              handleModal={handleModalWaitReturnINC}
+              title={ModalTitles.commentReturnINC}
+              data={modal.data}
+              incident={modal.incident as string}
             />
           ) : (
             <></>

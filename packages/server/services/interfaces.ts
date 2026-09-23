@@ -3,3 +3,8 @@ export interface IPrepareStatusObj {
   status: string
   timeSLA: string
 }
+
+export interface ChangeINCStateStatuses {
+  id: string
+  stateNumber: number
+}

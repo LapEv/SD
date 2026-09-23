@@ -399,6 +399,12 @@ export const ThemeConfig = ({
                   ? colorTheme.light.borderSecondary
                   : colorTheme.dark.borderSecondary,
             },
+            '&.engineerContainer': {
+              flexWrap: 'wrap',
+              flexDirection: 'row',
+              alignItems: 'flex-start',
+              justifyContent: 'space-between',
+            },
           },
         },
       },
@@ -485,6 +491,16 @@ export const ThemeConfig = ({
               alignItems: 'space-between',
               justifyContent: 'space-between',
               padding: 0,
+            },
+            '&.additionallyBox': {
+              color:
+                mode === ThemeMode.light
+                  ? colorTheme.light.darkPrimary
+                  : colorTheme.dark.lightPrimary,
+              width: '88%',
+              height: fontSize === 'small' ? 40 : 50,
+              padding: 0,
+              paddingLeft: 7,
             },
           },
         },
@@ -928,10 +944,19 @@ export const ThemeConfig = ({
               width: '100%',
               marginTop: fontSize === 'small' ? 8 : 16,
               marginBottom: fontSize === 'small' ? 6 : 12,
+              //   display: 'flex',
+              //   flexDirection: 'column',
+              //   alignItems: 'flex-start',
+              //   justifyContent: 'flex-start',
+              //   width: '100%',
+              //   overflow: 'auto',
+              //   padding: device === 'mobile' ? 5 : 20,
+              //   paddingTop: 10,
             },
             '&.editINCbox': {
               width: '100%',
               marginTop: fontSize === 'small' ? 4 : 8,
+              minWidth: device === 'mobile' ? 'auto' : 810,
             },
             '&.mobileFilterSeparator': {
               width: '90%',
@@ -1023,6 +1048,22 @@ export const ThemeConfig = ({
                 fontSize: fontSize === 'small' ? 11 : 14,
               },
             },
+            '&.textMultiCellsEngineerINC': {
+              width: '100%',
+              margin: 0,
+              marginTop: fontSize === 'small' ? '8px' : '8px',
+              height: 135,
+              '& > .MuiInputBase-root': {
+                fontSize: fontSize === 'small' ? 12 : 14,
+                fontWeight: 'bold',
+              },
+              '& > .MuiFormLabel-root': {
+                fontSize: fontSize === 'small' ? 12 : 14,
+              },
+            },
+            '&.notFirst': {
+              marginTop: '12px',
+            },
             '&.textContractList': {
               width: device === 'mobile' ? '100%' : '48%',
               minWidth: 220,
@@ -1080,7 +1121,8 @@ export const ThemeConfig = ({
                   : fontSize === 'small'
                     ? '8px'
                     : '16px',
-              overflow: 'hidden',
+              overflow: 'auto',
+              minWidth: device === 'mobile' ? 'auto' : 1035,
             },
             '&.systemSectionContainer': {
               display: 'flex',
@@ -1243,7 +1285,20 @@ export const ThemeConfig = ({
               maxWidth: 170,
               maxHeight: 170,
               margin: device === 'mobile' ? 15 : 20,
-              'flex-basis': '40%',
+              flexBasis: '40%',
+              boxSizing: 'border-box',
+            },
+            '&.boxElementEngineerPage': {
+              boxShadow: '0px 0px 9px 2px #1E515D',
+              borderRadius: 5,
+              width: 300,
+              height: 300,
+              minWidth: 180,
+              minHeight: 180,
+              maxWidth: 300,
+              maxHeight: 300,
+              margin: device === 'mobile' ? 15 : 20,
+              flexBasis: '40%',
               boxSizing: 'border-box',
             },
             '&.mainTableStyle': {
@@ -1379,6 +1434,20 @@ export const ThemeConfig = ({
               height: 'auto',
               marginTop: fontSize === 'small' ? 16 : 24,
             },
+            '&.listfilterEngineerMobile': {
+              maxHeight: '35vH',
+              overflowX: 'hidden',
+              overflowY: 'auto',
+              height: 'auto',
+              padding: 8,
+            },
+            '&.listSortEngineerMobile': {
+              width: '100%',
+              height: '100%',
+              overflowX: 'hidden',
+              overflowY: 'auto',
+              padding: 8,
+            },
             '&.buttonsContainerFilter': {
               width: '100%',
               display: 'flex',
@@ -1434,12 +1503,6 @@ export const ThemeConfig = ({
               borderStyle: 'solid',
               borderRadius: 3,
               boxShadow: 24,
-              padding:
-                fontSize === 'small' ? '20px!important' : '32px!important',
-              paddingLeft:
-                device === 'mobile' ? '10px!important' : '25px!important',
-              paddingRight:
-                device === 'mobile' ? '10px!important' : '25px!important',
               overflowY: 'auto',
               overflowX: 'hidden',
             },
@@ -1587,7 +1650,10 @@ export const ThemeConfig = ({
               marginRight: 20,
               marginLeft: 20,
             },
-
+            '&.boxIndicatorEngineerContainer': {
+              marginRight: 20,
+              marginLeft: 3,
+            },
             '&.boxIndicator': {
               position: 'relative',
               display: 'flex',
@@ -1668,16 +1734,19 @@ export const ThemeConfig = ({
               alignItems: 'flex-start',
               flexDirection: 'column',
             },
-            '&.editContainer': {
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'flex-start',
-              justifyContent: 'flex-start',
-              width: '100%',
-              overflow: 'auto',
-            },
+            // '&.editContainer': {
+            //   display: 'flex',
+            //   flexDirection: 'column',
+            //   alignItems: 'flex-start',
+            //   justifyContent: 'flex-start',
+            //   width: '100%',
+            //   overflow: 'auto',
+            //   padding: device === 'mobile' ? 5 : 20,
+            //   paddingTop: 10,
+            // },
             '&.editTitle': {
               width: '100%',
+              minWidth: device === 'mobile' ? 'auto' : 810,
               display: 'flex',
               alignItems: 'flex-start',
               justifyContent: 'flex-start',
@@ -1698,6 +1767,7 @@ export const ThemeConfig = ({
             },
             '&.editDataContainer': {
               width: '100%',
+              minWidth: device === 'mobile' ? 'auto' : 810,
               display: 'flex',
               flexDirection: device === 'mobile' ? 'column' : 'row',
               justifyContent: 'flex-start',
@@ -1705,6 +1775,7 @@ export const ThemeConfig = ({
             },
             '&.editLogsContainer': {
               width: device === 'mobile' ? '97.5%' : '99.5%',
+              minWidth: device === 'mobile' ? 'auto' : 810,
               display: 'flex',
               flexDirection: 'column',
               justifyContent: 'flex-start',
@@ -1732,11 +1803,13 @@ export const ThemeConfig = ({
               paddingLeft: 20,
               paddingRight: 20,
               marginTop: 10,
-              '& > div': {
-                '& > .MuiButtonBase-root': {
-                  width: 210,
-                  minWidth: 210,
-                },
+              // '& > div': {
+              '& > .MuiButtonBase-root': {
+                width: '100%',
+                maxWidth: 210,
+                minWidth: 110,
+                margin: 8,
+                // },
               },
             },
             '&.editButtonMobileContainer': {
@@ -1765,16 +1838,37 @@ export const ThemeConfig = ({
             },
             '&.editDataButtonBox': {
               width: '100%',
+              minWidth: device === 'mobile' ? 'auto' : 810,
+            },
+            '&.editDataButtonMobileBox': {
+              width: '100%',
               minWidth: '100%',
             },
             '&.cellINCContainer': {
               display: 'flex',
+              alignItems: 'center',
               flexDirection: 'row',
               color:
                 mode === ThemeMode.dark
                   ? colorTheme.dark.lightPrimary
                   : colorTheme.light.darkPrimary,
               width: '100%',
+              margin: '3px',
+            },
+            '&.cellINCContainerDone': {
+              marginTop: '10px',
+              width: '90%',
+            },
+            '&.cellEngineerINCContainer': {
+              display: 'flex',
+              alignItems: 'center',
+              flexDirection: 'row',
+              color:
+                mode === ThemeMode.dark
+                  ? colorTheme.dark.lightPrimary
+                  : colorTheme.light.darkPrimary,
+              width: '100%',
+              height: 23,
               margin: '3px',
             },
             '&.cellINCLabel': {
@@ -1786,6 +1880,13 @@ export const ThemeConfig = ({
               fontSize: fontSize === 'small' ? '11px' : '14px',
               paddingTop: '2px',
               maxHeight: 100,
+              overflow: 'auto',
+            },
+            '&.cellEngineerINCValue': {
+              fontSize: fontSize === 'small' ? '12px' : '14px',
+              paddingTop: '2px',
+              maxHeight: 100,
+              whiteSpace: 'nowrap',
               overflow: 'auto',
             },
             '&.progressContainer': {
@@ -2023,6 +2124,140 @@ export const ThemeConfig = ({
               justifyContent: 'space-between',
               paddingLeft: 16,
               paddingRight: 2,
+            },
+            '&.boxMenuEngineer': {
+              position: 'absolute',
+              top: 10,
+              right: 20,
+            },
+            '&.boxMenuEngineerMobile': {
+              position: 'absolute',
+              top: 2,
+              right: 10,
+              display: 'flex',
+            },
+            '&.boxFilterEngineer': {
+              height: 50,
+              width: '100%',
+              display: 'flex',
+              justifyContent: 'flex-start',
+              paddingLeft: 16,
+              marginTop: 8,
+            },
+            '&.engineerContainerData': {
+              position: 'relative',
+              width: fontSize === 'small' ? 400 : 500,
+              height: fontSize === 'small' ? 215 : 235,
+              display: 'flex',
+              flexDirection: 'row',
+              flexWrap: 'wrap',
+              justifyContent: 'flex-start',
+              alignItems: 'flex-start',
+              borderStyle: 'solid',
+              borderWidth: 2,
+              borderRadius: 8,
+              borderColor:
+                mode === ThemeMode.light
+                  ? colorTheme.light.borderSecondary
+                  : colorTheme.dark.borderSecondary,
+              margin: device === 'mobile' ? 0 : '8px',
+              marginTop: device === 'mobile' ? '8px' : '8px',
+              transition: 'height 0.2s ease-out',
+              overflow: 'hidden',
+            },
+            '&.heightCloseDataBoxNoOpen': {
+              height: fontSize === 'small' ? 215 : 235,
+              transition: 'height 0.2s ease-out',
+            },
+            '&.heightDataBox': {
+              height: 910,
+              transition: 'height 0.2s ease-in',
+            },
+            '&.heightCloseDataBox': {
+              height: fontSize === 'small' ? 1245 : 1265,
+              transition: 'height 0.2s ease-in',
+            },
+            '&.engineerMenuBox': {
+              position: 'absolute',
+              top: 0,
+              right: 10,
+              cursor: 'pointer',
+              zIndex: 2,
+              height: fontSize === 'small' ? 30 : 40,
+            },
+            '&.engineerTitleBox': {
+              width: '100%',
+              height: device === 'mobile' ? 30 : fontSize === 'small' ? 30 : 40,
+              fontSize:
+                device === 'mobile' ? 14 : fontSize === 'small' ? 14 : 16,
+              minWidth: device === 'mobile' ? 'auto' : 490,
+              display: 'flex',
+              alignItems: 'flex-start',
+              justifyContent: 'flex-start',
+              borderColor:
+                mode === ThemeMode.light
+                  ? colorTheme.light.borderSecondary
+                  : colorTheme.dark.borderSecondary,
+              padding: fontSize === 'small' ? '3px' : '5px',
+
+              paddingLeft: fontSize === 'small' ? '8px' : '8px',
+              color:
+                mode === ThemeMode.light
+                  ? colorTheme.light.darkPrimary
+                  : colorTheme.dark.lightPrimary,
+              position: 'relative',
+            },
+            '&.engineerSLABox': {
+              height: 30,
+              fontSize:
+                device === 'mobile' ? 14 : fontSize === 'small' ? 14 : 16,
+              padding: fontSize === 'small' ? '3px' : '5px',
+              color:
+                mode === ThemeMode.light
+                  ? colorTheme.light.darkPrimary
+                  : colorTheme.dark.lightPrimary,
+              marginLeft: '3px',
+            },
+            '&.engineerIndicatorSLABox': {
+              width: '100%',
+              height: 30,
+              fontSize:
+                device === 'mobile' ? 14 : fontSize === 'small' ? 14 : 16,
+              padding: fontSize === 'small' ? '3px' : '5px',
+              color:
+                mode === ThemeMode.light
+                  ? colorTheme.light.darkPrimary
+                  : colorTheme.dark.lightPrimary,
+              display: 'flex',
+              justifyContent: 'flex-start',
+              alignItems: 'center',
+            },
+            '&.engineerCellDataBox': {
+              width: '100%',
+              padding: fontSize === 'small' ? '3px' : '5px',
+              color:
+                mode === ThemeMode.light
+                  ? colorTheme.light.darkPrimary
+                  : colorTheme.dark.lightPrimary,
+              display: 'flex',
+              flexDirection: 'column',
+            },
+            '&.enginerrButtonBox': {
+              width: '100%',
+              margin: '10px',
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+            },
+            '&.flexEndDataBox': {
+              justifyContent: 'flex-end',
+            },
+            '&.sortEngineerElementBox': {
+              display: 'flex',
+              justifyContent: 'flex-start',
+              alignItems: 'center',
+              padding: '5px',
+              cursor: 'pointer',
             },
           },
         },
@@ -2500,6 +2735,16 @@ export const ThemeConfig = ({
               zIndex: 99,
               borderRadius: 15,
             },
+            '&.poperFilterEngineerMenu': {
+              zIndex: 99,
+              borderRadius: 15,
+            },
+            '&.poperSortEngineerMenu': {
+              zIndex: 99,
+              borderRadius: 15,
+              width: '280px',
+              height: fontSize === 'small' ? 305 : 360,
+            },
             '&.poperFilterMenu': {
               zIndex: 99,
               borderRadius: 15,
@@ -2721,6 +2966,10 @@ export const ThemeConfig = ({
                   ? colorTheme.light.primary
                   : colorTheme.dark.primary,
             },
+            '&.filterEngineerIconButton': {
+              width: fontSize === 'small' ? 29 : 35,
+              height: fontSize === 'small' ? 29 : 35,
+            },
           },
         },
       },
@@ -2813,6 +3062,18 @@ export const ThemeConfig = ({
               width: fontSize === 'small' ? 40 : 50,
               height: fontSize === 'small' ? 40 : 50,
             },
+            '&.filterEngineerIcon': {
+              width: device === 'mobile' ? 25 : fontSize === 'small' ? 18 : 20,
+              height: device === 'mobile' ? 25 : fontSize === 'small' ? 18 : 20,
+            },
+            '&.sortEngineerIcon': {
+              width: device === 'mobile' ? 25 : fontSize === 'small' ? 22 : 32,
+              height: device === 'mobile' ? 25 : fontSize === 'small' ? 22 : 32,
+            },
+            '&.sortEngineerArrowIcon': {
+              width: device === 'mobile' ? 22 : fontSize === 'small' ? 18 : 22,
+              height: device === 'mobile' ? 22 : fontSize === 'small' ? 18 : 22,
+            },
           },
         },
       },
@@ -2839,7 +3100,18 @@ export const ThemeConfig = ({
               height: '100%',
               justifyContent: 'center',
               alignItems: 'center',
-              'align-content': device === 'mobile' ? 'none' : 'center',
+              alignContent: device === 'mobile' ? 'none' : 'center',
+              flexWrap: 'wrap',
+              maxHeight: '100%',
+              maxWidth: '100%',
+              flexDirection: 'row',
+            },
+            '&.engineerPageListBox': {
+              width: '100%',
+              height: '100%',
+              justifyContent: 'center',
+              alignItems: 'center',
+              alignContent: device === 'mobile' ? 'none' : 'center',
               flexWrap: 'wrap',
               maxHeight: '100%',
               maxWidth: '100%',
@@ -3196,13 +3468,16 @@ export const ThemeConfig = ({
       MuiFormControlLabel: {
         styleOverrides: {
           root: {
-            '&.itemsContaimer': {
+            '&.itemsContainer': {
               width: '100%',
               display: 'flex',
-              alignItems: 'flex-start',
+              alignItems: 'center',
               justifyContent: 'flex-start',
               padding: '8px',
               marginLeft: 0,
+            },
+            '&.w_auto': {
+              width: 'auto',
             },
             '&.checkBoxContainer': {
               width: '85%',

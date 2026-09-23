@@ -34,15 +34,17 @@ export const DropDownINConTable = memo(
         value={{ label: value as string, id: '' }}
         renderOption={(props, option) => {
           const { key, ...newprops } = props
-          return (
-            <ListDropDown
-              key={`${option.id}_${key}`}
-              value={value}
-              props={newprops}
-              option={option}
-              classNameLi={'dropdown_li'}
-            />
-          )
+          if (option.label !== 'Выполнено') {
+            return (
+              <ListDropDown
+                key={`${option.id}_${key}`}
+                value={value}
+                props={newprops}
+                option={option}
+                classNameLi={'dropdown_li'}
+              />
+            )
+          }
         }}
         slotProps={{
           paper: {

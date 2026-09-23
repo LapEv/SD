@@ -34,12 +34,14 @@ export interface INC {
   timeRegistration: string
   timeInWork: string
   timeSLA: string
+  timeDone: string
   timeCloseCheck: string
   timeClose: string
   executor: string
   responsible: string
   applicant: string
   applicantContacts: string
+  userDone: string
   userClosingCheck: string
   userClosing: string
   description: string
@@ -60,6 +62,7 @@ export interface INC {
   UserExecutor?: UserForINC
   UserResponsible?: UserForINC
   UserClosing?: UserForINC
+  UserDone?: UserForINC
   UserClosingCheck?: UserForINC
   ClassifierEquipment?: ClassifierEquipmentForINC
   ClassifierModel?: ClassifierModelForINC
@@ -82,6 +85,7 @@ export interface INC {
   id_incTypicalMalfunction?: string
   id_incExecutor?: string
   id_incResponsible?: string
+  id_incDone?: string
   id_incClosingCheck?: string
   id_incClosing?: string
   id_typeCompletedWork?: string
@@ -122,6 +126,11 @@ export interface INCStatuses {
   stateNumber: number
   active?: boolean
   modal?: string
+}
+
+export interface ChangeINCStateStatuses {
+  id: string
+  stateNumber: number
 }
 
 export interface AddINCStatuses {
@@ -330,15 +339,21 @@ export interface ChangeStatus {
   timeInWork?: string
   log?: IINCLogs
   typeCompletedWork?: string
-  id_typeCompletedWork?: string
+  id_typeCompletedWork?: string | null
   commentCloseCheck?: string
-  timeCloseCheck?: string
-  id_incClosingCheck?: string
+  timeDone?: string | null
+  id_incDone?: string | null
+  userDone?: string
+  timeCloseCheck?: string | null
+  id_incClosingCheck?: string | null
   userClosingCheck?: string
   act?: string[]
   spaceParts?: string[]
   files?: FileList[]
   Files?: FileList[]
+  comment?: string
+  executor?: string
+  id_incExecutor?: string
 }
 
 export interface ChangeINC {

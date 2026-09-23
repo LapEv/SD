@@ -19,7 +19,13 @@ export const filesRouter = (apiRouter: Router) => {
   )
   router.post(
     '/getViewFile',
-    roleMiddleware(['getFile', 'Dispatcher', 'ADMIN', 'SUPERADMIN']),
+    roleMiddleware([
+      'getFile',
+      'Dispatcher',
+      'ADMIN',
+      'SUPERADMIN',
+      'FieldEngineers',
+    ]),
     service.getViewFile,
   )
   router.post(
@@ -34,7 +40,13 @@ export const filesRouter = (apiRouter: Router) => {
   )
   router.post(
     '/uploadFiles',
-    roleMiddleware(['uploadFiles', 'SUPERADMIN', 'ADMIN', 'Dispatcher']),
+    roleMiddleware([
+      'uploadFiles',
+      'SUPERADMIN',
+      'ADMIN',
+      'Dispatcher',
+      'FieldEngineers',
+    ]),
     service.uploadFiles,
   )
   router.post(

@@ -92,6 +92,7 @@ import {
 } from 'api/incidents'
 import { uploadFiles } from 'api/files'
 import { changePasswordSystem, setSystem } from 'api/system'
+import { changeStatusDoneSVR } from 'api/engineer'
 
 const initialState: MessageState = {
   text: '',
@@ -1070,6 +1071,18 @@ export const messageSlise = createSlice({
       state.isLoadingMessage = true
     })
     builder.addCase(changeStatusSVR.rejected, (state, { payload }) => {
+      state.isLoadingMessage = false
+      state.type = 'error'
+      state.text = payload as string
+    })
+    builder.addCase(changeStatusDoneSVR.fulfilled, (state, { payload }) => {
+      state.text = payload?.message.text as string
+      state.type = payload?.message.type as string
+    })
+    builder.addCase(changeStatusDoneSVR.pending, state => {
+      state.isLoadingMessage = true
+    })
+    builder.addCase(changeStatusDoneSVR.rejected, (state, { payload }) => {
       state.isLoadingMessage = false
       state.type = 'error'
       state.text = payload as string

@@ -54,11 +54,13 @@ export const labelsForExcel = [
   'Время регистрации',
   'Время в работу',
   'Время выполнения',
+  'Время решения',
   'Время закрытия',
   'Исполнитель',
   'Ответственный',
   'Кто принял',
-  'Перевел в выполнение',
+  'Выполнен',
+  'Решён',
   'Закрыл',
   'Заявитель',
   'Контакты заявителя',
@@ -484,7 +486,7 @@ export const columnData: INC_HeadCell[] = [
   },
   {
     number: 29,
-    id: 'userClosingCheck',
+    id: 'userDone',
     label: 'Перевел в выполнение',
     type: 'list',
     width: 150,
@@ -498,7 +500,7 @@ export const columnData: INC_HeadCell[] = [
   },
   {
     number: 30,
-    id: 'timeCloseCheck',
+    id: 'timeDone',
     label: 'Время выполнения',
     type: 'dateTime',
     width: 150,
@@ -510,8 +512,37 @@ export const columnData: INC_HeadCell[] = [
     hideable: true,
     noChangeSettings: false,
   },
+
   {
     number: 31,
+    id: 'userClosingCheck',
+    label: 'Перевел в решение',
+    type: 'list',
+    width: 150,
+    minWidth: minHeaderColumnWidth,
+    maxWidth: 350,
+    sortable: true,
+    filterable: true,
+    disableColumn: false,
+    hideable: true,
+    noChangeSettings: false,
+  },
+  {
+    number: 32,
+    id: 'timeCloseCheck',
+    label: 'Время решения',
+    type: 'dateTime',
+    width: 150,
+    minWidth: minHeaderColumnWidth,
+    maxWidth: 350,
+    sortable: true,
+    filterable: true,
+    disableColumn: false,
+    hideable: true,
+    noChangeSettings: false,
+  },
+  {
+    number: 33,
     id: 'typeOfWork',
     label: 'Тип работ',
     type: 'list',
@@ -525,7 +556,7 @@ export const columnData: INC_HeadCell[] = [
     noChangeSettings: false,
   },
   {
-    number: 32,
+    number: 34,
     id: 'typeCompletedWork',
     label: 'Тип выполненных работ',
     type: 'list',
@@ -539,7 +570,7 @@ export const columnData: INC_HeadCell[] = [
     noChangeSettings: false,
   },
   {
-    number: 33,
+    number: 35,
     id: 'commentCloseCheck',
     label: 'Комментарии к выполнению',
     type: 'value',
@@ -553,7 +584,7 @@ export const columnData: INC_HeadCell[] = [
     noChangeSettings: false,
   },
   {
-    number: 34,
+    number: 36,
     id: 'overdue',
     label: 'Статус SLA',
     type: 'boolean',
@@ -567,7 +598,7 @@ export const columnData: INC_HeadCell[] = [
     noChangeSettings: false,
   },
   {
-    number: 35,
+    number: 37,
     id: 'act',
     label: 'Акты',
     type: 'value',
@@ -581,7 +612,7 @@ export const columnData: INC_HeadCell[] = [
     noChangeSettings: false,
   },
   {
-    number: 36,
+    number: 38,
     id: 'spaceParts',
     label: 'ЗИП',
     type: 'value',
@@ -595,7 +626,7 @@ export const columnData: INC_HeadCell[] = [
     noChangeSettings: false,
   },
   {
-    number: 37,
+    number: 39,
     id: 'userClosing',
     label: 'Закрыл',
     type: 'list',
@@ -609,7 +640,7 @@ export const columnData: INC_HeadCell[] = [
     noChangeSettings: false,
   },
   {
-    number: 38,
+    number: 40,
     id: 'timeClose',
     label: 'Время закрытия',
     type: 'dateTime',
@@ -623,7 +654,7 @@ export const columnData: INC_HeadCell[] = [
     noChangeSettings: false,
   },
   {
-    number: 39,
+    number: 41,
     id: 'commentClose',
     label: 'Комментарии к закрытию',
     type: 'value',
@@ -637,7 +668,7 @@ export const columnData: INC_HeadCell[] = [
     noChangeSettings: false,
   },
   {
-    number: 40,
+    number: 42,
     id: 'rating',
     label: 'Оценка',
     type: 'value',
@@ -651,7 +682,7 @@ export const columnData: INC_HeadCell[] = [
     noChangeSettings: false,
   },
   {
-    number: 41,
+    number: 43,
     id: 'parentalIncident',
     label: 'Родительский',
     type: 'value',
@@ -665,7 +696,7 @@ export const columnData: INC_HeadCell[] = [
     noChangeSettings: false,
   },
   {
-    number: 42,
+    number: 44,
     id: 'relatedIncident',
     label: 'Связанный',
     type: 'value',
@@ -725,6 +756,8 @@ export const ModalTitles = {
   changeTypesOfWork: 'Изменить тип работ',
   changeTypesCompletedWork: 'Изменить тип выполненных работ',
   closeINC: 'Закрытие инцидента',
+  commentWaitINC: 'Комментарии к ожиданию инцидента',
+  commentReturnINC: 'Комментарии к возврату инцидента',
   printINC: 'Выберите тип печати списка инцидентов',
   changeStateStatuses: 'Изменить порядок статусов инцидента',
   changeIncident: 'Изменить инцидент',
@@ -1168,6 +1201,26 @@ export const MapAddActInputFields = [
   },
 ]
 
+export const MapCommentWaitINCInputFields = [
+  {
+    name: 'commentWaitINC',
+    label: 'Введите комментарий к ожиданию инцидента',
+    validation: lightTextValidation,
+    type: 'text',
+    required: true,
+  },
+]
+
+export const MapCommentReturnINCInputFields = [
+  {
+    name: 'commentReturnINC',
+    label: 'Введите комментарий к возврату инцидента',
+    validation: lightTextValidation,
+    type: 'text',
+    required: true,
+  },
+]
+
 export const empty_INCStatuses = [
   { statusINC: '', id: '', filterStatus: false, idFilter: 0 },
 ]
@@ -1244,12 +1297,14 @@ export const emptyINC = {
   timeRegistration: '',
   timeInWork: '',
   timeSLA: '',
+  timeDone: '',
   timeCloseCheck: '',
   timeClose: '',
   executor: '',
   responsible: '',
   applicant: '',
   applicantContacts: '',
+  userDone: '',
   userClosingCheck: '',
   userClosing: '',
   description: '',

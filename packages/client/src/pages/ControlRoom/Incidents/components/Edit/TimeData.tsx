@@ -14,6 +14,10 @@ export const TimeData = ({ newINC }: IDataINC) => {
         value={convertTSToCurrentTZ(newINC?.timeInWork)}
       />
       <CellINC
+        label={'Выполнено: '}
+        value={convertTSToCurrentTZ(newINC?.timeDone)}
+      />
+      <CellINC
         label={'Решён: '}
         value={convertTSToCurrentTZ(newINC?.timeCloseCheck)}
       />

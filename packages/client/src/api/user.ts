@@ -375,6 +375,31 @@ export const changeUserAppOptions = createAsyncThunk(
   },
 )
 
+export const changeUserAppOptionsNoMessage = createAsyncThunk(
+  'user/changeUserAppOptionsNoMessage',
+  async (appOptions: ChangeAppProps, thunkAPI) => {
+    try {
+      const { data } = await authhost.post<User>(
+        ApiEndPoints.User.ChangeUserAppOptions,
+        appOptions,
+      )
+      return {
+        data,
+      }
+    } catch (error) {
+      if (axios.isAxiosError<ValidationError, Record<string, unknown>>(error)) {
+        return thunkAPI.rejectWithValue(
+          `Не удалось обновить настройки приложения: \n${
+            error.response?.data.message ?? error.response?.data
+          }`,
+        )
+      } else {
+        console.error(error)
+      }
+    }
+  },
+)
+
 export const getUserStatus = createAsyncThunk(
   'user/getUserStatus',
   async (_, thunkAPI) => {

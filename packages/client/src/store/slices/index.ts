@@ -13,6 +13,7 @@ import { tableINCReducer } from './tableINC'
 import { filesReducer } from './files'
 import { appReducer } from './app'
 import { systemReducer } from './system'
+import { engineerReducer } from './engineer'
 
 export const rootReducer = {
   auth: authReducer,
@@ -30,4 +31,5 @@ export const rootReducer = {
   files: filesReducer,
   app: appReducer,
   system: systemReducer,
+  engineer: engineerReducer,
 }

@@ -9,7 +9,13 @@ export const incidentRouter = (apiRouter: Router) => {
 
   router.get(
     '/getIncidentStatuses',
-    roleMiddleware(['getIncidentStatuses', 'ADMIN', 'SUPERADMIN']),
+    roleMiddleware([
+      'getIncidentStatuses',
+      'ADMIN',
+      'SUPERADMIN',
+      'Dispatcher',
+      'FieldEngineers',
+    ]),
     service.getIncidentStatuses,
   )
   router.get(
@@ -86,7 +92,13 @@ export const incidentRouter = (apiRouter: Router) => {
 
   router.get(
     '/getTypesCompletedWork',
-    roleMiddleware(['getTypesCompletedWork', 'ADMIN', 'SUPERADMIN']),
+    roleMiddleware([
+      'getTypesCompletedWork',
+      'ADMIN',
+      'SUPERADMIN',
+      'FieldEngineers',
+      'Dispatcher',
+    ]),
     service.getTypesCompletedWork,
   )
   router.get(
@@ -184,6 +196,7 @@ export const incidentRouter = (apiRouter: Router) => {
       'ADMIN',
       'Dispatcher',
       'SUPERADMIN',
+      'FieldEngineers',
     ]),
     service.changeINCAddFiles,
   )
@@ -222,7 +235,6 @@ export const incidentRouter = (apiRouter: Router) => {
     roleMiddleware(['changeComment', 'SUPERADMIN', 'ADMIN', 'Dispatcher']),
     service.changeComment,
   )
-
   router.get(
     '/getINCLogs',
     roleMiddleware(['getINCLogs', 'SUPERADMIN', 'ADMIN', 'Dispatcher']),

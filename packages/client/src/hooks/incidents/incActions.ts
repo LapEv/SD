@@ -6,7 +6,7 @@ import {
   ChangeTypesOfWork,
   AddTypesCompletedWork,
   ChangeTypesCompletedWork,
-  INCStatuses,
+  ChangeINCStateStatuses,
   GetINCsByParams,
   INC,
   ChangeExecutor,
@@ -42,7 +42,7 @@ export interface INCActions {
   changeINCSocket: (data: INC) => void
   changeINCAddFiles: (data: ChangeINCAddFiles) => void
   changeIncidentStatuses: (data: ChangeINCStatuses) => void
-  changeStateIncidentStatuses: (data: INCStatuses[]) => void
+  changeStateIncidentStatuses: (data: ChangeINCStateStatuses[]) => void
   changeTypesOfWork: (data: ChangeTypesOfWork) => void
   changeTypesCompletedWork: (data: ChangeTypesCompletedWork) => void
   setLoadingINC: (data: boolean) => void

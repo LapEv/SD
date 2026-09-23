@@ -9,6 +9,7 @@ import { useObjects } from 'hooks/objects/useObjects'
 import { useSLA } from 'hooks/sla/useSLA'
 import { useIncidents } from 'hooks/incidents/useINC'
 import { useFiles } from 'hooks/files/useFiles'
+import { useEngineer } from 'hooks/engineer/useEngineer'
 
 export const checkLoading = () => {
   const [{ isLoadingAuth }] = useAuth()
@@ -22,6 +23,7 @@ export const checkLoading = () => {
   const [{ isLoadingSLA }] = useSLA()
   const [{ isLoadingINC }] = useIncidents()
   const [{ isLoadingFiles }] = useFiles()
+  const [{ isLoadingEngineerINC }] = useEngineer()
 
   if (
     isLoadingAuth ||
@@ -34,7 +36,8 @@ export const checkLoading = () => {
     isLoadingObjects ||
     isLoadingSLA ||
     isLoadingINC ||
-    isLoadingFiles
+    isLoadingFiles ||
+    isLoadingEngineerINC
   )
     return true
   return false

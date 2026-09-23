@@ -146,6 +146,12 @@ export const DispatcherData = [
     type: 'menu',
   },
   {
+    text: 'Инженерская',
+    icon: <EngineeringIcon />,
+    to: Routes.EngineerRoom,
+    type: 'component',
+  },
+  {
     text: 'Пользователи',
     icon: <Users />,
     to: Routes.Users,

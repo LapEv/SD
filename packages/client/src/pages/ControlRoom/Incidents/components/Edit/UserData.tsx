@@ -71,6 +71,21 @@ export const UserData = ({ newINC, setNewINC }: IEditDataINC) => {
           onChange={({ label, id }) =>
             setNewINC({
               ...newINC,
+              userDone: id === emptyResponsible.id ? '' : label,
+              id_incDone: id,
+            })
+          }
+          value={newINC.userDone ?? ''}
+        />
+      </MuiDiv>
+      <MuiDiv className="cellINCContainer">
+        <MuiDiv className="cellINCLabel">{'Перевёл в реш: '}</MuiDiv>
+        <DropDownINConEdit
+          data={listResponsible as Options[]}
+          classNameLi="dd_li_onedit"
+          onChange={({ label, id }) =>
+            setNewINC({
+              ...newINC,
               userClosingCheck: id === emptyResponsible.id ? '' : label,
               id_incClosingCheck: id,
             })

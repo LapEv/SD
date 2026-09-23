@@ -11,6 +11,7 @@ export const CellINCActs = ({
   files,
   idINC,
   incident,
+  className,
 }: ICellINCActs) => {
   const [{ viewFiles }, { setViewFiles, setViewFilePanel, setAddAct }] =
     useFiles()
@@ -22,10 +23,10 @@ export const CellINCActs = ({
     }
   }
   return (
-    <MuiDiv className="cellINCContainer">
+    <MuiDiv className={`cellINCContainer ${className}`}>
       <MuiDiv className="cellINCLabel">
         {label}
-        {value ? (
+        {value && (
           <Tooltip
             title="Просмотр"
             enterDelay={300}
@@ -38,30 +39,30 @@ export const CellINCActs = ({
               />
             </IconButton>
           </Tooltip>
-        ) : (
-          <></>
         )}
-        <Tooltip
-          title="Добавить"
-          enterDelay={300}
-          leaveDelay={100}
-          placement="top">
-          <IconButton
-            className={'viewActIconButton'}
-            onClick={() =>
-              setAddAct({
-                status: true,
-                id_incFiles: idINC,
-                incident,
-                files,
-              })
-            }>
-            <AddCircleOutlineOutlinedIcon
-              className={'viewActIcon'}
-              fontSize="small"
-            />
-          </IconButton>
-        </Tooltip>
+        {className !== 'cellINCContainerDone' && (
+          <Tooltip
+            title="Добавить"
+            enterDelay={300}
+            leaveDelay={100}
+            placement="top">
+            <IconButton
+              className={'viewActIconButton'}
+              onClick={() =>
+                setAddAct({
+                  status: true,
+                  id_incFiles: idINC,
+                  incident,
+                  files,
+                })
+              }>
+              <AddCircleOutlineOutlinedIcon
+                className={'viewActIcon'}
+                fontSize="small"
+              />
+            </IconButton>
+          </Tooltip>
+        )}
       </MuiDiv>
       <MuiDiv className="cellINCValue">{value ?? ''}</MuiDiv>
     </MuiDiv>

@@ -13,6 +13,7 @@ import { objectsRouter } from './objectsRouter'
 import { incidentRouter } from './IncidentRouter'
 import { filesRouter } from './filesRouter'
 import { systemRouter } from './systemRouter'
+import { engineerRouter } from './engineerRouter'
 
 export const apiRouter: Router = Router()
 
@@ -30,3 +31,4 @@ objectsRouter(apiRouter)
 incidentRouter(apiRouter)
 filesRouter(apiRouter)
 systemRouter(apiRouter)
+engineerRouter(apiRouter)

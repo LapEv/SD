@@ -18,7 +18,6 @@ export const Cells = ({
   row,
 }: ICells) => {
   const theme = useTheme() as ITheme
-
   if (id === 'indicator')
     return (
       <TableCell component="th" id={labelId} scope="row" padding="normal">
@@ -46,8 +45,19 @@ export const Cells = ({
           id={row.id}
           incident={row.incident}
           executor={row.executor}
+          id_incExecutor={row.id_incExecutor as string}
           responsible={row.responsible}
           timeSLA={row.timeSLA}
+          comment={row.comment}
+          typeCompletedWork={row.typeCompletedWork}
+          commentCloseCheck={row.commentCloseCheck}
+          act={row.act && row.act.length > 0 ? row.act.join(', ') : row.act}
+          spaceParts={
+            row.spaceParts && row.spaceParts.length > 0
+              ? row.spaceParts.join(', ')
+              : row.spaceParts
+          }
+          Files={row.Files}
         />
       </TableCell>
     )

@@ -34,6 +34,7 @@
     "mui-color-picker": "^3.5.1",
     "prettier": "^3.8.1",
     "react": "^19.2.3",
+    "react-countdown": "^2.3.6",
     "react-dom": "^19.2.3",
     "react-hook-form": "^7.71.1",
     "react-redux": "^9.2.0",

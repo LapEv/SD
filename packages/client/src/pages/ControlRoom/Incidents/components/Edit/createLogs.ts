@@ -6,13 +6,20 @@ export const createLogs = (newINC: INC, inc: INC, userID: string) => {
     new Date().getTime() - new Date().getTimezoneOffset() * 60 * 1000,
   )
   if (newINC.act !== inc.act) {
-    const oldActs = inc.act && inc.act.length > 0 ? inc.act.join(', ') : ''
     const addActs =
       newINC.act && newINC.act.length > 0 ? newINC.act.join(', ') : ''
     logs.push({
       id_incLog: newINC.id,
       time: now,
-      log: `Добавлнеы новые акты. Было "${oldActs}", добавлены "${addActs}"`,
+      log: `Добавлены новые акты: ${addActs}`,
+      id_incLogUser: userID,
+    } as ChangeLogsEditINC)
+  }
+  if (newINC.act !== inc.act) {
+    logs.push({
+      id_incLog: newINC.id,
+      time: now,
+      log: `Изменёны акты "${inc.act}" на "${newINC.act}"`,
       id_incLogUser: userID,
     } as ChangeLogsEditINC)
   }
@@ -121,14 +128,6 @@ export const createLogs = (newINC: INC, inc: INC, userID: string) => {
       id_incLogUser: userID,
     } as ChangeLogsEditINC)
   }
-  if (newINC.act !== inc.act) {
-    logs.push({
-      id_incLog: newINC.id,
-      time: now,
-      log: `Изменёны акты "${inc.act}" на "${newINC.act}"`,
-      id_incLogUser: userID,
-    } as ChangeLogsEditINC)
-  }
   if (newINC.spaceParts !== inc.spaceParts) {
     logs.push({
       id_incLog: newINC.id,
@@ -153,6 +152,6 @@ export const createLogs = (newINC: INC, inc: INC, userID: string) => {
       id_incLogUser: userID,
     } as ChangeLogsEditINC)
   }
-
+  console.log('logs = ', logs)
   return logs
 }

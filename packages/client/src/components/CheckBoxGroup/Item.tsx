@@ -52,7 +52,7 @@ export const Item = memo(
           id={id}
           name={`${name}`}
           sx={{ ...props }}
-          className={`itemsContaimer  ${className}`}
+          className={`itemsContainer ${className}`}
           control={
             <Checkbox
               sx={{

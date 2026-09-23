@@ -566,7 +566,7 @@ export const rolesStartData = [
   },
   {
     role: 'getTypesCompletedWork',
-    group: ['ADMIN', 'Dispatcher', 'AdministrationCCA'],
+    group: ['ADMIN', 'Dispatcher', 'AdministrationCCA', 'FieldEngineers'],
     nameRole: 'Получение списка активных типов выполненных работ',
   },
   {

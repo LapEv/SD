@@ -11,7 +11,7 @@ import {
   TextFieldIncidents,
 } from 'components/TextFields'
 import { ButtonsModalSection } from 'components/Buttons'
-import { MapINCInputFields } from '../data'
+import { MapINCInputFields, MapINCMobileInputFields } from '../data'
 import { useIncidents } from 'hooks/incidents/useINC'
 import { DropDownINC, emptyOptionsDD } from 'components/DropDown'
 import { useClients } from 'hooks/clients/useClients'
@@ -26,11 +26,13 @@ import { useAuth } from 'hooks/auth/useAuth'
 import { AddValuesProps, ChooseModalProps, methodsReuqest } from '../interfaces'
 import { BoxModal } from 'components/MUI'
 import { useTableINC } from 'hooks/tableINC/useTableINC'
+import { useApp } from 'hooks/app/useApp'
 
 export const NewIncident = memo(
   React.forwardRef<unknown, ChooseModalProps>(
     ({ handleModal, title }: ChooseModalProps, ref) => {
       const [{ user }] = useAuth()
+      const [{ device }] = useApp()
       const [{ clients }, { getClients }] = useClients()
       const [{ contracts }, { getContracts }] = useContracts()
       const [{ typesOfWork, incStatuses }, { getTypesOfWork, newINC }] =
@@ -70,7 +72,8 @@ export const NewIncident = memo(
       const { handleSubmit, control } = useForm<AddValuesProps>({
         mode: 'onBlur',
         defaultValues: {
-          list: MapINCInputFields,
+          list:
+            device === 'mobile' ? MapINCMobileInputFields : MapINCInputFields,
         },
       })
       const { errors } = useFormState({ control })

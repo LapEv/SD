@@ -331,7 +331,16 @@ Incidents.belongsTo(Users, {
   targetKey: 'id',
   as: 'UserResponsible',
 })
-
+Users.hasOne(Incidents, {
+  foreignKey: 'id_incDone',
+  sourceKey: 'id',
+  as: 'UserDone',
+})
+Incidents.belongsTo(Users, {
+  foreignKey: 'id_incDone',
+  targetKey: 'id',
+  as: 'UserDone',
+})
 Users.hasOne(Incidents, {
   foreignKey: 'id_incClosingCheck',
   sourceKey: 'id',

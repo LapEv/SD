@@ -1,3 +1,5 @@
+import { INC } from '../incidents/interfaces'
+
 export interface FilesData {
   id: string
   name: string
@@ -18,6 +20,7 @@ export interface AddActsModal {
   incident?: string
   id_incFiles: string
   files?: FilesData[] | undefined
+  inc?: INC
 }
 
 export interface AnswerUploaded {

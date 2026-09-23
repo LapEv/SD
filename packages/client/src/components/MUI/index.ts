@@ -1,4 +1,5 @@
 export { MuiDiv } from './MuiDiv'
 export { BoxModal } from './BoxModal'
+export { BoxModalEditINC } from './BoxModalEditINC'
 export { MuiLi } from './MuiLi'
 export { MuiSpan } from './MuiSpan'

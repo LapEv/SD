@@ -2,9 +2,11 @@ import { createRef, SyntheticEvent } from 'react'
 import { Modal } from '@mui/material'
 import { ChooseModal } from './ChooseModal'
 import { useTableINC } from 'hooks/tableINC/useTableINC'
+import { useApp } from 'hooks/app/useApp'
 
 export const MUIModal = () => {
   const [{ modal }, { setModal }] = useTableINC()
+  const [{ device }] = useApp()
   const modalClientRef = createRef()
 
   const onClose = (event: SyntheticEvent<EventTarget>, reason: string) => {
@@ -30,6 +32,7 @@ export const MUIModal = () => {
       onClose={onClose}
       aria-labelledby="modal-modal-title"
       aria-describedby="modal-modal-description"
+      sx={{ padding: device === 'mobile' ? '5px' : '50px' }}
       disableScrollLock={true}>
       <ChooseModal
         ref={modalClientRef}

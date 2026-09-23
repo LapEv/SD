@@ -63,6 +63,7 @@ const createINCData = (data: INC[]) => {
       typeOfWork: item.TypesOfWork?.typeOfWork as string,
       typeCompletedWork: item.TypesCompletedWork?.typeCompletedWork as string,
       userAccepted: item.User?.shortName as string,
+      userDone: item.UserDone?.shortName as string,
       userClosingCheck: item.UserClosingCheck?.shortName as string,
       userClosing: item.UserClosing?.shortName as string,
       equipment: item.ClassifierEquipment?.equipment as string,
@@ -231,7 +232,6 @@ export const incidentsSlise = createSlice({
       state.isLoadingINC = false
       state.error = payload as string
     })
-
     builder.addCase(changeINCAddFiles.fulfilled, (state, { payload }) => {
       state.isLoadingINC = false
       state.error = ''

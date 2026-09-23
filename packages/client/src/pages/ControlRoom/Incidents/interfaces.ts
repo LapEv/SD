@@ -36,6 +36,8 @@ export interface INC_Data {
   comment: string
   applicant: string
   applicantContacts: string
+  userDone: string
+  timeDone: Date
   userClosingCheck: string
   timeCloseCheck: Date
   typeOfWork: string
@@ -230,6 +232,29 @@ export interface CloseINCProps {
   data: Options
   incident: string
   id_incFiles: string
+  typeCompletedWork?: string
+  commentCloseCheck?: string
+  act?: string | string[]
+  spaceParts?: string | string[]
+  id?: string
+  Files?: FilesData[] | undefined
+  status?: Options
+}
+
+export interface CommentWaitINCProps {
+  modalImage?: string
+  handleModal: (data: DataCommentWaitINC) => void
+  title?: string
+  data: Options
+  incident: string
+}
+
+export interface CommentReturnINCProps {
+  modalImage?: string
+  handleModal: (data: DataCommentWaitINC) => void
+  title?: string
+  data: Options
+  incident: string
 }
 
 export interface AddActProps {
@@ -249,6 +274,12 @@ export interface DataCloseINC {
   spaceParts?: string[]
   act?: string[]
   data: Options
+}
+
+export interface DataCommentWaitINC {
+  state: boolean
+  data: Options
+  newComment: string
 }
 
 export interface DataAddAct {
@@ -328,9 +359,16 @@ export interface IStatus {
   incident: string
   responsible: string
   executor: string
+  id_incExecutor: string
   // currentStatus: string
   timeSLA: string
+  comment: string
   // changeINC: ({ id, incident, incidents }: idINC) => void
+  typeCompletedWork: string
+  commentCloseCheck: string
+  act: string | string[]
+  spaceParts: string | string[]
+  Files: FilesData[] | undefined
 }
 
 export interface idINC {
@@ -375,6 +413,7 @@ export interface ICellINCActs {
   files: FilesData[] | undefined
   idINC: string
   incident: string
+  className?: string
 }
 
 export interface IDataINC {

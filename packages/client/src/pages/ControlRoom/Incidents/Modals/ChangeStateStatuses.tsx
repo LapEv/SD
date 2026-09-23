@@ -3,7 +3,10 @@ import { Typography } from '@mui/material'
 import { ButtonsSectionNoSubmit } from 'components/Buttons'
 import { useIncidents } from 'hooks/incidents/useINC'
 import { ChooseModalProps } from '../interfaces'
-import { INCStatuses } from 'store/slices/incidents/interfaces'
+import {
+  ChangeINCStateStatuses,
+  INCStatuses,
+} from 'store/slices/incidents/interfaces'
 import { BoxModal, MuiDiv } from 'components/MUI'
 
 export const ChangeStateStatuses = memo(
@@ -59,7 +62,10 @@ export const ChangeStateStatuses = memo(
       }
 
       const changeData = () => {
-        changeStateIncidentStatuses(items as INCStatuses[])
+        const newState = items?.map(({ id, stateNumber }) => {
+          return { id, stateNumber }
+        })
+        changeStateIncidentStatuses(newState as ChangeINCStateStatuses[])
         handleModal(false)
       }
 

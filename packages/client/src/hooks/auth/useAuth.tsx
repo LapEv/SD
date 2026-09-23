@@ -15,6 +15,7 @@ import {
   newUser,
   deleteAvatar,
   resetPassword,
+  changeUserAppOptionsNoMessage,
 } from 'api/user'
 import { signin, signup } from 'api/user'
 import { RootState } from 'store/index'
@@ -64,6 +65,9 @@ export function useAuth(): [AuthState, AuthActions] {
       },
       changeUserAppOptions(options) {
         dispatch(changeUserAppOptions(options))
+      },
+      changeUserAppOptionsNoMessage(options) {
+        dispatch(changeUserAppOptionsNoMessage(options))
       },
       getUserInfo(id) {
         dispatch(getUserInfo(id))

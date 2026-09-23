@@ -37,6 +37,7 @@ import { AppConst } from '../data/const'
 import { convertDateToString } from '../utils/convertDate'
 import { mailerChangeStatus, mailerRegInc } from '../Mailer'
 import {
+  IIncidentLogs,
   IIncindent,
   IIncindentStatuses,
   Incindent,
@@ -54,7 +55,7 @@ import { IClassifierEquipment, IClassifierModels } from '/models/classifier'
 import { getOrderINC } from '../utils/getOrder'
 import { getNewINC } from '../utils/getNewINC'
 import { checkTemplateFromSD } from '../Mailer/checkTemplate'
-import { IPrepareStatusObj } from './interfaces'
+import { ChangeINCStateStatuses, IPrepareStatusObj } from './interfaces'
 import { checkForCloseINC } from '../tasks/taskCloseINCs/checkForCloseINC'
 import { ISystem } from '/models/system'
 const socket = require('../utils/socket')
@@ -292,6 +293,20 @@ export class incidentService {
     },
     {
       model: Users,
+      as: 'UserDone',
+      required: false,
+      attributes: [
+        'id',
+        'username',
+        'firstName',
+        'lastName',
+        'middleName',
+        'shortName',
+        'active',
+      ],
+    },
+    {
+      model: Users,
       as: 'UserClosingCheck',
       required: false,
       attributes: [
@@ -502,6 +517,19 @@ export class incidentService {
         currentDate,
       }
     }
+    if (data.status === 'Выполнено') {
+      const sla = new Date(data.timeSLA).getTime()
+      const now = currentDate.getTime()
+      const overdue = now > sla ? true : false
+      return {
+        _data: {
+          ...data,
+          overdue,
+          timeDone: currentDate,
+        },
+        currentDate,
+      }
+    }
     if (data.status === 'Решён') {
       const sla = new Date(data.timeSLA).getTime()
       const now = currentDate.getTime()
@@ -614,11 +642,17 @@ export class incidentService {
   }
   changeStateIncidentStatuses = async (_req: Request, res: Response) => {
     try {
-      const ids = _req.body.map((item: IIncindentStatuses) => item.id)
-      await IncidentStatusesRepos.destroy({
-        where: { id: ids },
+      const data = _req.body as ChangeINCStateStatuses[]
+      data.map(async ({ id, stateNumber }) => {
+        await IncidentStatusesRepos.update(id, {
+          stateNumber: stateNumber + 100,
+        })
       })
-      await IncidentStatusesRepos.bulkCreate(_req.body)
+      data.map(async ({ id, stateNumber }) => {
+        await IncidentStatusesRepos.update(id, {
+          stateNumber,
+        })
+      })
       const incStatuses = await IncidentStatusesRepos.findAll({
         where: { active: true },
         order: [['stateNumber', 'ASC']],
@@ -1223,7 +1257,7 @@ export class incidentService {
     try {
       const { endDate } = _req.query
       const incs = (await IncidentRepos.findAll({
-        where: { createdAt: { [Op.gt]: endDate } },
+        where: { active: true, createdAt: { [Op.gt]: endDate } },
         include: this.Includes,
         order: this.orderINC,
       })) as Incindent[]
@@ -1291,11 +1325,13 @@ export class incidentService {
         })
       }
       if (logs.length > 0) {
-        const log = { ...logs, time: new Date() }
+        const log = (logs as IIncidentLogs[]).map(item => {
+          return { ...item, time: new Date() }
+        })
         await IncidentLogsRepos.bulkCreate(log)
       }
       const incs = await IncidentRepos.findAll({
-        where: { createdAt: { [Op.gt]: endDate } },
+        where: { active: true, createdAt: { [Op.gt]: endDate } },
         include: this.Includes,
         order: this.orderINC,
       })
@@ -1322,7 +1358,9 @@ export class incidentService {
     const { logs, endDate, id } = _req.body
     try {
       if (logs.length > 0) {
-        const log = { ...logs, time: new Date() }
+        const log = (logs as IIncidentLogs[]).map(item => {
+          return { ...item, time: new Date() }
+        })
         await IncidentLogsRepos.bulkCreate(log)
       }
       if (endDate === 0) {
@@ -1335,7 +1373,7 @@ export class incidentService {
         res.status(200).json({ incs, count })
       }
       const incs = await IncidentRepos.findAll({
-        where: { createdAt: { [Op.gt]: endDate } },
+        where: { active: true, createdAt: { [Op.gt]: endDate } },
         include: this.Includes,
         order: this.orderINC,
       })

@@ -1,4 +1,11 @@
-import React, { useState, ChangeEvent, DragEvent, memo, useRef } from 'react'
+import React, {
+  useState,
+  ChangeEvent,
+  DragEvent,
+  memo,
+  useRef,
+  useEffect,
+} from 'react'
 import { AddValuesProps, CloseINCProps } from '../interfaces'
 import { Typography, Chip, useTheme } from '@mui/material'
 import { ButtonsModalSection } from 'components/Buttons'
@@ -22,11 +29,25 @@ import { LinearProgressWithLabel } from 'components/LinearProgress/LinearProgres
 import { useUploadProgress } from 'api/useUploadProgress'
 import CloudUploadOutlinedIcon from '@mui/icons-material/CloudUploadOutlined'
 import { ITheme } from 'themes/themeConfig'
+import { CellINCActs } from '../components/Edit/CellINCActs'
 
 export const ChangeStatus = memo(
   React.forwardRef<unknown, CloseINCProps>(
     (
-      { handleModal, title, data, incident, id_incFiles }: CloseINCProps,
+      {
+        handleModal,
+        title,
+        data,
+        incident,
+        id_incFiles,
+        typeCompletedWork,
+        commentCloseCheck,
+        act,
+        spaceParts,
+        id,
+        Files,
+        status,
+      }: CloseINCProps,
       ref,
     ) => {
       const [{ typesCompletedWork }] = useIncidents()
@@ -80,15 +101,24 @@ export const ChangeStatus = memo(
         const names = Array.from(newList)
           .map(item => item.name)
           .join(', ')
-        setSelectedNameFiles(names)
+        console.log('names = ', names)
+        console.log('act = ', act ? `${act}, ${names}` : names)
+        setSelectedNameFiles(act ? `${act}, ${names}` : names)
       }
 
       const { handleSubmit, control } = useForm<AddValuesProps>({
         mode: 'onBlur',
         defaultValues: {
-          list: MapINCStatusCloseInputFields,
+          list: MapINCStatusCloseInputFields.map(data =>
+            data.name === 'commentCloseCheck'
+              ? { ...data, value: commentCloseCheck }
+              : data.name === 'spaceParts'
+                ? { ...data, value: spaceParts as string }
+                : data,
+          ),
         },
       })
+
       const { errors } = useFormState({ control })
       const { fields } = useFieldArray({
         control,
@@ -114,7 +144,7 @@ export const ChangeStatus = memo(
             state: true,
             typeCompletedWork: selectedTypeCompletedWork,
             commentCloseCheck: list[1].value,
-            files: result.data,
+            files: [...Files!, ...result.data],
             spaceParts: list[3].value
               ?.split(/,| |;|\|./)
               .filter(item => item !== ''),
@@ -138,9 +168,21 @@ export const ChangeStatus = memo(
         setErrSelectedItems('')
         const newList = selectedFiles?.filter(({ name }) => name !== item.name)
         const names = newList?.map(item => item.name).join(', ') as string
-        setSelectedNameFiles(names)
+        setSelectedNameFiles(act ? `${act}, ${names}` : names)
         setSelectedFiles(newList)
       }
+
+      useEffect(() => {
+        const isTypeCompletedWork = typesCompletedWork.find(
+          item => item.typeCompletedWork === typeCompletedWork,
+        )
+        if (isTypeCompletedWork) {
+          setSelectedTypeCompletedWork({
+            label: isTypeCompletedWork.typeCompletedWork,
+            id: isTypeCompletedWork.id,
+          })
+        }
+      }, [])
 
       return (
         <BoxModal
@@ -272,6 +314,16 @@ export const ChangeStatus = memo(
               },
             )}
           </MuiDiv>
+          {status?.label === 'Выполнено' && (
+            <CellINCActs
+              label={'Акты: '}
+              value={act as string}
+              files={Files}
+              idINC={id as string}
+              incident={incident}
+              className="cellINCContainerDone"
+            />
+          )}
           <MuiDiv className={'modalErrorCloseCheckNC'}>
             {errSelectedItems}
           </MuiDiv>
