@@ -100,6 +100,9 @@ export interface CloseEngineerINCProps {
   // data: Options
   incident: string
   id_incFiles: string
+  files: FilesData[] | undefined
+  spaceParts: string[]
+  commentCloseCheck: string
 }
 
 export interface DataCloseEngineerINC {

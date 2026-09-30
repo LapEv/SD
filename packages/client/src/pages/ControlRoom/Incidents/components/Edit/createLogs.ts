@@ -152,6 +152,5 @@ export const createLogs = (newINC: INC, inc: INC, userID: string) => {
       id_incLogUser: userID,
     } as ChangeLogsEditINC)
   }
-  console.log('logs = ', logs)
   return logs
 }

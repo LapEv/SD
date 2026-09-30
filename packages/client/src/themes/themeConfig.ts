@@ -1107,6 +1107,7 @@ export const ThemeConfig = ({
             '&.editINC': {
               minHeight: 500,
               maxWidth: 1250,
+              maxHeight: '100%',
               width: device === 'mobile' ? '98%' : '90%',
               paddingTop: fontSize === 'small' ? 0 : 1,
               paddingLeft:
@@ -1802,7 +1803,6 @@ export const ThemeConfig = ({
               padding: 10,
               paddingLeft: 20,
               paddingRight: 20,
-              marginTop: 10,
               // '& > div': {
               '& > .MuiButtonBase-root': {
                 width: '100%',

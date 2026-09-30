@@ -10,7 +10,8 @@ import { ViewButtons } from './ViewButtons'
 import { convertFileSize } from 'utils/convertFileSize'
 
 export const ViewFile = () => {
-  const [{ viewFiles, isLoadingFiles }, { getViewFile }] = useFiles()
+  const [{ viewFiles, isLoadingFiles }, { getViewFile, setViewFilePanel }] =
+    useFiles()
   const [index, setIndex] = useState(0)
 
   const handleKeyDown = (event: KeyboardEvent) => {
@@ -23,12 +24,15 @@ export const ViewFile = () => {
     if (event.key === 'ArrowLeft' && index > 0) {
       setIndex(index - 1)
     }
+    if (event.key === 'Escape') {
+      setViewFilePanel(false)
+    }
   }
 
   useEffect(() => {
-    document.addEventListener('keydown', handleKeyDown)
+    document.addEventListener('keyup', handleKeyDown)
     return () => {
-      document.removeEventListener('keydown', handleKeyDown)
+      document.removeEventListener('keyup', handleKeyDown)
     }
   })
 

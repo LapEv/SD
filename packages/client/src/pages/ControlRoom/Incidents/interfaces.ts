@@ -1,4 +1,5 @@
 import { Dayjs } from 'dayjs'
+import { IINCLogs } from 'store/slices/engineer/interface'
 import { FilesData } from 'store/slices/files/interfaces'
 import { INC, Order } from 'store/slices/incidents/interfaces'
 import {
@@ -249,6 +250,14 @@ export interface CommentWaitINCProps {
   incident: string
 }
 
+export interface CommentCancelINCProps {
+  modalImage?: string
+  handleModal: (data: DataCommentCancelINC) => void
+  title?: string
+  data: Options
+  incident: string
+}
+
 export interface CommentReturnINCProps {
   modalImage?: string
   handleModal: (data: DataCommentWaitINC) => void
@@ -270,13 +279,19 @@ export interface DataCloseINC {
   state: boolean
   typeCompletedWork?: Options
   commentCloseCheck?: string
-  files?: FileList[]
+  files?: FilesData[]
   spaceParts?: string[]
   act?: string[]
   data: Options
 }
 
 export interface DataCommentWaitINC {
+  state: boolean
+  data: Options
+  newComment: string
+}
+
+export interface DataCommentCancelINC {
   state: boolean
   data: Options
   newComment: string
@@ -464,4 +479,30 @@ export interface ModalAnswerProps {
   handleModal: (state: boolean) => void
   type: string
   answerFromModal: (type: string, label: string, answer: boolean) => void
+}
+
+export interface ISocketData {
+  id: string
+  incident: string
+  id_incUser?: string
+  log?: IINCLogs
+  typeCompletedWork?: string
+  id_typeCompletedWork?: string
+  commentCloseCheck?: string
+  timeDone?: string
+  id_incDone?: string
+  userDone?: string
+  id_incStatus?: string
+  status?: string
+  act?: string[]
+  spaceParts?: string[]
+  files?: FileList[]
+  Files?: FileList[]
+  id_incExecutor?: string
+  executor?: string
+  id_incResponsible?: string
+  responsible?: string
+  userID?: string
+  userShortName?: string
+  _incident?: string
 }

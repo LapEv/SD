@@ -22,6 +22,7 @@ export const CellINCActs = ({
       setViewFiles({ idINC, files })
     }
   }
+
   return (
     <MuiDiv className={`cellINCContainer ${className}`}>
       <MuiDiv className="cellINCLabel">

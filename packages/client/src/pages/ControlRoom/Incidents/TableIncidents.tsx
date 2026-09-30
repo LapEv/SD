@@ -14,6 +14,8 @@ import { MuiDiv } from 'components/MUI'
 import { io } from 'socket.io-client'
 import { baseURL } from 'api/config'
 import { useMessage } from 'hooks/message/useMessage'
+import { useFiles } from 'hooks/files/useFiles'
+import { createINC } from 'store/slices/incidents'
 
 export const TableIncidents = memo(() => {
   const [
@@ -25,12 +27,13 @@ export const TableIncidents = memo(() => {
       getTypesCompletedWork,
       changeExecutorSocket,
       changeResponsibleSocket,
-      changeStatusSocket,
       changeINCSocket,
       newINCSocket,
       newINCfromMailSocket,
     },
   ] = useIncidents()
+  const [, { checkViewFiles }] = useFiles()
+
   const [{ dense, toCloud }, { setSettings, setToCloud }] = useTableINC()
   const [
     { user },
@@ -68,7 +71,7 @@ export const TableIncidents = memo(() => {
     }
 
     const socket = io(baseURL, { transports: ['websocket'] })
-    socket.on('server_SBI', ({ token, category, action, data }) => {
+    socket.on('server_SD', ({ token, category, action, data }) => {
       const localToken = localStorage.getItem('token')
       if (localToken === token) return
 
@@ -95,7 +98,9 @@ export const TableIncidents = memo(() => {
           }
         }
         if (action === 'changeStatus') {
-          changeStatusSocket(data)
+          changeINCSocket(data)
+          const _data = createINC(data)
+          checkViewFiles({ id: data.id, files: _data.files ?? _data.Files })
           if (notificationsINC.changeStatus) {
             setMessage({
               text: `Для инцидента ${data._incident ?? data.incident} изменен статус ${data.status}`,
@@ -131,10 +136,12 @@ export const TableIncidents = memo(() => {
           }
         }
         if (action === 'changeINCAddFiles') {
+          const _data = createINC(data)
           changeINCSocket(data)
+          checkViewFiles({ id: data.id, files: _data.files ?? _data.Files })
           if (notificationsINC.changeINCAddFiles) {
             setMessage({
-              text: `Изменены акты для инцидента ${data.incident}`,
+              text: `Изменены акты для инцидента ${_data.incident}`,
               type: 'info',
             })
           }

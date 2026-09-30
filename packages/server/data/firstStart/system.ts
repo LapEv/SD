@@ -1,7 +1,7 @@
 export const systemStartData = [
   {
     general: {
-      name: 'SD_SBI',
+      name: 'SD',
       emailSystem: '',
     },
     auth: {

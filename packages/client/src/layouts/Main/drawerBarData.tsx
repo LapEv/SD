@@ -247,6 +247,12 @@ export const controlRoomCustomFilter = [
     id: 'В работе',
   },
   {
+    text: ' - Статус: Отмена',
+    icon: <></>,
+    to: Routes.Incidents,
+    id: 'Отмена',
+  },
+  {
     text: ' - Статус: Решён',
     icon: <></>,
     to: Routes.Incidents,

@@ -16,6 +16,7 @@ import {
   setViewFiles,
   setViewFilePanel,
   setAddAct,
+  checkViewFiles,
 } from 'store/slices/files'
 
 export function useFiles(): [FilesState, FilesActions] {
@@ -54,6 +55,9 @@ export function useFiles(): [FilesState, FilesActions] {
       },
       setAddAct(data) {
         dispatch(setAddAct(data))
+      },
+      checkViewFiles(data) {
+        dispatch(checkViewFiles(data))
       },
     },
   ]

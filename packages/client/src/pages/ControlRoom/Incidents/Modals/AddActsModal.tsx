@@ -7,9 +7,9 @@ import { useIncidents } from 'hooks/incidents/useINC'
 import { useAuth } from 'hooks/auth/useAuth'
 import { useTableINC } from 'hooks/tableINC/useTableINC'
 import { INC } from 'store/slices/incidents/interfaces'
-import { FilesData } from 'store/slices/files/interfaces'
 import { createLogs } from '../components/Edit/createLogs'
 import { ModalTitles, timeIntervalData } from '../data'
+import { checkViewFiles } from 'store/slices/files'
 
 export interface IAddActsModal {
   inc: INC | undefined
@@ -49,9 +49,9 @@ export const AddActsModal = ({ inc, newINC, setNewINC }: IAddActsModal) => {
         id: _newINC.id,
       })
       setAddAct({ status: false, id_incFiles: '' })
+      checkViewFiles({ id: newINC.id, files })
 
-      const newViewFile = { ...(viewFiles.files as FilesData[]), files }
-      setViewFiles({ idINC: viewFiles.idINC, files: newViewFile })
+      setViewFiles({ idINC: viewFiles.idINC, files })
       return
     }
   }

@@ -151,13 +151,12 @@ export const engineerSlise = createSlice({
     },
     changeStatus(state, { payload }) {
       const { id, ...data } = payload
-      state.oldINC = state.incs.find(item => item.id === id)
       state.incs = state.incs.map(item =>
         item.id !== id
           ? item
           : ({
               ...item,
-              ...data,
+              ...createINC(data),
             } as INC),
       )
     },

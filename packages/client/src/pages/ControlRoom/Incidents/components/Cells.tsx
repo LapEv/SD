@@ -1,5 +1,5 @@
 import { TableCell, useTheme } from '@mui/material'
-import { ICells } from '../interfaces'
+import { ICells, overdueLabel } from '../interfaces'
 import { Indicator } from './Indicator/Indicator'
 import { convertTSToCurrentTZ } from 'utils/convertDate'
 import { Status } from './Status/Status'
@@ -113,6 +113,21 @@ export const Cells = ({
         {row.spaceParts && row.spaceParts.length > 0
           ? row.spaceParts.join(', ')
           : row.spaceParts}
+      </TableCell>
+    )
+  }
+
+  if (id === 'overdue') {
+    return (
+      <TableCell
+        component="th"
+        id={labelId}
+        className="cellStatusContainer"
+        scope="row"
+        padding="normal"
+        width={width}
+        sx={{ width: width, maxWidth: width, minWidth: minWidth }}>
+        {row.overdue ? overdueLabel.true : overdueLabel.false}
       </TableCell>
     )
   }

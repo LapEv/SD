@@ -20,7 +20,7 @@ export const BoxModalEditINC = styled(
     justifyContent: 'flex-start',
     width: '100%',
     height: 'auto',
-    maxHeight: '95%',
+    maxHeight: '100%',
     maxWidth: 1220,
     left: 0,
     right: 0,

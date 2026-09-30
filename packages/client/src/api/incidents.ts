@@ -182,7 +182,7 @@ export const changeStatusSVR = createAsyncThunk(
       await authhost.post(ApiEndPoints.INC.changeStatus, _data)
       return {
         message: {
-          text: `${_data._incident}: Назначен статус "${_data.status}"`,
+          text: `${_data.incident}: Назначен статус "${_data.status}"`,
           type: 'success',
         },
       }

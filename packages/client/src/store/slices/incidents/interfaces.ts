@@ -327,7 +327,7 @@ export interface ChangeResponsible {
 export interface ChangeStatus {
   id: string
   id_incStatus: string
-  _incident?: string
+  incident?: string
   status: string
   // userID: string
   timeSLA?: string
@@ -349,11 +349,14 @@ export interface ChangeStatus {
   userClosingCheck?: string
   act?: string[]
   spaceParts?: string[]
-  files?: FileList[]
-  Files?: FileList[]
+  files?: FilesData[]
+  Files?: FilesData[]
   comment?: string
   executor?: string
   id_incExecutor?: string
+  timeClose?: string
+  id_incClosing?: string
+  userClosing?: string
 }
 
 export interface ChangeINC {

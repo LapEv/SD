@@ -338,7 +338,7 @@ export class engineerService {
         order: this.orderINC,
       })) as IIncindent
       const token = _req.header('Authorization')?.replace('Bearer ', '')
-      socket.getIO().emit('server_SBI', {
+      socket.getIO().emit('server_SD', {
         token,
         category: 'incidents',
         action: 'changeINCAddFiles',
@@ -376,20 +376,21 @@ export class engineerService {
       }
       const _log = log.log
       const logs = { ..._log, time: new Date() }
+      await IncidentLogsRepos.create(logs)
+      const inc = (await IncidentRepos.findOne({
+        where: { id },
+        include: this.includes,
+        order: this.orderINC,
+      })) as IIncindent
 
       const token = _req.header('Authorization')?.replace('Bearer ', '')
-      socket.getIO().emit('server_SBI', {
+      socket.getIO().emit('server_SD', {
         token,
         category: 'incidents',
         action: 'changeStatus',
-        data: {
-          id,
-          ...obj._data,
-          log,
-        },
+        data: inc,
       })
 
-      await IncidentLogsRepos.create(logs)
       res.status(200).json()
     } catch (err) {
       res.status(500).json({ error: ['db error', err as Error] })

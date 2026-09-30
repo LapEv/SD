@@ -57,7 +57,7 @@ export const CloseEngineerINCModal = ({
         id_typeCompletedWork: typeCompletedWork?.id,
         commentCloseCheck,
         spaceParts,
-        files,
+        files: files,
         Files: files,
         act,
         timeDone: currentDate,
@@ -102,6 +102,9 @@ export const CloseEngineerINCModal = ({
           title={'Выполнение инцидента'}
           incident={inc.incident as string}
           id_incFiles={inc.id as string}
+          files={inc.files}
+          spaceParts={inc.spaceParts}
+          commentCloseCheck={inc.commentCloseCheck}
         />
       ) : (
         <></>

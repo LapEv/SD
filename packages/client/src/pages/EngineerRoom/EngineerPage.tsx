@@ -52,10 +52,9 @@ export const EngineerPage = memo(() => {
     getIncidentStatuses()
 
     const socket = io(baseURL, { transports: ['websocket'] })
-    socket.on('server_SBI', ({ token, category, action, data }) => {
+    socket.on('server_SD', ({ token, category, action, data }) => {
       const localToken = localStorage.getItem('token')
       if (localToken === token) return
-
       if (category === 'incidents' && data.id_incExecutor === user.id) {
         if (action === 'changeStatus') {
           if (data.status === 'В работе') {
@@ -64,6 +63,7 @@ export const EngineerPage = memo(() => {
               text: `Вам назначен инцидент ${data._incident ?? data.incident}`,
               type: 'info',
             })
+            return
           }
           if (data.status === 'Решён') {
             changeStatus(data)
@@ -71,13 +71,22 @@ export const EngineerPage = memo(() => {
               text: `Инцидент ${data._incident ?? data.incident} переведён в статус "Решён"`,
               type: 'info',
             })
+            return
           }
           if (data.status === 'Закрыт') {
             changeStatus(data)
+            return
+          }
+          if (data.status === 'Ожидание ЗИП/оборудования') {
+            changeStatus(data)
+            return
+          }
+          if (data.status === 'Отмена') {
+            changeStatus(data)
+            return
           }
         }
         if (action === 'changeExecutor') {
-          console.log('setExecutor')
           getINCbyID({
             id: data.id as string,
           })
@@ -102,6 +111,7 @@ export const EngineerPage = memo(() => {
         }
       }
     })
+
     return () => {
       socket.close()
     }

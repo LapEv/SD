@@ -101,8 +101,6 @@ export const ChangeStatus = memo(
         const names = Array.from(newList)
           .map(item => item.name)
           .join(', ')
-        console.log('names = ', names)
-        console.log('act = ', act ? `${act}, ${names}` : names)
         setSelectedNameFiles(act ? `${act}, ${names}` : names)
       }
 
@@ -146,7 +144,7 @@ export const ChangeStatus = memo(
             commentCloseCheck: list[1].value,
             files: [...Files!, ...result.data],
             spaceParts: list[3].value
-              ?.split(/,| |;|\|./)
+              ?.split(/,|;|\|./)
               .filter(item => item !== ''),
             data,
             act: [selectedNameFiles],
@@ -158,7 +156,7 @@ export const ChangeStatus = memo(
           typeCompletedWork: selectedTypeCompletedWork,
           commentCloseCheck: list[1].value,
           spaceParts: list[3].value
-            ?.split(/,| |;|\|./)
+            ?.split(/,|;|\|./)
             .filter(item => item !== ''),
           data,
         })

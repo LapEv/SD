@@ -21,6 +21,7 @@ export interface AddActsModal {
   id_incFiles: string
   files?: FilesData[] | undefined
   inc?: INC
+  act?: string[]
 }
 
 export interface AnswerUploaded {
@@ -47,4 +48,9 @@ export interface IViewFiles {
 export interface IGetViewFile {
   pathfile: string
   id: string
+}
+
+export interface ICheckViewFiles {
+  id: string
+  files: FilesData[] | undefined
 }

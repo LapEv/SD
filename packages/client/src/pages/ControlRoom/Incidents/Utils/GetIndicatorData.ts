@@ -12,7 +12,10 @@ export const GetIndicatorData = ({
   const now = Date.parse(new Date().toISOString())
   const sla = Date.parse(timeSLA)
   const reg = Date.parse(timeReg)
-  if (timeCloseCheck && (status === 'Решён' || status === 'Закрыт')) {
+  if (
+    (timeCloseCheck && (status === 'Решён' || status === 'Закрыт')) ||
+    status === 'Отмена'
+  ) {
     const close = Date.parse(timeCloseCheck)
     const diff = sla - reg
     const closeDiff = sla - close

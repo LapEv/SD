@@ -91,7 +91,7 @@ export const AddEngineerAct = memo(
           }
           handleModalAddAct({
             state: true,
-            files: [...result.data, ...(files as FilesData[])],
+            files: [...(files as FilesData[]), ...result.data],
             act: [selectedNameFiles],
           })
           return

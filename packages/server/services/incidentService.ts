@@ -543,6 +543,20 @@ export class incidentService {
         currentDate,
       }
     }
+    if (data.status === 'Отмена') {
+      const sla = new Date(data.timeSLA).getTime()
+      const now = currentDate.getTime()
+      const overdue = now > sla ? true : false
+      return {
+        _data: {
+          ...data,
+          overdue,
+          timeCloseCheck: currentDate,
+          timeClose: currentDate,
+        },
+        currentDate,
+      }
+    }
     if (data.status === 'Зыкрыт') {
       checkForCloseINC()
     }
@@ -912,7 +926,7 @@ export class incidentService {
       order: this.orderINC,
     })) as IIncindent
 
-    socket.getIO().emit('server_SBI', {
+    socket.getIO().emit('server_SD', {
       token: null,
       category: 'incidents',
       action: 'newINCfromMail',
@@ -921,7 +935,6 @@ export class incidentService {
 
     return inc
   }
-
   newINC = async (_req: Request, res: Response) => {
     const {
       id_incStatus,
@@ -1021,7 +1034,7 @@ export class incidentService {
       ).filter((item: boolean) => item)
 
       const resultMailNotifications =
-        isStatusses && isStatusses.length
+        isStatusses && isStatusses.length > 0
           ? await mailerRegInc({
               mailTo: inc?.Contract.notificationEmail ?? '',
               incident,
@@ -1046,9 +1059,12 @@ export class incidentService {
               userAccepted: inc?.User?.shortName ?? '',
             })
           : null
-      const logResultMailNotifications = resultMailNotifications?.status
-        ? AppConst.mailNotifications.successSend
-        : `${AppConst.mailNotifications.errors.send} ${resultMailNotifications?.errText ?? ''} code: ${resultMailNotifications?.err?.code ?? ''} syscall: ${resultMailNotifications?.err?.syscall ?? ''} hostname: ${resultMailNotifications?.err?.hostname ?? ''} command: ${resultMailNotifications?.err?.command ?? ''}`
+      const logResultMailNotifications =
+        resultMailNotifications === null
+          ? null
+          : resultMailNotifications?.status
+            ? AppConst.mailNotifications.successSend
+            : `${AppConst.mailNotifications.errors.send} ${resultMailNotifications?.errText ?? ''} code: ${resultMailNotifications?.err?.code ?? ''} syscall: ${resultMailNotifications?.err?.syscall ?? ''} hostname: ${resultMailNotifications?.err?.hostname ?? ''} command: ${resultMailNotifications?.err?.command ?? ''}`
       let logNotification
       if (logResultMailNotifications !== null) {
         logNotification = {
@@ -1071,7 +1087,7 @@ export class incidentService {
           : inc
 
       const token = _req.header('Authorization')?.replace('Bearer ', '')
-      socket.getIO().emit('server_SBI', {
+      socket.getIO().emit('server_SD', {
         token,
         category: 'incidents',
         action: 'newINC',
@@ -1342,7 +1358,7 @@ export class incidentService {
         order: this.orderINC,
       })) as IIncindent
       const token = _req.header('Authorization')?.replace('Bearer ', '')
-      socket.getIO().emit('server_SBI', {
+      socket.getIO().emit('server_SD', {
         token,
         category: 'incidents',
         action: 'changeINC',
@@ -1383,7 +1399,7 @@ export class incidentService {
         order: this.orderINC,
       })) as IIncindent
       const token = _req.header('Authorization')?.replace('Bearer ', '')
-      socket.getIO().emit('server_SBI', {
+      socket.getIO().emit('server_SD', {
         token,
         category: 'incidents',
         action: 'changeINCAddFiles',
@@ -1396,8 +1412,7 @@ export class incidentService {
     }
   }
   changeExecutor = async (_req: Request, res: Response) => {
-    const { id, id_incExecutor, incident, executor, userID, userShortName } =
-      _req.body
+    const { id, id_incExecutor, incident, executor, userID } = _req.body
     try {
       const isUpdate = await IncidentRepos.update(id, {
         id_incExecutor: id_incExecutor.length ? id_incExecutor : null,
@@ -1409,25 +1424,23 @@ export class incidentService {
             'Ошибка с назначением исполнителя! Попробуйте назначить исполнителя заново или обратитесь к администратору.',
         })
       }
-      const token = _req.header('Authorization')?.replace('Bearer ', '')
-      socket.getIO().emit('server_SBI', {
-        token,
-        category: 'incidents',
-        action: 'changeExecutor',
-        data: {
-          id,
-          id_incExecutor,
-          executor,
-          incident,
-          userID,
-          userShortName,
-        },
-      })
       await IncidentLogsRepos.create({
         id_incLog: id,
         time: new Date(),
         log: `${AppConst.ActionComment.changeExecutor.first}${incident}${AppConst.ActionComment.changeExecutor.second}${executor}`,
         id_incLogUser: userID,
+      })
+      const inc = (await IncidentRepos.findOne({
+        where: { id },
+        include: this.includes,
+        order: this.orderINC,
+      })) as IIncindent
+      const token = _req.header('Authorization')?.replace('Bearer ', '')
+      socket.getIO().emit('server_SD', {
+        token,
+        category: 'incidents',
+        action: 'changeExecutor',
+        data: inc,
       })
 
       res.status(200).json()
@@ -1456,7 +1469,7 @@ export class incidentService {
         })
       }
       const token = _req.header('Authorization')?.replace('Bearer ', '')
-      socket.getIO().emit('server_SBI', {
+      socket.getIO().emit('server_SD', {
         token,
         category: 'incidents',
         action: 'changeResponsible',
@@ -1493,25 +1506,28 @@ export class incidentService {
       }
       const _log = log.log
       const logs = { ..._log, time: new Date() }
-
-      const token = _req.header('Authorization')?.replace('Bearer ', '')
-      socket.getIO().emit('server_SBI', {
-        token,
-        category: 'incidents',
-        action: 'changeStatus',
-        data: {
-          id,
-          ...data,
-          log,
-        },
-      })
-
       await IncidentLogsRepos.create(logs)
       const inc = (await IncidentRepos.findOne({
         where: { id },
         include: this.includes,
         order: this.orderINC,
       })) as IIncindent
+
+      const token = _req.header('Authorization')?.replace('Bearer ', '')
+      socket.getIO().emit('server_SD', {
+        token,
+        category: 'incidents',
+        action: 'changeStatus',
+        data: inc,
+      })
+
+      checkTemplateFromSD({
+        newStatus: data.status,
+        client: inc.Client.client,
+        contract: inc.Contract.contract,
+        clientINC: inc.clientINC,
+        commentCloseCheck: `${data.typeCompletedWork ? data.typeCompletedWork.label : ''}. ${inc.commentCloseCheck}`,
+      })
 
       const isStatusses = inc.Contract.IncindentStatuses.filter(
         (item: IIncindentStatuses) => item.id === data.id_incStatus,
@@ -1524,7 +1540,7 @@ export class incidentService {
       const timeSLA = new Date(Date.parse(inc.timeSLA) + timeZone)
 
       const resultMailNotifications =
-        isStatusses && isStatusses.length
+        isStatusses && isStatusses.length > 0
           ? await mailerChangeStatus({
               mailTo: inc.Contract.notificationEmail ?? '',
               incident: inc.incident,
@@ -1550,6 +1566,10 @@ export class incidentService {
                   : inc.typeCompletedWork,
             })
           : null
+
+      if (resultMailNotifications === null) {
+        return res.status(200).json()
+      }
       const logResultMailNotifications = resultMailNotifications?.status
         ? AppConst.mailNotifications.successSend
         : `${AppConst.mailNotifications.errors.send} ${resultMailNotifications?.errText} code: ${resultMailNotifications?.err?.code} syscall: ${resultMailNotifications?.err?.syscall} hostname: ${resultMailNotifications?.err?.hostname} command: ${resultMailNotifications?.err?.command}`
@@ -1561,14 +1581,6 @@ export class incidentService {
           isSystem: true,
         })
       }
-      // checkTemplate
-      checkTemplateFromSD({
-        newStatus: data.status,
-        client: inc.Client.client,
-        contract: inc.Contract.contract,
-        clientINC: inc.clientINC,
-        commentCloseCheck: `${data.typeCompletedWork ? data.typeCompletedWork.label : ''}. ${inc.commentCloseCheck}`,
-      })
       res.status(200).json()
     } catch (err) {
       res.status(500).json({ error: ['db error', err as Error] })

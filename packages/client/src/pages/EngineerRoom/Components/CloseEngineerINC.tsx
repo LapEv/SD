@@ -36,9 +36,11 @@ export const CloseEngineerINC = memo(
       {
         handleModal,
         title,
-        // data,
         incident,
         id_incFiles,
+        files,
+        spaceParts,
+        commentCloseCheck,
       }: CloseEngineerINCProps,
       ref,
     ) => {
@@ -109,6 +111,9 @@ export const CloseEngineerINC = memo(
       })
 
       const changeData = async ({ list }: AddValuesProps) => {
+        const newSpaceParts = list[3].value
+          ?.split(/,|;|\|./)
+          .filter(item => item !== '')
         if (selectedFiles?.length) {
           if ((selectedFiles?.length as number) > 10) {
             setErrSelectedItems(
@@ -123,25 +128,34 @@ export const CloseEngineerINC = memo(
             )
             return
           }
+          const oldFileNames = files?.map(({ name }) => name) as string[]
           handleModal({
             state: true,
             typeCompletedWork: selectedTypeCompletedWork,
-            commentCloseCheck: list[1].value,
-            files: result.data,
-            spaceParts: list[3].value
-              ?.split(/,| |;|\|./)
-              .filter(item => item !== ''),
-            act: [selectedNameFiles],
+            commentCloseCheck: commentCloseCheck
+              ? `${commentCloseCheck} \n${list[1].value}`
+              : list[1].value,
+            files: [...files!, ...result.data],
+            spaceParts: spaceParts
+              ? newSpaceParts
+                ? [...spaceParts, ...newSpaceParts]
+                : spaceParts
+              : newSpaceParts,
+            act: [...oldFileNames, ...[selectedNameFiles]],
           })
           return
         }
         handleModal({
           state: true,
           typeCompletedWork: selectedTypeCompletedWork,
-          commentCloseCheck: list[1].value,
-          spaceParts: list[3].value
-            ?.split(/,| |;|\|./)
-            .filter(item => item !== ''),
+          commentCloseCheck: commentCloseCheck
+            ? `${commentCloseCheck} \n${list[1].value}`
+            : list[1].value,
+          spaceParts: spaceParts
+            ? newSpaceParts
+              ? [...spaceParts, ...newSpaceParts]
+              : spaceParts
+            : newSpaceParts,
         })
       }
 

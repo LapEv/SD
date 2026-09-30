@@ -12,11 +12,14 @@ import {
   IModalStatus,
   DataCloseINC,
   DataCommentWaitINC,
+  DataCommentCancelINC,
 } from '../../interfaces'
 import { INCStatuses } from 'store/slices/incidents/interfaces'
 import { CommentWaitINC } from './CommentWaitINC'
 import { CommentReturnINC } from './CommentReturnINC'
 import { convertTSToCurrentTZ } from 'utils/convertDate'
+import { useFiles } from 'hooks/files/useFiles'
+import { CommentCancel } from './CommentCancel'
 
 export const Status = memo(
   ({
@@ -35,6 +38,7 @@ export const Status = memo(
     Files,
   }: IStatus) => {
     const [, { setMessage }] = useMessage()
+    const [{ viewFilePanel }, { checkViewFiles }] = useFiles()
     const modalClientRef = React.createRef()
     const [modal, setModal] = useState<IModalStatus>({
       status: false,
@@ -42,7 +46,8 @@ export const Status = memo(
       modalName: '',
     })
     const [{ user }] = useAuth()
-    const [{ incStatuses }, { changeStatus }] = useIncidents()
+    const [{ incStatuses, typesCompletedWork }, { changeStatus }] =
+      useIncidents()
     const [status, setStatus] = useState<Options>({ label: value, id: '' })
 
     const setData = (data: Options) => {
@@ -63,6 +68,17 @@ export const Status = memo(
           id_incLogUser: user.id!,
         },
       }
+      if (newStatus.statusINC === 'Отмена') {
+        setModal({
+          status: true,
+          data,
+          modalName: 'commentCancel',
+          incident,
+          id_incFiles: id,
+        })
+        return
+      }
+
       if (oldStatus.stateNumber === 1) {
         if (newStatus.stateNumber > 2) {
           setMessage({
@@ -73,7 +89,7 @@ export const Status = memo(
         }
         changeStatus({
           id,
-          _incident: incident,
+          incident,
           id_incStatus: newStatus.id,
           status: newStatus.statusINC,
           id_incUser: user.id!,
@@ -82,6 +98,7 @@ export const Status = memo(
           log,
           executor,
           id_incExecutor,
+          timeSLA,
         })
       }
       if (oldStatus.statusINC === 'Зарегистрирован') {
@@ -115,7 +132,7 @@ export const Status = memo(
         }
         changeStatus({
           id,
-          _incident: incident,
+          incident,
           id_incStatus: newStatus.id,
           status: newStatus.statusINC,
           id_incResponsible: user.id!,
@@ -221,7 +238,6 @@ export const Status = memo(
           return
         }
       }
-
       if (oldStatus.statusINC === 'Ожидание ЗИП/оборудования') {
         if (newStatus.statusINC !== 'В работе') {
           setMessage({
@@ -233,13 +249,31 @@ export const Status = memo(
         if (newStatus.statusINC === 'В работе') {
           changeStatus({
             id,
-            _incident: incident,
+            incident,
             id_incStatus: newStatus.id,
             status: newStatus.statusINC,
             timeSLA,
             log,
             executor,
             id_incExecutor,
+          })
+        }
+      }
+      if (oldStatus.statusINC === 'Отмена') {
+        if (newStatus.statusINC !== 'В работе') {
+          setMessage({
+            text: `Из ожидания можно вернуть только в статус "В работе"! `,
+            type: 'warning',
+          })
+          return
+        }
+        if (newStatus.statusINC === 'В работе') {
+          setModal({
+            status: true,
+            data,
+            modalName: 'commentReturnINC',
+            incident,
+            id_incFiles: id,
           })
         }
       }
@@ -302,7 +336,7 @@ export const Status = memo(
       if (files?.length) {
         changeStatus({
           id,
-          _incident: incident,
+          incident,
           id_incStatus: data.id,
           status: data.label,
           typeCompletedWork: typeCompletedWork?.label,
@@ -318,7 +352,9 @@ export const Status = memo(
           log,
           executor,
           id_incExecutor,
+          timeSLA,
         })
+        checkViewFiles({ id, files })
         setStatus(data)
         setModal({
           status: false,
@@ -330,7 +366,7 @@ export const Status = memo(
       }
       changeStatus({
         id,
-        _incident: incident,
+        incident,
         id_incStatus: data.id,
         status: data.label,
         typeCompletedWork: typeCompletedWork?.label,
@@ -343,6 +379,7 @@ export const Status = memo(
         log,
         executor,
         id_incExecutor,
+        timeSLA,
       })
       setStatus(data)
       setModal({
@@ -377,7 +414,7 @@ export const Status = memo(
       }
       changeStatus({
         id,
-        _incident: incident,
+        incident,
         id_incStatus: data.id,
         status: data.label,
         comment: comment
@@ -388,14 +425,76 @@ export const Status = memo(
         id_incExecutor,
         typeCompletedWork: '',
         id_typeCompletedWork: null,
-        commentCloseCheck: '',
         timeDone: null,
         timeCloseCheck: null,
         id_incDone: null,
         userDone: '',
         id_incClosingCheck: null,
         userClosingCheck: '',
+        timeSLA,
       })
+      setModal({
+        status: false,
+        modalName: '',
+        data: emptyOptionsDD,
+      })
+    }
+
+    const handleModaCancelINC = ({
+      state,
+      data,
+      newComment,
+    }: DataCommentCancelINC) => {
+      if (state === false) {
+        setModal({
+          status: false,
+          modalName: '',
+          data: emptyOptionsDD,
+        })
+        return
+      }
+      const currentDate = new Date().toISOString()
+      const log = {
+        User: { id: user.id!, shortName: user.shortName! },
+        log: {
+          id_incLog: id,
+          time: currentDate,
+          log: `${logs.actionComment.changeStatus.first}${incident}${logs.actionComment.changeStatus.second}${data.label}. Комментарий: ${newComment ?? ''}`,
+          id_incLogUser: user.id!,
+        },
+      }
+      const cancelTypeCompletedWork = typesCompletedWork.find(
+        ({ typeCompletedWork }) => typeCompletedWork.includes('Отмен'),
+      )
+
+      changeStatus({
+        id,
+        incident,
+        id_incStatus: data.id,
+        status: data.label,
+        comment: comment
+          ? `${comment} \n${convertTSToCurrentTZ(currentDate)}: ${user.shortName}: ${newComment}`
+          : newComment,
+        log,
+        executor,
+        id_incExecutor,
+        timeDone: null,
+        id_incDone: null,
+        userDone: '',
+        timeSLA,
+        typeCompletedWork: cancelTypeCompletedWork?.typeCompletedWork,
+        id_typeCompletedWork: cancelTypeCompletedWork?.id,
+        commentCloseCheck,
+        timeCloseCheck: currentDate,
+        id_incClosingCheck: user.id!,
+        userClosingCheck: user.shortName,
+        timeClose: currentDate,
+        id_incClosing: user.id!,
+        userClosing: user.shortName,
+        responsible,
+        id_incResponsible: user.id!,
+      })
+
       setModal({
         status: false,
         modalName: '',
@@ -415,6 +514,7 @@ export const Status = memo(
     return (
       <>
         <Modal
+          disableEscapeKeyDown={viewFilePanel}
           open={modal.status}
           onClose={() => setModal({ status: false, data: emptyOptionsDD })}
           aria-labelledby="modal-modal-title"
@@ -448,6 +548,14 @@ export const Status = memo(
               ref={modalClientRef}
               handleModal={handleModalWaitReturnINC}
               title={ModalTitles.commentReturnINC}
+              data={modal.data}
+              incident={modal.incident as string}
+            />
+          ) : modal.modalName === 'commentCancel' ? (
+            <CommentCancel
+              ref={modalClientRef}
+              handleModal={handleModaCancelINC}
+              title={ModalTitles.commentCancelINC}
               data={modal.data}
               incident={modal.incident as string}
             />

@@ -758,6 +758,7 @@ export const ModalTitles = {
   closeINC: 'Закрытие инцидента',
   commentWaitINC: 'Комментарии к ожиданию инцидента',
   commentReturnINC: 'Комментарии к возврату инцидента',
+  commentCancelINC: 'Комментарии к отмене инцидента',
   printINC: 'Выберите тип печати списка инцидентов',
   changeStateStatuses: 'Изменить порядок статусов инцидента',
   changeIncident: 'Изменить инцидент',
@@ -1215,6 +1216,16 @@ export const MapCommentReturnINCInputFields = [
   {
     name: 'commentReturnINC',
     label: 'Введите комментарий к возврату инцидента',
+    validation: lightTextValidation,
+    type: 'text',
+    required: true,
+  },
+]
+
+export const MapCommentCancelInputFields = [
+  {
+    name: 'commentCancel',
+    label: 'Введите комментарий к отмене инцидента',
     validation: lightTextValidation,
     type: 'text',
     required: true,

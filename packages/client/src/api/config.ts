@@ -1,5 +1,7 @@
 import axios, { InternalAxiosRequestConfig } from 'axios'
 import { store } from 'store/index'
+import { setViewFilePanel } from 'store/slices/files'
+import { setModal } from 'store/slices/tableINC'
 import { clearUser } from 'storeAuth/index'
 
 export const ApiEndPoints = {
@@ -216,11 +218,19 @@ authhost.interceptors.response.use(
           (error.response.status === 401 &&
             error.response.statusText === 'Unauthorized') ||
           (error.response.status === 403 &&
-            error.response.statusText === 'Forbidden' &&
-            error.response.data.message === 'The user is not logged in')
+            error.response.statusText === 'Forbidden')
         ) {
           localStorage.removeItem('token')
           store.dispatch(clearUser())
+          store.dispatch(setViewFilePanel(false))
+          store.dispatch(
+            setModal({
+              active: false,
+              image: '',
+              id: '',
+              incident: '',
+            }),
+          )
         }
       }
     }

@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { FilesData, FilesState } from './interfaces'
+import { FilesData, FilesState, ICheckViewFiles } from './interfaces'
 import { getFile, getFilesData, getViewFile, uploadFiles } from 'api/files'
 
 const initialState: FilesState = {
@@ -30,6 +30,15 @@ export const filesSlice = createSlice({
     },
     setAddAct(state, action) {
       state.addAct = action.payload
+    },
+    checkViewFiles(state, { payload }) {
+      const { id, files } = payload as ICheckViewFiles
+      const _files = files?.map(item =>
+        item.id ? item : { ...item, id: item.path },
+      )
+      if (state.viewFiles.idINC === id) {
+        state.viewFiles = { idINC: id, files: _files }
+      }
     },
   },
   extraReducers: builder => {
@@ -88,5 +97,10 @@ export const filesSlice = createSlice({
 })
 
 export const filesReducer = filesSlice.reducer
-export const { resetUploadFiles, setViewFiles, setViewFilePanel, setAddAct } =
-  filesSlice.actions
+export const {
+  resetUploadFiles,
+  setViewFiles,
+  setViewFilePanel,
+  setAddAct,
+  checkViewFiles,
+} = filesSlice.actions

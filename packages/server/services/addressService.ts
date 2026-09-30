@@ -20,7 +20,6 @@ export class addressService {
         ..._req.body,
         active: true,
       })
-      console.log('newAddr = ', newAddr)
       res.status(200).json(newAddr)
     } catch (err) {
       res

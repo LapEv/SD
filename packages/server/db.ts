@@ -51,7 +51,7 @@ const {
 } = process.env
 
 const sequelizeOptions: SequelizeOptions = {
-  host: isDev ? 'localhost' : POSTGRES_HOST, //sbi-db - для докера; localhost - для npm run dev:ssr
+  host: isDev ? 'localhost' : POSTGRES_HOST, //sd-db - для докера; localhost - для npm run dev:ssr
   port: Number(POSTGRES_PORT),
   username: POSTGRES_USER,
   password: POSTGRES_PASSWORD,

@@ -48,7 +48,7 @@ const initialState: INCState = {
   oldINC: emptyINC,
 }
 
-const createINCData = (data: INC[]) => {
+export const createINCData = (data: INC[]) => {
   return data.map(item => {
     return {
       ...item,
@@ -74,6 +74,32 @@ const createINCData = (data: INC[]) => {
       act: item.Files?.map(item => item.name) as string[],
     }
   })
+}
+
+export const createINC = (item: INC) => {
+  return {
+    ...item,
+    client: item.Client?.client as string,
+    legalName: item.Client?.legalName as string,
+    contract: item.Contract?.contract as string,
+    object: item.Object?.object as string,
+    address: item.Object?.Address?.address as string,
+    coordinates: item.Object?.Address?.coordinates as string,
+    region: item.Object?.Region?.region as string,
+    sla: item.SLA?.sla as string,
+    typeOfWork: item.TypesOfWork?.typeOfWork as string,
+    typeCompletedWork: item.TypesCompletedWork?.typeCompletedWork as string,
+    userAccepted: item.User?.shortName as string,
+    userDone: item.UserDone?.shortName as string,
+    userClosingCheck: item.UserClosingCheck?.shortName as string,
+    userClosing: item.UserClosing?.shortName as string,
+    equipment: item.ClassifierEquipment?.equipment as string,
+    model: item.ClassifierModel?.model as string,
+    typicalMalfunction: item.TypicalMalfunction?.typicalMalfunction as string,
+    logs: item.IncidentLogs,
+    files: item.Files,
+    act: item.Files?.map(item => item.name) as string[],
+  }
 }
 
 export const incidentsSlise = createSlice({
@@ -154,12 +180,16 @@ export const incidentsSlise = createSlice({
     changeStatus(state, { payload }) {
       const { id, log, ...data } = payload
       state.oldINC = state.incidents.find(item => item.id === id)
+      const currentDate = new Date()
+      const sla = new Date(data.timeSLA).getTime()
+      const now = currentDate.getTime()
       state.incidents = state.incidents.map(item =>
         item.id !== id
           ? item
           : ({
               ...item,
               ...data,
+              overdue: now > sla ? true : false,
               logs: [
                 ...(item?.logs as IncidentLogsForINC[]),
                 {
@@ -177,6 +207,7 @@ export const incidentsSlise = createSlice({
       state.incidents = [...state.incidents, ...newINC]
     },
     changeINCSocket(state, { payload }) {
+      console.log('payload = ', payload)
       const changedINC = createINCData([payload])
       state.incidents = state.incidents.map(item =>
         item.id === changedINC[0].id ? changedINC[0] : item,

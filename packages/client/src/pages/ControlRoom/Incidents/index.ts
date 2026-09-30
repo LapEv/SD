@@ -64,3 +64,4 @@ export { SavedButtonTemplate } from './components/TableSettings/SavedButtonTempl
 export { AnswerModal } from './components/TableSettings/AnswerModal'
 export { CommentWaitINC } from './components/Status/CommentWaitINC'
 export { CommentReturnINC } from './components/Status/CommentReturnINC'
+export { CommentCancel } from './components/Status/CommentCancel'
