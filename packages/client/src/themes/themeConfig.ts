@@ -3632,5 +3632,17 @@ export const ThemeConfig = ({
           root: {},
         },
       },
+      MuiModal: {
+        styleOverrides: {
+          root: {
+            '&.modalINCpage': {
+              padding: device === 'mobile' ? '5px' : '50px',
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+            },
+          },
+        },
+      },
     },
   }) as ThemeOptions
