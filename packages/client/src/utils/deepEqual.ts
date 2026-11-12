@@ -7,7 +7,7 @@ export type PlainObject<T = unknown> = {
 
 export function deepEqual<T>(
   object1: PlainObject<T>,
-  object2: PlainObject<T>
+  object2: PlainObject<T>,
 ): boolean {
   if (!isObject(object1) || !isObject(object2)) {
     return object1 === object2

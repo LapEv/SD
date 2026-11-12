@@ -2,6 +2,7 @@ export interface SystemState {
   system: ISystem
   isLoadingSystem: boolean
   error?: string
+  generatedPassword: string
 }
 
 export interface ISystem {

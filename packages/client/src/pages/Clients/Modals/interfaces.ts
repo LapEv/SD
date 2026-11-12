@@ -1,5 +1,12 @@
 import { Options } from 'components/DropDown/interface'
 
+export interface ChooseModalPropsContacts {
+  modalImage?: string
+  handleModal: (state: boolean) => void
+  title: string
+  id_client: string
+}
+
 export interface ChooseModalProps {
   modalImage?: string
   handleModal: (state: boolean) => void

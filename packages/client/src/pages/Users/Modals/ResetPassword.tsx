@@ -12,6 +12,7 @@ import {
 import {
   ButtonsModalSection,
   ClearSearchModalSection,
+  IconPopoverButton,
 } from 'components/Buttons'
 import { useAuth } from 'hooks/auth/useAuth'
 import { TextField } from 'components/TextFields'
@@ -19,11 +20,14 @@ import { User } from 'storeAuth/interfaces'
 import { useFilteredData } from 'hooks/useFilteredData'
 import { BoxModal, MuiDiv } from 'components/MUI'
 import { MapResetPasswordNameInputFields } from '../data'
+import LockResetIcon from '@mui/icons-material/LockReset'
+import { useSystem } from 'hooks/system/useSystem'
 
 export const ResetPassword = memo(
   React.forwardRef<unknown, ChooseModalProps>(
     ({ handleModal, title }: ChooseModalProps, ref) => {
       const [{ users }, { resetPassword, getActiveUsers }] = useAuth()
+      const [{ generatedPassword }, { generatePassword }] = useSystem()
       const [selectedUser, setSelectedUser] = useState<string>('')
       const [errSelectedItems, setErrSelectedItems] = useState<string>('')
       const [filterText, setFilterText] = useState<string>('')
@@ -32,12 +36,13 @@ export const ResetPassword = memo(
         'post',
       ])
 
-      const { handleSubmit, control } = useForm<AddValuesProps>({
-        mode: 'onBlur',
-        defaultValues: {
-          list: MapResetPasswordNameInputFields,
-        },
-      })
+      const { handleSubmit, control, setValue, reset } =
+        useForm<AddValuesProps>({
+          mode: 'onBlur',
+          defaultValues: {
+            list: MapResetPasswordNameInputFields,
+          },
+        })
       const { errors } = useFormState({ control })
       const { fields } = useFieldArray({
         control,
@@ -68,6 +73,19 @@ export const ResetPassword = memo(
 
       const setText = (text: string) => {
         setFilterText(text)
+      }
+
+      useEffect(() => {
+        setValue(`list.0.value`, generatedPassword as string)
+      }, [generatedPassword])
+
+      const closeModal = () => {
+        reset({
+          list: MapResetPasswordNameInputFields,
+        })
+        setTimeout(() => {
+          handleModal(false)
+        }, 1000)
       }
 
       return (
@@ -115,39 +133,46 @@ export const ResetPassword = memo(
               ),
             )}
           </MuiDiv>
-          {fields.map(({ id, label, validation, type, required }, index) => {
-            return (
-              <Controller
-                key={`${label}_${id}`}
-                control={control}
-                name={`list.${index}.value`}
-                rules={validation}
-                render={({ field }) => (
-                  <TextField
-                    {...field}
-                    inputRef={field.ref}
-                    label={label}
-                    type={type}
-                    variant="outlined"
-                    required={required ?? true}
-                    className="textContainer_w90_mt3"
-                    margin="normal"
-                    value={field.value || ''}
-                    error={!!(errors?.list ?? [])[index]?.value?.message}
-                    helperText={(errors?.list ?? [])[index]?.value?.message}
-                  />
-                )}
-              />
-            )
-          })}
-
+          <MuiDiv className="boxUserPassword">
+            {fields.map(({ id, label, validation, type, required }, index) => {
+              return (
+                <Controller
+                  key={`${label}_${id}`}
+                  control={control}
+                  name={`list.${index}.value`}
+                  rules={validation}
+                  render={({ field }) => (
+                    <TextField
+                      {...field}
+                      inputRef={field.ref}
+                      label={label}
+                      type={type}
+                      variant="outlined"
+                      required={required ?? true}
+                      className="textContainer_w90_mt3"
+                      margin="normal"
+                      value={field.value || ''}
+                      error={!!(errors?.list ?? [])[index]?.value?.message}
+                      helperText={(errors?.list ?? [])[index]?.value?.message}
+                    />
+                  )}
+                />
+              )
+            })}
+            <IconPopoverButton
+              className={'addIconButton generateUserPassAddIconButton'}
+              popover={'Сгенерировать пароль'}
+              onClick={() => generatePassword(12)}
+              icon={<LockResetIcon />}
+              propsPopover={{ ml: 0.5 }}
+              horizontal={'right'}
+              horizontal2={'left'}
+            />
+          </MuiDiv>
           <MuiDiv className={'modalError'}>
             {errSelectedItems && 'Не выбрано ниодного пользователя!'}
           </MuiDiv>
-          <ButtonsModalSection
-            closeModal={() => handleModal(false)}
-            btnName="Сбросить"
-          />
+          <ButtonsModalSection closeModal={closeModal} btnName="Сбросить" />
         </BoxModal>
       )
     },

@@ -9,7 +9,10 @@ import {
   getFile,
   getAvatar,
   getAvatarListUser,
+  getAvatarListClient,
   getViewFile,
+  getClientAvatar,
+  getAvatarByClientId,
 } from 'api/files'
 import {
   resetUploadFiles,
@@ -38,8 +41,17 @@ export function useFiles(): [FilesState, FilesActions] {
       getAvatar(pathfile) {
         dispatch(getAvatar(pathfile))
       },
+      getClientAvatar(pathfile) {
+        dispatch(getClientAvatar(pathfile))
+      },
+      getAvatarByClientId(id) {
+        dispatch(getAvatarByClientId(id))
+      },
       getAvatarListUser(id_avatarFiles) {
         dispatch(getAvatarListUser(id_avatarFiles))
+      },
+      getAvatarListClient(id_avatarFiles) {
+        dispatch(getAvatarListClient(id_avatarFiles))
       },
       uploadFiles(data) {
         dispatch(uploadFiles(data))

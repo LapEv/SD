@@ -59,8 +59,8 @@ export const ClientsPage = memo(() => {
         )}
       </MuiDiv>
       <List className={'pageListContainer'}>
-        {clients.map(({ client, legalName, id }) => (
-          <ClientsList client={client} legalName={legalName} id={id} key={id} />
+        {clients.map(item => (
+          <ClientsList clientData={item} key={item.id} />
         ))}
       </List>
     </Container>

@@ -43,6 +43,10 @@ export const Autocomplete = styled(MuiAutocomplete)(({ theme }) => ({
     '& .MuiSvgIcon-root': {
       width: 25,
       height: 25,
+      color:
+        theme.palette.mode === ThemeMode.light
+          ? (theme as ITheme).colorTheme.light.primary
+          : (theme as ITheme).colorTheme.dark.primary,
     },
   },
   '.MuiAutocomplete-popupIndicator': {
@@ -53,6 +57,10 @@ export const Autocomplete = styled(MuiAutocomplete)(({ theme }) => ({
     '.MuiSvgIcon-root': {
       width: 40,
       height: 40,
+      color:
+        theme.palette.mode === ThemeMode.light
+          ? (theme as ITheme).colorTheme.light.primary
+          : (theme as ITheme).colorTheme.dark.primary,
     },
   },
   '.MuiChip-label': {

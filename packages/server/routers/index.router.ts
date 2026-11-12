@@ -14,6 +14,7 @@ import { incidentRouter } from './IncidentRouter'
 import { filesRouter } from './filesRouter'
 import { systemRouter } from './systemRouter'
 import { engineerRouter } from './engineerRouter'
+import { contactRouter } from './contactRouter'
 
 export const apiRouter: Router = Router()
 
@@ -27,6 +28,7 @@ clientRouter(apiRouter)
 classifierRouter(apiRouter)
 slaRouter(apiRouter)
 contractRouter(apiRouter)
+contactRouter(apiRouter)
 objectsRouter(apiRouter)
 incidentRouter(apiRouter)
 filesRouter(apiRouter)

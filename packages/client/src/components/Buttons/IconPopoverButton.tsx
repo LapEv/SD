@@ -9,6 +9,9 @@ export const IconPopoverButton = memo(
     onClick,
     icon,
     vertical,
+    horizontal,
+    vertical2,
+    horizontal2,
     size,
     sx,
     propsPopover,
@@ -44,11 +47,11 @@ export const IconPopoverButton = memo(
             anchorEl={anchorEl}
             anchorOrigin={{
               vertical: vertical ?? 'center',
-              horizontal: 'left',
+              horizontal: horizontal ?? 'left',
             }}
             transformOrigin={{
-              vertical: 'center',
-              horizontal: 'right',
+              vertical: vertical2 ?? 'center',
+              horizontal: horizontal2 ?? 'left',
             }}
             onClose={(event: MouseEvent<HTMLElement>) =>
               setAnchorEl(event.currentTarget)

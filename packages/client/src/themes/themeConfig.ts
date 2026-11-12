@@ -453,6 +453,18 @@ export const ThemeConfig = ({
               paddingLeft: device === 'mobile' ? '0px' : '16px',
               paddingRight: device === 'mobile' ? '0px' : '16px',
             },
+            '&.itemClientContainerLabel': {
+              fontWeight: 'bold',
+              fontSize: '1rem',
+              width: device === 'mobile' ? '100%' : '95%',
+              height: fontSize === 'small' ? 40 : 50,
+              display: 'flex',
+              flexDirection: 'row',
+              alignItems: 'space-between',
+              justifyContent: 'space-between',
+              paddingLeft: device === 'mobile' ? '0px' : '16px',
+              paddingRight: device === 'mobile' ? '0px' : '16px',
+            },
             '&.itemButtonCollapse': {
               fontWeight: 'bold',
               fontSize: '1rem',
@@ -581,6 +593,11 @@ export const ThemeConfig = ({
               padding: '16px',
               paddingLeft: device === 'mobile' ? '8px' : '40px',
               paddingRight: device === 'mobile' ? '8px' : '40px',
+            },
+            '&.collapseList_p_Contacts': {
+              padding: '16px',
+              paddingLeft: device === 'mobile' ? '0px' : '40px',
+              paddingRight: device === 'mobile' ? '0px' : '40px',
             },
             '&.collapseList_UserData': {
               width: '100%',
@@ -1029,6 +1046,11 @@ export const ThemeConfig = ({
               marginTop: fontSize === 'small' ? '8px' : '16px',
               height: 90,
             },
+            '&.textMultiCellsCommentContact': {
+              width: '100%',
+              marginTop: fontSize === 'small' ? '16px' : '24px',
+              height: 90,
+            },
             '&.textMultiCellsCloseINC': {
               width: '100%',
               marginTop: fontSize === 'small' ? '32px' : '40px',
@@ -1071,6 +1093,16 @@ export const ThemeConfig = ({
             '&.textSLAList': {
               width: device === 'mobile' ? '100%' : '48%',
               minWidth: 220,
+            },
+            '&.textClientGeneralList': {
+              width: device === 'mobile' ? '100%' : '48%',
+              minWidth: 220,
+              marginTop: fontSize === 'small' ? '16px' : '24px',
+            },
+            '&.textClientGeneralListWeb': {
+              width: device === 'mobile' ? '100%' : '43%',
+              minWidth: 220,
+              marginTop: fontSize === 'small' ? '16px' : '24px',
             },
             '&.textProfileList': {
               width: device === 'mobile' ? '100%' : '48%',
@@ -1169,6 +1201,12 @@ export const ThemeConfig = ({
               maxHeight: 'max-content',
               overflowY: 'scroll',
               height: '100%',
+            },
+            '&.generalClientInfoBox': {
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              padding: device === 'mobile' ? '4px' : '24px',
             },
           },
         },
@@ -1337,6 +1375,31 @@ export const ThemeConfig = ({
               padding: '4px',
               '& > div': {
                 height: fontSize === 'small' ? 35 : 60,
+              },
+            },
+            '&.containerCollapseMenu': {
+              display: 'flex',
+              borderRadius: '7px',
+              flexDirection: 'column',
+              alignItems: 'flex-start',
+              justifyContent: 'space-around',
+              maxWidth: 900,
+              width: '100%',
+              marginTop: '8px',
+              borderWidth: 2,
+              borderColor:
+                mode === ThemeMode.light
+                  ? colorTheme.light.borderPrimary
+                  : colorTheme.dark.borderPrimary,
+              borderStyle: 'solid',
+              boxShadow:
+                mode === ThemeMode.light
+                  ? `0px 3px 5px -1px rgba(0, 0, 0, 0.2), 0px 5px 8px 0px rgba(0, 0, 0, 0.14), 0px 1px 14px 0px rgba(0, 0, 0, 0.12)`
+                  : `0px 3px 5px -1px rgba(135, 135, 135, 0.2), 0px 5px 8px 0px rgba(135, 135, 135, 0.14), 0px 1px 14px 0px rgba(135, 135, 135, 0.12)`,
+              padding: '4px',
+              '& > div': {
+                height: fontSize === 'small' ? 28 : 45,
+                padding: device === 'mobile' ? 4 : 8,
               },
             },
             '&.appLoading': {
@@ -1697,6 +1760,14 @@ export const ThemeConfig = ({
               alignItems: 'center',
               height: fontSize === 'small' ? 30 : 40,
               marginTop: '8px',
+            },
+            '&.boxList_flexSC_Contacts': {
+              display: 'flex',
+              justifyContent: 'flex-start',
+              alignItems: 'center',
+              height: fontSize === 'small' ? 30 : 40,
+              marginTop: '8px',
+              marginLeft: device === 'mobile' ? 0 : 32,
             },
             '&.boxFilterChip': {
               display: 'flex',
@@ -2090,6 +2161,10 @@ export const ThemeConfig = ({
               marginTop: fontSize === 'small' ? '16px' : '24px',
               marginBottom: 0,
             },
+            '&.contactListBoxButtons': {
+              marginTop: fontSize === 'small' ? '8px' : '24px',
+              marginBottom: 0,
+            },
             '&.systemBoxData': {
               width: device === 'mobile' ? '40%' : '30%',
               display: 'flex',
@@ -2258,6 +2333,10 @@ export const ThemeConfig = ({
               alignItems: 'center',
               padding: '5px',
               cursor: 'pointer',
+            },
+            '&.boxUserPassword': {
+              display: 'flex',
+              width: '90%',
             },
           },
         },
@@ -2918,6 +2997,19 @@ export const ThemeConfig = ({
               marginLeft: '40px',
               marginBottom: '8px',
             },
+            '&.contactAddIconButton': {
+              marginLeft: '8px',
+            },
+            '&.generatePassAddIconButton': {
+              marginLeft: '8px',
+              marginBottom: device === 'mobile' ? 0 : '8px',
+              marginTop: device === 'mobile' ? '8px' : '24px',
+            },
+            '&.generateUserPassAddIconButton': {
+              marginLeft: '16px',
+              marginBottom: device === 'mobile' ? 0 : '8px',
+              marginTop: device === 'mobile' ? '24px' : '24px',
+            },
             '&.viewActIconButton': {
               width: fontSize === 'small' ? 19 : 25,
               height: fontSize === 'small' ? 19 : 25,
@@ -3074,6 +3166,12 @@ export const ThemeConfig = ({
               width: device === 'mobile' ? 22 : fontSize === 'small' ? 18 : 22,
               height: device === 'mobile' ? 22 : fontSize === 'small' ? 18 : 22,
             },
+            '&.boxClientGeneral': {
+              display: 'flex',
+              flexDirection: { xs: 'column', sm: 'row' },
+              justifyContent: 'center',
+              width: '95%',
+            },
           },
         },
       },
@@ -3119,6 +3217,18 @@ export const ThemeConfig = ({
             },
             '&.mt10': {
               marginTop: 10,
+            },
+            '&.stackClientGeneral': {
+              flexWrap: 'wrap',
+              width: '100%',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+            },
+            '&.stackClientWeb': {
+              flexWrap: 'wrap',
+              width: '100%',
+              justifyContent: 'space-between',
+              alignItems: device === 'mobile' ? 'flex-start' : 'center',
             },
           },
         },
@@ -3460,7 +3570,12 @@ export const ThemeConfig = ({
             '&.textContainer_w90_mt2': {
               width: '90%',
               height: fontSize === 'small' ? 30 : 40,
-              marginTop: fontSize === 'small' ? '8px' : '16px',
+              marginTop: fontSize === 'small' ? '8px' : '8px',
+            },
+            '&.textContainer_w50': {
+              width: '50%',
+              height: fontSize === 'small' ? 30 : 40,
+              margin: 0,
             },
           },
         },

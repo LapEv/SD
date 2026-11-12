@@ -11,9 +11,18 @@ import {
   newClient,
   deleteClient,
   changeClient,
+  changeClientAvatar,
+  deleteClientAvatar,
 } from 'api/clients'
 import { ClientsState } from 'store/slices/clients/interfaces'
-import { setActiveClient } from 'store/slices/clients'
+import {
+  setActiveClient,
+  setCheckError,
+  clearError,
+  setNewDataInputs,
+  setClientAvatar,
+} from 'store/slices/clients'
+import { changeContact, newContact } from 'api/contacts'
 
 export function useClients(): [ClientsState, ClientsActions] {
   const clients = useSelector((state: RootState) => state.clients)
@@ -46,8 +55,32 @@ export function useClients(): [ClientsState, ClientsActions] {
       changeClient(data) {
         dispatch(changeClient(data))
       },
+      newContact(data) {
+        dispatch(newContact(data))
+      },
+      changeContact(data) {
+        dispatch(changeContact(data))
+      },
       setActiveClient(id) {
         dispatch(setActiveClient(id))
+      },
+      setCheckError(data) {
+        dispatch(setCheckError(data))
+      },
+      clearError() {
+        dispatch(clearError())
+      },
+      setNewDataInputs(data) {
+        dispatch(setNewDataInputs(data))
+      },
+      changeClientAvatar(data) {
+        dispatch(changeClientAvatar(data))
+      },
+      setClientAvatar(data) {
+        dispatch(setClientAvatar(data))
+      },
+      deleteClientAvatar(id) {
+        dispatch(deleteClientAvatar(id))
       },
     },
   ]

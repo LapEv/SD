@@ -6,4 +6,5 @@ export interface AppState {
   timeZone: number
   UTCDateTS: number
   device: 'mobile' | 'desktop'
+  btnDisabled: true
 }

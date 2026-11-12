@@ -62,6 +62,7 @@ import {
   changeClient,
   changeClientGroup,
   deleteClient,
+  deleteClientAvatar,
   deleteClientGroup,
   newClient,
   newClientGroup,
@@ -91,8 +92,9 @@ import {
   changeINC,
 } from 'api/incidents'
 import { uploadFiles } from 'api/files'
-import { changePasswordSystem, setSystem } from 'api/system'
+import { changePasswordSystem, generatePassword, setSystem } from 'api/system'
 import { changeStatusDoneSVR } from 'api/engineer'
+import { newContact } from 'api/contacts'
 
 const initialState: MessageState = {
   text: '',
@@ -362,6 +364,19 @@ export const messageSlise = createSlice({
       state.type = 'error'
       state.text = payload as string
     })
+    builder.addCase(deleteClientAvatar.fulfilled, (state, { payload }) => {
+      state.isLoadingMessage = false
+      state.text = payload?.message.text as string
+      state.type = payload?.message.type as string
+    })
+    builder.addCase(deleteClientAvatar.pending, state => {
+      state.isLoadingMessage = true
+    })
+    builder.addCase(deleteClientAvatar.rejected, (state, { payload }) => {
+      state.isLoadingMessage = false
+      state.type = 'error'
+      state.text = payload as string
+    })
     builder.addCase(changeUserAppOptions.fulfilled, (state, { payload }) => {
       state.isLoadingMessage = false
       state.text = payload?.message.text as string
@@ -397,6 +412,19 @@ export const messageSlise = createSlice({
       state.isLoadingMessage = true
     })
     builder.addCase(changePasswordSystem.rejected, (state, { payload }) => {
+      state.isLoadingMessage = false
+      state.type = 'error'
+      state.text = payload as string
+    })
+    builder.addCase(generatePassword.fulfilled, (state, { payload }) => {
+      state.isLoadingMessage = false
+      state.text = payload?.message.text as string
+      state.type = payload?.message.type as string
+    })
+    builder.addCase(generatePassword.pending, state => {
+      state.isLoadingMessage = true
+    })
+    builder.addCase(generatePassword.rejected, (state, { payload }) => {
       state.isLoadingMessage = false
       state.type = 'error'
       state.text = payload as string
@@ -882,6 +910,19 @@ export const messageSlise = createSlice({
       state.isLoadingMessage = true
     })
     builder.addCase(newClient.rejected, (state, { payload }) => {
+      state.isLoadingMessage = false
+      state.type = 'error'
+      state.text = payload as string
+    })
+    builder.addCase(newContact.fulfilled, (state, { payload }) => {
+      state.isLoadingMessage = false
+      state.text = payload?.message.text as string
+      state.type = payload?.message.type as string
+    })
+    builder.addCase(newContact.pending, state => {
+      state.isLoadingMessage = true
+    })
+    builder.addCase(newContact.rejected, (state, { payload }) => {
       state.isLoadingMessage = false
       state.type = 'error'
       state.text = payload as string

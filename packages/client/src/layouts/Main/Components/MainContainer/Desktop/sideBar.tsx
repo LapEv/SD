@@ -1,28 +1,16 @@
-import { memo, useEffect } from 'react'
+import { memo } from 'react'
 import { List, Typography, Link, Divider } from '@mui/material'
-import { Avatar } from 'components/SVGIcons/Avatar'
 import { Routes } from 'utils/routes'
 import { useAuth } from 'hooks/auth/useAuth'
 import { LinkButton } from 'components/LinkButton'
 import { SideBarProps } from '../../../interfaces'
-import { FilesData } from 'store/slices/files/interfaces'
-import { useFiles } from 'hooks/files/useFiles'
-import { AvatarBox } from 'components/AvatarBox'
 import { DataItems } from 'layouts/Main/Components/SideBar/DataItems'
 import { Link as RouterLink } from 'react-router-dom'
 import { MuiDiv } from 'components/MUI'
+import { AvatarBar } from './AvatarBar'
 
 export const SideBar = memo(({ open = false }: SideBarProps) => {
-  const [{ user, avatar }, { signout }] = useAuth()
-  const [, { getAvatar }] = useFiles()
-
-  useEffect(() => {
-    if (avatar.length) return
-    const file = user?.Files as FilesData[]
-    if (!file.length) return
-    const pathfile = file[0].path
-    getAvatar(pathfile)
-  }, [])
+  const [{ user }, { signout }] = useAuth()
 
   return (
     <List sx={{ padding: 0 }}>
@@ -33,7 +21,7 @@ export const SideBar = memo(({ open = false }: SideBarProps) => {
             className="mainLink"
             component={RouterLink}
             to={`/`}>
-            SD
+            SBI
           </Link>
         ) : (
           <></>
@@ -45,21 +33,7 @@ export const SideBar = memo(({ open = false }: SideBarProps) => {
             height: open ? 100 : 45,
             mt: open ? 0 : 2,
           }}>
-          {avatar.length ? (
-            <AvatarBox
-              src={`${avatar.length ? JSON.parse(avatar).data : ''}` as string}
-              sx={{
-                width: open ? 100 : 45,
-                height: open ? 100 : 45,
-                borderRadius: 50,
-              }}
-            />
-          ) : (
-            <Avatar
-              sx={{ width: open ? 70 : 35, height: open ? 100 : 45 }}
-              open={open}
-            />
-          )}
+          <AvatarBar open={open} />
         </MuiDiv>
         <Typography
           sx={{

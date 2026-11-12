@@ -11,42 +11,44 @@ import { TextField } from 'components/TextFields'
 import { useFilteredData } from 'hooks/useFilteredData'
 import { useAuth } from 'hooks/auth/useAuth'
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline'
-import { useObjects } from 'hooks/objects/useObjects'
-import { AddObject } from './Modals'
-import { ModalTitles } from './data'
-import { IObjectList } from './interfaces'
+import { ModalTitles } from '../../../ControlRoom/Incidents/data'
+import { useIncidents } from 'hooks/incidents/useINC'
+import { NewIncidentStatus } from 'pages/ControlRoom/Incidents/Modals'
+import { IIncStatussesList } from '../../interfaces'
 import { MuiDiv } from 'components/MUI'
 
-export const ContractObjectList = memo(
-  ({ objectID, onChooseItems }: IObjectList) => {
+export const ContractIncStatussesList = memo(
+  ({ incStatussesID, onChooseItems }: IIncStatussesList) => {
     const modalRef = React.createRef()
     const [modal, setModal] = useState<boolean>(false)
     const [{ admin }] = useAuth()
-    const [{ objects }, { getObjects }] = useObjects()
-    const [objectsData, setObjectsData] = useState<DataList[]>([])
-    const [openObject, setOpenObject] = useState(false)
+    const [{ incStatuses }, { getIncidentStatuses }] = useIncidents()
+    const [incStatusesData, setIncStatusesData] = useState<DataList[]>([])
+    const [openIncStatus, setOpenIncStatus] = useState(false)
     const [filterText, setFilterText] = useState<string>('')
-    const filteredData = useFilteredData<DataList>(objectsData, filterText, [
-      'name',
-    ])
+    const filteredData = useFilteredData<DataList>(
+      incStatusesData,
+      filterText,
+      ['name'],
+    )
 
-    const openObjectList = () => {
-      setOpenObject(!openObject)
-      getObjects()
+    const openIncStatussesList = () => {
+      setOpenIncStatus(!openIncStatus)
+      getIncidentStatuses()
     }
 
     useEffect(() => {
-      const listData = objects.map(({ object, id }) => {
+      const listData = incStatuses.map(({ statusINC, id }) => {
         return {
-          name: object,
+          name: statusINC,
           id: id as string,
-          initChecked: objectID?.find(item => item === id) ? true : false,
+          initChecked: incStatussesID?.find(item => item === id) ? true : false,
         }
       })
-      setObjectsData(listData)
-    }, [objects, objectID])
+      setIncStatusesData(listData)
+    }, [incStatuses, incStatussesID])
 
-    const AddNewObject = () => {
+    const AddNewIncStatus = () => {
       setModal(true)
     }
 
@@ -61,22 +63,22 @@ export const ContractObjectList = memo(
           onClose={() => setModal(false)}
           aria-labelledby="modal-modal-title"
           aria-describedby="modal-modal-description">
-          <AddObject
+          <NewIncidentStatus
             ref={modalRef}
             handleModal={handleModal}
-            title={ModalTitles.newObject}
+            title={ModalTitles.newIncidentStatus}
           />
         </Modal>
         <ListItemButton
-          divider={openObject}
+          divider={openIncStatus}
           className={'itemContainerLabel'}
-          onClick={openObjectList}>
-          <ListItemText primary={'Объекты'} sx={{ ml: 2 }} />
-          <RotateButton open={openObject} />
+          onClick={openIncStatussesList}>
+          <ListItemText primary={'Уведолмения по статусам'} sx={{ ml: 2 }} />
+          <RotateButton open={openIncStatus} />
         </ListItemButton>
         <Collapse
           className={'collapseList collapseList_p'}
-          in={openObject}
+          in={openIncStatus}
           timeout="auto"
           unmountOnExit>
           <MuiDiv className={'boxList_flexSC'}>
@@ -102,8 +104,8 @@ export const ContractObjectList = memo(
             />
             {admin && (
               <IconPopoverButton
-                popover={'Добавить объект'}
-                onClick={AddNewObject}
+                popover={'Добавить статус по инцидентам'}
+                onClick={AddNewIncStatus}
                 icon={<AddCircleOutlineIcon />}
                 propsPopover={{ ml: -1 }}
                 className={'addIconButton'}
@@ -114,8 +116,8 @@ export const ContractObjectList = memo(
             {filteredData?.map(({ name, id, initChecked, comment }) => (
               <Item
                 name={name}
-                props={{ ml: 2 }}
                 id={`${id}`}
+                props={{ ml: 2 }}
                 comment={comment}
                 groupChecked={null}
                 onChooseItems={onChooseItems}

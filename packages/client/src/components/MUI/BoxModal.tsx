@@ -28,8 +28,8 @@ export const BoxModal = styled(
     transform: 'translate(-50%, -50%)',
     borderColor:
       theme.palette.mode === ThemeMode.dark
-        ? (theme as ITheme).colorTheme.dark.lightSecondary
-        : (theme as ITheme).colorTheme.light.darkSecondary,
+        ? `${(theme as ITheme).colorTheme.light.borderSecondary}!important`
+        : `${(theme as ITheme).colorTheme.dark.borderSecondary}!important`,
     border: '2px solid',
     borderRadius: 10,
     boxShadow:

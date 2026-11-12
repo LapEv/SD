@@ -657,16 +657,20 @@ export class incidentService {
   changeStateIncidentStatuses = async (_req: Request, res: Response) => {
     try {
       const data = _req.body as ChangeINCStateStatuses[]
-      data.map(async ({ id, stateNumber }) => {
-        await IncidentStatusesRepos.update(id, {
-          stateNumber: stateNumber + 100,
-        })
-      })
-      data.map(async ({ id, stateNumber }) => {
-        await IncidentStatusesRepos.update(id, {
-          stateNumber,
-        })
-      })
+      await Promise.all(
+        data.map(async ({ id, stateNumber }) => {
+          await IncidentStatusesRepos.update(id, {
+            stateNumber: stateNumber + 100,
+          })
+        }),
+      )
+      await Promise.all(
+        data.map(async ({ id, stateNumber }) => {
+          await IncidentStatusesRepos.update(id, {
+            stateNumber,
+          })
+        }),
+      )
       const incStatuses = await IncidentStatusesRepos.findAll({
         where: { active: true },
         order: [['stateNumber', 'ASC']],
@@ -926,7 +930,7 @@ export class incidentService {
       order: this.orderINC,
     })) as IIncindent
 
-    socket.getIO().emit('server_SD', {
+    socket.getIO().emit('server_SBI', {
       token: null,
       category: 'incidents',
       action: 'newINCfromMail',
@@ -1087,7 +1091,7 @@ export class incidentService {
           : inc
 
       const token = _req.header('Authorization')?.replace('Bearer ', '')
-      socket.getIO().emit('server_SD', {
+      socket.getIO().emit('server_SBI', {
         token,
         category: 'incidents',
         action: 'newINC',
@@ -1358,7 +1362,7 @@ export class incidentService {
         order: this.orderINC,
       })) as IIncindent
       const token = _req.header('Authorization')?.replace('Bearer ', '')
-      socket.getIO().emit('server_SD', {
+      socket.getIO().emit('server_SBI', {
         token,
         category: 'incidents',
         action: 'changeINC',
@@ -1399,7 +1403,7 @@ export class incidentService {
         order: this.orderINC,
       })) as IIncindent
       const token = _req.header('Authorization')?.replace('Bearer ', '')
-      socket.getIO().emit('server_SD', {
+      socket.getIO().emit('server_SBI', {
         token,
         category: 'incidents',
         action: 'changeINCAddFiles',
@@ -1436,7 +1440,7 @@ export class incidentService {
         order: this.orderINC,
       })) as IIncindent
       const token = _req.header('Authorization')?.replace('Bearer ', '')
-      socket.getIO().emit('server_SD', {
+      socket.getIO().emit('server_SBI', {
         token,
         category: 'incidents',
         action: 'changeExecutor',
@@ -1469,7 +1473,7 @@ export class incidentService {
         })
       }
       const token = _req.header('Authorization')?.replace('Bearer ', '')
-      socket.getIO().emit('server_SD', {
+      socket.getIO().emit('server_SBI', {
         token,
         category: 'incidents',
         action: 'changeResponsible',
@@ -1514,7 +1518,7 @@ export class incidentService {
       })) as IIncindent
 
       const token = _req.header('Authorization')?.replace('Bearer ', '')
-      socket.getIO().emit('server_SD', {
+      socket.getIO().emit('server_SBI', {
         token,
         category: 'incidents',
         action: 'changeStatus',
@@ -1649,9 +1653,11 @@ export class incidentService {
   changeTimeSLAs = async (_req: Request, res: Response) => {
     try {
       const { data } = _req.body as ITimeSLA
-      data.map(async ({ id, timeSLA }) => {
-        await IncidentRepos.update(id, { timeSLA })
-      })
+      await Promise.all(
+        data.map(async ({ id, timeSLA }) => {
+          await IncidentRepos.update(id, { timeSLA })
+        }),
+      )
       const incs = await IncidentRepos.findAll({
         where: { active: true },
         include: this.includes,

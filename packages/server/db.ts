@@ -39,6 +39,7 @@ import { files } from './models/files'
 import dotenv from 'dotenv'
 import { isDev } from './data/app'
 import { system } from './models/system'
+import { contacts } from './models/contacts'
 
 dotenv.config({ path: '../../.env' })
 
@@ -78,6 +79,7 @@ export const UserStatus = sequelize.define('UserStatus', userStatus, {})
 
 export const ClientsGroup = sequelize.define('ClientsGroup', clientsGroup, {})
 export const Clients = sequelize.define('Clients', clients, {})
+export const Contacts = sequelize.define('Contacts', contacts, {})
 export const Contracts = sequelize.define('Contracts', contracts, {})
 export const Objects = sequelize.define('Objects', objects, {})
 export const Addresses = sequelize.define('Addresses', addresses, {})
@@ -166,6 +168,12 @@ Users.belongsTo(Division, { foreignKey: 'id_division', targetKey: 'id' })
 Users.hasMany(Files, { foreignKey: 'id_avatarFiles' })
 Files.belongsTo(Users, { foreignKey: 'id_avatarFiles', targetKey: 'id' })
 
+Clients.hasMany(Files, { foreignKey: 'id_avatarClientFiles' })
+Files.belongsTo(Clients, {
+  foreignKey: 'id_avatarClientFiles',
+  targetKey: 'id',
+})
+
 Department.hasMany(Users, { foreignKey: 'id_department' })
 Users.belongsTo(Department, { foreignKey: 'id_department', targetKey: 'id' })
 
@@ -214,8 +222,8 @@ Contracts.belongsTo(Clients, { foreignKey: 'id_client' })
 Clients.hasMany(Objects, { foreignKey: 'id_client' })
 Objects.belongsTo(Clients, { foreignKey: 'id_client' })
 
-Clients.belongsToMany(Users, { through: 'ThroughUserClients' })
-Users.belongsToMany(Clients, { through: 'ThroughUserClients' })
+Clients.hasMany(Contacts, { foreignKey: 'id_client' })
+Contacts.belongsTo(Clients, { foreignKey: 'id_client', targetKey: 'id' })
 
 Contracts.belongsToMany(SLA, {
   through: ThroughContractsSLA,
@@ -366,15 +374,6 @@ Incidents.belongsTo(Users, {
 Users.hasOne(Incidents, { foreignKey: 'id_incUser', sourceKey: 'id' })
 Incidents.belongsTo(Users, { foreignKey: 'id_incUser', targetKey: 'id' })
 
-// Department.hasOne(Incidents, {
-//   foreignKey: 'id_incDepartment',
-//   sourceKey: 'id',
-// })
-// Incidents.belongsTo(Department, {
-//   foreignKey: 'id_incDepartment',
-//   targetKey: 'id',
-// })
-
 ClassifierEquipment.hasOne(Incidents, {
   foreignKey: 'id_incEquipment',
   sourceKey: 'id',
@@ -426,6 +425,7 @@ export const AddressesRepos = new Repository(Addresses as ModelCtor)
 
 export const ClientsGroupRepos = new Repository(ClientsGroup as ModelCtor)
 export const ClientsRepos = new Repository(Clients as ModelCtor)
+export const ContactsRepos = new Repository(Contacts as ModelCtor)
 export const ContractsRepos = new Repository(Contracts as ModelCtor)
 export const ObjectsRepos = new Repository(Objects as ModelCtor)
 

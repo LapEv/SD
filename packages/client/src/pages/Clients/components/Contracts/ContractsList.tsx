@@ -5,7 +5,7 @@ import { EditButton, RotateButton } from 'components/Buttons'
 import { ModalChangeName } from 'components/ModaQuestions'
 import { ContractsPage } from 'store/slices/contracts/interfaces'
 import { useContracts } from 'hooks/contracts/useContracts'
-import { ContractPage } from './'
+import { ContractPage } from '../..'
 import { useAuth } from 'hooks/auth/useAuth'
 import { MuiDiv } from 'components/MUI'
 

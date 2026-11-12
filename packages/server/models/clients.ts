@@ -1,24 +1,40 @@
 import type { ModelAttributes } from 'sequelize'
 import { DataType, Model } from 'sequelize-typescript'
+import { IClientContact } from './contacts'
+
+export interface FilesData {
+  id: string
+  name: string
+  size: string
+  mimetype: string
+  path: string
+  src?: string
+}
 
 export interface IClients {
-  id: number
+  id: string
   legalName: string
   client: string
   office: string
-  contacts: string[]
+  officePhone: string
   comments: string
   active: boolean
+  login: string
+  password: string
+  Contacts?: IClientContact
+  Files?: FilesData[]
 }
 
 export interface Clients {
-  id: number
+  id: string
   legalName: string
   client: string
   office: string
-  contacts: string[]
+  officePhone: string
   comments: string
   active: boolean
+  login: string
+  password: string
 }
 
 export const clients: ModelAttributes<Model, Clients> = {
@@ -41,18 +57,32 @@ export const clients: ModelAttributes<Model, Clients> = {
   office: {
     type: DataType.STRING,
     allowNull: true,
+    defaultValue: '',
   },
-  contacts: {
-    type: DataType.ARRAY(DataType.STRING),
+  officePhone: {
+    type: DataType.STRING,
     allowNull: true,
+    defaultValue: '',
   },
   comments: {
     type: DataType.STRING,
     allowNull: true,
+    defaultValue: '',
   },
   active: {
     type: DataType.BOOLEAN,
     allowNull: false,
+  },
+  login: {
+    type: DataType.STRING,
+    allowNull: true,
+    unique: true,
+    defaultValue: '',
+  },
+  password: {
+    type: DataType.STRING,
+    allowNull: true,
+    defaultValue: '',
   },
 }
 

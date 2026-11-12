@@ -4,6 +4,7 @@ import { User } from '/models/users'
 import bcrypt from 'bcryptjs'
 import { auth } from '../data/auth'
 import { Result, validationResult } from 'express-validator'
+import { generatePassword } from '../utils/generatePassword'
 
 export class systemService {
   getSystem = (_req: Request, res: Response) => {
@@ -61,6 +62,15 @@ export class systemService {
     try {
       await userRepos.update(superAdmin.id, { password: hashPassword })
       res.status(200).json('Ok')
+    } catch (err) {
+      res.status(500).json({ error: ['db error', err as Error] })
+    }
+  }
+  generatePassword = async (_req: Request, res: Response) => {
+    const { length } = _req.body
+    try {
+      const password = generatePassword(length)
+      res.status(200).json(password)
     } catch (err) {
       res.status(500).json({ error: ['db error', err as Error] })
     }

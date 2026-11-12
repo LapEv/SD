@@ -1,0 +1,223 @@
+import { Box, IconButton, TextField, useTheme } from '@mui/material'
+import { Button } from 'components/Buttons'
+import { AvatarBox } from 'components/AvatarBox'
+import {
+  memo,
+  useCallback,
+  useState,
+  DragEvent,
+  ChangeEvent,
+  useRef,
+} from 'react'
+import { FileProps } from 'storeAuth/interfaces'
+import { fileValidationAvatar } from 'utils/validatorRules'
+import { useMessage } from 'hooks/message/useMessage'
+import { ITheme, ThemeMode } from 'themes/themeConfig'
+import { useSystem } from 'hooks/system/useSystem'
+import { ClientAvatarProps } from 'pages/Clients/interfaces'
+
+export const ClientAvatar = memo(
+  ({
+    id,
+    avatar,
+    changeAvatar,
+    deleteAvatar,
+    setAvatar,
+  }: ClientAvatarProps) => {
+    const inputFileRef = useRef<HTMLInputElement>(null)
+    const [selectedFile, setSelectedFile] = useState<FileProps>({
+      data: '',
+      info: undefined,
+    })
+    const [btnDisabled, setbtnDisabled] = useState<boolean>(true)
+    const [, setDragOver] = useState<boolean>(false)
+    const [, { setMessage }] = useMessage()
+    const [{ system }] = useSystem()
+    const theme = useTheme() as ITheme
+
+    const handleDragOver = useCallback((event: DragEvent<HTMLDivElement>) => {
+      event.preventDefault()
+      setDragOver(true)
+    }, [])
+
+    const handleDragLeave = useCallback((event: DragEvent<HTMLDivElement>) => {
+      event.preventDefault()
+      setDragOver(false)
+    }, [])
+
+    const handleDrop = useCallback((event: DragEvent<HTMLDivElement>) => {
+      event.preventDefault()
+      setDragOver(false)
+      const files = event.dataTransfer.files
+      if (files) {
+        handleFileDragChange(files)
+      }
+    }, [])
+
+    const handleFileDragChange = (files: FileList) => {
+      const maxSizeFile = system.additional.maxSizeFileUpload
+      const checkFiles = fileValidationAvatar(files, maxSizeFile)
+      if (!checkFiles.status) {
+        setMessage({
+          type: 'error',
+          text: checkFiles.error,
+        })
+        return
+      }
+      readFile(files)
+    }
+
+    const handleFileChange = ({ target }: ChangeEvent<HTMLInputElement>) => {
+      const files = target?.files as FileList
+      const maxSizeFile = system.additional.maxSizeFileUpload
+      const checkFiles = fileValidationAvatar(
+        target?.files as FileList,
+        maxSizeFile,
+      )
+      if (!checkFiles.status) {
+        setMessage({
+          type: 'error',
+          text: checkFiles.error,
+        })
+        return
+      }
+      readFile(files)
+    }
+
+    const readFile = (files: FileList) => {
+      const reader = new FileReader()
+      reader.onloadend = () => {
+        if (!files) return
+        setSelectedFile({ info: files[0], data: reader.result })
+        setbtnDisabled(false)
+      }
+      files instanceof FileList
+        ? reader.readAsDataURL(files[0])
+        : setSelectedFile({ data: '', info: undefined })
+    }
+
+    const saveAvatar = () => {
+      changeAvatar({
+        id_avatarClientFiles: id,
+        id,
+        selectedFile,
+      })
+      setAvatar(JSON.stringify(selectedFile))
+      setSelectedFile({ data: '', info: undefined })
+      setbtnDisabled(true)
+    }
+
+    const clearAvatar = () => {
+      setSelectedFile({ data: '', info: undefined })
+      setbtnDisabled(true)
+      if (inputFileRef.current) {
+        inputFileRef.current.value = ''
+        inputFileRef.current.type = 'text'
+        inputFileRef.current.type = 'file'
+      }
+    }
+
+    const chooseFile = () => {
+      inputFileRef?.current?.click()
+    }
+
+    const deleteFile = () => {
+      deleteAvatar(id)
+    }
+
+    return (
+      <Box sx={{ display: 'flex', width: '90%' }}>
+        <TextField
+          type={'text'}
+          sx={{
+            width: 100,
+            height: 100,
+            p: 0,
+          }}
+          onDragOver={handleDragOver}
+          onDragLeave={handleDragLeave}
+          onDrop={handleDrop}
+          margin="normal"
+          value={selectedFile.info?.name || ''}
+          InputProps={{
+            fullWidth: true,
+            sx: { p: 0, width: '100%', height: 100 },
+            startAdornment: (
+              <IconButton component="label" sx={{ p: 0 }}>
+                <AvatarBox
+                  src={
+                    (selectedFile.info
+                      ? selectedFile.data
+                      : `${avatar.data}`) as string
+                  }
+                  sx={{
+                    width: '100px',
+                    height: '100px',
+                    bgcolor:
+                      theme.palette.mode === ThemeMode.light
+                        ? (theme as ITheme).colorTheme.light.darkPrimary
+                        : (theme as ITheme).colorTheme.dark.lightPrimary,
+                    cursor: 'pointer',
+                  }}
+                />
+                <input
+                  type="file"
+                  ref={inputFileRef}
+                  accept="image/*"
+                  hidden
+                  onChange={handleFileChange}
+                  name="file"
+                  multiple
+                  style={{ display: 'none' }}
+                />
+              </IconButton>
+            ),
+          }}
+        />
+        <Box sx={{ ml: 4 }}>
+          <TextField
+            variant="standard"
+            type={'text'}
+            sx={{
+              width: '100%',
+              margin: 0,
+              height: '20px',
+              color:
+                theme.palette.mode === ThemeMode.light
+                  ? (theme as ITheme).colorTheme.light.primary
+                  : (theme as ITheme).colorTheme.dark.primary,
+            }}
+            margin="normal"
+            value={selectedFile.info?.name || ''}
+            InputProps={{
+              className: 'addAvatarInput',
+            }}
+          />
+          <Box
+            sx={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              flexDirection: 'column',
+              alignItems: 'flex-start',
+              width: '100%',
+            }}>
+            <Button
+              onClick={btnDisabled ? chooseFile : saveAvatar}
+              sx={{ width: '100%', fontWeight: 'bold', marginTop: 1 }}>
+              {btnDisabled ? (avatar ? 'Изменить' : 'Загрузить') : 'Сохранить'}
+            </Button>
+            <Button
+              onClick={
+                btnDisabled ? (avatar ? deleteFile : clearAvatar) : clearAvatar
+              }
+              sx={{ width: '100%', fontWeight: 'bold', marginTop: 1 }}
+              // disabled={btnDisabled ?? true}
+            >
+              {btnDisabled ? (avatar ? 'Удалить' : 'Очистить') : 'Очистить'}
+            </Button>
+          </Box>
+        </Box>
+      </Box>
+    )
+  },
+)

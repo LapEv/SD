@@ -107,6 +107,10 @@ export const ApiEndPoints = {
     deleteClient: 'client/deleteClient',
     changeClient: 'client/changeClient',
   },
+  Contacts: {
+    newContact: 'contact/newContact',
+    changeContact: 'contact/changeContact',
+  },
   Contracts: {
     getContracts: 'contracts/getContracts',
     getContractsByClientID: 'contracts/getContractsByClientID',
@@ -149,15 +153,21 @@ export const ApiEndPoints = {
     getFile: 'files/getFile',
     getViewFile: 'files/getViewFile',
     getAvatar: 'files/getAvatar',
+    getClientAvatar: 'files/getClientAvatar',
+    getAvatarByClientId: 'files/getAvatarByClientId',
     getAvatarListUser: 'files/getAvatarListUser',
+    getAvatarListClient: 'files/getAvatarListClient',
     uploadFiles: 'files/uploadFiles',
     uploadAvatars: 'files/uploadAvatars',
     deleteAvatar: 'files/deleteAvatar',
+    deleteClientAvatar: 'files/deleteClientAvatar',
+    uploadClientAvatars: 'files/uploadClientAvatars',
   },
   System: {
     getSystem: 'system/getSystem',
     setSystem: 'system/setSystem',
     changePasswordSystem: 'system/changePasswordSystem',
+    generatePassword: 'system/generatePassword',
   },
   Engineer: {
     getINCsByFieldEngineer: 'engineer/getINCsByFieldEngineer',

@@ -1,4 +1,5 @@
 import { Order } from 'sequelize'
+import { Contacts } from '../db'
 
 export const getOrderINC = (nameSort: string, direction: string) => {
   if (nameSort === 'contract') {
@@ -24,5 +25,12 @@ export const getOrderINC = (nameSort: string, direction: string) => {
 }
 
 export const getOrder = (nameSort: string, direction: string) => {
+  if (nameSort === 'client') {
+    return [
+      [nameSort, direction as string],
+      [Contacts, 'lastName', 'ASC'],
+    ] as Order
+  }
+
   return [[nameSort as string, direction as string]] as Order
 }

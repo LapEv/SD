@@ -8,6 +8,7 @@ import { MuiDiv } from 'components/MUI'
 import { LinkButton } from 'components/LinkButton'
 import { Routes } from 'utils/routes'
 import { useLocation } from 'react-router-dom'
+import { AvatarBar } from './AvatarBar'
 
 export const Nav = () => {
   const [{ user }, { signout }] = useAuth()
@@ -37,6 +38,7 @@ export const Nav = () => {
             p: 1,
             pr: 0,
           }}>
+          <AvatarBar />
           <Typography
             sx={{
               mt: open ? 1 : 0,

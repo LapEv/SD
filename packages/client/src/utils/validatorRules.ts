@@ -27,9 +27,51 @@ export const loginValidation = {
   },
 }
 
+export const loginValidationNoReq = {
+  validate: (value: string) => {
+    if (value === '') return true
+    if (value.length < 3) {
+      return 'Длина должна состовлять не менее 3 символов'
+    }
+    if (!value.match('^[-.a-zA-Z0-9_-]+$')) {
+      return 'Только латиниские буквы, цифры'
+    }
+    if (!value.match('[a-zA-Z]+')) {
+      return 'Только буквы'
+    }
+    if (value.length > 20) {
+      return 'Длина логина состовлять не более 20 символов'
+    }
+
+    return true
+  },
+}
+
 export const passwordValidation = {
   required: REQUIRED_FIELD,
   validate: (value: string) => {
+    if (value.length < 8) {
+      return 'Длина должна состовлять не менее 8 символов'
+    }
+    if (!value.match('[A-Z0-9]')) {
+      return 'Пароль должен сожержать только латинские'
+    }
+    if (!value.match('[A-Z]+')) {
+      return 'Пароль должен сожержать хотя бы одну заглавную букву'
+    }
+    if (!value.match('[0-9]+')) {
+      return 'Пароль должен сожержать хотя бы одну цифру'
+    }
+    if (value.length > 40) {
+      return 'Длина пароля состовлять не более 40 символов'
+    }
+    return true
+  },
+}
+
+export const passwordValidationNoReq = {
+  validate: (value: string) => {
+    if (value === '') return true
     if (value.length < 8) {
       return 'Длина должна состовлять не менее 8 символов'
     }
@@ -90,6 +132,16 @@ export const domainValidationNoRequired = {
 export const lightTextValidation = {
   required: REQUIRED_FIELD,
   validate: (value: string) => {
+    if (!value.match('^[А-ЯA-Z]')) {
+      return 'Должно начинаться с заглавной буквы'
+    }
+    return true
+  },
+}
+
+export const lightTextValidationNoReq = {
+  validate: (value: string) => {
+    if (!value.length) return true
     if (!value.match('^[А-ЯA-Z]')) {
       return 'Должно начинаться с заглавной буквы'
     }
@@ -159,6 +211,16 @@ export const textValidationlowercaseSymbols = {
   },
 }
 
+export const textValidationlowercaseSymbolsNoReq = {
+  validate: (value: string) => {
+    if (value === '') return true
+    if (!value.match('^[?!-_, .а-яА-ЯёЁ0-9s]+$')) {
+      return 'Только кирилица, цифры'
+    }
+    return true
+  },
+}
+
 export const textValidationENG = {
   required: REQUIRED_FIELD,
   validate: (value: string) => {
@@ -185,6 +247,31 @@ export const textValidationENGlowercase = {
 export const phoneValidation = {
   required: REQUIRED_FIELD,
   validate: (value: string) => {
+    if (!value.match(`^[+]?[\\d]+$`)) {
+      return 'Только цифры!'
+    }
+    if (value.substring(0, 1) !== '8' && value.substring(0, 2) !== '+7') {
+      return 'Должен начинаться с "8" или "+7"!'
+    }
+    if (value.substring(0, 1) === '8' && value.length > 11) {
+      return 'Слишком много цифр!'
+    }
+    if (value.substring(0, 1) === '8' && value.length < 11) {
+      return 'Слишком мало цифр!'
+    }
+    if (value.substring(0, 2) === '+7' && value.length > 12) {
+      return 'Слишком много цифр!'
+    }
+    if (value.substring(0, 2) === '+7' && value.length < 12) {
+      return 'Слишком мало цифр!'
+    }
+    return true
+  },
+}
+
+export const phoneValidationNoReq = {
+  validate: (value: string) => {
+    if (value === '') return true
     if (!value.match(`^[+]?[\\d]+$`)) {
       return 'Только цифры!'
     }

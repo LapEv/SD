@@ -11,7 +11,7 @@ import { TextField } from 'components/TextFields'
 import { ButtonsSection } from 'components/Buttons'
 import { deepEqual } from 'utils/deepEqual'
 import { AddValuesAddContract } from 'store/slices/sla/interfaces'
-import { MapContractInputFields } from './data'
+import { MapContractInputFields } from '../../data'
 import { useAuth } from 'hooks/auth/useAuth'
 import { Contracts, IContractData } from 'store/slices/contracts/interfaces'
 import { convertDateToStringYYYYMMDD } from 'utils/convertDate'
@@ -22,7 +22,9 @@ import {
   ContractSLAList,
   ContractObjectList,
   ContractIncStatussesList,
-} from './'
+} from '../..'
+import { MuiDiv } from 'components/MUI'
+import { useApp } from 'hooks/app/useApp'
 
 export const ContractPage = memo(
   ({
@@ -40,7 +42,7 @@ export const ContractPage = memo(
   }: Contracts) => {
     const [{ admin }] = useAuth()
     const [, { changeContract }] = useContracts()
-    const [btnDisabled, setbtnDisabled] = useState<boolean>(true)
+    const [{ btnDisabled }, { setbtnDisabled }] = useApp()
     const [slaDisabled, setSLADisabled] = useState<boolean>(true)
     const [equipmentDisabled, setEquipmentDisabled] = useState<boolean>(true)
     const [modelDisabled, setModelDisabled] = useState<boolean>(true)
@@ -267,19 +269,11 @@ export const ContractPage = memo(
           flexDirection: 'column',
           alignItems: 'center',
         }}>
-        <Box
-          sx={{
-            display: 'flex',
-            flexDirection: { xs: 'column', sm: 'row' },
-            justifyContent: 'center',
-            width: '95%',
-          }}>
+        <MuiDiv className="boxClientGeneral">
           <Stack
-            direction={{ xs: 'column', sm: 'row' }}
-            justifyContent="space-between"
-            alignItems="center"
             spacing={0}
-            sx={{ flexWrap: 'wrap', width: '100%' }}>
+            direction={{ xs: 'column', sm: 'row' }}
+            className="stackClientGeneral">
             {fieldsAddContract.map(
               ({ id, name, label, validation, type, required }, index) => {
                 return (
@@ -321,7 +315,7 @@ export const ContractPage = memo(
               },
             )}
           </Stack>
-        </Box>
+        </MuiDiv>
         <ContractSLAList slaID={slaID} onChooseItems={onChooseSLAs} />
         <ContractEquipmentList
           equipmentID={selectedEquipments}

@@ -87,3 +87,32 @@ export const changePasswordSystem = createAsyncThunk(
     }
   },
 )
+
+export const generatePassword = createAsyncThunk(
+  'system/generatePassword',
+  async (length: number, thunkAPI) => {
+    try {
+      const { data } = await authhost.post(
+        ApiEndPoints.System.generatePassword,
+        { length },
+      )
+      return {
+        data,
+        message: {
+          text: 'Пароль успешно сгенерирован!',
+          type: 'success',
+        },
+      }
+    } catch (error) {
+      if (axios.isAxiosError<ValidationError, Record<string, unknown>>(error)) {
+        return thunkAPI.rejectWithValue(
+          `Не удалось сгенерировать пароль: \n${
+            error.response?.data.message ?? error.response?.data
+          }`,
+        )
+      } else {
+        console.error(error)
+      }
+    }
+  },
+)

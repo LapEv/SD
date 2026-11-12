@@ -5,10 +5,10 @@ import { useApp } from 'hooks/app/useApp'
 import { useEffect, useState } from 'react'
 import { ITheme, ThemeMode } from 'themes/themeConfig'
 import { compressedWidth, drawerWidth } from 'layouts/Main/drawerBarData'
-import { DrawerHeader } from 'layouts/Main/Components/MainContainer/Desktop/drawerHeader'
-import { SideBar } from 'layouts/Main/Components/MainContainer/Desktop/sideBar'
 import { Outlet } from 'react-router-dom'
 import { Nav } from './Mobile/Nav'
+import { DrawerHeader } from './Desktop/drawerHeader'
+import { SideBar } from './Desktop/sideBar'
 
 interface IMainContainer {
   boxRef: React.RefObject<HTMLDivElement | null>

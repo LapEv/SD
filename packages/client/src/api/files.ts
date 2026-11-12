@@ -134,6 +134,68 @@ export const getAvatar = createAsyncThunk(
   },
 )
 
+export const getClientAvatar = createAsyncThunk(
+  'files/getClientAvatar',
+  async (pathfile: string, thunkAPI) => {
+    try {
+      const { data } = await authhost.post<File>(
+        ApiEndPoints.Files.getClientAvatar,
+        {
+          pathfile,
+        },
+        {
+          responseType: 'blob',
+        },
+      )
+      return JSON.stringify({
+        data: URL.createObjectURL(new Blob([data])),
+        info: data,
+      }) as string
+    } catch (error) {
+      if (axios.isAxiosError<ValidationError, Record<string, unknown>>(error)) {
+        return thunkAPI.rejectWithValue(
+          `Не удалось получить данные по аватару: \n${
+            error.response?.data.message ?? error.response?.data
+          }`,
+        )
+      } else {
+        console.error(error)
+      }
+    }
+  },
+)
+
+export const getAvatarByClientId = createAsyncThunk(
+  'files/getAvatarByClientId',
+  async (id: string, thunkAPI) => {
+    try {
+      const { data } = await authhost.post<File>(
+        ApiEndPoints.Files.getAvatarByClientId,
+        {
+          id,
+        },
+        {
+          responseType: 'blob',
+        },
+      )
+      return JSON.stringify({
+        data: URL.createObjectURL(new Blob([data])),
+        info: data,
+      }) as string
+    } catch (error) {
+      if (axios.isAxiosError<ValidationError, Record<string, unknown>>(error)) {
+        return thunkAPI.rejectWithValue(
+          `Не удалось получить данные по аватару: \n${
+            error.response?.data.message ?? error.response?.data
+          }`,
+        )
+      } else {
+        console.error(error)
+      }
+    }
+  },
+)
+
 export const getAvatarListUser = createAsyncThunk(
   'files/getAvatarListUser',
   async (id_avatarFiles: string, thunkAPI) => {
@@ -155,6 +217,37 @@ export const getAvatarListUser = createAsyncThunk(
       if (axios.isAxiosError<ValidationError, Record<string, unknown>>(error)) {
         return thunkAPI.rejectWithValue(
           `Не удалось получить данные по аватару: \n${
+            error.response?.data.message ?? error.response?.data
+          }`,
+        )
+      } else {
+        console.error(error)
+      }
+    }
+  },
+)
+
+export const getAvatarListClient = createAsyncThunk(
+  'files/getAvatarListClient',
+  async (id_avatarFiles: string, thunkAPI) => {
+    try {
+      const { data } = await authhost.post<File>(
+        ApiEndPoints.Files.getAvatarListClient,
+        {
+          id_avatarFiles,
+        },
+        {
+          responseType: 'blob',
+        },
+      )
+      return JSON.stringify({
+        data: URL.createObjectURL(new Blob([data])),
+        info: data,
+      }) as string
+    } catch (error) {
+      if (axios.isAxiosError<ValidationError, Record<string, unknown>>(error)) {
+        return thunkAPI.rejectWithValue(
+          `Не удалось получить данные по аватару клиента: \n${
             error.response?.data.message ?? error.response?.data
           }`,
         )

@@ -11,7 +11,7 @@ export type PlainObject<T = unknown> = {
 }
 
 export default function isObjects<T = unknown>(
-  value: unknown
+  value: unknown,
 ): value is PlainObject<T> {
   return (
     typeof value === 'object' &&

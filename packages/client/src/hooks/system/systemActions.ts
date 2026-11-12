@@ -4,4 +4,5 @@ export interface SystemActions {
   setSystem: (data: ISystem) => void
   getSystem: () => void
   changePasswordSystem: (data: ChangePasswordProps) => void
+  generatePassword: (length: number) => void
 }

@@ -147,7 +147,7 @@ export interface IncidentLogsForINC {
     id: string
     username: string
     firstName: string
-    lastname: string
+    lastName: string
     middleName: string
     shortName: string
     active: boolean

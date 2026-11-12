@@ -610,6 +610,11 @@ export const rolesStartData = [
     nameRole: 'Получение аватара',
   },
   {
+    role: 'getClientAvatar',
+    group: ['ADMIN', 'Dispatcher', 'AdministrationCCA', 'FieldEngineers'],
+    nameRole: 'Получение аватара клиента',
+  },
+  {
     role: 'deleteAvatar',
     group: ['ADMIN', 'Dispatcher', 'AdministrationCCA', 'FieldEngineers'],
     nameRole: 'Удаление аватара',

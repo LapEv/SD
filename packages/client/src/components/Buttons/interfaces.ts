@@ -98,6 +98,9 @@ export type FabProps = PropsWithChildren<{
 export interface IconButtonProps {
   popover: string
   vertical?: 'top' | 'center' | 'bottom' | number
+  horizontal?: number | 'center' | 'left' | 'right'
+  vertical2?: 'top' | 'center' | 'bottom' | number
+  horizontal2?: number | 'center' | 'left' | 'right'
   onClick: () => void
   icon?: JSX.Element
   sx?: Record<string, unknown>

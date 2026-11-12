@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit'
 import { ISystem, SystemState } from './interfaces'
-import { getSystem, setSystem } from 'api/system'
+import { generatePassword, getSystem, setSystem } from 'api/system'
 
 const initialState: SystemState = {
   system: {
@@ -29,6 +29,7 @@ const initialState: SystemState = {
     },
   },
   isLoadingSystem: false,
+  generatedPassword: '',
 }
 
 export const systemSlise = createSlice({
@@ -57,6 +58,18 @@ export const systemSlise = createSlice({
       state.isLoadingSystem = true
     })
     builder.addCase(getSystem.rejected, (state, { payload }) => {
+      state.isLoadingSystem = false
+      state.error = payload as string
+    })
+    builder.addCase(generatePassword.fulfilled, (state, { payload }) => {
+      state.isLoadingSystem = false
+      state.error = ''
+      state.generatedPassword = payload?.data as string
+    })
+    builder.addCase(generatePassword.pending, state => {
+      state.isLoadingSystem = true
+    })
+    builder.addCase(generatePassword.rejected, (state, { payload }) => {
       state.isLoadingSystem = false
       state.error = payload as string
     })

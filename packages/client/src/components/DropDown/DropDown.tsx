@@ -31,7 +31,7 @@ export const DropDown = memo(
         clearOnEscape
         autoSelect={false}
         sx={props}
-        className={`dropdown ${className}`}
+        className={`dropdown ${className ?? ''}`}
         options={data}
         noOptionsText={'Нет данных'}
         filterOptions={FilterOptions}

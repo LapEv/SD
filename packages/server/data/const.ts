@@ -81,6 +81,7 @@ export const AppConst = {
   fileDirectories: {
     Avatar: 'Avatar',
     IncidentActs: 'IncidentActs',
+    ClientAvatars: 'ClientAvatars',
   },
   mailNotifications: {
     errors: {

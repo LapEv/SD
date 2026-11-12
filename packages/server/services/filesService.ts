@@ -1,12 +1,15 @@
 import type { Request, Response } from 'express'
-import { FilesRepos, userRepos } from '../db'
+import { ClientsRepos, FilesRepos, userRepos } from '../db'
 import * as fs from 'fs'
 import * as path from 'path'
 import dotenv from 'dotenv'
 import { FileArray, UploadedFile } from 'express-fileupload'
 import { IUser, UserFiles, FilesForUser } from '../models/users'
 import { include } from './userService'
+import { order as OrderClient, includesContacts } from './clientService'
 import { AppConst } from '../data/const'
+import { FILES } from '../models/files'
+import { IClients } from '/models/clients'
 dotenv.config({ path: '../../../.env' })
 
 const isEmptyDir = async (dir: string, id: string) => {
@@ -126,6 +129,48 @@ export class filesService {
       res.status(500).json({ error: ['db error', err as Error] })
     }
   }
+  uploadClientAvatars = async (_req: Request, res: Response) => {
+    const { id, fileName, id_avatarClientFiles } = _req.body
+    const { file } = _req.files as FileArray
+    const typeDir = AppConst.fileDirectories.ClientAvatars
+    const pathCheckFiles =
+      process.env.NODE_ENV === 'development'
+        ? path.join(__dirname, `../Files/${typeDir}/${id}/`)
+        : `${process.env.FILE_PATH}/${typeDir}/${id}/`
+    const pathFiles = `${pathCheckFiles}${fileName}`
+    try {
+      await isEmptyDir(pathCheckFiles, id)
+      const selectedFile = file as UploadedFile
+      if (!fs.existsSync(pathFiles)) {
+        selectedFile.mv(pathFiles)
+      }
+      const files = (await FilesRepos.findAll({
+        where: { id_avatarClientFiles: id },
+      })) as FILES[]
+      const filesIDs = files.map(({ id }) => id)
+      await FilesRepos.delete(filesIDs)
+
+      const uploadedFiles = [
+        {
+          name: fileName,
+          size: selectedFile.size,
+          mimetype: selectedFile.mimetype,
+          path: `${typeDir}/${id}/${fileName}`,
+          id_avatarClientFiles,
+        },
+      ]
+      await FilesRepos.bulkCreate(uploadedFiles)
+      await ClientsRepos.update(id, { id_avatarClientFiles })
+      const clients = await ClientsRepos.findAll({
+        where: { active: true },
+        include: includesContacts,
+        order: OrderClient,
+      })
+      res.status(200).json(clients)
+    } catch (err) {
+      res.status(500).json({ error: ['db error', err as Error] })
+    }
+  }
   getFilesData = async (_req: Request, res: Response) => {
     try {
       const files = await FilesRepos.findAll({})
@@ -170,6 +215,36 @@ export class filesService {
       res.status(500).json({ error: ['db error: ', err as Error] })
     }
   }
+  getClientAvatar = async (_req: Request, res: Response) => {
+    const { pathfile } = _req.body
+    try {
+      const pathFileServer =
+        process.env.NODE_ENV === 'development'
+          ? path.join(__dirname, `../Files/${pathfile}`)
+          : `${process.env.FILE_PATH}/${pathfile}`
+      res.status(200).download(pathFileServer)
+    } catch (err) {
+      res.status(500).json({ error: ['db error: ', err as Error] })
+    }
+  }
+  getAvatarByClientId = async (_req: Request, res: Response) => {
+    const { id } = _req.body
+    try {
+      const client = (await ClientsRepos.findOne({
+        where: { id },
+        include: includesContacts,
+      })) as IClients
+      const pathfile = client?.Files![0].path
+
+      const pathFileServer =
+        process.env.NODE_ENV === 'development'
+          ? path.join(__dirname, `../Files/${pathfile}`)
+          : `${process.env.FILE_PATH}/${pathfile}`
+      res.status(200).download(pathFileServer)
+    } catch (err) {
+      res.status(500).json({ error: ['db error: ', err as Error] })
+    }
+  }
   getAvatarListUser = async (_req: Request, res: Response) => {
     try {
       const { id_avatarFiles } = _req.body
@@ -182,6 +257,30 @@ export class filesService {
       })) as UserFiles
       const _user = user.Files.find(item =>
         item.path.includes('Avatar'),
+      ) as FilesForUser
+      const pathfile = _user.path
+
+      const pathFileServer =
+        process.env.NODE_ENV === 'development'
+          ? path.join(__dirname, `../Files/${pathfile}`)
+          : `${process.env.FILE_PATH}/${pathfile}`
+      res.status(200).download(pathFileServer)
+    } catch (err) {
+      res.status(500).json({ error: ['db error: ', err as Error] })
+    }
+  }
+  getAvatarListClient = async (_req: Request, res: Response) => {
+    try {
+      const { id_avatarFiles } = _req.body
+      if (!id_avatarFiles) {
+        res.status(200).json(null)
+      }
+      const user = (await ClientsRepos.findOne({
+        where: { id_avatarFiles },
+        include,
+      })) as UserFiles
+      const _user = user.Files.find(item =>
+        item.path.includes('ClientAvatar'),
       ) as FilesForUser
       const pathfile = _user.path
 
@@ -211,6 +310,45 @@ export class filesService {
       res.status(200).json(user)
     } catch (err) {
       res.status(500).json({ error: ['db error: ', err as Error] })
+    }
+  }
+  deleteClientAvatar = async (_req: Request, res: Response) => {
+    const { id } = _req.body
+    try {
+      const typeDir = AppConst.fileDirectories.ClientAvatars
+      const pathCheckFiles =
+        process.env.NODE_ENV === 'development'
+          ? path.join(__dirname, `../Files/${typeDir}/${id}/`)
+          : `${process.env.FILE_PATH}/${typeDir}/${id}/`
+      await isEmptyDir(pathCheckFiles, id)
+      await ClientsRepos.update(id, { id_avatarClientFiles: '' })
+      const clients = await ClientsRepos.findAll({
+        where: { active: true },
+        include: includesContacts,
+        order: OrderClient,
+      })
+      const files = (await FilesRepos.findAll({
+        where: { id_avatarClientFiles: id },
+      })) as FILES[]
+      const filesIDs = files.map(({ id }) => id)
+      await FilesRepos.delete(filesIDs)
+      res.status(200).json(clients)
+    } catch (err) {
+      res.status(500).json({ error: ['db error: ', err as Error] })
+    }
+  }
+  changeClientAvatar = async (_req: Request, res: Response) => {
+    const { id_avatarClientFiles, id } = _req.body
+    try {
+      await ClientsRepos.update(id, { id_avatarClientFiles })
+      const files = (await FilesRepos.findAll({
+        where: { id_avatarClientFiles: id },
+      })) as FILES[]
+      const filesIDs = files.map(({ id }) => id)
+      await FilesRepos.update(filesIDs, { id_avatarClientFiles })
+      res.status(200).json('Ok')
+    } catch (err) {
+      res.status(500).json({ error: ['db error', err as Error] })
     }
   }
 }

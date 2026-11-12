@@ -1,5 +1,6 @@
 import type { Request, Response } from 'express'
 import {
+  ClientsRepos,
   Department,
   DepartmentRepos,
   Division,
@@ -17,6 +18,7 @@ import { IUser } from '/models/users'
 import { IDepartment } from '/models/departments'
 import { divisionService } from './divisionService'
 import { Op } from 'sequelize'
+import { IClients } from '/models/clients'
 
 export const include = [
   {
@@ -117,10 +119,30 @@ export class userService {
   login = async (_req: Request, res: Response) => {
     try {
       const { username, password } = _req.body
+
+      const client = (await ClientsRepos.findOne({
+        where: { login: username },
+      })) as IClients
+
+      if (client) {
+        const validPassword = bcrypt.compareSync(password, client?.password)
+        if (!validPassword) {
+          return res
+            .status(400)
+            .json({ message: auth.notification.invalidPassword })
+        }
+        const token = generateAccessToken(client.id, 'Client', client.client)
+        return res.json({
+          token,
+          user: { id: client.id, status: 'client', shortName: client.client },
+        })
+      }
+
       const user = (await userRepos.findOne({
         where: { username: username },
         include,
       })) as IUser
+
       if (!user) {
         return res.status(400).json({ message: auth.notification.userNotFound })
       }
@@ -216,6 +238,17 @@ export class userService {
   check = async (_req: Request, res: Response) => {
     const { username, id, rolesGroup } = _req.body
     try {
+      const client = (await ClientsRepos.findOne({
+        where: { id },
+      })) as IClients
+      if (client) {
+        const token = generateAccessToken(client.id, 'Client', client.client)
+        return res.json({
+          token,
+          user: { id: client.id, status: 'client', shortName: client.client },
+        })
+      }
+
       const token = generateAccessToken(id, rolesGroup, username)
       const user = (await userRepos.findOne({
         where: { id: id },

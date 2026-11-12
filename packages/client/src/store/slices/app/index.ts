@@ -18,6 +18,7 @@ const initialState: AppState = {
     new Date().getUTCMilliseconds(),
   ),
   device: 'desktop',
+  btnDisabled: true,
 }
 
 export const appSlise = createSlice({
@@ -41,8 +42,12 @@ export const appSlise = createSlice({
     setDevice(state, { payload }) {
       state.device = payload
     },
+    setbtnDisabled(state, { payload }) {
+      state.btnDisabled = payload
+    },
   },
 })
 
 export const appReducer = appSlise.reducer
-export const { setDataWidth, getUTCDateTS, setDevice } = appSlise.actions
+export const { setDataWidth, getUTCDateTS, setDevice, setbtnDisabled } =
+  appSlise.actions

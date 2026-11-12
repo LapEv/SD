@@ -19,5 +19,10 @@ export const systemRouter = (apiRouter: Router) => {
     authMiddleware,
     service.changePasswordSystem,
   )
+  router.post(
+    '/generatePassword',
+    roleMiddleware(['SUPERADMIN', 'ADMIN', 'generatePassword']),
+    service.generatePassword,
+  )
   apiRouter.use('/system', router)
 }

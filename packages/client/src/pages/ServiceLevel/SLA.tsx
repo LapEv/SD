@@ -20,6 +20,7 @@ import { useAuth } from 'hooks/auth/useAuth'
 import { Options } from 'components/DropDown/interface'
 import { DropDown, emptyOptionsDD } from 'components/DropDown'
 import { useIncidents } from 'hooks/incidents/useINC'
+import { useApp } from 'hooks/app/useApp'
 
 export const SLAPage = memo(
   ({
@@ -36,7 +37,7 @@ export const SLAPage = memo(
     const [, { changeSLA, changeOLA }] = useSLA()
     const [{ typesOfWork }, { getTypesOfWork }] = useIncidents()
     const [{ admin }] = useAuth()
-    const [btnDisabled, setbtnDisabled] = useState<boolean>(true)
+    const [{ btnDisabled }, { setbtnDisabled }] = useApp()
     const [listTypes, setListTypes] = useState<Options[]>([])
     const [selectedType, setSelectedType] = useState<Options>(emptyOptionsDD)
     const [slaData, setSlaData] = useState<SLAList>(

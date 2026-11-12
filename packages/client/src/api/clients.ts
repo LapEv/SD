@@ -1,10 +1,11 @@
 import { createAsyncThunk } from '@reduxjs/toolkit'
-import { authhost, ApiEndPoints } from './config'
+import { authhost, ApiEndPoints, authFileHost } from './config'
 import {
   Clients,
   ClientsGroup,
   ChangeClient,
   ChangeClientsGroup,
+  AvatarClientProps,
 } from 'store/slices/clients/interfaces'
 import axios from 'axios'
 
@@ -209,19 +210,12 @@ export const deleteClient = createAsyncThunk(
 
 export const changeClient = createAsyncThunk(
   'client/changeClient',
-  async (
-    { client, legalName, contracts, contacts, comments, id }: ChangeClient,
-    thunkAPI,
-  ) => {
+  async (_data: ChangeClient, thunkAPI) => {
     try {
-      const { data } = await authhost.post(ApiEndPoints.Clients.changeClient, {
-        client,
-        legalName,
-        contracts,
-        contacts,
-        comments,
-        id,
-      })
+      const { data } = await authhost.post(
+        ApiEndPoints.Clients.changeClient,
+        _data,
+      )
       return {
         data,
         message: {
@@ -233,6 +227,72 @@ export const changeClient = createAsyncThunk(
       if (axios.isAxiosError<ValidationError, Record<string, unknown>>(error)) {
         return thunkAPI.rejectWithValue(
           `Не удалось изменить клиента: \n${
+            error.response?.data.message ?? error.response?.data
+          }`,
+        )
+      } else {
+        console.error(error)
+      }
+    }
+  },
+)
+
+export const changeClientAvatar = createAsyncThunk(
+  'client/changeClientAvatar',
+  async (
+    { id_avatarClientFiles, selectedFile, id }: AvatarClientProps,
+    thunkAPI,
+  ) => {
+    try {
+      const formData = new FormData()
+      formData.append('file', selectedFile.info as File)
+      formData.append('id', id)
+      formData.append('fileName', selectedFile?.info?.name as string)
+      formData.append('id_avatarClientFiles', id_avatarClientFiles)
+      const { data } = await authFileHost.post(
+        ApiEndPoints.Files.uploadClientAvatars,
+        formData,
+      )
+      return {
+        data,
+        message: {
+          text: 'Новая аватарка клиента успешно сохранена!',
+          type: 'success',
+        },
+      }
+    } catch (error) {
+      if (axios.isAxiosError<ValidationError, Record<string, unknown>>(error)) {
+        return thunkAPI.rejectWithValue(
+          `Не удалось обновить аватар клиента: \n${
+            error.response?.data.message ?? error.response?.data
+          }`,
+        )
+      } else {
+        console.error(error)
+      }
+    }
+  },
+)
+
+export const deleteClientAvatar = createAsyncThunk(
+  'client/deleteClientAvatar',
+  async (id: string, thunkAPI) => {
+    try {
+      const { data } = await authFileHost.post(
+        ApiEndPoints.Files.deleteClientAvatar,
+        { id },
+      )
+      return {
+        data,
+        message: {
+          text: 'Аватарка удалена!',
+          type: 'success',
+        },
+      }
+    } catch (error) {
+      if (axios.isAxiosError<ValidationError, Record<string, unknown>>(error)) {
+        return thunkAPI.rejectWithValue(
+          `Не удалось обновить аватар пользователя: \n${
             error.response?.data.message ?? error.response?.data
           }`,
         )

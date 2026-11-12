@@ -23,10 +23,11 @@ import {
   ISystemValues,
 } from 'store/slices/system/interfaces'
 import { NumberField } from 'components/TextFields/NumberField'
+import { useApp } from 'hooks/app/useApp'
 
 export const SystemData = memo(({ id }: ISystemData) => {
   const [{ system, error }, { setSystem }] = useSystem()
-  const [btnDisabled, setbtnDisabled] = useState<boolean>(true)
+  const [{ btnDisabled }, { setbtnDisabled }] = useApp()
   const [systemData, setSystemData] = useState<ISystem>(system)
 
   const fieldsData = chooseMapFields(id)

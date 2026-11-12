@@ -1,16 +1,45 @@
-import { ClientsRepos, ClientsGroupRepos } from '../db'
+import { ClientsRepos, ClientsGroupRepos, Contacts, Files } from '../db'
 import type { Request, Response } from 'express'
 import { getOrder } from '../utils/getOrder'
+import bcrypt from 'bcryptjs'
 
-const order = getOrder('client', 'ASC')
+export const order = getOrder('client', 'ASC')
 const orderGroup = getOrder('groupName', 'ASC')
+
+export const includesContacts = [
+  {
+    model: Contacts,
+    attributes: [
+      'id',
+      'lastName',
+      'firstName',
+      'middleName',
+      'email',
+      'post',
+      'phone',
+      'comment',
+      'id_client',
+      'active',
+    ],
+    required: false,
+  },
+  {
+    model: Files,
+    required: false,
+    attributes: ['id', 'name', 'path', 'size', 'mimetype'],
+  },
+]
 
 export class clientService {
   newClient = async (_req: Request, res: Response) => {
     try {
-      await ClientsRepos.create({ ..._req.body, active: true })
+      await ClientsRepos.create({
+        ..._req.body,
+        active: true,
+      })
       const clients = await ClientsRepos.findAll({
         where: { active: true },
+        include: includesContacts,
         order,
       })
       res.status(200).json(clients)
@@ -20,7 +49,7 @@ export class clientService {
   }
 
   getAllClients = (_req: Request, res: Response) => {
-    ClientsRepos.findAll({ order })
+    ClientsRepos.findAll({ order, include: includesContacts })
       .then(item => res.status(200).json(item))
       .catch(err => res.status(500).json({ error: ['db error', err.status] }))
   }
@@ -29,6 +58,7 @@ export class clientService {
     ClientsRepos.findAll({
       where: { active: true },
       order,
+      include: includesContacts,
     })
       .then(clients => {
         res.status(200).json(clients)
@@ -45,6 +75,7 @@ export class clientService {
       const clients = await ClientsRepos.findAll({
         where: { active: true },
         order,
+        include: includesContacts,
       })
       res.status(200).json(clients)
     } catch (err) {
@@ -58,7 +89,10 @@ export class clientService {
       await ClientsRepos.destroy({
         where: { id: selectedClients },
       })
-      const clients = await ClientsRepos.findAll({ order })
+      const clients = await ClientsRepos.findAll({
+        order,
+        include: includesContacts,
+      })
       res.status(200).json(clients)
     } catch (err) {
       res.status(500).json({ error: ['db error', err as Error] })
@@ -74,6 +108,7 @@ export class clientService {
       const clients = await ClientsRepos.findAll({
         where: { active: true },
         order,
+        include: includesContacts,
       })
       res.status(200).json(clients)
     } catch (err) {
@@ -82,18 +117,19 @@ export class clientService {
   }
 
   changeClient = async (_req: Request, res: Response) => {
-    const { client, legalName, contracts, contacts, comments, id } = _req.body
+    const { id } = _req.body
     try {
-      await ClientsRepos.update(id, {
-        client,
-        legalName,
-        contracts,
-        contacts,
-        comments,
-      })
+      const { password } = _req.body
+      const hashPassword = bcrypt.hashSync(password, 7)
+      const newData = {
+        ..._req.body,
+        password: hashPassword,
+      }
+      await ClientsRepos.update(id, newData)
       const clients = await ClientsRepos.findAll({
         where: { active: true },
         order,
+        include: includesContacts,
       })
       res.status(200).json(clients)
     } catch (err) {

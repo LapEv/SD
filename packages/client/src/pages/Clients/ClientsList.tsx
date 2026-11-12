@@ -1,34 +1,28 @@
 import React, { memo, useEffect, useState, SyntheticEvent } from 'react'
 import { ListItemText, ListItemButton, Modal } from '@mui/material'
 import Collapse from '@mui/material/Collapse'
-import { RotateButton, EditButton, IconPopoverButton } from 'components/Buttons'
+import { RotateButton, EditButton } from 'components/Buttons'
 import { ModalChangeName } from 'components/ModaQuestions'
 import { useClients } from 'hooks/clients/useClients'
-import { Clients } from 'store/slices/clients/interfaces'
-import { useContracts } from 'hooks/contracts/useContracts'
-import { ContractsList } from './'
 import { useAuth } from 'hooks/auth/useAuth'
-import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline'
 import { AddContract } from './Modals'
 import { ModalTitles } from './data'
 import { MuiDiv } from 'components/MUI'
+import { General } from './components/General/General'
+import { Contracts } from './components/Contracts/Contracts'
+import { IClientsList } from './interfaces'
 
-export const ClientsList = memo(({ client, legalName, id }: Clients) => {
-  const [{ activeClient }, { setActiveClient, changeClient }] = useClients()
-  const [{ contracts }, { getContractsByClientID, resetContracts }] =
-    useContracts()
+export const ClientsList = memo(({ clientData }: IClientsList) => {
+  const [{ activeClient }, { changeClient, setActiveClient }] = useClients()
   const [{ admin }] = useAuth()
   const modalRef = React.createRef()
   const [open, setOpen] = useState(false)
-
   const [modal, setModal] = useState<boolean>(false)
   const [modalImage, setModalImage] = useState<string>('')
 
   const handleClick = () => {
+    setActiveClient(clientData.id as string)
     setOpen(!open)
-    resetContracts()
-    setActiveClient(id as string)
-    getContractsByClientID(id as string)
   }
 
   const changeClientName = (answer: boolean, text: string) => {
@@ -36,13 +30,13 @@ export const ClientsList = memo(({ client, legalName, id }: Clients) => {
     if (!answer) return
     changeClient({
       client: text,
-      legalName,
-      id: id as string,
+      legalName: clientData.legalName,
+      id: clientData.id,
     })
   }
 
   useEffect(() => {
-    if (activeClient !== id) {
+    if (activeClient !== clientData.id) {
       setOpen(false)
     }
   }, [activeClient])
@@ -61,8 +55,6 @@ export const ClientsList = memo(({ client, legalName, id }: Clients) => {
     setModal(true)
     setModalImage('newContract')
   }
-
-  const id_client = id as string
 
   return (
     <MuiDiv className={'containerCollapse'}>
@@ -90,7 +82,10 @@ export const ClientsList = memo(({ client, legalName, id }: Clients) => {
         divider={open}
         className={'itemButtonCollapse1 height'}
         onClick={handleClick}>
-        <ListItemText primary={client} secondary={legalName} />
+        <ListItemText
+          primary={clientData.client ?? ''}
+          secondary={clientData.legalName ?? ''}
+        />
         {admin && <EditButton handleClick={editClient} />}
         <RotateButton open={open} handleClick={handleClick} />
       </ListItemButton>
@@ -99,44 +94,13 @@ export const ClientsList = memo(({ client, legalName, id }: Clients) => {
         in={open}
         timeout="auto"
         unmountOnExit>
-        {contracts.map(
-          ({
-            contract,
-            id,
-            number,
-            notificationEmail,
-            date,
-            SLAs,
-            ClassifierEquipments,
-            ClassifierModels,
-            Objects,
-            IncindentStatuses,
-          }) => (
-            <ContractsList
-              contract={contract}
-              id={id as string}
-              number={number}
-              notificationEmail={notificationEmail}
-              date={date}
-              SLAs={SLAs}
-              ClassifierEquipments={ClassifierEquipments}
-              ClassifierModels={ClassifierModels}
-              Objects={Objects}
-              IncindentStatuses={IncindentStatuses}
-              id_client={id_client}
-              key={id}
-            />
-          ),
-        )}
-        {admin && (
-          <IconPopoverButton
-            popover={'Создать контракт'}
-            onClick={AddNewContract}
-            icon={<AddCircleOutlineIcon />}
-            propsPopover={{ ml: -1 }}
-            className={'addIconButton'}
-          />
-        )}
+        <General clientData={clientData} />
+        <Contracts
+          client={clientData.client ?? ''}
+          legalName={clientData.legalName ?? ''}
+          id={clientData.id ?? ''}
+          AddNewContract={AddNewContract}
+        />
       </Collapse>
     </MuiDiv>
   )
