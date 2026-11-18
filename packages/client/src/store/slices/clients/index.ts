@@ -18,6 +18,7 @@ import {
   getAvatarListClient,
   getClientAvatar,
 } from 'api/files'
+import { passwordClientActive } from 'utils/validatorRules'
 
 const initialState: ClientsState = {
   clients: [],
@@ -33,7 +34,7 @@ const prepareClients = (data: Clients[]) => {
   return data.map(item => {
     return {
       ...item,
-      password: '',
+      password: item.password ? passwordClientActive : '',
     }
   })
 }

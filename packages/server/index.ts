@@ -1,10 +1,10 @@
 import * as dotenv from 'dotenv'
 import cors from 'cors'
 import express, { Express } from 'express'
-import { createServer } from 'vite'
+// import { createServer } from 'vite'
 import { dbConnect, SystemRepos } from './db'
 import { apiRouter } from './routers/index.router'
-import { isDev, srcPath } from './data/app'
+// import { isDev, srcPath } from './data/app'
 import staticMiddleware from './middleware/static.middleware'
 import ssrMiddleware from './middleware/ssr.middleware'
 const fileUpload = require('express-fileupload')
@@ -61,16 +61,16 @@ async function init() {
 
   app.use('/api', apiRouter)
 
-  if (isDev) {
-    const vite = await createServer({
-      server: { middlewareMode: true },
-      root: srcPath,
-      appType: 'custom',
-    })
+  // if (isDev) {
+  //   const vite = await createServer({
+  //     server: { middlewareMode: true },
+  //     root: srcPath,
+  //     appType: 'custom',
+  //   })
 
-    app.set('vite', vite)
-    app.use(vite.middlewares)
-  }
+  //   app.set('vite', vite)
+  //   app.use(vite.middlewares)
+  // }
 
   app.use('/assets', staticMiddleware())
   app.use(ssrMiddleware)

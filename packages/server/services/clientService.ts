@@ -119,13 +119,17 @@ export class clientService {
   changeClient = async (_req: Request, res: Response) => {
     const { id } = _req.body
     try {
-      const { password } = _req.body
-      const hashPassword = bcrypt.hashSync(password, 7)
-      const newData = {
-        ..._req.body,
-        password: hashPassword,
+      const { password, ...otherOptions } = _req.body
+      if (!password) {
+        await ClientsRepos.update(id, otherOptions)
+      } else {
+        const hashPassword = bcrypt.hashSync(password, 7)
+        const newData = {
+          ..._req.body,
+          password: hashPassword,
+        }
+        await ClientsRepos.update(id, newData)
       }
-      await ClientsRepos.update(id, newData)
       const clients = await ClientsRepos.findAll({
         where: { active: true },
         order,

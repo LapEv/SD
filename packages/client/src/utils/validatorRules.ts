@@ -91,6 +91,31 @@ export const passwordValidationNoReq = {
   },
 }
 
+export const passwordClientActive = '**********'
+
+export const passwordClientValidation = {
+  validate: (value: string) => {
+    if (value === '') return true
+    if (value === passwordClientActive) return true
+    if (value.length < 8) {
+      return 'Длина должна состовлять не менее 8 символов'
+    }
+    if (!value.match('[A-Z0-9]')) {
+      return 'Пароль должен сожержать только латинские'
+    }
+    if (!value.match('[A-Z]+')) {
+      return 'Пароль должен сожержать хотя бы одну заглавную букву'
+    }
+    if (!value.match('[0-9]+')) {
+      return 'Пароль должен сожержать хотя бы одну цифру'
+    }
+    if (value.length > 40) {
+      return 'Длина пароля состовлять не более 40 символов'
+    }
+    return true
+  },
+}
+
 export const nameValidation = {
   required: REQUIRED_FIELD,
   validate: (value: string) => {

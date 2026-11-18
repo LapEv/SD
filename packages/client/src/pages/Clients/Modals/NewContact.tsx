@@ -8,10 +8,9 @@ import {
 } from 'react-hook-form'
 import { MultiTextField, TextField } from 'components/TextFields'
 import { AddValuesProps, ChooseModalPropsContacts } from './interfaces'
-import { EmptyContact, MapClientGeneralContactsInputFields } from '../data'
+import { EmptyContact, MapClientGeneralNewContactsInputFields } from '../data'
 import { ButtonsModalSection } from 'components/Buttons'
 import { BoxModal } from 'components/MUI'
-import { ClientsAddValuesProps } from '../interfaces'
 import { useClients } from 'hooks/clients/useClients'
 
 export const NewContact = memo(
@@ -19,10 +18,10 @@ export const NewContact = memo(
     ({ handleModal, title, id_client }: ChooseModalPropsContacts, ref) => {
       const [, { newContact }] = useClients()
 
-      const { handleSubmit, control } = useForm<ClientsAddValuesProps>({
+      const { handleSubmit, control } = useForm<AddValuesProps>({
         mode: 'onBlur',
         defaultValues: {
-          list: MapClientGeneralContactsInputFields.map(data => ({
+          list: MapClientGeneralNewContactsInputFields.map(data => ({
             ...data,
             value: EmptyContact[data.name as keyof typeof EmptyContact],
           })),

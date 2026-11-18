@@ -18,6 +18,7 @@ import { useSystem } from 'hooks/system/useSystem'
 import { ClientAvatar } from './ClientAvatar'
 import { FilesData } from 'store/slices/files/interfaces'
 import { useFiles } from 'hooks/files/useFiles'
+import { passwordClientActive } from 'utils/validatorRules'
 
 export const GeneralBox = memo(({ clientData }: IGeneralBox) => {
   const [{ btnDisabled }, { setbtnDisabled }] = useApp()
@@ -93,7 +94,6 @@ export const GeneralBox = memo(({ clientData }: IGeneralBox) => {
       })
       return
     }
-
     if (newDataInputs.Contacts && newDataInputs.Contacts.length > 0) {
       const toChangeContacts = newDataInputs?.Contacts.map((item, index) => {
         return !deepEqual(
@@ -115,11 +115,13 @@ export const GeneralBox = memo(({ clientData }: IGeneralBox) => {
       office: listInfo[2].value,
       officePhone: listInfo[3].value,
       login: listWeb[0].value,
-      password: listWeb[1].value,
+      password:
+        listWeb[1].value === passwordClientActive ? '' : listWeb[1].value,
     })
     clearError()
     setbtnDisabled(true)
     setOpenContactsBox(false)
+    setValueWeb(`listWeb.1.value`, passwordClientActive as string)
   }
 
   const checkForChange = (newData: Record<never, never>) => {
@@ -151,6 +153,7 @@ export const GeneralBox = memo(({ clientData }: IGeneralBox) => {
   }
 
   useEffect(() => {
+    if (!generatedPassword) return
     setValueWeb(`listWeb.1.value`, generatedPassword as string)
     checkForChange({
       ...clientData,
@@ -185,7 +188,6 @@ export const GeneralBox = memo(({ clientData }: IGeneralBox) => {
           avatarClient && avatarClient.length ? JSON.parse(avatarClient) : ''
         }
       />
-
       <GeneralInfo
         clientData={clientData}
         fieldsInfo={fieldsInfo}

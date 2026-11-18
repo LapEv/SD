@@ -58,7 +58,6 @@ export const contacts: ModelAttributes<Model, Contacts> = {
   email: {
     type: DataType.STRING,
     allowNull: true,
-    unique: true,
     defaultValue: '',
   },
   comment: {

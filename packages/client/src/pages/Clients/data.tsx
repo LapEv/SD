@@ -6,7 +6,7 @@ import {
   lightTextValidation,
   lightTextValidationNoReq,
   loginValidationNoReq,
-  passwordValidationNoReq,
+  passwordClientValidation,
   phoneValidationNoReq,
   textValidation,
   textValidationlowercaseSymbols,
@@ -312,6 +312,58 @@ export const MapClientGeneralContactsInputFields = [
   },
 ]
 
+export const MapClientGeneralNewContactsInputFields = [
+  {
+    name: 'lastName',
+    label: 'Введите фамилию контакта',
+    validation: lightTextValidation,
+    type: 'text',
+    required: true,
+  },
+  {
+    name: 'firstName',
+    label: 'Введите имя контакта',
+    validation: lightTextValidation,
+    type: 'text',
+    required: true,
+  },
+  {
+    name: 'middleName',
+    label: 'Введите отчество контакта',
+    validation: lightTextValidationNoReq,
+    type: 'text',
+    required: false,
+  },
+  {
+    name: 'post',
+    label: 'Введите должность контакта',
+    validation: lightTextValidation,
+    type: 'text',
+    required: true,
+  },
+  {
+    name: 'phone',
+    label: 'Введите телефон контакта',
+    validation: phoneValidationNoReq,
+    type: 'text',
+    required: false,
+  },
+  {
+    name: 'email',
+    label: 'Введите email контакта',
+    validation: emailValidationNoRequired,
+    type: 'text',
+    required: false,
+  },
+  {
+    name: 'comment',
+    label: 'Введите комментарий контакта',
+    validation: commentINCValidation,
+    type: 'text',
+    required: false,
+  },
+]
+
 export const MapClientGeneralWebInputFields = [
   {
     name: 'login',
@@ -323,7 +375,7 @@ export const MapClientGeneralWebInputFields = [
   {
     name: 'password',
     label: 'Введите пароль',
-    validation: passwordValidationNoReq,
+    validation: passwordClientValidation,
     type: 'text',
     required: false,
   },
